@@ -1,11 +1,34 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+let _supabase: SupabaseClient | null = null
 
-// Create the Supabase client - it will work in production with proper env vars
-// In development without env vars, it gracefully handles the empty credentials
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+function getSupabaseClient(): SupabaseClient {
+  if (_supabase) return _supabase
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error(
+      'Missing Supabase environment variables. Please ensure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are set.'
+    )
+  }
+
+  _supabase = createClient(supabaseUrl, supabaseAnonKey)
+  return _supabase
+}
+
+// Lazy-initialized Supabase client - only created when first accessed
+export const supabase = new Proxy({} as SupabaseClient, {
+  get(_target, prop, receiver) {
+    const client = getSupabaseClient()
+    const value = Reflect.get(client, prop, receiver)
+    if (typeof value === 'function') {
+      return value.bind(client)
+    }
+    return value
+  },
+})
 
 // Helper to convert name to URL-friendly slug
 export function nameToSlug(name: string, code?: string): string {
