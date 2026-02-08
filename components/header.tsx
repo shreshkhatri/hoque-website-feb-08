@@ -689,28 +689,52 @@ export function Header() {
               <ChevronDown size={16} className={`transition-transform ${mobileServicesExpanded ? 'rotate-180' : ''}`} />
             </button>
             {mobileServicesExpanded && (
-              <div className="mt-2 ml-4 space-y-3 border-l border-primary/30 pl-4">
-                <a
-                  href="/services/free-consultation"
-                  onClick={closeMobileDrawer}
-                  className="block text-sm text-foreground hover:text-primary transition-colors"
-                >
-                  Free Consultation
-                </a>
-                <a
-                  href="/services/free-application"
-                  onClick={closeMobileDrawer}
-                  className="block text-sm text-foreground hover:text-primary transition-colors"
-                >
-                  Free Application
-                </a>
-                <a
-                  href="/services/international-student-support"
-                  onClick={closeMobileDrawer}
-                  className="block text-sm text-foreground hover:text-primary transition-colors"
-                >
-                  International Student Support
-                </a>
+              <div className="mt-2 ml-4 space-y-4 border-l border-primary/30 pl-4">
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Free Consultation</p>
+                  <div className="space-y-2">
+                    <Link href="/services/one-to-one-consultation" onClick={closeMobileDrawer} className="block text-sm text-foreground hover:text-primary transition-colors">
+                      One to One Consultation
+                    </Link>
+                    <Link href="/services/uk-university-selection" onClick={closeMobileDrawer} className="block text-sm text-foreground hover:text-primary transition-colors">
+                      UK University Selection
+                    </Link>
+                    <Link href="/services/course-search" onClick={closeMobileDrawer} className="block text-sm text-foreground hover:text-primary transition-colors">
+                      Course Search
+                    </Link>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Free Application</p>
+                  <div className="space-y-2">
+                    <Link href="/services/university-application" onClick={closeMobileDrawer} className="block text-sm text-foreground hover:text-primary transition-colors">
+                      University Application
+                    </Link>
+                    <Link href="/services/ucas-application-help" onClick={closeMobileDrawer} className="block text-sm text-foreground hover:text-primary transition-colors">
+                      UCAS Application Help
+                    </Link>
+                    <Link href="/services/visa-application-support" onClick={closeMobileDrawer} className="block text-sm text-foreground hover:text-primary transition-colors">
+                      VISA Application Support
+                    </Link>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Student Support</p>
+                  <div className="space-y-2">
+                    <Link href="/services/student-accommodation" onClick={closeMobileDrawer} className="block text-sm text-foreground hover:text-primary transition-colors">
+                      Student Accommodation
+                    </Link>
+                    <Link href="/services/scholarships-funding-support" onClick={closeMobileDrawer} className="block text-sm text-foreground hover:text-primary transition-colors">
+                      Scholarships & Funding Support
+                    </Link>
+                    <Link href="/services/ielts-preparation" onClick={closeMobileDrawer} className="block text-sm text-foreground hover:text-primary transition-colors">
+                      IELTS Preparation
+                    </Link>
+                    <Link href="/services/pre-arrival-checklist" onClick={closeMobileDrawer} className="block text-sm text-foreground hover:text-primary transition-colors">
+                      Pre-Arrival Checklist
+                    </Link>
+                  </div>
+                </div>
               </div>
             )}
           </div>
