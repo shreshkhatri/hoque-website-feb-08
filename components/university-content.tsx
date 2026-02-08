@@ -1,0 +1,619 @@
+'use client'
+
+import { useState } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { University, Course } from '@/lib/supabase'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import {
+  MapPin,
+  Globe,
+  Users,
+  Award,
+  Calendar,
+  GraduationCap,
+  Building2,
+  FileText,
+  ChevronRight,
+  Star,
+  Clock,
+  BookOpen,
+  Briefcase,
+  CheckCircle,
+  ChevronDown,
+  Search,
+  Filter,
+} from 'lucide-react'
+
+// Helper to convert name to slug
+function nameToSlug(name: string, code?: string): string {
+  const base = name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim()
+  return code ? `${base}-${code.toLowerCase()}` : base
+}
+
+interface UniversityContentProps {
+  university: University
+  courses: Course[]
+}
+
+const tabs = [
+  { id: 'overview', label: 'Overview', icon: BookOpen },
+  { id: 'courses', label: 'Courses', icon: GraduationCap },
+  { id: 'highlights', label: 'Highlights', icon: Star },
+  { id: 'campuses', label: 'Campuses', icon: Building2 },
+  { id: 'documents', label: 'Required Documents', icon: FileText },
+  { id: 'faqs', label: 'FAQs', icon: ChevronDown },
+]
+
+const highlights = [
+  { icon: Award, title: 'Top Ranked', description: 'Among the top universities in the UK for student satisfaction' },
+  { icon: Briefcase, title: 'Career Support', description: '95% of graduates employed within 6 months' },
+  { icon: Users, title: 'Diverse Community', description: 'Students from over 130 countries' },
+  { icon: Globe, title: 'Global Connections', description: 'Partnerships with 200+ universities worldwide' },
+]
+
+const requiredDocuments = [
+  { name: 'Academic Transcripts', description: 'Official transcripts from all previously attended institutions' },
+  { name: 'English Language Proficiency', description: 'IELTS 6.0 overall (min 5.5 in each band) or equivalent' },
+  { name: 'Personal Statement', description: 'A statement explaining your motivation and goals' },
+  { name: 'Passport Copy', description: 'Valid passport with at least 6 months validity' },
+  { name: 'Reference Letters', description: 'Two academic or professional references' },
+  { name: 'CV/Resume', description: 'Updated curriculum vitae highlighting relevant experience' },
+]
+
+const defaultFaqs = [
+  { question: 'What are the entry requirements?', answer: 'Entry requirements vary by program. Generally, you need relevant academic qualifications and English language proficiency (IELTS 6.0 or equivalent).' },
+  { question: 'When are the application deadlines?', answer: 'Most programs have multiple intakes throughout the year. We recommend applying at least 3-4 months before your intended start date.' },
+  { question: 'Is there scholarship available?', answer: 'Yes, the university offers various scholarships for international students based on academic merit and financial need.' },
+  { question: 'What is the average processing time?', answer: 'Application processing typically takes 2-4 weeks. Visa processing time varies by country.' },
+  { question: 'Can I work while studying?', answer: 'International students can work up to 20 hours per week during term time and full-time during holidays.' },
+]
+
+export function UniversityContent({ university, courses }: UniversityContentProps) {
+  const [activeTab, setActiveTab] = useState('overview')
+  const [courseSearch, setCourseSearch] = useState('')
+  const [levelFilter, setLevelFilter] = useState('all')
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
+
+  const filteredCourses = courses.filter(course => {
+    const matchesSearch = course.name.toLowerCase().includes(courseSearch.toLowerCase()) ||
+                         course.code.toLowerCase().includes(courseSearch.toLowerCase())
+    const matchesLevel = levelFilter === 'all' || course.level === levelFilter
+    return matchesSearch && matchesLevel
+  })
+
+  const uniqueLevels = [...new Set(courses.map(c => c.level))]
+  
+  // Calculate stats based on existing fields
+  const acceptanceRate = university.rank_uk ? Math.max(30, 90 - university.rank_uk) : 65
+  const intlStudentsPercent = university.student_population ? Math.min(45, Math.floor(university.student_population / 1000) + 15) : 25
+
+  return (
+    <>
+      {/* Hero Section with Cover Image */}
+      <section className="relative h-[300px] md:h-[400px] overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70" />
+        <Image
+          src="/hero-bg.jpg"
+          alt={university.name}
+          fill
+          className="object-cover mix-blend-overlay"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-end pb-8">
+          <div className="flex flex-col md:flex-row items-start md:items-end gap-6 w-full">
+            {/* University Logo */}
+            <div className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-xl shadow-xl p-3 flex items-center justify-center">
+              {university.logo_url ? (
+                <Image
+                  src={university.logo_url || "/placeholder.svg"}
+                  alt={`${university.name} logo`}
+                  width={100}
+                  height={100}
+                  className="object-contain"
+                />
+              ) : (
+                <GraduationCap className="w-16 h-16 text-primary" />
+              )}
+            </div>
+            
+            {/* University Info */}
+            <div className="flex-1 text-white">
+              <div className="flex flex-wrap gap-2 mb-2">
+                <Badge className="bg-green-500 text-white hover:bg-green-600">
+                  Express Offer Available
+                </Badge>
+                {university.rank_world && (
+                  <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
+                    World Rank: #{university.rank_world}
+                  </Badge>
+                )}
+              </div>
+              <h1 className="text-2xl md:text-4xl font-bold mb-2">{university.name}</h1>
+              <div className="flex flex-wrap items-center gap-4 text-white/90">
+                <span className="flex items-center gap-1">
+                  <MapPin className="w-4 h-4" />
+                  {university.city}, {university.country}
+                </span>
+                {university.founded_year && (
+                  <span className="flex items-center gap-1">
+                    <Calendar className="w-4 h-4" />
+                    Est. {university.founded_year}
+                  </span>
+                )}
+                {university.website_url && (
+                  <a 
+                    href={university.website_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 hover:underline"
+                  >
+                    <Globe className="w-4 h-4" />
+                    Visit Website
+                  </a>
+                )}
+              </div>
+            </div>
+            
+            {/* CTA Button */}
+            <div className="md:self-center">
+              <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold">
+                Apply Now
+                <ChevronRight className="ml-1 w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Bar */}
+      <section className="bg-card border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-border">
+            <div className="py-6 px-4 text-center">
+              <div className="text-2xl md:text-3xl font-bold text-primary">{acceptanceRate}%</div>
+              <div className="text-sm text-muted-foreground">Acceptance Rate</div>
+            </div>
+            <div className="py-6 px-4 text-center">
+              <div className="text-2xl md:text-3xl font-bold text-primary">
+                {university.student_population?.toLocaleString() || '15,000+'}
+              </div>
+              <div className="text-sm text-muted-foreground">Total Students</div>
+            </div>
+            <div className="py-6 px-4 text-center">
+              <div className="text-2xl md:text-3xl font-bold text-primary">{intlStudentsPercent}%</div>
+              <div className="text-sm text-muted-foreground">International Students</div>
+            </div>
+            <div className="py-6 px-4 text-center">
+              <div className="text-2xl md:text-3xl font-bold text-primary">{courses.length}+</div>
+              <div className="text-sm text-muted-foreground">Courses Available</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Tab Navigation */}
+      <section className="sticky top-0 z-40 bg-background border-b border-border shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex overflow-x-auto scrollbar-hide">
+            {tabs.map((tab) => {
+              const Icon = tab.icon
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-4 py-4 border-b-2 transition-colors whitespace-nowrap ${
+                    activeTab === tab.id
+                      ? 'border-primary text-primary font-medium'
+                      : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  {tab.label}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Overview Tab */}
+        {activeTab === 'overview' && (
+          <div className="grid lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 space-y-8">
+              <Card>
+                <CardContent className="p-6">
+                  <h2 className="text-xl font-semibold text-foreground mb-4">About {university.name}</h2>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {university.description || `${university.name} is a prestigious institution located in ${university.city}, ${university.country}. The university offers a wide range of undergraduate and postgraduate programs, providing students with excellent academic opportunities and career prospects. With a strong focus on research and innovation, the university has established itself as a leader in higher education.`}
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-6">
+                  <h2 className="text-xl font-semibold text-foreground mb-4">Why Study Here?</h2>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    {highlights.map((highlight, index) => {
+                      const Icon = highlight.icon
+                      return (
+                        <div key={index} className="flex gap-3 p-4 bg-muted/50 rounded-lg">
+                          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <Icon className="w-5 h-5 text-primary" />
+                          </div>
+                          <div>
+                            <h3 className="font-medium text-foreground">{highlight.title}</h3>
+                            <p className="text-sm text-muted-foreground">{highlight.description}</p>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-6">
+                  <h2 className="text-xl font-semibold text-foreground mb-4">Popular Courses</h2>
+                  <div className="space-y-3">
+                    {courses.slice(0, 5).map((course) => (
+                      <Link
+                        key={course.id}
+                        href={`/course/${nameToSlug(course.name, course.code)}`}
+                        className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors group"
+                      >
+                        <div>
+                          <h3 className="font-medium text-foreground group-hover:text-primary transition-colors">
+                            {course.name}
+                          </h3>
+                          <p className="text-sm text-muted-foreground">
+                            {course.level} {course.duration_years && `• ${course.duration_years} ${course.duration_years === 1 ? 'year' : 'years'}`}
+                          </p>
+                        </div>
+                        <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                      </Link>
+                    ))}
+                  </div>
+                  {courses.length > 5 && (
+                    <Button 
+                      variant="outline" 
+                      className="w-full mt-4 bg-transparent"
+                      onClick={() => setActiveTab('courses')}
+                    >
+                      View All {courses.length} Courses
+                    </Button>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Sidebar */}
+            <div className="space-y-6">
+              <Card className="sticky top-24">
+                <CardContent className="p-6">
+                  <h3 className="font-semibold text-foreground mb-4">Quick Facts</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <MapPin className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground">Location</p>
+                        <p className="font-medium text-foreground">{university.city}, {university.country}</p>
+                      </div>
+                    </div>
+                    {university.rank_uk && (
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                          <Award className="w-5 h-5 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">UK Ranking</p>
+                          <p className="font-medium text-foreground">#{university.rank_uk}</p>
+                        </div>
+                      </div>
+                    )}
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <Users className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground">Student Population</p>
+                        <p className="font-medium text-foreground">{university.student_population?.toLocaleString() || '15,000+'}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <Clock className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground">Intakes</p>
+                        <p className="font-medium text-foreground">January, May, September</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 pt-6 border-t border-border space-y-3">
+                    <Button className="w-full" size="lg">
+                      Apply Now
+                    </Button>
+                    <Button variant="outline" className="w-full bg-transparent" size="lg">
+                      Book a Consultation
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )}
+
+        {/* Courses Tab */}
+        {activeTab === 'courses' && (
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Search courses..."
+                  value={courseSearch}
+                  onChange={(e) => setCourseSearch(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+              <div className="relative">
+                <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <select
+                  value={levelFilter}
+                  onChange={(e) => setLevelFilter(e.target.value)}
+                  className="pl-10 pr-8 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary appearance-none min-w-[200px]"
+                >
+                  <option value="all">All Levels</option>
+                  {uniqueLevels.map(level => (
+                    <option key={level} value={level}>{level}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <p className="text-muted-foreground">
+              Showing {filteredCourses.length} of {courses.length} courses
+            </p>
+
+            <div className="grid gap-4">
+              {filteredCourses.map((course) => (
+                <Card key={course.id} className="hover:border-primary transition-colors">
+                  <CardContent className="p-6">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Badge variant="secondary">{course.level}</Badge>
+                          <Badge variant="outline">{course.code}</Badge>
+                        </div>
+                        <Link 
+                          href={`/course/${nameToSlug(course.name, course.code)}`}
+                          className="text-lg font-semibold text-foreground hover:text-primary transition-colors"
+                        >
+                          {course.name}
+                        </Link>
+                        <div className="flex flex-wrap gap-4 mt-2 text-sm text-muted-foreground">
+                          {course.duration_years && (
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-4 h-4" />
+                              {course.duration_years} {course.duration_years === 1 ? 'year' : 'years'}
+                            </span>
+                          )}
+                          {course.intake_months && (
+                            <span className="flex items-center gap-1">
+                              <Calendar className="w-4 h-4" />
+                              {course.intake_months}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-end gap-2">
+                        {course.tuition_fees_international && (
+                          <div className="text-right">
+                            <p className="text-sm text-muted-foreground">Tuition Fee</p>
+                            <p className="text-lg font-semibold text-foreground">
+                              £{course.tuition_fees_international.toLocaleString()}/year
+                            </p>
+                          </div>
+                        )}
+                        <Button asChild size="sm">
+                          <Link href={`/course/${nameToSlug(course.name, course.code)}`}>
+                            View Details
+                          </Link>
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {filteredCourses.length === 0 && (
+              <div className="text-center py-12">
+                <GraduationCap className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-foreground mb-2">No courses found</h3>
+                <p className="text-muted-foreground">Try adjusting your search or filter criteria</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Highlights Tab */}
+        {activeTab === 'highlights' && (
+          <div className="grid md:grid-cols-2 gap-6">
+            {highlights.map((highlight, index) => {
+              const Icon = highlight.icon
+              return (
+                <Card key={index}>
+                  <CardContent className="p-6 flex gap-4">
+                    <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-7 h-7 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-foreground mb-2">{highlight.title}</h3>
+                      <p className="text-muted-foreground">{highlight.description}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+            
+            <Card className="md:col-span-2">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-foreground mb-4">Key Statistics</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  <div className="text-center p-4 bg-muted/50 rounded-lg">
+                    <div className="text-3xl font-bold text-primary">{acceptanceRate}%</div>
+                    <div className="text-sm text-muted-foreground mt-1">Acceptance Rate</div>
+                  </div>
+                  <div className="text-center p-4 bg-muted/50 rounded-lg">
+                    <div className="text-3xl font-bold text-primary">95%</div>
+                    <div className="text-sm text-muted-foreground mt-1">Employment Rate</div>
+                  </div>
+                  <div className="text-center p-4 bg-muted/50 rounded-lg">
+                    <div className="text-3xl font-bold text-primary">130+</div>
+                    <div className="text-sm text-muted-foreground mt-1">Nationalities</div>
+                  </div>
+                  <div className="text-center p-4 bg-muted/50 rounded-lg">
+                    <div className="text-3xl font-bold text-primary">200+</div>
+                    <div className="text-sm text-muted-foreground mt-1">Partner Universities</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Campuses Tab */}
+        {activeTab === 'campuses' && (
+          <div className="space-y-6">
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex flex-col md:flex-row gap-6">
+                  <div className="w-full md:w-1/3 h-48 bg-muted rounded-lg overflow-hidden relative">
+                    <Image
+                      src="/hero-bg.jpg"
+                      alt="Main Campus"
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <Badge className="mb-2">Main Campus</Badge>
+                    <h3 className="text-xl font-semibold text-foreground mb-2">{university.city} Campus</h3>
+                    <p className="text-muted-foreground mb-4">
+                      The main campus is located in the heart of {university.city}, offering state-of-the-art facilities, 
+                      modern lecture halls, extensive library resources, and vibrant student life.
+                    </p>
+                    <div className="flex flex-wrap gap-4 text-sm">
+                      <span className="flex items-center gap-1 text-muted-foreground">
+                        <MapPin className="w-4 h-4" />
+                        {university.city}, {university.country}
+                      </span>
+                      <span className="flex items-center gap-1 text-muted-foreground">
+                        <Building2 className="w-4 h-4" />
+                        Urban Campus
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-foreground mb-4">Campus Facilities</h3>
+                <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {['Modern Library', 'Sports Complex', 'Student Union', 'Research Labs', 'Cafeterias', 'IT Centers'].map((facility, index) => (
+                    <div key={index} className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+                      <CheckCircle className="w-5 h-5 text-green-500" />
+                      <span className="text-foreground">{facility}</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Required Documents Tab */}
+        {activeTab === 'documents' && (
+          <div className="space-y-6">
+            <Card>
+              <CardContent className="p-6">
+                <h2 className="text-xl font-semibold text-foreground mb-6">Required Documents for Application</h2>
+                <div className="space-y-4">
+                  {requiredDocuments.map((doc, index) => (
+                    <div key={index} className="flex gap-4 p-4 bg-muted/50 rounded-lg">
+                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <FileText className="w-5 h-5 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-foreground">{doc.name}</h3>
+                        <p className="text-sm text-muted-foreground">{doc.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-foreground mb-4">Need Help with Your Application?</h3>
+                <p className="text-muted-foreground mb-4">
+                  Our expert counselors can guide you through the application process and help you prepare all required documents.
+                </p>
+                <Button>Book a Free Consultation</Button>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* FAQs Tab */}
+        {activeTab === 'faqs' && (
+          <div className="space-y-4 max-w-3xl">
+            <h2 className="text-xl font-semibold text-foreground mb-6">Frequently Asked Questions</h2>
+            {defaultFaqs.map((faq, index) => (
+              <Card key={index}>
+                <CardContent className="p-0">
+                  <button
+                    onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
+                    className="w-full flex items-center justify-between p-4 text-left"
+                  >
+                    <span className="font-medium text-foreground pr-4">{faq.question}</span>
+                    <ChevronDown 
+                      className={`w-5 h-5 text-muted-foreground transition-transform flex-shrink-0 ${
+                        expandedFaq === index ? 'rotate-180' : ''
+                      }`} 
+                    />
+                  </button>
+                  {expandedFaq === index && (
+                    <div className="px-4 pb-4 text-muted-foreground border-t border-border pt-4">
+                      {faq.answer}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+      </main>
+    </>
+  )
+}

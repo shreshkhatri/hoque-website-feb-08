@@ -1,0 +1,36 @@
+'use client';
+
+import { Header } from '@/components/header'
+import { Hero } from '@/components/hero'
+import { AboutSection } from '@/components/about-section'
+import { SearchFilter } from '@/components/search-filter'
+import { ExploreDestinations } from '@/components/explore-destinations'
+import { ServicesSection } from '@/components/services-section'
+import { ApplicationProcess } from '@/components/application-process'
+import { TopUniversities } from '@/components/top-universities'
+import { TopCourses } from '@/components/top-courses'
+import { UpcomingEvents } from '@/components/upcoming-events'
+import { StudentTestimonials } from '@/components/student-testimonials'
+import { UniversityPartners } from '@/components/university-partners'
+import { Footer } from '@/components/footer'
+import { initializeDatabase } from '@/lib/supabase'
+
+export default function Home() {
+  return (
+    <div className="min-h-screen bg-background">
+      <Header />
+      <Hero />
+      <AboutSection />
+      <ExploreDestinations />
+      <SearchFilter />
+      <ServicesSection />
+      <ApplicationProcess />
+      <TopUniversities />
+      <TopCourses />
+      <UpcomingEvents />
+      <StudentTestimonials />
+      <UniversityPartners />
+      <Footer />
+    </div>
+  )
+}
