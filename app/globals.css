@@ -176,3 +176,9 @@ html {
   animation: border-rotate 2s linear infinite;
   box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
 }
+
+/* Slightly reduced glow for compact header variant */
+.search-box-compact .search-box-wrapper {
+  padding: 2px;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.3);
+}

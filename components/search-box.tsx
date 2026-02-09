@@ -44,17 +44,23 @@ export function SearchBox({ compact = false, className = '' }: SearchBoxProps) {
   if (compact) {
     return (
       <div className={`relative ${className}`}>
-        <Search
-          size={16}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-primary"
-        />
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchQuery}
-          onChange={(e) => handleSearch(e.target.value)}
-          className="w-full pl-9 pr-3 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm placeholder:text-muted-foreground"
-        />
+        {/* Animated Gradient Border Wrapper - same as hero */}
+        <div className="search-box-wrapper relative rounded-full">
+          {/* Inner Content */}
+          <div className="relative rounded-full bg-background z-[1]">
+            <Search
+              size={16}
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-primary z-10"
+            />
+            <input
+              type="text"
+              placeholder="Search for Courses universities"
+              value={searchQuery}
+              onChange={(e) => handleSearch(e.target.value)}
+              className="w-full pl-9 pr-3.5 py-2 bg-transparent rounded-full focus:outline-none text-foreground text-sm placeholder:text-muted-foreground font-medium relative z-[1]"
+            />
+          </div>
+        </div>
 
         {/* Search Results Dropdown */}
         {searchQuery.length >= 2 && (

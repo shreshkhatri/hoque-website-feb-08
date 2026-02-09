@@ -172,7 +172,7 @@ export function Header() {
 
           {/* Dynamic Search Box - appears when hero search scrolls out of view */}
           <div
-            className={`hidden md:block flex-1 max-w-xs lg:max-w-sm transition-all duration-300 ease-in-out ${
+            className={`search-box-compact hidden md:block flex-1 max-w-xs lg:max-w-sm transition-all duration-300 ease-in-out ${
               showHeaderSearch
                 ? 'opacity-100 translate-y-0'
                 : 'opacity-0 -translate-y-2 pointer-events-none'
