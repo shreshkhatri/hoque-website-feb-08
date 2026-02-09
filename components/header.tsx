@@ -3,7 +3,7 @@
 import React from 'react'
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import { ChevronDown, ChevronRight } from 'lucide-react'
+import { ChevronDown, ChevronRight, Search, X } from 'lucide-react'
 import { University, Course, Country, nameToSlug } from '@/lib/supabase'
 import { SearchBox } from './search-box'
 import { useHeroSearch } from './hero-search-context'
@@ -24,6 +24,7 @@ export function Header() {
   const [mobileDrawerVisible, setMobileDrawerVisible] = useState(false)
   const { heroSearchVisible, isHomePage } = useHeroSearch()
   const showHeaderSearch = !heroSearchVisible || !isHomePage
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
   const [mobileUniExpanded, setMobileUniExpanded] = useState(false)
   const [mobileCourseExpanded, setMobileCourseExpanded] = useState(false)
   const [mobileCountryExpanded, setMobileCountryExpanded] = useState(false)
@@ -134,6 +135,18 @@ export function Header() {
       }
     }
   }, [hoveredService])
+
+  // Listen for mobile search open/close to sync icon state
+  useEffect(() => {
+    const handleSearchOpen = () => setMobileSearchOpen(true)
+    const handleSearchClose = () => setMobileSearchOpen(false)
+    window.addEventListener('mobile-search-opened', handleSearchOpen)
+    window.addEventListener('mobile-search-closed', handleSearchClose)
+    return () => {
+      window.removeEventListener('mobile-search-opened', handleSearchOpen)
+      window.removeEventListener('mobile-search-closed', handleSearchClose)
+    }
+  }, [])
 
   // Animate the mobile drawer open/close
   useEffect(() => {
@@ -460,6 +473,27 @@ export function Header() {
           <div className="md:hidden flex items-center gap-1">
             <button
               onClick={() => {
+                if (mobileSearchOpen) {
+                  window.dispatchEvent(new Event('close-mobile-search'))
+                } else {
+                  setMobileDrawerOpen(false)
+                  window.dispatchEvent(new Event('open-mobile-search'))
+                }
+              }}
+              className="relative w-10 h-10 flex items-center justify-center hover:bg-muted rounded-lg transition-all"
+              aria-label={mobileSearchOpen ? 'Close search' : 'Open search'}
+            >
+              {mobileSearchOpen ? (
+                <X className="w-5 h-5 text-foreground" />
+              ) : (
+                <Search className="w-5 h-5 text-foreground" />
+              )}
+            </button>
+            <button
+              onClick={() => {
+                if (mobileSearchOpen) {
+                  window.dispatchEvent(new Event('close-mobile-search'))
+                }
                 setMobileDrawerOpen(!mobileDrawerOpen)
               }}
               className="relative w-10 h-10 flex items-center justify-center hover:bg-muted rounded-lg transition-all"
