@@ -1,4 +1,4 @@
-# Hoque Consultancy - Setup Guide
+# Hoque - Setup Guide
 
 ## Quick Start
 

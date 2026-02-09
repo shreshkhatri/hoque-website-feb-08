@@ -178,7 +178,7 @@ export function IELTSPreparationClient() {
         {/* Benefits Section */}
         <section className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-foreground mb-8">Why Study IELTS with Hoque Consultancy?</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-8">Why Study IELTS with HOQUE?</h2>
             <div className="grid sm:grid-cols-2 gap-6">
               <div className="flex gap-4">
                 <CheckCircle2 size={24} className="text-primary flex-shrink-0" />

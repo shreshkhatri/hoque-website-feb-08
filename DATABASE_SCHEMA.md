@@ -1,4 +1,4 @@
-# Hoque Consultancy - Database Schema & Implementation Guide
+# Hoque - Database Schema & Implementation Guide
 
 ## Database Schema
 

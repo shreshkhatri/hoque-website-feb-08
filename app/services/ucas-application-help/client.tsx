@@ -188,7 +188,7 @@ export function UcasApplicationHelpClient() {
         <section className="py-12 md:py-20 bg-muted/50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-12 text-center">
-              Why Choose Hoque Consultancy for UCAS Help
+              Why Choose HOQUE for UCAS Help
             </h2>
             <div className="grid md:grid-cols-3 gap-8">
               {whyChooseUcas.map((item, idx) => {
@@ -279,7 +279,7 @@ export function UcasApplicationHelpClient() {
             <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-8 md:p-12">
               <h2 className="text-3xl font-bold text-foreground mb-6">Ready to Apply?</h2>
               <p className="text-lg text-foreground/80 mb-8">
-                Hoque Consultancy will help you apply to the most suitable universities. Our team tracks your
+                Hoque will help you apply to the most suitable universities. Our team tracks your
                 application progress and ensures your success. Don&apos;t delay – start your UCAS application today!
               </p>
               <div className="flex flex-wrap gap-4">

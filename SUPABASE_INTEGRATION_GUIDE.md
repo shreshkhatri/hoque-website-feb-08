@@ -1,7 +1,7 @@
-# Hoque Consultancy - Supabase Integration Guide
+# Hoque - Supabase Integration Guide
 
 ## Overview
-Your Hoque Consultancy website is fully integrated with Supabase. All database operations, seeding, and API integrations are configured and ready to use. You just need to add your Supabase credentials!
+Your Hoque website is fully integrated with Supabase. All database operations, seeding, and API integrations are configured and ready to use. You just need to add your Supabase credentials!
 
 ## What's Integrated
 - ✅ Supabase client (`/lib/supabase.ts`)

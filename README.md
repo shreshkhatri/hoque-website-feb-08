@@ -1,4 +1,4 @@
-# 🎓 Hoque Consultancy - UK University Consultancy Website
+# 🎓 Hoque - UK University Consultancy Website
 
 A modern, fully-responsive educational consultancy website built with Next.js 16, Supabase, and Tailwind CSS. The platform helps international students discover and apply to top UK universities.
 
@@ -355,7 +355,7 @@ This project is created with v0.app and is available for educational and commerc
 
 ## 🎉 Ready to Launch?
 
-Your Hoque Consultancy website is fully configured and ready to go!
+Your Hoque website is fully configured and ready to go!
 
 **Next Steps:**
 1. ✅ Add Supabase credentials
@@ -368,4 +368,4 @@ Your Hoque Consultancy website is fully configured and ready to go!
 
 **Built with ❤️ by v0.app**
 
-Hoque Consultancy - Your Gateway to World-Class UK Universities
+Hoque - Your Gateway to World-Class UK Universities

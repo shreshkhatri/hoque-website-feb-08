@@ -77,7 +77,7 @@ export function UKUniversitySelectionClient() {
               UK University Selection
             </h1>
             <p className="text-xl text-foreground/70 mb-8 max-w-2xl text-balance">
-              Find your perfect UK university and access free application services to study at leading institutions across London and the UK with Hoque Consultancy.
+              Find your perfect UK university and access free application services to study at leading institutions across London and the UK with Hoque.
             </p>
             <div className="flex flex-wrap gap-4">
               <Button size="lg" className="bg-primary hover:bg-primary/90">
@@ -111,7 +111,7 @@ export function UKUniversitySelectionClient() {
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-12 text-center">
-              Why Select with Hoque Consultancy?
+              Why Select with HOQUE?
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {benefits.map((benefit, index) => {

@@ -1,7 +1,7 @@
 # Countries Feature - Complete Implementation Guide
 
 ## Overview
-The Countries feature has been fully integrated into your Hoque Consultancy website. Students can now explore study destinations from 7 countries, view country-specific details, visa requirements, and available courses.
+The Countries feature has been fully integrated into your Hoque website. Students can now explore study destinations from 7 countries, view country-specific details, visa requirements, and available courses.
 
 ## What's Been Added
 

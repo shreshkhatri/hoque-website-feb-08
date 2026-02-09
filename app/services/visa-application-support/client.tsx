@@ -198,7 +198,7 @@ export function VisaApplicationSupportClient() {
         {/* Why Choose Us */}
         <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-foreground mb-12 text-center">Why Choose Hoque Consultancy?</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-12 text-center">Why Choose HOQUE?</h2>
             <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
               {[
                 {

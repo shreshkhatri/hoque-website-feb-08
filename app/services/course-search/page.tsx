@@ -2,9 +2,9 @@ import { Metadata } from 'next'
 import { CourseSearchClient } from './client'
 
 export const metadata: Metadata = {
-  title: 'Course Search | Find Your Perfect Course | Hoque Consultancy',
+  title: 'Course Search | Find Your Perfect Course | HOQUE',
   description:
-    'Explore thousands of courses at UK universities across all subjects. Find the perfect course for your academic goals with Hoque Consultancy.',
+    'Explore thousands of courses at UK universities across all subjects. Find the perfect course for your academic goals with Hoque.',
   keywords: [
     'course search',
     'find courses',

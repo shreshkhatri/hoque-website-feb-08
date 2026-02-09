@@ -1,1 +1,1 @@
-export const SITE_NAME = 'Hoque Consultancy'
+export const SITE_NAME = 'Hoque'

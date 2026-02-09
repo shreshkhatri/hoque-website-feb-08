@@ -11,8 +11,8 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Hoque Consultancy',
-    default: 'Hoque Consultancy - UK University Consulting',
+    template: '%s | HOQUE',
+    default: 'HOQUE - UK University Consulting',
   },
   description: 'Expert consultancy for UK university admissions. Helping global students secure places at top UK universities including Oxford, Cambridge, and Imperial College.',
   generator: 'v0.app',

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: 'Get expert guidance for your UK university application. Our consultants help with personal statements, documents, and the complete application process.',
   keywords: 'university application, UK university application help, application support, personal statement help, university application guidance',
   openGraph: {
-    title: 'University Application Support | Hoque Consultancy',
+    title: 'University Application Support | HOQUE',
     description: 'Expert support for UK university applications including personal statements and document preparation',
     type: 'website',
   },

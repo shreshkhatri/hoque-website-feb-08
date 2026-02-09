@@ -1,4 +1,4 @@
-# 🏆 Hoque Consultancy - Project Overview
+# 🏆 Hoque - Project Overview
 
 ## What Has Been Built
 
