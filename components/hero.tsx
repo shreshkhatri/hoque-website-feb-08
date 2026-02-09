@@ -34,7 +34,7 @@ export function Hero() {
           {/* Right Column - Image */}
           <div className="flex justify-center lg:justify-end">
             <img
-              src="/graduates-hero.jpg"
+              src="/graduates-hero.png"
               alt="Happy graduates celebrating"
               className="w-full max-w-md rounded-3xl shadow-lg object-cover"
             />
