@@ -57,10 +57,10 @@ export function Footer() {
               <div className="flex gap-2">
                 <MapPin size={20} className="flex-shrink-0 text-primary mt-0.5" />
                 <div>
-                  <p>119-121 Whitechapel Road</p>
-                  <p>(3rd Floor)</p>
-                  <p>London,</p>
-                  <p>E1 1DT, United Kingdom</p>
+                  <p>HOQUE</p>
+                  <p>Unit 102, 65 Whitechapel High Street</p>
+                  <p>London, England</p>
+                  <p>E1 1DU, United Kingdom</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
