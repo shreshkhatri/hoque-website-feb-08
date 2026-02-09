@@ -1,4 +1,4 @@
-# 🎓 Hoque - UK University Consultancy Website
+# 🎓 Hoque - The Official UK University representative
 
 A modern, fully-responsive educational consultancy website built with Next.js 16, Supabase, and Tailwind CSS. The platform helps international students discover and apply to top UK universities.
 
