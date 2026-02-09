@@ -1,4 +1,4 @@
-# 🚀 START HERE - Hoque Consultancy Website
+# 🚀 START HERE - Hoque Website
 
 ## Welcome! 👋
 

@@ -1,4 +1,4 @@
-# ⚡ Hoque Consultancy - Quick Start (5 Minutes)
+# ⚡ Hoque - Quick Start (5 Minutes)
 
 ## 🎯 Your Website is Ready!
 

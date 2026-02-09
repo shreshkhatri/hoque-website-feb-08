@@ -1,4 +1,4 @@
-# 🎓 Hoque Consultancy - Implementation Summary
+# 🎓 Hoque - Implementation Summary
 
 ## Project Overview
 

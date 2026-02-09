@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { ChevronDown, ChevronRight, Search, X } from 'lucide-react'
 import { University, Course, Country, nameToSlug } from '@/lib/supabase'
 import { SearchBox } from './search-box'
+import { useHeroSearch } from './hero-search-context'
 
 export function Header() {
   const [showUniDropdown, setShowUniDropdown] = useState(false)
@@ -21,6 +22,8 @@ export function Header() {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false)
   const [mobileDrawerMounted, setMobileDrawerMounted] = useState(false)
   const [mobileDrawerVisible, setMobileDrawerVisible] = useState(false)
+  const { heroSearchVisible, isHomePage } = useHeroSearch()
+  const showHeaderSearch = !heroSearchVisible || !isHomePage
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
   const [mobileUniExpanded, setMobileUniExpanded] = useState(false)
   const [mobileCourseExpanded, setMobileCourseExpanded] = useState(false)
@@ -179,6 +182,17 @@ export function Header() {
           <Link href="/" onClick={() => closeMobileDrawer()} className="flex items-center space-x-2 flex-shrink-0">
             <img src="/hoque-logo.png" alt="HOQUE" className="h-6 sm:h-8 md:h-10 w-auto" />
           </Link>
+
+          {/* Dynamic Search Box - appears when hero search scrolls out of view */}
+          <div
+            className={`search-box-compact hidden md:block flex-1 max-w-xs lg:max-w-sm transition-all duration-300 ease-in-out ${
+              showHeaderSearch
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 -translate-y-2 pointer-events-none'
+            }`}
+          >
+            <SearchBox compact className="w-full" />
+          </div>
 
           <nav className="hidden md:flex items-center space-x-3 lg:space-x-4 text-sm lg:text-base">
             <Link href="/about" className="text-foreground hover:text-primary transition-colors font-medium">
@@ -454,23 +468,6 @@ export function Header() {
               )}
             </div>
 
-            <Link href="/events" className="text-foreground hover:text-primary transition-colors font-medium">
-              Events
-            </Link>
-
-            <Link href="/blog" className="text-foreground hover:text-primary transition-colors font-medium">
-              Blog
-            </Link>
-
-            <div className="w-48 ml-4">
-              <SearchBox compact className="w-full" />
-            </div>
-
-            <Link href="/application-form">
-              <button className="ml-4 px-6 py-2 bg-gradient-to-r from-primary to-accent text-white font-bold rounded-full hover:shadow-lg hover:shadow-primary/50 transition-all duration-300 hover:scale-105 whitespace-nowrap">
-                Apply Now !
-              </button>
-            </Link>
           </nav>
 
           <div className="md:hidden flex items-center gap-1">
@@ -579,12 +576,6 @@ export function Header() {
         >
           <Link href="/about" className="text-foreground hover:text-primary transition-colors font-medium" onClick={closeMobileDrawer}>
             About
-          </Link>
-
-          <Link href="/application-form" onClick={closeMobileDrawer}>
-            <button className="w-full px-6 py-3 bg-gradient-to-r from-primary to-accent text-white font-bold rounded-full hover:shadow-lg hover:shadow-primary/50 transition-all duration-300">
-              Apply Now !
-            </button>
           </Link>
 
           <div>
@@ -738,13 +729,6 @@ export function Header() {
               </div>
             )}
           </div>
-
-          <Link href="/events" className="text-foreground hover:text-primary transition-colors font-medium" onClick={closeMobileDrawer}>
-            Events
-          </Link>
-          <Link href="/blog" className="text-foreground hover:text-primary transition-colors font-medium">
-              Blog
-            </Link>
 
           <Link href="/contact" className="text-foreground hover:text-primary transition-colors font-medium" onClick={closeMobileDrawer}>
             Contact

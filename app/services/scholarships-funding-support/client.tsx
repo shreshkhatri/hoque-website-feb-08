@@ -256,7 +256,7 @@ export function ScholarshipsFundingSupportClient() {
           <div className="container mx-auto px-4">
             <div className="max-w-2xl mx-auto text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Why Choose Hoque Consultancy for Scholarships?
+                Why Choose HOQUE for Scholarships?
               </h2>
               <p className="text-lg text-muted-foreground">
                 Our dedicated team has helped hundreds of students secure valuable scholarships to study in the UK.

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -25,7 +25,7 @@ const testimonials: Testimonial[] = [
     program: 'MSc Digital Marketing',
     image: '/placeholder-user.jpg',
     rating: 5,
-    review: "Thanks to Hoque Consultancy's incredible and free support, I have successfully completed my chosen course at the University of Greenwich. They made my study-abroad dream come true by guiding me every step of the way. If you're planning to study overseas, I highly recommend Hoque Consultancy as your trusted partner.",
+    review: "Thanks to Hoque's incredible and free support, I have successfully completed my chosen course at the University of Greenwich. They made my study-abroad dream come true by guiding me every step of the way. If you're planning to study overseas, I highly recommend Hoque as your trusted partner.",
   },
   {
     id: 2,
@@ -35,7 +35,7 @@ const testimonials: Testimonial[] = [
     program: 'MSc Artificial Intelligence',
     image: '/placeholder-user.jpg',
     rating: 5,
-    review: "I have successfully secured admission to Queen's University Belfast for a Master of Science in Artificial Intelligence with a scholarship. The best part of Hoque Consultancy's support was their expert staff, who guided and motivated me to choose the right university to achieve my academic goals.",
+    review: "I have successfully secured admission to Queen's University Belfast for a Master of Science in Artificial Intelligence with a scholarship. The best part of Hoque's support was their expert staff, who guided and motivated me to choose the right university to achieve my academic goals.",
   },
   {
     id: 3,
@@ -45,7 +45,7 @@ const testimonials: Testimonial[] = [
     program: 'PhD Research',
     image: '/placeholder-user.jpg',
     rating: 5,
-    review: "As a PhD student, I truly appreciate the personalized support I received from Hoque Consultancy. Their expertise and guidance made complex processes easier and allowed me to focus on my research with confidence. I just know the entire process was smooth even when I was under pressure due to the timeline to start.",
+    review: "As a PhD student, I truly appreciate the personalized support I received from Hoque. Their expertise and guidance made complex processes easier and allowed me to focus on my research with confidence. I just know the entire process was smooth even when I was under pressure due to the timeline to start.",
   },
   {
     id: 4,
@@ -55,7 +55,7 @@ const testimonials: Testimonial[] = [
     program: 'BSc Computer Science',
     image: '/placeholder-user.jpg',
     rating: 5,
-    review: "My journey with Hoque Consultancy began at a Spot Admission Day, where I first learned about their services. They supported me throughout the entire process, from Faisalabad, Pakistan to London, making the transition seamless and stress-free. From receiving a faster offer letter and securing scholarships to arranging airport pick-up, every step was managed with great care - and all at no cost.",
+    review: "My journey with Hoque began at a Spot Admission Day, where I first learned about their services. They supported me throughout the entire process, from Faisalabad, Pakistan to London, making the transition seamless and stress-free. From receiving a faster offer letter and securing scholarships to arranging airport pick-up, every step was managed with great care - and all at no cost.",
   },
   {
     id: 5,
@@ -65,7 +65,7 @@ const testimonials: Testimonial[] = [
     program: 'MSc Digital Marketing',
     image: '/placeholder-user.jpg',
     rating: 5,
-    review: "My name is Vishnu from Kerala, and I have completed my MSc in Digital Marketing at Northumbria University. Without the unwavering, step-by-step support from Hoque Consultancy, my dream of studying in the UK might have felt impossible. They believed in me and guided me through every challenge, making my journey truly life-changing.",
+    review: "My name is Vishnu from Kerala, and I have completed my MSc in Digital Marketing at Northumbria University. Without the unwavering, step-by-step support from Hoque, my dream of studying in the UK might have felt impossible. They believed in me and guided me through every challenge, making my journey truly life-changing.",
   },
   {
     id: 6,
@@ -81,7 +81,20 @@ const testimonials: Testimonial[] = [
 
 export function StudentTestimonials() {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+  const [isMobile, setIsMobile] = useState(false)
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   const visibleCount = isMobile ? 1 : 3
   const maxIndex = testimonials.length - visibleCount
 
@@ -102,7 +115,7 @@ export function StudentTestimonials() {
             Success Stories
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-2 mb-4">
-            Student Experience With Hoque Consultancy
+            Student Experience With Hoque
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Hear from our successful students who achieved their dreams of studying at 
@@ -153,13 +166,15 @@ export function StudentTestimonials() {
             <div 
               className="flex gap-6 transition-transform duration-500 ease-in-out"
               style={{ 
-                transform: `translateX(calc(-${currentIndex} * (calc(100% / ${visibleCount}) + 0.5rem)))` 
+                transform: isMobile 
+                  ? `translateX(calc(-${currentIndex} * (100% + 1.5rem)))`
+                  : `translateX(calc(-${currentIndex} * calc(100% / 3 + 0.5rem)))`
               }}
             >
               {testimonials.map((testimonial) => (
                 <div
                   key={testimonial.id}
-                  className={`flex-shrink-0 ${visibleCount === 1 ? 'w-full' : 'w-full md:w-[calc((100%-3rem)/3)]'}`}
+                  className={`flex-shrink-0 w-full md:w-[calc((100%-3rem)/3)]`}
                 >
                   <div className="bg-card border border-border rounded-xl p-6 hover:border-primary hover:shadow-lg transition-all duration-300 flex flex-col">
                     {/* Quote Icon */}

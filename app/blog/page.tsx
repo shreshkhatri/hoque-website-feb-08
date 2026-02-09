@@ -3,7 +3,7 @@ import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 
 export const metadata: Metadata = {
-  title: 'Blog | Hoque Consultancy',
+  title: 'Blog | HOQUE',
   description: 'Read our latest articles and insights on international university admissions, study abroad tips, and more.',
 }
 

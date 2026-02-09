@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: EventDetailsPageProps): Promi
       })
 
       return {
-        title: `${event.title} - ${eventDate} | Hoque Consultancy`,
+        title: `${event.title} - ${eventDate} | HOQUE`,
         description: `${event.description?.substring(0, 155)}... Register for this event in ${event.countries?.name || 'our upcoming event'}.`,
         keywords: `${event.title}, event, seminar, workshop, ${event.countries?.name || 'student event'}`,
       }
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: EventDetailsPageProps): Promi
   }
 
   return {
-    title: 'Event Details | Hoque Consultancy',
+    title: 'Event Details | HOQUE',
     description: 'View detailed information about our student events and webinars.',
   }
 }
