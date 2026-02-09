@@ -5,6 +5,8 @@ import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { ChevronDown, ChevronRight } from 'lucide-react'
 import { University, Course, Country, nameToSlug } from '@/lib/supabase'
+import { SearchBox } from './search-box'
+import { useHeroSearch } from './hero-search-context'
 
 export function Header() {
   const [showUniDropdown, setShowUniDropdown] = useState(false)
@@ -20,6 +22,8 @@ export function Header() {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false)
   const [mobileDrawerMounted, setMobileDrawerMounted] = useState(false)
   const [mobileDrawerVisible, setMobileDrawerVisible] = useState(false)
+  const { heroSearchVisible, isHomePage } = useHeroSearch()
+  const showHeaderSearch = !heroSearchVisible || !isHomePage
   const [mobileUniExpanded, setMobileUniExpanded] = useState(false)
   const [mobileCourseExpanded, setMobileCourseExpanded] = useState(false)
   const [mobileCountryExpanded, setMobileCountryExpanded] = useState(false)
@@ -165,6 +169,17 @@ export function Header() {
           <Link href="/" onClick={() => closeMobileDrawer()} className="flex items-center space-x-2 flex-shrink-0">
             <img src="/hoque-logo.png" alt="HOQUE" className="h-6 sm:h-8 md:h-10 w-auto" />
           </Link>
+
+          {/* Dynamic Search Box - appears when hero search scrolls out of view */}
+          <div
+            className={`hidden md:block flex-1 max-w-xs lg:max-w-sm transition-all duration-300 ease-in-out ${
+              showHeaderSearch
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 -translate-y-2 pointer-events-none'
+            }`}
+          >
+            <SearchBox compact className="w-full" />
+          </div>
 
           <nav className="hidden md:flex items-center space-x-3 lg:space-x-4 text-sm lg:text-base">
             <Link href="/about" className="text-foreground hover:text-primary transition-colors font-medium">

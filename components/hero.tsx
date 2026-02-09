@@ -1,10 +1,19 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { SearchBox } from './search-box'
+import { useHeroSearch } from './hero-search-context'
 
 export function Hero() {
+  const heroSearchRef = useRef<HTMLDivElement>(null)
+  const { setHeroSearchElement } = useHeroSearch()
+
+  useEffect(() => {
+    setHeroSearchElement(heroSearchRef.current)
+    return () => setHeroSearchElement(null)
+  }, [setHeroSearchElement])
+
   return (
     <section className="py-16 px-4 sm:px-6 lg:px-8 bg-background">
       <div className="max-w-7xl mx-auto">
@@ -26,7 +35,7 @@ export function Hero() {
             </p>
 
             {/* Search Box */}
-            <div className="relative mt-8">
+            <div ref={heroSearchRef} className="relative mt-8">
               <SearchBox />
             </div>
           </div>
