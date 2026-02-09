@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -81,7 +81,20 @@ const testimonials: Testimonial[] = [
 
 export function StudentTestimonials() {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+  const [isMobile, setIsMobile] = useState(false)
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   const visibleCount = isMobile ? 1 : 3
   const maxIndex = testimonials.length - visibleCount
 
@@ -153,13 +166,15 @@ export function StudentTestimonials() {
             <div 
               className="flex gap-6 transition-transform duration-500 ease-in-out"
               style={{ 
-                transform: `translateX(calc(-${currentIndex} * (calc(100% / ${visibleCount}) + 0.5rem)))` 
+                transform: isMobile 
+                  ? `translateX(calc(-${currentIndex} * (100% + 1.5rem)))`
+                  : `translateX(calc(-${currentIndex} * calc(100% / 3 + 0.5rem)))`
               }}
             >
               {testimonials.map((testimonial) => (
                 <div
                   key={testimonial.id}
-                  className={`flex-shrink-0 ${visibleCount === 1 ? 'w-full' : 'w-full md:w-[calc((100%-3rem)/3)]'}`}
+                  className={`flex-shrink-0 w-full md:w-[calc((100%-3rem)/3)]`}
                 >
                   <div className="bg-card border border-border rounded-xl p-6 hover:border-primary hover:shadow-lg transition-all duration-300 flex flex-col">
                     {/* Quote Icon */}
