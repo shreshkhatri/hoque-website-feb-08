@@ -43,7 +43,7 @@ export function ScholarshipsFundingSupportClient() {
     },
     {
       level: 'Postgraduate Level',
-      description: 'Master\'s and postgraduate diplomas scholarships from UK universities and external bodies.',
+      description: 'Master\'s and postgraduate diplomas scholarships from top universities and external bodies.',
       percentage: '20-100%',
     },
     {
@@ -78,8 +78,8 @@ export function ScholarshipsFundingSupportClient() {
 
   const faqs = [
     {
-      question: 'Am I eligible for UK university scholarships?',
-      answer: 'Most UK universities offer scholarships to international students. Eligibility depends on your academic qualifications, test scores, and the specific university requirements. We help assess your eligibility during consultation.',
+      question: 'Am I eligible for university scholarships?',
+      answer: 'Most top universities offer scholarships to international students. Eligibility depends on your academic qualifications, test scores, and the specific university requirements. We help assess your eligibility during consultation.',
     },
     {
       question: 'How far in advance should I apply?',
@@ -105,7 +105,7 @@ export function ScholarshipsFundingSupportClient() {
 
   const benefits = [
     'Reduced tuition fees or full scholarships coverage',
-    'Access to leading UK universities worldwide',
+    'Access to leading universities worldwide',
     'Expert guidance through the entire application process',
     'Increased chances of scholarship approval',
     'Support with essay writing and application documentation',
@@ -115,7 +115,7 @@ export function ScholarshipsFundingSupportClient() {
 
   const relatedServices = [
     { title: 'One to One Consultation', href: '/services/one-to-one-consultation' },
-    { title: 'UK University Selection', href: '/services/uk-university-selection' },
+    { title: 'University Selection', href: '/services/uk-university-selection' },
     { title: 'University Application', href: '/services/university-application' },
     { title: 'IELTS Preparation', href: '/services/ielts-preparation' },
   ]
@@ -132,7 +132,7 @@ export function ScholarshipsFundingSupportClient() {
                 Scholarships & Funding Support
               </h1>
               <p className="text-lg text-muted-foreground mb-8">
-                International Scholarships are available! Secure prestigious UK university scholarships and bursaries to fund your studies. Our expert team helps you navigate the application process and maximize your chances of success.
+                International Scholarships are available! Secure prestigious university scholarships and bursaries to fund your studies. Our expert team helps you navigate the application process and maximize your chances of success.
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <Button size="lg" className="bg-primary hover:bg-primary/90">
@@ -156,7 +156,7 @@ export function ScholarshipsFundingSupportClient() {
                 Types of Scholarships Available
               </h2>
               <p className="text-lg text-muted-foreground">
-                UK universities offer various scholarship and bursary options for international students at all study levels.
+                Universities offer various scholarship and bursary options for international students at all study levels.
               </p>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
@@ -191,7 +191,7 @@ export function ScholarshipsFundingSupportClient() {
                 Scholarships at All Study Levels
               </h2>
               <p className="text-lg text-muted-foreground">
-                From foundation years to PhDs, scholarships are available at every level of study in the UK.
+                From foundation years to PhDs, scholarships are available at every level of study.
               </p>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
@@ -259,7 +259,7 @@ export function ScholarshipsFundingSupportClient() {
                 Why Choose HOQUE for Scholarships?
               </h2>
               <p className="text-lg text-muted-foreground">
-                Our dedicated team has helped hundreds of students secure valuable scholarships to study in the UK.
+                Our dedicated team has helped hundreds of students secure valuable scholarships to study abroad.
               </p>
             </div>
             <div className="max-w-2xl mx-auto">
@@ -283,7 +283,7 @@ export function ScholarshipsFundingSupportClient() {
                 Frequently Asked Questions
               </h2>
               <p className="text-lg text-muted-foreground">
-                Common questions about UK university scholarships and our support services.
+                Common questions about university scholarships and our support services.
               </p>
             </div>
             <div className="max-w-3xl mx-auto space-y-6">
@@ -312,7 +312,7 @@ export function ScholarshipsFundingSupportClient() {
                 Related Services
               </h2>
               <p className="text-lg text-muted-foreground">
-                Explore other services to support your UK university application journey.
+                Explore other services to support your university application journey.
               </p>
             </div>
             <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
@@ -348,18 +348,18 @@ export function ScholarshipsFundingSupportClient() {
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { name: 'University of Oxford', rank: 'Rank 1 (UK)' },
-                { name: 'University of Cambridge', rank: 'Rank 2 (UK)' },
-                { name: 'Imperial College London', rank: 'Rank 3 (UK)' },
-                { name: 'University College London', rank: 'Rank 4 (UK)' },
-                { name: 'London School of Economics', rank: 'Rank 5 (UK)' },
-                { name: 'University of Edinburgh', rank: 'Rank 6 (UK)' },
-                { name: 'University of Manchester', rank: 'Russell Group' },
-                { name: 'University of Birmingham', rank: 'Russell Group' },
-                { name: 'University of Warwick', rank: 'Russell Group' },
-                { name: 'University of Sheffield', rank: 'Russell Group' },
-                { name: 'University of Bristol', rank: 'Russell Group' },
-                { name: 'Duke University (USA)', rank: 'Partner Institution' },
+                { name: 'University of Oxford', rank: 'World Top 5' },
+                { name: 'University of Cambridge', rank: 'World Top 5' },
+                { name: 'Imperial College London', rank: 'World Top 10' },
+                { name: 'University College London', rank: 'World Top 10' },
+                { name: 'London School of Economics', rank: 'World Top 50' },
+                { name: 'University of Edinburgh', rank: 'World Top 50' },
+                { name: 'University of Manchester', rank: 'World Top 50' },
+                { name: 'University of Birmingham', rank: 'World Top 100' },
+                { name: 'University of Warwick', rank: 'World Top 100' },
+                { name: 'University of Sheffield', rank: 'World Top 100' },
+                { name: 'University of Bristol', rank: 'World Top 100' },
+                { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
                 <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
@@ -384,10 +384,10 @@ export function ScholarshipsFundingSupportClient() {
           <div className="container mx-auto px-4">
             <div className="max-w-2xl mx-auto bg-gradient-to-r from-primary/10 via-primary/5 to-background border border-primary/20 rounded-lg p-8 md:p-12 text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Ready to Start Your UK Journey?
+                Ready to Start Your Journey?
               </h2>
               <p className="text-lg text-muted-foreground mb-8">
-                Submit your application today and take the first step toward your dream UK university.
+                Submit your application today and take the first step toward your dream university.
               </p>
               <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
                 <Link href="/application-form">

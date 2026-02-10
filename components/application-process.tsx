@@ -9,7 +9,7 @@ export function ApplicationProcess() {
       number: 1,
       title: '100% Free Consultation',
       description:
-        'Book a free consultation with our British Council trained counsellors to discuss your profile and goals.',
+        'Book a free consultation with our expert counsellors to discuss your profile and goals.',
     },
     {
       number: 2,

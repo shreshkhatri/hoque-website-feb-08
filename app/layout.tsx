@@ -13,9 +13,9 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: {
     template: '%s | HOQUE',
-    default: 'HOQUE - UK University Consulting',
+    default: 'HOQUE - Your Gateway to World-Class Universities',
   },
-  description: 'Expert consultancy for UK university admissions. Helping global students secure places at top UK universities including Oxford, Cambridge, and Imperial College.',
+  description: 'Expert educational consultancy helping international students secure places at top universities worldwide. Personalised guidance for admissions, visas, scholarships, and more.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -33,6 +33,28 @@ export const metadata: Metadata = {
       },
     ],
     apple: '/apple-icon.png',
+  },
+  openGraph: {
+    title: 'HOQUE - Your Gateway to World-Class Universities',
+    description: 'Expert educational consultancy helping international students secure places at top universities worldwide. Personalised guidance for admissions, visas, scholarships, and more.',
+    url: 'https://www.hoque.org.uk',
+    siteName: 'HOQUE',
+    images: [
+      {
+        url: 'https://www.hoque.org.uk/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'HOQUE - Your Gateway to World-Class Universities',
+      },
+    ],
+    locale: 'en_GB',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'HOQUE - Your Gateway to World-Class Universities',
+    description: 'Expert educational consultancy helping international students secure places at top universities worldwide. Personalised guidance for admissions, visas, scholarships, and more.',
+    images: ['https://www.hoque.org.uk/og-image.jpg'],
   },
 }
 

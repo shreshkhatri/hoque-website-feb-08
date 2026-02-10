@@ -369,7 +369,7 @@ export function EventsClient() {
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div className="space-y-4">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground text-balance">
-              Ready to Start Your UK Journey?
+              Ready to Start Your Journey?
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Don't miss any events. Submit your application today and stay updated with our latest opportunities.

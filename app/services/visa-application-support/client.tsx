@@ -67,7 +67,7 @@ export function VisaApplicationSupportClient() {
     },
     {
       question: 'What is a credibility interview?',
-      answer: 'Credibility interviews were introduced to ensure that only genuine students are given visas. You may be asked about your course, university choice, and intentions to study in the UK.'
+      answer: 'Credibility interviews were introduced to ensure that only genuine students are given visas. You may be asked about your course, university choice, and intentions to study abroad.'
     },
     {
       question: 'How long does the visa application process take?',
@@ -95,7 +95,7 @@ export function VisaApplicationSupportClient() {
                 VISA Application Support
               </h1>
               <p className="text-lg text-foreground/80 mb-8">
-                Professional guidance for UK student visa applications. We assist international students through the entire visa process with our official partner solicitor firm.
+                Professional guidance for student visa applications worldwide. We assist international students through the entire visa process with our official partner solicitor firm.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button size="lg" className="bg-primary hover:bg-primary/90">
@@ -113,9 +113,9 @@ export function VisaApplicationSupportClient() {
         <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl">
-              <h2 className="text-3xl font-bold text-foreground mb-6">Understanding UK Student Visas</h2>
+              <h2 className="text-3xl font-bold text-foreground mb-6">Understanding Student Visas</h2>
               <p className="text-foreground/80 mb-6">
-                Most international students need a visa to study in the UK. It's crucial to check immigration requirements regularly, as they can change. Students without the necessary visa will be refused entry to the UK.
+                Most international students need a visa to study abroad. It is crucial to check immigration requirements regularly, as they can change. Students without the necessary visa will be refused entry.
               </p>
               <p className="text-foreground/80 mb-6">
                 The student visa application is based on a points-based assessment system. You need 70 points to be granted a visa, which are awarded for:
@@ -160,7 +160,7 @@ export function VisaApplicationSupportClient() {
               <div className="bg-card border border-border rounded-lg p-8">
                 <h3 className="text-xl font-semibold text-foreground mb-4">Credibility Interviews</h3>
                 <p className="text-foreground/80 mb-4">
-                  Credibility interviews were introduced to ensure that only genuine students are granted visas to study in the UK. You may be asked to attend a credibility interview as part of your visa application process.
+                  Credibility interviews were introduced to ensure that only genuine students are granted visas to study abroad. You may be asked to attend a credibility interview as part of your visa application process.
                 </p>
                 <p className="text-foreground/80">
                   Our team can help you prepare for these interviews, covering what to expect and how to present your genuine student intentions clearly.
@@ -279,24 +279,24 @@ export function VisaApplicationSupportClient() {
                 Our Partner Universities
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                We work with leading universities across the UK and internationally to help you find the perfect fit for your academic goals.
+                We work with leading universities worldwide to help you find the perfect fit for your academic goals.
               </p>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { name: 'University of Oxford', rank: 'Rank 1 (UK)' },
-                { name: 'University of Cambridge', rank: 'Rank 2 (UK)' },
-                { name: 'Imperial College London', rank: 'Rank 3 (UK)' },
-                { name: 'University College London', rank: 'Rank 4 (UK)' },
-                { name: 'London School of Economics', rank: 'Rank 5 (UK)' },
-                { name: 'University of Edinburgh', rank: 'Rank 6 (UK)' },
-                { name: 'University of Manchester', rank: 'Russell Group' },
-                { name: 'University of Birmingham', rank: 'Russell Group' },
-                { name: 'University of Warwick', rank: 'Russell Group' },
-                { name: 'University of Sheffield', rank: 'Russell Group' },
-                { name: 'University of Bristol', rank: 'Russell Group' },
-                { name: 'Duke University (USA)', rank: 'Partner Institution' },
+                { name: 'University of Oxford', rank: 'World Top 5' },
+                { name: 'University of Cambridge', rank: 'World Top 5' },
+                { name: 'Imperial College London', rank: 'World Top 10' },
+                { name: 'University College London', rank: 'World Top 10' },
+                { name: 'London School of Economics', rank: 'World Top 50' },
+                { name: 'University of Edinburgh', rank: 'World Top 50' },
+                { name: 'University of Manchester', rank: 'World Top 50' },
+                { name: 'University of Birmingham', rank: 'World Top 100' },
+                { name: 'University of Warwick', rank: 'World Top 100' },
+                { name: 'University of Sheffield', rank: 'World Top 100' },
+                { name: 'University of Bristol', rank: 'World Top 100' },
+                { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
                 <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
@@ -319,9 +319,9 @@ export function VisaApplicationSupportClient() {
         {/* CTA Section */}
         <section className="py-16 bg-gradient-to-br from-primary/10 via-background to-accent/5">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold text-foreground mb-6">Ready to Start Your UK Journey?</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-6">Ready to Start Your Journey?</h2>
             <p className="text-lg text-foreground/80 mb-8 max-w-2xl mx-auto">
-              Submit your application today and take the first step toward your dream UK university.
+              Submit your application today and take the first step toward your dream university.
             </p>
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
               <Link href="/application-form">

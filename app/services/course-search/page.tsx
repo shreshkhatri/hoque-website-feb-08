@@ -4,15 +4,15 @@ import { CourseSearchClient } from './client'
 export const metadata: Metadata = {
   title: 'Course Search | Find Your Perfect Course | HOQUE',
   description:
-    'Explore thousands of courses at UK universities across all subjects. Find the perfect course for your academic goals with Hoque.',
+    'Explore thousands of courses at top universities worldwide across all subjects. Find the perfect course for your academic goals with Hoque.',
   keywords: [
     'course search',
     'find courses',
-    'UK courses',
     'undergraduate courses',
     'postgraduate courses',
     'degree programs',
-    'study in UK',
+    'study abroad',
+    'international courses',
   ],
 }
 

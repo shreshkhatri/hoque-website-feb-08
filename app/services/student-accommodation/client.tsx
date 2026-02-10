@@ -82,7 +82,7 @@ export function StudentAccommodationClient() {
               Find Your Perfect <span className="text-primary">Student Accommodation</span>
             </h1>
             <p className="text-lg text-foreground/70 mb-8">
-              Secure safe, comfortable, and convenient accommodation near your UK university. We guide you through every step of the process.
+              Secure safe, comfortable, and convenient accommodation near your university. We guide you through every step of the process.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Button size="lg" className="bg-primary hover:bg-primary/90">
@@ -226,18 +226,18 @@ export function StudentAccommodationClient() {
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { name: 'University of Oxford', rank: 'Rank 1 (UK)' },
-                { name: 'University of Cambridge', rank: 'Rank 2 (UK)' },
-                { name: 'Imperial College London', rank: 'Rank 3 (UK)' },
-                { name: 'University College London', rank: 'Rank 4 (UK)' },
-                { name: 'London School of Economics', rank: 'Rank 5 (UK)' },
-                { name: 'University of Edinburgh', rank: 'Rank 6 (UK)' },
-                { name: 'University of Manchester', rank: 'Russell Group' },
-                { name: 'University of Birmingham', rank: 'Russell Group' },
-                { name: 'University of Warwick', rank: 'Russell Group' },
-                { name: 'University of Sheffield', rank: 'Russell Group' },
-                { name: 'University of Bristol', rank: 'Russell Group' },
-                { name: 'Duke University (USA)', rank: 'Partner Institution' },
+                { name: 'University of Oxford', rank: 'World Top 5' },
+                { name: 'University of Cambridge', rank: 'World Top 5' },
+                { name: 'Imperial College London', rank: 'World Top 10' },
+                { name: 'University College London', rank: 'World Top 10' },
+                { name: 'London School of Economics', rank: 'World Top 50' },
+                { name: 'University of Edinburgh', rank: 'World Top 50' },
+                { name: 'University of Manchester', rank: 'World Top 50' },
+                { name: 'University of Birmingham', rank: 'World Top 100' },
+                { name: 'University of Warwick', rank: 'World Top 100' },
+                { name: 'University of Sheffield', rank: 'World Top 100' },
+                { name: 'University of Bristol', rank: 'World Top 100' },
+                { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
                 <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
@@ -260,9 +260,9 @@ export function StudentAccommodationClient() {
         {/* CTA Section */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/10 to-primary/5">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-foreground mb-6">Ready to Start Your UK Journey?</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-6">Ready to Start Your Journey?</h2>
             <p className="text-lg text-foreground/70 mb-8">
-              Submit your application today and take the first step toward your dream UK university.
+              Submit your application today and take the first step toward your dream university.
             </p>
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
               <Link href="/application-form">

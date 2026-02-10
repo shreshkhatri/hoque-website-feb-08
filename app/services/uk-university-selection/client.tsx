@@ -35,7 +35,7 @@ export function UKUniversitySelectionClient() {
     {
       icon: CheckCircle2,
       title: 'Expert Guidance',
-      description: 'Our British Council trained consultants provide personalized university selection advice',
+      description: 'Our expert consultants provide personalised university selection advice',
     },
     {
       icon: Award,
@@ -45,7 +45,7 @@ export function UKUniversitySelectionClient() {
     {
       icon: Users,
       title: 'Partner Universities',
-      description: 'Access to over 20+ top UK universities with global reputations',
+      description: 'Access to over 100+ partner universities worldwide with global reputations',
     },
     {
       icon: BookOpen,
@@ -71,13 +71,13 @@ export function UKUniversitySelectionClient() {
           <div className="max-w-4xl mx-auto">
             <div className="mb-6 inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full">
               <MapPin size={16} />
-              <span className="text-sm font-medium">Explore UK Universities</span>
+              <span className="text-sm font-medium">Explore Universities Worldwide</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
-              UK University Selection
+              University Selection
             </h1>
             <p className="text-xl text-foreground/70 mb-8 max-w-2xl text-balance">
-              Find your perfect UK university and access free application services to study at leading institutions across London and the UK with Hoque.
+              Find your perfect university and access free application services to study at leading institutions worldwide with Hoque.
             </p>
             <div className="flex flex-wrap gap-4">
               <Button size="lg" className="bg-primary hover:bg-primary/90">
@@ -96,13 +96,13 @@ export function UKUniversitySelectionClient() {
         <section className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-8">
-              Why Choose UK Universities?
+              Why Choose Our Partner Universities?
             </h2>
             <p className="text-lg text-foreground/70 mb-6 leading-relaxed">
-              Choosing the right university is an important decision that shapes your future. Our UK university partners are internationally recognized institutions renowned for their excellence in teaching, research, innovation, and collaborative relationships. They welcome international students from around the globe to pursue their academic goals.
+              Choosing the right university is an important decision that shapes your future. Our university partners are internationally recognised institutions renowned for their excellence in teaching, research, innovation, and collaborative relationships. They welcome international students from around the globe to pursue their academic goals.
             </p>
             <p className="text-lg text-foreground/70 mb-8 leading-relaxed">
-              As official UK University Representatives, we specialize in helping students access Foundation degrees, Undergraduate, Postgraduate, and PhD programs. Our British Council trained consultants provide personalized guidance to secure guaranteed offers at your preferred universities.
+              As official university representatives, we specialise in helping students access Foundation degrees, Undergraduate, Postgraduate, and PhD programmes. Our expert consultants provide personalised guidance to secure guaranteed offers at your preferred universities.
             </p>
           </div>
         </section>
@@ -142,7 +142,7 @@ export function UKUniversitySelectionClient() {
         <section className="py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-12">
-              Our UK University Partners
+              Our University Partners
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {universities.map((uni, index) => (
@@ -174,7 +174,7 @@ export function UKUniversitySelectionClient() {
                 {
                   step: '1',
                   title: 'Free Consultation',
-                  description: 'Meet with our British Council trained consultant to discuss your goals',
+                  description: 'Meet with our expert consultant to discuss your goals',
                 },
                 {
                   step: '2',
@@ -189,7 +189,7 @@ export function UKUniversitySelectionClient() {
                 {
                   step: '4',
                   title: 'Guaranteed Offer',
-                  description: 'Secure your place at your chosen UK university',
+                  description: 'Secure your place at your chosen university',
                 },
               ].map((item, index) => (
                 <div key={index} className="bg-card rounded-lg p-6 border border-border text-center">
@@ -241,24 +241,24 @@ export function UKUniversitySelectionClient() {
                 Our Partner Universities
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                We work with leading universities across the UK and internationally to help you find the perfect fit for your academic goals.
+                We work with leading universities worldwide to help you find the perfect fit for your academic goals.
               </p>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { name: 'University of Oxford', rank: 'Rank 1 (UK)' },
-                { name: 'University of Cambridge', rank: 'Rank 2 (UK)' },
-                { name: 'Imperial College London', rank: 'Rank 3 (UK)' },
-                { name: 'University College London', rank: 'Rank 4 (UK)' },
-                { name: 'London School of Economics', rank: 'Rank 5 (UK)' },
-                { name: 'University of Edinburgh', rank: 'Rank 6 (UK)' },
-                { name: 'University of Manchester', rank: 'Russell Group' },
-                { name: 'University of Birmingham', rank: 'Russell Group' },
-                { name: 'University of Warwick', rank: 'Russell Group' },
-                { name: 'University of Sheffield', rank: 'Russell Group' },
-                { name: 'University of Bristol', rank: 'Russell Group' },
-                { name: 'Duke University (USA)', rank: 'Partner Institution' },
+                { name: 'University of Oxford', rank: 'World Top 5' },
+                { name: 'University of Cambridge', rank: 'World Top 5' },
+                { name: 'Imperial College London', rank: 'World Top 10' },
+                { name: 'University College London', rank: 'World Top 10' },
+                { name: 'London School of Economics', rank: 'World Top 50' },
+                { name: 'University of Edinburgh', rank: 'World Top 50' },
+                { name: 'University of Manchester', rank: 'World Top 50' },
+                { name: 'University of Birmingham', rank: 'World Top 100' },
+                { name: 'University of Warwick', rank: 'World Top 100' },
+                { name: 'University of Sheffield', rank: 'World Top 100' },
+                { name: 'University of Bristol', rank: 'World Top 100' },
+                { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
                 <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
@@ -283,10 +283,10 @@ export function UKUniversitySelectionClient() {
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <div className="space-y-4">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground text-balance">
-                Ready to Start Your UK Journey?
+                Ready to Start Your Journey?
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Submit your application today and take the first step toward your dream UK university.
+                Submit your application today and take the first step toward your dream university.
               </p>
             </div>
 

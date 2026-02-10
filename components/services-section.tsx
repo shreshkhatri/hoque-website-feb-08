@@ -8,9 +8,9 @@ export function ServicesSection() {
   const services = [
     {
       icon: GraduationCap,
-      title: 'UK University Admission Process',
+      title: 'University Admission Process',
       description:
-        'Expert guidance through every step of the UK university application process. We help you navigate UCAS, interviews, and more.',
+        'Expert guidance through every step of the university application process. We help you navigate admissions, interviews, and more.',
       href: '/services/university-application',
     },
     {
@@ -24,7 +24,7 @@ export function ServicesSection() {
       icon: Users,
       title: 'One to One Consultation',
       description:
-        'Personalized consultation with our British Council trained counsellors to discuss your unique educational aspirations.',
+        'Personalised consultation with our expert counsellors to discuss your unique educational aspirations.',
       href: '/services/one-to-one-consultation',
     },
     {

@@ -3,12 +3,12 @@ import { NextRequest, NextResponse } from 'next/server'
 
 // Hardcoded events data
 const HARDCODED_EVENTS = [
-  { id: 1, name: 'UK Universities Application Week', location: 'Kochi, India', country: 'India' },
+  { id: 1, name: 'Universities Application Week', location: 'Kochi, India', country: 'India' },
   { id: 2, name: 'IELTS/PTE Preparation Workshop', location: 'Kochi, India', country: 'India' },
-  { id: 3, name: 'UK Universities Application Week', location: 'Dhaka, Bangladesh', country: 'Bangladesh' },
-  { id: 4, name: 'UK Universities Application Week', location: 'Islamabad, Pakistan', country: 'Pakistan' },
-  { id: 5, name: 'UK Universities Application Week', location: 'Kathmandu, Nepal', country: 'Nepal' },
-  { id: 6, name: 'UK Universities Application Week', location: 'Colombo, Sri Lanka', country: 'Sri Lanka' },
+  { id: 3, name: 'Universities Application Week', location: 'Dhaka, Bangladesh', country: 'Bangladesh' },
+  { id: 4, name: 'Universities Application Week', location: 'Islamabad, Pakistan', country: 'Pakistan' },
+  { id: 5, name: 'Universities Application Week', location: 'Kathmandu, Nepal', country: 'Nepal' },
+  { id: 6, name: 'Universities Application Week', location: 'Colombo, Sri Lanka', country: 'Sri Lanka' },
 ]
 
 export async function GET(request: NextRequest) {

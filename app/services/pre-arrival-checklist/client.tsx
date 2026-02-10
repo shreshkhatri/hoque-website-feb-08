@@ -235,7 +235,7 @@ export function PreArrivalChecklistClient() {
                 { title: 'IELTS Preparation', href: '/services/ielts-preparation' },
                 { title: 'Student Accommodation', href: '/services/student-accommodation' },
                 { title: 'VISA Application Support', href: '/services/visa-application-support' },
-                { title: 'UK University Selection', href: '/services/uk-university-selection' },
+                { title: 'University Selection', href: '/services/uk-university-selection' },
                 { title: 'One to One Consultation', href: '/services/one-to-one-consultation' },
                 { title: 'Scholarships & Funding Support', href: '/services/scholarships-funding-support' },
               ].map((service, index) => (
@@ -263,18 +263,18 @@ export function PreArrivalChecklistClient() {
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { name: 'University of Oxford', rank: 'Rank 1 (UK)' },
-                { name: 'University of Cambridge', rank: 'Rank 2 (UK)' },
-                { name: 'Imperial College London', rank: 'Rank 3 (UK)' },
-                { name: 'University College London', rank: 'Rank 4 (UK)' },
-                { name: 'London School of Economics', rank: 'Rank 5 (UK)' },
-                { name: 'University of Edinburgh', rank: 'Rank 6 (UK)' },
-                { name: 'University of Manchester', rank: 'Russell Group' },
-                { name: 'University of Birmingham', rank: 'Russell Group' },
-                { name: 'University of Warwick', rank: 'Russell Group' },
-                { name: 'University of Sheffield', rank: 'Russell Group' },
-                { name: 'University of Bristol', rank: 'Russell Group' },
-                { name: 'Duke University (USA)', rank: 'Partner Institution' },
+                { name: 'University of Oxford', rank: 'World Top 5' },
+                { name: 'University of Cambridge', rank: 'World Top 5' },
+                { name: 'Imperial College London', rank: 'World Top 10' },
+                { name: 'University College London', rank: 'World Top 10' },
+                { name: 'London School of Economics', rank: 'World Top 50' },
+                { name: 'University of Edinburgh', rank: 'World Top 50' },
+                { name: 'University of Manchester', rank: 'World Top 50' },
+                { name: 'University of Birmingham', rank: 'World Top 100' },
+                { name: 'University of Warwick', rank: 'World Top 100' },
+                { name: 'University of Sheffield', rank: 'World Top 100' },
+                { name: 'University of Bristol', rank: 'World Top 100' },
+                { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
                 <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
@@ -297,9 +297,9 @@ export function PreArrivalChecklistClient() {
         {/* CTA Section */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/10 via-primary/5 to-background">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Start Your UK Journey?</h2>
+            <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Start Your Journey?</h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Submit your application today and take the first step toward your dream UK university.
+              Submit your application today and take the first step toward your dream university.
             </p>
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
               <Link href="/application-form">
