@@ -65,7 +65,7 @@ export function UniversityApplicationClient() {
 
   const relatedServices = [
     { title: 'One to One Consultation', href: '/services/one-to-one-consultation' },
-    { title: 'UK University Selection', href: '/services/uk-university-selection' },
+    { title: 'University Selection', href: '/services/uk-university-selection' },
     { title: 'Course Search', href: '/courses' },
     { title: 'UCAS Application Help', href: '#' },
     { title: 'VISA Application Support', href: '#' },
@@ -85,7 +85,7 @@ export function UniversityApplicationClient() {
                   University Application Support
                 </h1>
                 <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                  Applying to UK universities is straightforward. Our expert team will guide you through every step of the application process to ensure your success.
+                  Applying to universities is straightforward. Our expert team will guide you through every step of the application process to ensure your success.
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <Button size="lg" className="bg-primary hover:bg-primary/90">
@@ -227,7 +227,7 @@ export function UniversityApplicationClient() {
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">Expert Team</h3>
                   <p className="text-muted-foreground">
-                    Our consultants have extensive experience with UK university applications and admissions.
+                    Our consultants have extensive experience with university applications and admissions worldwide.
                   </p>
                 </div>
               </div>
@@ -282,24 +282,24 @@ export function UniversityApplicationClient() {
                 Our Partner Universities
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                We work with leading universities across the UK and internationally to help you find the perfect fit for your academic goals.
+                We work with leading universities worldwide to help you find the perfect fit for your academic goals.
               </p>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { name: 'University of Oxford', rank: 'Rank 1 (UK)' },
-                { name: 'University of Cambridge', rank: 'Rank 2 (UK)' },
-                { name: 'Imperial College London', rank: 'Rank 3 (UK)' },
-                { name: 'University College London', rank: 'Rank 4 (UK)' },
-                { name: 'London School of Economics', rank: 'Rank 5 (UK)' },
-                { name: 'University of Edinburgh', rank: 'Rank 6 (UK)' },
-                { name: 'University of Manchester', rank: 'Russell Group' },
-                { name: 'University of Birmingham', rank: 'Russell Group' },
-                { name: 'University of Warwick', rank: 'Russell Group' },
-                { name: 'University of Sheffield', rank: 'Russell Group' },
-                { name: 'University of Bristol', rank: 'Russell Group' },
-                { name: 'Duke University (USA)', rank: 'Partner Institution' },
+                { name: 'University of Oxford', rank: 'World Top 5' },
+                { name: 'University of Cambridge', rank: 'World Top 5' },
+                { name: 'Imperial College London', rank: 'World Top 10' },
+                { name: 'University College London', rank: 'World Top 10' },
+                { name: 'London School of Economics', rank: 'World Top 50' },
+                { name: 'University of Edinburgh', rank: 'World Top 50' },
+                { name: 'University of Manchester', rank: 'World Top 50' },
+                { name: 'University of Birmingham', rank: 'World Top 100' },
+                { name: 'University of Warwick', rank: 'World Top 100' },
+                { name: 'University of Sheffield', rank: 'World Top 100' },
+                { name: 'University of Bristol', rank: 'World Top 100' },
+                { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
                 <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
@@ -323,10 +323,10 @@ export function UniversityApplicationClient() {
         <section className="py-16 md:py-24 bg-gradient-to-r from-primary to-primary/90">
           <div className="max-w-4xl mx-auto px-4 md:px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 text-balance">
-              Ready to Start Your UK Journey?
+              Ready to Start Your Journey?
             </h2>
             <p className="text-lg text-white/90 mb-8">
-              Submit your application today and take the first step toward your dream UK university.
+              Submit your application today and take the first step toward your dream university.
             </p>
             <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold">
               <Link href="/application-form">

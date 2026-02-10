@@ -49,7 +49,7 @@ export function OneToOneConsultationClient() {
   ]
 
   const relatedServices = [
-    { title: 'UK University Selection', href: '/services/uk-university-selection', icon: '🎓' },
+    { title: 'University Selection', href: '/services/uk-university-selection', icon: '🎓' },
     { title: 'Course Search', href: '/services/course-search', icon: '📚' },
     { title: 'University Application', href: '/services/university-application', icon: '📝' },
     { title: 'UCAS Application Help', href: '/services/ucas-application-help', icon: '📋' },
@@ -68,7 +68,7 @@ export function OneToOneConsultationClient() {
               One-to-One Free Consultation
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Consultation dedicated to you. Get personalized guidance from our British Council trained consultants to help you achieve your UK education goals.
+              Consultation dedicated to you. Get personalised guidance from our expert consultants to help you achieve your education goals worldwide.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
               <Button asChild size="lg" className="rounded-full">
@@ -96,7 +96,7 @@ export function OneToOneConsultationClient() {
                 </div>
                 <h3 className="text-xl font-bold text-foreground">Expert Guidance</h3>
                 <p className="text-muted-foreground">
-                  Our consultants are trained by the British Council to provide professional advice on UK admissions.
+                  Our consultants are trained to provide professional advice on university admissions worldwide.
                 </p>
               </div>
 
@@ -135,7 +135,7 @@ export function OneToOneConsultationClient() {
                 What We Cover in Your Consultation
               </h2>
               <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                We provide comprehensive review and guidance across all aspects of your UK university application.
+                We provide comprehensive review and guidance across all aspects of your university application.
               </p>
             </div>
 
@@ -201,14 +201,14 @@ export function OneToOneConsultationClient() {
               <div className="space-y-3">
                 <h3 className="text-xl font-bold text-foreground">Navigate UK Visa Requirements</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  UK student visa regulations can be complex, and international students must meet specific requirements. Our consultants help you understand the timeline, necessary documentation, and best practices to ensure a smooth visa application process.
+                  Student visa regulations can be complex, and international students must meet specific requirements. Our consultants help you understand the timeline, necessary documentation, and best practices to ensure a smooth visa application process.
                 </p>
               </div>
 
               <div className="space-y-3">
                 <h3 className="text-xl font-bold text-foreground">Maximize Your Opportunities</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  From identifying scholarship opportunities to selecting the right course and university, our guidance helps you make informed decisions that align with your goals and increase your chances of admission to top UK institutions.
+                  From identifying scholarship opportunities to selecting the right course and university, our guidance helps you make informed decisions that align with your goals and increase your chances of admission to top institutions worldwide.
                 </p>
               </div>
             </div>
@@ -282,24 +282,24 @@ export function OneToOneConsultationClient() {
                 Our Partner Universities
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                We work with leading universities across the UK and internationally to help you find the perfect fit for your academic goals.
+                We work with leading universities worldwide to help you find the perfect fit for your academic goals.
               </p>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { name: 'University of Oxford', rank: 'Rank 1 (UK)' },
-                { name: 'University of Cambridge', rank: 'Rank 2 (UK)' },
-                { name: 'Imperial College London', rank: 'Rank 3 (UK)' },
-                { name: 'University College London', rank: 'Rank 4 (UK)' },
-                { name: 'London School of Economics', rank: 'Rank 5 (UK)' },
-                { name: 'University of Edinburgh', rank: 'Rank 6 (UK)' },
-                { name: 'University of Manchester', rank: 'Russell Group' },
-                { name: 'University of Birmingham', rank: 'Russell Group' },
-                { name: 'University of Warwick', rank: 'Russell Group' },
-                { name: 'University of Sheffield', rank: 'Russell Group' },
-                { name: 'University of Bristol', rank: 'Russell Group' },
-                { name: 'Duke University (USA)', rank: 'Partner Institution' },
+                { name: 'University of Oxford', rank: 'World Top 5' },
+                { name: 'University of Cambridge', rank: 'World Top 5' },
+                { name: 'Imperial College London', rank: 'World Top 10' },
+                { name: 'University College London', rank: 'World Top 10' },
+                { name: 'London School of Economics', rank: 'World Top 50' },
+                { name: 'University of Edinburgh', rank: 'World Top 50' },
+                { name: 'University of Manchester', rank: 'World Top 50' },
+                { name: 'University of Birmingham', rank: 'World Top 100' },
+                { name: 'University of Warwick', rank: 'World Top 100' },
+                { name: 'University of Sheffield', rank: 'World Top 100' },
+                { name: 'University of Bristol', rank: 'World Top 100' },
+                { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
                 <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
@@ -324,10 +324,10 @@ export function OneToOneConsultationClient() {
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <div className="space-y-4">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground text-balance">
-                Ready to Start Your UK Journey?
+                Ready to Start Your Journey?
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Submit your application today and take the first step toward your dream UK university.
+                Submit your application today and take the first step toward your dream university.
               </p>
             </div>
 

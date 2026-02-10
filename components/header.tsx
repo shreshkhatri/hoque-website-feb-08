@@ -341,7 +341,7 @@ export function Header() {
                           }}
                           className="block px-6 py-3 text-sm text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                         >
-                          UK University Selection
+                          University Selection
                         </a>
                         <a
                           href="/services/course-search"
@@ -688,7 +688,7 @@ export function Header() {
                       One to One Consultation
                     </Link>
                     <Link href="/services/uk-university-selection" onClick={closeMobileDrawer} className="block text-sm text-foreground hover:text-primary transition-colors">
-                      UK University Selection
+                      University Selection
                     </Link>
                     <Link href="/services/course-search" onClick={closeMobileDrawer} className="block text-sm text-foreground hover:text-primary transition-colors">
                       Course Search

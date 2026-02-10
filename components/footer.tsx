@@ -14,7 +14,7 @@ export function Footer() {
               <ul className="space-y-3">
               {[
                 { label: 'One to One', href: '/services/one-to-one-consultation' },
-                { label: 'UK University Selection', href: '/services/uk-university-selection' },
+                { label: 'University Selection', href: '/services/uk-university-selection' },
                 { label: 'Course Search', href: '/services/course-search' },
                 { label: 'University Application', href: '/services/university-application' },
                 { label: 'UCAS Application Help', href: '/services/ucas-application-help' },

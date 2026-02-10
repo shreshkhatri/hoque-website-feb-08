@@ -82,7 +82,7 @@ export function CourseSearchClient() {
 
   const relatedServices = [
     { title: 'One to One Consultation', href: '/services/one-to-one-consultation' },
-    { title: 'UK University Selection', href: '/services/uk-university-selection' },
+    { title: 'University Selection', href: '/services/uk-university-selection' },
     { title: 'University Application', href: '/services/university-application' },
     { title: 'UCAS Application Help', href: '/services/ucas-application-help' },
   ]
@@ -99,7 +99,7 @@ export function CourseSearchClient() {
                 Find Your Perfect Course
               </h1>
               <p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground">
-                Explore thousands of courses across all subjects at UK universities. From foundation programs to postgraduate degrees, we help you
+                Explore thousands of courses across all subjects at top universities worldwide. From foundation programs to postgraduate degrees, we help you
                 find the ideal program for your academic and career goals.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
@@ -203,7 +203,7 @@ export function CourseSearchClient() {
             <h2 className="mb-12 text-center text-3xl font-bold text-foreground">Benefits of Using Our Service</h2>
             <div className="grid gap-6 md:grid-cols-2">
               {[
-                'Access to all major UK universities',
+                'Access to all major partner universities',
                 'Courses at all levels (Foundation to Postgraduate)',
                 'Real-time course availability and updates',
                 'Expert career guidance',
@@ -253,18 +253,18 @@ export function CourseSearchClient() {
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { name: 'University of Oxford', rank: 'Rank 1 (UK)' },
-                { name: 'University of Cambridge', rank: 'Rank 2 (UK)' },
-                { name: 'Imperial College London', rank: 'Rank 3 (UK)' },
-                { name: 'University College London', rank: 'Rank 4 (UK)' },
-                { name: 'London School of Economics', rank: 'Rank 5 (UK)' },
-                { name: 'University of Edinburgh', rank: 'Rank 6 (UK)' },
-                { name: 'University of Manchester', rank: 'Russell Group' },
-                { name: 'University of Birmingham', rank: 'Russell Group' },
-                { name: 'University of Warwick', rank: 'Russell Group' },
-                { name: 'University of Sheffield', rank: 'Russell Group' },
-                { name: 'University of Bristol', rank: 'Russell Group' },
-                { name: 'Duke University (USA)', rank: 'Partner Institution' },
+                { name: 'University of Oxford', rank: 'World Top 5' },
+                { name: 'University of Cambridge', rank: 'World Top 5' },
+                { name: 'Imperial College London', rank: 'World Top 10' },
+                { name: 'University College London', rank: 'World Top 10' },
+                { name: 'London School of Economics', rank: 'World Top 50' },
+                { name: 'University of Edinburgh', rank: 'World Top 50' },
+                { name: 'University of Manchester', rank: 'World Top 50' },
+                { name: 'University of Birmingham', rank: 'World Top 100' },
+                { name: 'University of Warwick', rank: 'World Top 100' },
+                { name: 'University of Sheffield', rank: 'World Top 100' },
+                { name: 'University of Bristol', rank: 'World Top 100' },
+                { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
                 <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
@@ -288,9 +288,9 @@ export function CourseSearchClient() {
         <section className="py-16 md:py-24 bg-gradient-to-r from-primary/10 to-primary/5">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="rounded-lg border border-primary/20 bg-card p-8 md:p-12 text-center">
-              <h2 className="mb-4 text-3xl font-bold text-foreground">Ready to Start Your UK Journey?</h2>
+              <h2 className="mb-4 text-3xl font-bold text-foreground">Ready to Start Your Journey?</h2>
               <p className="mb-8 text-lg text-muted-foreground">
-                Submit your application today and take the first step toward your dream UK university.
+                Submit your application today and take the first step toward your dream university.
               </p>
               <Button asChild size="lg" className="bg-primary hover:bg-primary/90 rounded-full">
                 <Link href="/application-form">

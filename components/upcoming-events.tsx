@@ -87,7 +87,7 @@ export function UpcomingEvents() {
               Upcoming Events
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Join our upcoming events for expert guidance on UK university admissions, IELTS preparation, and student services.
+              Join our upcoming events for expert guidance on university admissions, IELTS preparation, and student services.
             </p>
           </div>
 

@@ -13,9 +13,9 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: {
     template: '%s | HOQUE',
-    default: 'HOQUE - UK University Consulting',
+    default: 'HOQUE - Your Gateway to World-Class Universities',
   },
-  description: 'Expert consultancy for UK university admissions. Helping global students secure places at top UK universities including Oxford, Cambridge, and Imperial College.',
+  description: 'Expert educational consultancy helping international students secure places at top universities worldwide. Personalised guidance for admissions, visas, scholarships, and more.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -35,8 +35,8 @@ export const metadata: Metadata = {
     apple: '/apple-icon.png',
   },
   openGraph: {
-    title: 'HOQUE - Expert UK University Consulting',
-    description: 'Get expert guidance for UK university admissions. We help international students secure places at top universities like Oxford, Cambridge, and Imperial College.',
+    title: 'HOQUE - Your Gateway to World-Class Universities',
+    description: 'Expert educational consultancy helping international students secure places at top universities worldwide. Personalised guidance for admissions, visas, scholarships, and more.',
     url: 'https://www.hoque.org.uk',
     siteName: 'HOQUE',
     images: [
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
         url: 'https://www.hoque.org.uk/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'HOQUE - UK University Consulting',
+        alt: 'HOQUE - Your Gateway to World-Class Universities',
       },
     ],
     locale: 'en_GB',
@@ -52,8 +52,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'HOQUE - Expert UK University Consulting',
-    description: 'Get expert guidance for UK university admissions. We help international students secure places at top universities.',
+    title: 'HOQUE - Your Gateway to World-Class Universities',
+    description: 'Expert educational consultancy helping international students secure places at top universities worldwide. Personalised guidance for admissions, visas, scholarships, and more.',
     images: ['https://www.hoque.org.uk/og-image.jpg'],
   },
 }

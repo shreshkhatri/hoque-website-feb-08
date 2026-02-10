@@ -29,8 +29,8 @@ export function IELTSPreparationClient() {
 
   const faqs = [
     {
-      q: 'What is the minimum band score for UK universities?',
-      a: 'Most UK universities require a minimum IELTS score of 6.0-6.5 for undergraduate and 7.0 for postgraduate programs. Academic IELTS with UKVI is mandatory for UK visa purposes.'
+      q: 'What is the minimum band score for top universities?',
+      a: 'Most top universities require a minimum IELTS score of 6.0-6.5 for undergraduate and 7.0 for postgraduate programs. Some countries also require specific IELTS variants for visa purposes.'
     },
     {
       q: 'How long are IELTS results valid?',
@@ -46,7 +46,7 @@ export function IELTSPreparationClient() {
     },
     {
       q: 'What is the difference between Academic and General IELTS?',
-      a: 'Academic IELTS is for university study and professional registration. General IELTS is for migration and work purposes. Academic is the format required for UK universities.'
+      a: 'Academic IELTS is for university study and professional registration. General IELTS is for migration and work purposes. Academic is the format required for most university admissions.'
     },
     {
       q: 'Do you offer online IELTS classes?',
@@ -90,18 +90,18 @@ export function IELTSPreparationClient() {
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-foreground mb-6">What is IELTS?</h2>
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              The International English Language Testing System (IELTS) is a globally recognized test of English language proficiency accepted by over 11,000 organizations worldwide, including all UK universities and colleges. It is designed for non-native English speakers who wish to study, work, or migrate to English-speaking countries.
+              The International English Language Testing System (IELTS) is a globally recognized test of English language proficiency accepted by over 11,000 organizations worldwide, including top universities and colleges across the globe. It is designed for non-native English speakers who wish to study, work, or migrate to English-speaking countries.
             </p>
             <div className="bg-card border border-border rounded-lg p-6 mb-8">
               <h3 className="text-xl font-semibold text-foreground mb-4">Why Choose Academic IELTS?</h3>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <CheckCircle2 size={20} className="text-primary flex-shrink-0 mt-1" />
-                  <span className="text-foreground">Accepted by all UK universities for undergraduate and postgraduate admission</span>
+                  <span className="text-foreground">Accepted by thousands of universities worldwide for undergraduate and postgraduate admission</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 size={20} className="text-primary flex-shrink-0 mt-1" />
-                  <span className="text-foreground">IELTS UKVI required for UK student visa applications</span>
+                  <span className="text-foreground">IELTS UKVI may be required for certain student visa applications</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 size={20} className="text-primary flex-shrink-0 mt-1" />
@@ -272,18 +272,18 @@ export function IELTSPreparationClient() {
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { name: 'University of Oxford', rank: 'Rank 1 (UK)' },
-                { name: 'University of Cambridge', rank: 'Rank 2 (UK)' },
-                { name: 'Imperial College London', rank: 'Rank 3 (UK)' },
-                { name: 'University College London', rank: 'Rank 4 (UK)' },
-                { name: 'London School of Economics', rank: 'Rank 5 (UK)' },
-                { name: 'University of Edinburgh', rank: 'Rank 6 (UK)' },
-                { name: 'University of Manchester', rank: 'Russell Group' },
-                { name: 'University of Birmingham', rank: 'Russell Group' },
-                { name: 'University of Warwick', rank: 'Russell Group' },
-                { name: 'University of Sheffield', rank: 'Russell Group' },
-                { name: 'University of Bristol', rank: 'Russell Group' },
-                { name: 'Duke University (USA)', rank: 'Partner Institution' },
+                { name: 'University of Oxford', rank: 'World Top 5' },
+                { name: 'University of Cambridge', rank: 'World Top 5' },
+                { name: 'Imperial College London', rank: 'World Top 10' },
+                { name: 'University College London', rank: 'World Top 10' },
+                { name: 'London School of Economics', rank: 'World Top 50' },
+                { name: 'University of Edinburgh', rank: 'World Top 50' },
+                { name: 'University of Manchester', rank: 'World Top 50' },
+                { name: 'University of Birmingham', rank: 'World Top 100' },
+                { name: 'University of Warwick', rank: 'World Top 100' },
+                { name: 'University of Sheffield', rank: 'World Top 100' },
+                { name: 'University of Bristol', rank: 'World Top 100' },
+                { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
                 <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
@@ -306,9 +306,9 @@ export function IELTSPreparationClient() {
         {/* CTA Section */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary/90 to-accent/90 text-primary-foreground">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-balance">Ready to Start Your UK Journey?</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-balance">Ready to Start Your Journey?</h2>
             <p className="text-lg mb-8 opacity-90 text-pretty">
-              Submit your application today and take the first step toward your dream UK university.
+              Submit your application today and take the first step toward your dream university.
             </p>
             <Button asChild size="lg" variant="secondary" className="bg-white text-primary hover:bg-white/90">
               <Link href="/application-form">

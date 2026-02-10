@@ -8,9 +8,9 @@ export function ServicesSection() {
   const services = [
     {
       icon: GraduationCap,
-      title: 'UK University Admission Process',
+      title: 'University Admission Process',
       description:
-        'Expert guidance through every step of the UK university application process. We help you navigate UCAS, interviews, and more.',
+        'Expert guidance through every step of the university application process. We help you navigate admissions, interviews, and more.',
       href: '/services/university-application',
     },
     {
