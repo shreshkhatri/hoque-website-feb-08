@@ -50,7 +50,7 @@ export default function CountriesPage() {
               <Globe size={40} className="text-primary" />
             </div>
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground mb-4">
-              Study Destinations
+              Study Countries
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Explore top study destinations around the world. Discover opportunities, visa

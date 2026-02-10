@@ -204,7 +204,7 @@ export function Header() {
                 onClick={() => setShowCountryDropdown(!showCountryDropdown)}
                 className="flex items-center gap-1 text-foreground hover:text-primary transition-colors font-medium"
               >
-                Destinations
+                Countries
                 <ChevronDown size={16} className={`transition-transform ${showCountryDropdown ? 'rotate-180' : ''}`} />
               </button>
               {showCountryDropdown && (
@@ -583,7 +583,7 @@ export function Header() {
               onClick={() => setMobileCountryExpanded(!mobileCountryExpanded)}
               className="w-full text-left text-foreground hover:text-primary transition-colors font-medium flex items-center justify-between"
             >
-              Destinations
+              Countries
               <ChevronDown size={16} className={`transition-transform ${mobileCountryExpanded ? 'rotate-180' : ''}`} />
             </button>
             {mobileCountryExpanded && (

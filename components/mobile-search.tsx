@@ -248,7 +248,7 @@ export function MobileSearch() {
                         </svg>
                       </div>
                       <span className="text-sm font-medium text-foreground">
-                        View Destinations
+                        View Countries
                       </span>
                       <ArrowRight
                         size={16}
