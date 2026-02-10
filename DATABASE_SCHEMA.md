@@ -144,7 +144,7 @@ The application uses a client-side database initialization system with automatic
 ### Seeding Data
 
 The seed includes:
-- **10 Top UK Universities**: Oxford, Cambridge, Imperial, UCL, LSE, Edinburgh, Manchester, Bristol, Warwick, Durham
+- **10 Top Partner Universities**: Oxford, Cambridge, Imperial, UCL, LSE, Edinburgh, Manchester, Bristol, Warwick, Durham
 - **16 Sample Courses**: Mix of Undergraduate, Master's, and PhD programmes across various disciplines
 
 ## API Routes

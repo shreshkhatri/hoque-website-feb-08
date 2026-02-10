@@ -2,13 +2,13 @@
 
 ## Project Overview
 
-A modern, professional educational consultancy website for UK university admissions, built with Next.js 16, Supabase, and Tailwind CSS. The platform helps international students discover top UK universities and courses.
+A modern, professional educational consultancy website for university admissions worldwide, built with Next.js 16, Supabase, and Tailwind CSS. The platform helps international students discover top universities and courses.
 
 ## ✅ Completed Components
 
 ### 1. Database & Backend
 - ✅ Supabase PostgreSQL integration
-- ✅ Universities table (10 dummy UK universities)
+- ✅ Universities table (10 dummy partner universities)
 - ✅ Courses table (16 dummy courses across disciplines)
 - ✅ Automatic database initialization & seeding
 - ✅ Full-text search capability via ILIKE queries
@@ -68,7 +68,7 @@ Columns: id, name, country, city, rank_uk, rank_world, description,
          logo_url, website_url, founded_year, student_population, 
          created_at, updated_at
 Indexes: name, city, rank_uk
-Records: 10 UK universities (Oxford, Cambridge, Imperial, UCL, LSE, 
+Records: 10 partner universities (Oxford, Cambridge, Imperial, UCL, LSE, 
          Edinburgh, Manchester, Bristol, Warwick, Durham)
 \`\`\`
 
@@ -387,7 +387,7 @@ Your Pinnacle Education website is now complete with:
 2. Preview the live website
 3. Test all functionality
 4. Deploy to production
-5. Help international students find their perfect UK university!
+5. Help international students find their perfect university!
 
 ---
 

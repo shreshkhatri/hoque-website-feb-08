@@ -1,12 +1,12 @@
-# 🎓 Hoque - The Official UK University representative
+# 🎓 Hoque - Your Gateway to World-Class Universities
 
-A modern, fully-responsive educational consultancy website built with Next.js 16, Supabase, and Tailwind CSS. The platform helps international students discover and apply to top UK universities.
+A modern, fully-responsive educational consultancy website built with Next.js 16, Supabase, and Tailwind CSS. The platform helps international students discover and apply to top universities worldwide.
 
 ## ✨ Features
 
 ### 🏠 Landing Page
 - **Hero Section**: Eye-catching banner with compelling value proposition
-- **Top Universities Grid**: 6 featured UK universities with rankings and key stats
+- **Top Universities Grid**: 6 featured partner universities with rankings and key stats
 - **Featured Courses**: 6 highlighted programmes with course details
 - **About Company**: Mission, values, and company statistics
 - **Responsive Design**: Mobile-first, fully responsive layout
@@ -368,4 +368,4 @@ Your Hoque website is fully configured and ready to go!
 
 **Built with ❤️ by v0.app**
 
-Hoque - Your Gateway to World-Class UK Universities
+Hoque - Your Gateway to World-Class Universities

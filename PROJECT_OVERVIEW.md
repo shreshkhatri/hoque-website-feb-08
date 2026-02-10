@@ -20,7 +20,7 @@ Your complete educational consultancy website is ready with **0 setup required**
 │ Header with Search & Navigation Dropdowns      │
 ├─────────────────────────────────────────────────┤
 │ Hero Section                                    │
-│ "Unlock Your Future at Top UK Universities"   │
+│ "Unlock Your Future at Top Universities"       │
 │ [Explore Universities] [Learn More]            │
 ├─────────────────────────────────────────────────┤
 │ Top Universities Section (6 cards)             │
@@ -409,4 +409,4 @@ Support: Full Documentation 📚
 
 **Created with Next.js 16, Supabase & Tailwind CSS**
 
-Let's help those international students find their perfect UK university! 🌟
+Let's help those international students find their perfect university! 🌟

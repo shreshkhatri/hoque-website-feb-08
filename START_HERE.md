@@ -16,7 +16,7 @@ Your complete educational consultancy website is ready to launch. This file will
 
 ## 📋 What You Have
 
-A fully functional, production-ready website for an educational consultancy that helps international students get into top UK universities.
+A fully functional, production-ready website for an educational consultancy that helps international students get into top universities worldwide.
 
 ### Built-In Features:
 - ✅ Beautiful landing page
@@ -25,7 +25,7 @@ A fully functional, production-ready website for an educational consultancy that
 - ✅ Real-time search functionality
 - ✅ Mobile-responsive design
 - ✅ Professional color scheme
-- ✅ 10 UK universities
+- ✅ 10 partner universities
 - ✅ 16 sample courses
 - ✅ Automatic database setup
 - ✅ Zero configuration (almost!)
@@ -80,7 +80,7 @@ Click "Preview" to see it in action.
 ### What You'll See:
 
 1. **Landing Page** - Beautiful hero section with search
-2. **Top Universities** - 6 featured UK universities
+2. **Top Universities** - 6 featured partner universities
 3. **Featured Courses** - 6 sample courses
 4. **About Section** - Company info
 5. **Navigation** - Dropdowns for universities and courses
@@ -128,7 +128,7 @@ Click "Preview" to see it in action.
 - **Footer** - Navigation links
 
 ### Data (26 items)
-- 10 UK Universities (Oxford, Cambridge, Imperial, etc.)
+- 10 Partner Universities (Oxford, Cambridge, Imperial, etc.)
 - 16 Courses (CS, MBA, Engineering, Medicine, etc.)
 - All automatically in your database!
 
@@ -326,7 +326,7 @@ You have a **production-ready** website for your educational consultancy. It's:
 - ✅ Easy to Customize
 - ✅ Ready to Scale
 
-Now go help those international students find their perfect UK university! 🎓
+Now go help those international students find their perfect university! 🎓
 
 ---
 

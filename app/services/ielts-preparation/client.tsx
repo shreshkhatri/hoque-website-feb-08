@@ -72,7 +72,7 @@ export function IELTSPreparationClient() {
               Master IELTS with Expert Preparation
             </h1>
             <p className="text-lg text-muted-foreground mb-8 text-pretty">
-              Get intensive IELTS training from British Council trained consultants. Achieve your target band score with personalized coaching available in London, Bangladesh, and India.
+              Get intensive IELTS training from our expert consultants. Achieve your target band score with personalised coaching available in London, Bangladesh, and India.
             </p>
             <div className="flex flex-wrap gap-4">
               <Button size="lg" className="bg-primary hover:bg-primary/90">
@@ -183,7 +183,7 @@ export function IELTSPreparationClient() {
               <div className="flex gap-4">
                 <CheckCircle2 size={24} className="text-primary flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold text-foreground mb-2">British Council Trained Consultants</h3>
+                  <h3 className="font-semibold text-foreground mb-2">Expert Trained Consultants</h3>
                   <p className="text-sm text-muted-foreground">Learn from experienced IELTS professionals with proven track records.</p>
                 </div>
               </div>

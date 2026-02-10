@@ -43,14 +43,14 @@ export function AboutPageClient() {
                 {
                   title: 'University Admissions',
                   description:
-                    'Former admission officers from top UK universities guiding your application process.',
+                    'Former admission officers from top universities worldwide guiding your application process.',
                   count: '50+',
                   label: 'Universities Covered',
                 },
                 {
                   title: 'Student Support',
                   description:
-                    'Dedicated mentors available throughout your entire academic journey in the UK.',
+                    'Dedicated mentors available throughout your entire academic journey abroad.',
                   count: '5000+',
                   label: 'Students Helped',
                 },

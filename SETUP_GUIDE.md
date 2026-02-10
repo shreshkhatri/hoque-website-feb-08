@@ -33,7 +33,7 @@ Visit the preview and click on "Universities" or "Courses" to see if data loads.
 
 ### 🏠 Landing Page
 - **Hero Section**: Eye-catching banner with CTAs
-- **Top Universities Grid**: 6 featured UK universities
+- **Top Universities Grid**: 6 featured partner universities
 - **Featured Courses**: 6 highlighted courses
 - **About Company Section**: Company values and statistics
 - **Responsive Design**: Works on all devices

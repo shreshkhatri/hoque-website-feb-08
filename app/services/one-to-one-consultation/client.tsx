@@ -25,7 +25,7 @@ export function OneToOneConsultationClient() {
   const processSteps = [
     {
       title: 'Book Your Slot',
-      description: 'Schedule a free consultation with our British Council trained consultants at your preferred office.',
+      description: 'Schedule a free consultation with our expert consultants at your preferred office.',
     },
     {
       title: 'Pre-Consultation Preparation',

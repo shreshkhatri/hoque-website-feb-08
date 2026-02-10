@@ -198,7 +198,7 @@ When the app loads for the first time:
    - Add your Supabase credentials to environment variables
    - First visit the site or click the initialize button
 
-2. **Current Universities**: All 10 existing UK universities are linked to the UK country. To add universities from other countries, you'll need to insert them into the database manually or via a script.
+2. **Current Universities**: All 10 existing partner universities are linked to the UK country. To add universities from other countries, you'll need to insert them into the database manually or via a script.
 
 3. **Search Integration**: The search functionality already supports searching by country through university/course country_id fields.
 

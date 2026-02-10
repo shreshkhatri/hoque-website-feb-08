@@ -35,7 +35,7 @@ export function UKUniversitySelectionClient() {
     {
       icon: CheckCircle2,
       title: 'Expert Guidance',
-      description: 'Our British Council trained consultants provide personalized university selection advice',
+      description: 'Our expert consultants provide personalised university selection advice',
     },
     {
       icon: Award,
@@ -174,7 +174,7 @@ export function UKUniversitySelectionClient() {
                 {
                   step: '1',
                   title: 'Free Consultation',
-                  description: 'Meet with our British Council trained consultant to discuss your goals',
+                  description: 'Meet with our expert consultant to discuss your goals',
                 },
                 {
                   step: '2',

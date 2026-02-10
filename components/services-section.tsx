@@ -24,7 +24,7 @@ export function ServicesSection() {
       icon: Users,
       title: 'One to One Consultation',
       description:
-        'Personalized consultation with our British Council trained counsellors to discuss your unique educational aspirations.',
+        'Personalised consultation with our expert counsellors to discuss your unique educational aspirations.',
       href: '/services/one-to-one-consultation',
     },
     {
