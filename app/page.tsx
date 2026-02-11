@@ -8,7 +8,6 @@ import { ExploreDestinations } from '@/components/explore-destinations'
 import { ServicesSection } from '@/components/services-section'
 import { ApplicationProcess } from '@/components/application-process'
 import { TopUniversities } from '@/components/top-universities'
-import { TopCourses } from '@/components/top-courses'
 import { UpcomingEvents } from '@/components/upcoming-events'
 import { StudentTestimonials } from '@/components/student-testimonials'
 import { UniversityPartners } from '@/components/university-partners'
@@ -26,7 +25,6 @@ export default function Home() {
       <ServicesSection />
       <ApplicationProcess />
       <TopUniversities />
-      <TopCourses />
       <UpcomingEvents />
       <StudentTestimonials />
       <UniversityPartners />

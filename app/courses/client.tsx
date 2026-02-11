@@ -5,7 +5,7 @@ import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import Link from 'next/link'
 import { Course, nameToSlug } from '@/lib/supabase'
-import { ArrowRight, Clock, Zap, Search, X, Calendar } from 'lucide-react'
+import { ArrowRight, Clock, Zap, Search, X, Calendar, Sparkles } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
 interface CourseWithUniversity extends Course {
@@ -27,18 +27,38 @@ const programLevels = ['All', 'Undergraduate', 'Master', 'PhD', 'Diploma', 'Cert
 
 export function CoursesPageClient() {
   const [courses, setCourses] = useState<CourseWithUniversity[]>([])
+  const [featuredCourses, setFeaturedCourses] = useState<CourseWithUniversity[]>([])
   const [countries, setCountries] = useState<Country[]>([])
   const [loading, setLoading] = useState(false)
+  const [featuredLoading, setFeaturedLoading] = useState(true)
   const [searchResults, setSearchResults] = useState(null)
   const [hasMore, setHasMore] = useState(false)
   const [currentOffset, setCurrentOffset] = useState(0)
-  const [itemsToShow, setItemsToShow] = useState(5) // Declare itemsToShow variable
+  const [itemsToShow, setItemsToShow] = useState(5)
 
   // Filter states
   const [selectedCountry, setSelectedCountry] = useState<number | null>(null)
   const [selectedLevel, setSelectedLevel] = useState<string>('All')
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [debouncedSearch, setDebouncedSearch] = useState<string>('')
+
+  // Fetch featured courses on mount
+  useEffect(() => {
+    const fetchFeaturedCourses = async () => {
+      try {
+        setFeaturedLoading(true)
+        const response = await fetch('/api/courses?limit=6')
+        const result = await response.json()
+        setFeaturedCourses(result.data || [])
+      } catch (error) {
+        console.error('[v0] Error fetching featured courses:', error)
+      } finally {
+        setFeaturedLoading(false)
+      }
+    }
+
+    fetchFeaturedCourses()
+  }, [])
 
   // Fetch countries on mount
   useEffect(() => {
@@ -145,86 +165,177 @@ export function CoursesPageClient() {
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="mb-12">
+        {/* Hero Section */}
+        <div className="mb-16">
           <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4 text-balance">
             Explore Courses
           </h1>
           <p className="text-lg text-muted-foreground">
-            Find the perfect course tailored to your interests and goals
+            Find the perfect course tailored to your interests and goals from our partner universities worldwide
           </p>
         </div>
 
-        {/* Country Tabs */}
-        {countries.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-sm font-semibold text-foreground mb-4">Select Country</h2>
-            <div className="flex flex-wrap gap-2 mb-8 pb-4 border-b border-border">
-              {countries.map((country) => (
-                <button
-                  key={country.id}
-                  onClick={() => setSelectedCountry(country.id)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 whitespace-nowrap ${
-                    selectedCountry === country.id
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted text-foreground hover:bg-muted/80'
-                  }`}
+        {/* Featured Courses Section */}
+        {!featuredLoading && featuredCourses.length > 0 && (
+          <div className="mb-20">
+            <div className="flex items-center gap-2 mb-8">
+              <Sparkles size={24} className="text-primary" />
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+                Featured Courses
+              </h2>
+            </div>
+            <p className="text-muted-foreground mb-8 text-lg">
+              Discover cutting-edge programmes across various disciplines from our partner universities.
+            </p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredCourses.map((course) => (
+                <Link
+                  key={course.id}
+                  href={`/course/${nameToSlug(course.name, course.code)}`}
+                  className="group relative bg-gradient-to-br from-primary/5 to-accent/5 border-2 border-primary/30 rounded-xl p-6 hover:border-primary hover:shadow-xl transition-all duration-300 overflow-hidden"
                 >
-                  {country.name}
-                </button>
+                  {/* Featured badge */}
+                  <div className="absolute -top-1 -right-1 bg-primary text-primary-foreground px-3 py-1 rounded-bl-lg text-xs font-bold">
+                    Featured
+                  </div>
+
+                  <div className="flex items-start justify-between mb-3">
+                    <span
+                      className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getLevelColor(
+                        course.level,
+                      )}`}
+                    >
+                      {course.level}
+                    </span>
+                    <span className="text-xs font-mono text-muted-foreground">{course.code}</span>
+                  </div>
+
+                  <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors mb-2 line-clamp-2">
+                    {course.name}
+                  </h3>
+
+                  {course.universities && (
+                    <p className="text-sm font-medium text-primary mb-3">
+                      {typeof course.universities === 'object' && 'name' in course.universities
+                        ? course.universities.name
+                        : 'University'}
+                    </p>
+                  )}
+
+                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                    {course.description}
+                  </p>
+
+                  <div className="space-y-2 py-4 border-t border-b border-border mb-4">
+                    {course.duration_years && (
+                      <div className="flex items-center space-x-2 text-sm">
+                        <Clock size={16} className="text-primary" />
+                        <span>
+                          {course.duration_years} year{course.duration_years > 1 ? 's' : ''}
+                        </span>
+                      </div>
+                    )}
+                    {course.tuition_fees_international && (
+                      <div className="flex items-center space-x-2 text-sm">
+                        <Zap size={16} className="text-orange-500" />
+                        <span className="font-semibold">
+                          £{course.tuition_fees_international.toLocaleString()}/year
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-border group-hover:text-primary transition-colors">
+                    <span className="text-sm font-medium">Learn More</span>
+                    <ArrowRight
+                      size={16}
+                      className="group-hover:translate-x-1 transition-transform"
+                    />
+                  </div>
+                </Link>
               ))}
             </div>
           </div>
         )}
 
-        {/* Program Level Tabs */}
-        <div className="mb-8">
-          <h2 className="text-sm font-semibold text-foreground mb-4">Program Level</h2>
-          <div className="flex flex-wrap gap-2 mb-8 pb-4 border-b border-border">
-            {programLevels.map((level) => (
-              <button
-                key={level}
-                onClick={() => setSelectedLevel(level)}
-                className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 whitespace-nowrap ${
-                  selectedLevel === level
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted text-foreground hover:bg-muted/80'
-                }`}
-              >
-                {level}
-              </button>
-            ))}
-          </div>
-        </div>
+        {/* Search and Filter Section */}
+        <div className="mb-12 pt-8 border-t border-border">
+          <h2 className="text-2xl font-bold text-foreground mb-8">
+            Explore All Courses
+          </h2>
 
-        {/* Search Box */}
-        <div className="mb-12">
-          <h2 className="text-sm font-semibold text-foreground mb-4">Search Courses</h2>
-          <div className="relative">
-            <Search size={20} className="absolute left-4 top-3.5 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Search by course name, specialization, or keywords..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-10 py-3 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-4 top-3.5 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <X size={20} />
-              </button>
-            )}
+          {/* Country Tabs */}
+          {countries.length > 0 && (
+            <div className="mb-8">
+              <h3 className="text-sm font-semibold text-foreground mb-4">Select Country</h3>
+              <div className="flex flex-wrap gap-2 mb-8 pb-4 border-b border-border">
+                {countries.map((country) => (
+                  <button
+                    key={country.id}
+                    onClick={() => setSelectedCountry(country.id)}
+                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 whitespace-nowrap ${
+                      selectedCountry === country.id
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted text-foreground hover:bg-muted/80'
+                    }`}
+                  >
+                    {country.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Program Level Tabs */}
+          <div className="mb-8">
+            <h3 className="text-sm font-semibold text-foreground mb-4">Program Level</h3>
+            <div className="flex flex-wrap gap-2 mb-8 pb-4 border-b border-border">
+              {programLevels.map((level) => (
+                <button
+                  key={level}
+                  onClick={() => setSelectedLevel(level)}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 whitespace-nowrap ${
+                    selectedLevel === level
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-muted text-foreground hover:bg-muted/80'
+                  }`}
+                >
+                  {level}
+                </button>
+              ))}
+            </div>
           </div>
-          <p className="text-xs text-muted-foreground mt-2">
-            Searching in <span className="font-semibold">{selectedCountryName}</span>
-            {selectedLevel !== 'All' && (
-              <>
-                {' '}for <span className="font-semibold">{selectedLevel}</span> courses
-              </>
-            )}
-          </p>
+
+          {/* Search Box */}
+          <div className="mb-12">
+            <h3 className="text-sm font-semibold text-foreground mb-4">Search Courses</h3>
+            <div className="relative">
+              <Search size={20} className="absolute left-4 top-3.5 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Search by course name, specialization, or keywords..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-10 py-3 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-4 top-3.5 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              )}
+            </div>
+            <p className="text-xs text-muted-foreground mt-2">
+              Searching in <span className="font-semibold">{selectedCountryName}</span>
+              {selectedLevel !== 'All' && (
+                <>
+                  {' '}for <span className="font-semibold">{selectedLevel}</span> courses
+                </>
+              )}
+            </p>
+          </div>
         </div>
 
         {/* Results Section */}
