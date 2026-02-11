@@ -398,13 +398,13 @@ export function ContactPageClient() {
               </p>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
               {officeLocations.map((office, index) => (
                 <div
                   key={index}
-                  className="w-full sm:w-1/2 lg:w-1/3 flex justify-center"
+                  className="w-full max-w-sm"
                 >
-                  <div className="bg-card border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow w-full max-w-sm"
+                  <div className="bg-card border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow h-full"
                 >
                   <div className="mb-6">
                     <div className="flex items-center gap-2 mb-2">
@@ -448,7 +448,6 @@ export function ContactPageClient() {
                         {office.email}
                       </a>
                     </div>
-                  </div>
                   </div>
                 </div>
               ))}
