@@ -205,7 +205,7 @@ export function SearchFilter() {
       <div className="max-w-4xl mx-auto">
         <div className="bg-card border border-border rounded-3xl p-8">
           {/* Tabs */}
-          <div className="flex gap-6 mb-8 border-b border-border pb-4">
+          <div className="flex flex-wrap gap-2 sm:gap-6 mb-8 border-b border-border pb-4 overflow-x-auto">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
@@ -215,7 +215,7 @@ export function SearchFilter() {
                   setResults([])
                   setShowResults(false)
                 }}
-                className={`text-lg font-medium pb-2 transition-colors relative ${
+                className={`text-sm sm:text-lg font-medium pb-2 transition-colors relative whitespace-nowrap ${
                   activeTab === tab.id
                     ? 'text-primary'
                     : 'text-foreground/60 hover:text-foreground'
