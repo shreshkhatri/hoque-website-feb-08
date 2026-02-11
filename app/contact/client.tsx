@@ -114,7 +114,7 @@ export function ContactPageClient() {
       city: 'Kathmandu',
       country: 'Nepal',
       address: 'Adwait Marga, Kathmandu - 28, Putalisadak, Post Code 44600',
-      phone: '+977 XXX XXX XXXX',
+      phone: '+977 970-2691031',
       email: 'nepal@hoque.org.uk',
       label: 'Nepal Office',
     },
