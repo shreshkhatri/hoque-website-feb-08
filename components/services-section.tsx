@@ -1,6 +1,6 @@
 'use client'
 
-import { BookOpen, Compass, MessageCircle, Passport } from 'lucide-react'
+import { BookOpen, Compass, MessageCircle, FileCheck } from 'lucide-react'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
