@@ -329,10 +329,10 @@ export function ContactPageClient() {
                       <div>
                         <p className="text-sm text-muted-foreground">Email</p>
                         <a
-                          href="mailto:info@uniAdmission.co.uk"
+                          href="mailto:info@hoque.org.uk"
                           className="font-semibold text-foreground hover:text-primary transition-colors"
                         >
-                          info@uniAdmission.co.uk
+                          info@hoque.org.uk
                         </a>
                       </div>
                     </div>
@@ -345,10 +345,10 @@ export function ContactPageClient() {
                       <div>
                         <p className="text-sm text-muted-foreground">Phone</p>
                         <a
-                          href="tel:+442079460000"
+                          href="tel:+44 7878 944475"
                           className="font-semibold text-foreground hover:text-primary transition-colors"
                         >
-                          +44 (0)20 7946 0000
+                          +44 7878 944475
                         </a>
                       </div>
                     </div>
@@ -449,24 +449,6 @@ export function ContactPageClient() {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-primary/5">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-              Ready to Start Your Journey?
-            </h2>
-            <p className="text-muted-foreground text-lg mb-8">
-              Don&apos;t hesitate to reach out. Our team is ready to answer all your questions and help you achieve your educational dreams.
-            </p>
-            <a
-              href="#contact-form"
-              className="inline-block bg-primary text-primary-foreground font-semibold px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors"
-            >
-              Send a Message
-            </a>
           </div>
         </section>
       </main>
