@@ -272,6 +272,7 @@ export function ContactPageClient() {
                         <Send size={20} />
                         {loading ? 'Sending...' : 'Send Message'}
                       </button>
+                    </form>
                     </>
                   )}
                 </div>
