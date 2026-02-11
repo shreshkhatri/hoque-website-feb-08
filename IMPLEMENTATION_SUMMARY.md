@@ -64,10 +64,10 @@ A modern, professional educational consultancy website for university admissions
 
 ### Universities Table
 \`\`\`
-Columns: id, name, country, city, rank_uk, rank_world, description, 
+Columns: id, name, country, city, rank_world, description, 
          logo_url, website_url, founded_year, student_population, 
          created_at, updated_at
-Indexes: name, city, rank_uk
+Indexes: name, city
 Records: 10 partner universities (Oxford, Cambridge, Imperial, UCL, LSE, 
          Edinburgh, Manchester, Bristol, Warwick, Durham)
 \`\`\`

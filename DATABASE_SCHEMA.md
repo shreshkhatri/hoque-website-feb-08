@@ -13,7 +13,6 @@ CREATE TABLE universities (
   name VARCHAR(255) NOT NULL,
   country VARCHAR(100) NOT NULL,
   city VARCHAR(100) NOT NULL,
-  rank_uk INT,
   rank_world INT,
   description TEXT,
   logo_url VARCHAR(500),
@@ -30,7 +29,6 @@ CREATE TABLE universities (
 - `name`: University name
 - `country`: Country (e.g., "United Kingdom")
 - `city`: City location
-- `rank_uk`: UK ranking (1-10)
 - `rank_world`: World ranking
 - `description`: University description and key information
 - `logo_url`: URL to university logo

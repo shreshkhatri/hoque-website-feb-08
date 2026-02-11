@@ -137,7 +137,6 @@ universities
 ├── name (e.g., "University of Oxford")
 ├── country ("United Kingdom")
 ├── city (e.g., "Oxford")
-├── rank_uk (1-10)
 ├── rank_world (e.g., 3)
 ├── description (2-3 sentences)
 ├── website_url (https://...)
@@ -245,7 +244,7 @@ Response: { universities: [...], courses: [...] }
 ### 2. Universities API
 \`\`\`
 GET /api/universities?limit=10
-Response: [{ id, name, city, rank_uk, ... }, ...]
+Response: [{ id, name, city, rank_world, ... }, ...]
 \`\`\`
 
 ### 3. Courses API

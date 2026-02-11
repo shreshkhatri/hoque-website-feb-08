@@ -69,7 +69,6 @@ id              - Unique identifier
 name            - University name
 country         - Country (UK)
 city            - City location
-rank_uk         - UK ranking
 rank_world      - World ranking
 description     - About the university
 website_url     - Official website
