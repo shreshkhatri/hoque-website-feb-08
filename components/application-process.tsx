@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { CheckCircle2 } from 'lucide-react'
+import { CheckCircle2, BookOpen, Users, FileCheck, Zap } from 'lucide-react'
 
 export function ApplicationProcess() {
   const steps = [
@@ -10,24 +10,44 @@ export function ApplicationProcess() {
       title: '100% Free Consultation',
       description:
         'Book a free consultation with our expert counsellors to discuss your profile and goals.',
+      icon: Users,
+      bgColor: 'bg-blue-500/10',
+      borderColor: 'border-blue-200 dark:border-blue-800',
+      textColor: 'text-blue-700 dark:text-blue-300',
+      numberBg: 'bg-gradient-to-br from-blue-500 to-blue-600',
     },
     {
       number: 2,
       title: 'University Selection Process',
       description:
         'We help you identify and select universities that match your academic profile and career aspirations.',
+      icon: BookOpen,
+      bgColor: 'bg-purple-500/10',
+      borderColor: 'border-purple-200 dark:border-purple-800',
+      textColor: 'text-purple-700 dark:text-purple-300',
+      numberBg: 'bg-gradient-to-br from-purple-500 to-purple-600',
     },
     {
       number: 3,
       title: 'Pre-Arrival Checklist',
       description:
         'Get comprehensive guidance on documentation, housing, and preparation before you arrive at university.',
+      icon: FileCheck,
+      bgColor: 'bg-orange-500/10',
+      borderColor: 'border-orange-200 dark:border-orange-800',
+      textColor: 'text-orange-700 dark:text-orange-300',
+      numberBg: 'bg-gradient-to-br from-orange-500 to-orange-600',
     },
     {
       number: 4,
       title: 'IELTS/TOEFL Preparation',
       description:
         'Access resources and guidance for English language proficiency exams required for admission.',
+      icon: Zap,
+      bgColor: 'bg-cyan-500/10',
+      borderColor: 'border-cyan-200 dark:border-cyan-800',
+      textColor: 'text-cyan-700 dark:text-cyan-300',
+      numberBg: 'bg-gradient-to-br from-cyan-500 to-cyan-600',
     },
   ]
 
@@ -53,51 +73,70 @@ export function ApplicationProcess() {
 
         <div className="grid md:grid-cols-2 gap-12 mb-20">
           {/* Steps */}
-          <div className="space-y-8">
+          <div className="space-y-6">
             <h3 className="text-2xl font-bold text-foreground mb-8">
               Four Simple Steps
             </h3>
-            {steps.map((step, index) => (
-              <div key={index} className="flex gap-6">
-                <div className="flex-shrink-0">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-full bg-primary text-white font-bold text-lg">
-                    {step.number}
+            {steps.map((step, index) => {
+              const Icon = step.icon
+              return (
+                <div
+                  key={index}
+                  className={`flex gap-5 p-5 rounded-xl border ${step.bgColor} ${step.borderColor} transition-all duration-300 hover:shadow-md hover:scale-105`}
+                >
+                  <div className="flex-shrink-0">
+                    <div
+                      className={`flex items-center justify-center h-14 w-14 rounded-full ${step.numberBg} text-white font-bold text-xl shadow-lg`}
+                    >
+                      {step.number}
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-start gap-3 mb-2">
+                      <Icon className={`w-5 h-5 mt-0.5 flex-shrink-0 ${step.textColor}`} />
+                      <h4 className={`text-lg font-semibold ${step.textColor}`}>
+                        {step.title}
+                      </h4>
+                    </div>
+                    <p className="text-muted-foreground leading-relaxed ml-8">
+                      {step.description}
+                    </p>
                   </div>
                 </div>
-                <div>
-                  <h4 className="text-lg font-semibold text-foreground mb-2">
-                    {step.title}
-                  </h4>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
 
           {/* Programmes Offered */}
-          <div className="bg-card border border-border rounded-2xl p-10">
+          <div className="bg-card border border-border rounded-2xl p-10 shadow-sm hover:shadow-md transition-shadow">
             <h3 className="text-2xl font-bold text-foreground mb-8">
               Programmes Offered
             </h3>
-            <p className="text-muted-foreground mb-8 leading-relaxed">
+            <p className="text-muted-foreground mb-10 leading-relaxed">
               Browse through our partner universities to find the university and
               course best suited to you. From business to medicine, law to
               engineering - we have it all.
             </p>
 
-            <div className="space-y-4 mb-10">
+            <div className="space-y-4 mb-12">
               {programmes.map((programme, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0" />
-                  <span className="text-foreground font-medium">{programme}</span>
+                <div
+                  key={index}
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/40 transition-colors group"
+                >
+                  <div className="relative">
+                    <CheckCircle2 className="w-6 h-6 text-green-500 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                    <div className="absolute inset-0 bg-green-400/20 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                  <span className="text-foreground font-medium group-hover:text-green-600 transition-colors">
+                    {programme}
+                  </span>
                 </div>
               ))}
             </div>
 
             <Link href="/universities">
-              <button className="w-full bg-primary text-primary-foreground py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
+              <button className="w-full bg-gradient-to-r from-primary to-primary/80 text-primary-foreground py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105">
                 Explore Universities
               </button>
             </Link>
