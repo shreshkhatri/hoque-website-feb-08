@@ -31,7 +31,7 @@ export const metadata: Metadata = {
       {
         url: '/icon.png',
         width: 1200,
-        height: 1000,
+        height: 630,
         alt: 'HOQUE Consultancy - Official UK University Representative',
       },
     ],
