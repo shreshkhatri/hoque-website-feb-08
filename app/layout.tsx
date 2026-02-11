@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     siteName: 'HOQUE',
     images: [
       {
-        url: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/hoque-logo-metadata-xIEctJsEsJus4YkqRPB1b67SQjLdiX.png',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'HOQUE Consultancy - Official UK University Representative',
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'HOQUE - Your Gateway to World-Class Universities',
     description: 'Expert educational consultancy helping international students secure places at top universities worldwide. Personalised guidance for admissions, visas, scholarships, and more.',
-    images: ['https://hebbkx1anhila5yf.public.blob.vercel-storage.com/hoque-logo-metadata-xIEctJsEsJus4YkqRPB1b67SQjLdiX.png'],
+    images: ['/og-image.png'],
   },
 }
 
