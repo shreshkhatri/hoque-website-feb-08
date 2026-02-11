@@ -81,9 +81,9 @@ export function ContactPageClient() {
     {
       city: 'London',
       country: 'United Kingdom',
-      address: '119-121 Whitechapel Road (3rd Floor), London, E1 1DT, United Kingdom',
-      phone: '+44 (0)20 XXXX XXXX',
-      email: 'london@hoque.org.uk',
+      address: 'Unit 102, 65 Whitechapel High Street,E1 1DU, England',
+      phone: '+44 7878 944475',
+      email: 'info@hoque.org.uk',
       label: 'UK Head Office',
     },
     {
@@ -99,32 +99,40 @@ export function ContactPageClient() {
       country: 'Bangladesh',
       address: 'Eastern Plaza 5th Floor, Unit-6/17, Hatirpool, Dhaka-1205, Bangladesh',
       phone: '+880 XXX XXX XXXX',
-      email: 'dhaka@hoque.org.uk',
-      label: 'Dhaka Office',
-    },
-    {
-      city: 'Sylhet',
-      country: 'Bangladesh',
-      address: 'Liakat Bhaban, 2nd Floor, Jallarpar Road, West Zindabazar, Sylhet-3100',
-      phone: '+880 XXX XXX XXXX',
-      email: 'sylhet@hoque.org.uk',
-      label: 'Sylhet Office',
+      email: 'bangladesh@hoque.org.uk',
+      label: 'Bangladesh Office',
     },
     {
       city: 'Mumbai',
       country: 'India',
       address: '201, Aditya Heritage, Near Rustomjee Elanza Ave, Mindspace, Malad West, Mumbai, Maharashtra, 400064',
       phone: '+91 XXX XXX XXXX',
-      email: 'mumbai@hoque.org.uk',
-      label: 'Mumbai Office',
+      email: 'India@hoque.org.uk',
+      label: 'India Office',
     },
     {
       city: 'Kathmandu',
       country: 'Nepal',
-      address: 'TBD',
+      address: 'Adwait Marga, Kathmandu - 28, Putalisadak, Post Code 44600',
       phone: '+977 XXX XXX XXXX',
-      email: 'kathmandu@hoque.org.uk',
-      label: 'Kathmandu Office',
+      email: 'nepal@hoque.org.uk',
+      label: 'Nepal Office',
+    },
+    {
+      city: 'Colombo',
+      country: 'Sri-Lanka',
+      address: 'TBC',
+      phone: '+94 XXX XXX XXXX',
+      email: 'srilanka@hoque.org.uk',
+      label: 'Sri-Lanka Office',
+    },
+    {
+      city: 'Islamabad',
+      country: 'Pakistan',
+      address: 'TBC',
+      phone: '+92 XXX XXX XXXX',
+      email: 'pakistan@hoque.org.uk',
+      label: 'Pakistan Office',
     },
   ]
 
@@ -194,112 +202,112 @@ export function ContactPageClient() {
                           </p>
                         </div>
                       )}
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-foreground mb-2">
-                            First Name
-                          </label>
-                          <input
-                            type="text"
-                            name="firstName"
-                            value={formData.firstName}
-                            onChange={handleChange}
-                            required
-                            className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-                            placeholder="John"
-                          />
+                      <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-foreground mb-2">
+                              First Name
+                            </label>
+                            <input
+                              type="text"
+                              name="firstName"
+                              value={formData.firstName}
+                              onChange={handleChange}
+                              required
+                              className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+                              placeholder="John"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-foreground mb-2">
+                              Last Name
+                            </label>
+                            <input
+                              type="text"
+                              name="lastName"
+                              value={formData.lastName}
+                              onChange={handleChange}
+                              required
+                              className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+                              placeholder="Doe"
+                            />
+                          </div>
                         </div>
-                        <div>
-                          <label className="block text-sm font-medium text-foreground mb-2">
-                            Last Name
-                          </label>
-                          <input
-                            type="text"
-                            name="lastName"
-                            value={formData.lastName}
-                            onChange={handleChange}
-                            required
-                            className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-                            placeholder="Doe"
-                          />
-                        </div>
-                      </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-foreground mb-2">
+                              Email
+                            </label>
+                            <input
+                              type="email"
+                              name="email"
+                              value={formData.email}
+                              onChange={handleChange}
+                              required
+                              className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+                              placeholder="john@example.com"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-foreground mb-2">
+                              Phone Number
+                            </label>
+                            <input
+                              type="tel"
+                              name="phone"
+                              value={formData.phone}
+                              onChange={handleChange}
+                              className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+                              placeholder="+44 (0)20 7946 0000"
+                            />
+                          </div>
+                        </div>
+
                         <div>
                           <label className="block text-sm font-medium text-foreground mb-2">
-                            Email
+                            Subject
                           </label>
-                          <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
+                          <select
+                            name="subject"
+                            value={formData.subject}
                             onChange={handleChange}
                             required
                             className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-                            placeholder="john@example.com"
-                          />
+                          >
+                            <option value="">Select a subject</option>
+                            <option value="admission">Admission Inquiry</option>
+                            <option value="course">Course Information</option>
+                            <option value="visa">Visa & Documentation</option>
+                            <option value="scholarships">Scholarships</option>
+                            <option value="other">Other</option>
+                          </select>
                         </div>
+
                         <div>
                           <label className="block text-sm font-medium text-foreground mb-2">
-                            Phone Number
+                            Message
                           </label>
-                          <input
-                            type="tel"
-                            name="phone"
-                            value={formData.phone}
+                          <textarea
+                            name="message"
+                            value={formData.message}
                             onChange={handleChange}
-                            className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-                            placeholder="+44 (0)20 7946 0000"
+                            required
+                            rows={6}
+                            className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground resize-none"
+                            placeholder="Tell us about your university aspirations..."
                           />
                         </div>
-                      </div>
 
-                      <div>
-                        <label className="block text-sm font-medium text-foreground mb-2">
-                          Subject
-                        </label>
-                        <select
-                          name="subject"
-                          value={formData.subject}
-                          onChange={handleChange}
-                          required
-                          className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className="w-full bg-primary text-primary-foreground font-semibold py-3 rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          <option value="">Select a subject</option>
-                          <option value="admission">Admission Inquiry</option>
-                          <option value="course">Course Information</option>
-                          <option value="visa">Visa & Documentation</option>
-                          <option value="scholarships">Scholarships</option>
-                          <option value="other">Other</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-foreground mb-2">
-                          Message
-                        </label>
-                        <textarea
-                          name="message"
-                          value={formData.message}
-                          onChange={handleChange}
-                          required
-                          rows={6}
-                          className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground resize-none"
-                          placeholder="Tell us about your university aspirations..."
-                        />
-                      </div>
-
-                      <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full bg-primary text-primary-foreground font-semibold py-3 rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        <Send size={20} />
-                        {loading ? 'Sending...' : 'Send Message'}
-                      </button>
-                    </form>
+                          <Send size={20} />
+                          {loading ? 'Sending...' : 'Send Message'}
+                        </button>
+                      </form>
                     </>
                   )}
                 </div>
@@ -390,28 +398,27 @@ export function ContactPageClient() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="flex flex-wrap justify-center gap-8">
               {officeLocations.map((office, index) => (
                 <div
                   key={index}
                   className="bg-card border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+                  style={{ flex: '0 0 calc(33.333% - 2.67rem)', minWidth: '280px' }}
                 >
-                  <div className="mb-6">
-                    <div className="flex items-center gap-2 mb-2">
-                      <MapPin className="text-primary" size={24} />
-                      <h3 className="text-2xl font-bold text-foreground">
-                        {office.city}
-                      </h3>
-                    </div>
-                    <p className="text-sm font-medium text-primary">
-                      {office.label}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {office.country}
-                    </p>
+                  <div className="flex items-center gap-2 mb-2">
+                    <MapPin className="text-primary" size={24} />
+                    <h3 className="text-2xl font-bold text-foreground">
+                      {office.city}
+                    </h3>
                   </div>
+                  <p className="text-sm font-medium text-primary">
+                    {office.label}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {office.country}
+                  </p>
 
-                  <div className="space-y-4 text-sm">
+                  <div className="space-y-4 text-sm mt-6">
                     <div>
                       <p className="text-muted-foreground mb-1 font-medium">Address</p>
                       <p className="text-foreground leading-relaxed">
@@ -427,9 +434,6 @@ export function ContactPageClient() {
                       >
                         {office.phone}
                       </a>
-                      <p className="text-xs text-muted-foreground mt-0.5 italic">
-                        (To be updated)
-                      </p>
                     </div>
 
                     <div>
@@ -440,9 +444,6 @@ export function ContactPageClient() {
                       >
                         {office.email}
                       </a>
-                      <p className="text-xs text-muted-foreground mt-0.5 italic">
-                        (To be updated)
-                      </p>
                     </div>
                   </div>
                 </div>
