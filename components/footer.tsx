@@ -1,23 +1,27 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Facebook, Linkedin, Youtube, Instagram, Phone, Mail, MapPin } from 'lucide-react'
-import { supabase } from '@/lib/supabase'
+import { nameToSlug } from '@/lib/supabase'
 
-// Helper to convert name to slug
-function nameToSlug(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .trim()
-}
+export function Footer() {
+  const [countries, setCountries] = useState<{ name: string }[]>([])
 
-export async function Footer() {
-  // Fetch countries from database
-  const { data: countries } = await supabase
-    .from('countries')
-    .select('name')
-    .order('name', { ascending: true })
+  useEffect(() => {
+    async function fetchCountries() {
+      try {
+        const response = await fetch('/api/countries')
+        const data = await response.json()
+        if (Array.isArray(data)) {
+          setCountries(data)
+        }
+      } catch (error) {
+        console.error('Error fetching countries for footer:', error)
+      }
+    }
+    fetchCountries()
+  }, [])
 
   return (
     <footer className="bg-card border-t border-border">
