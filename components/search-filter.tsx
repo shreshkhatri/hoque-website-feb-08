@@ -5,7 +5,7 @@ import { Search } from 'lucide-react'
 import Link from 'next/link'
 import { nameToSlug } from '@/lib/supabase'
 
-type SearchType = 'destination' | 'university' | 'courses' | 'event'
+type SearchType = 'destination' | 'university' | 'courses' | 'intake'
 
 interface SearchResult {
   id: number
@@ -28,7 +28,7 @@ export function SearchFilter() {
     { id: 'destination', label: 'Destination' },
     { id: 'university', label: 'University' },
     { id: 'courses', label: 'Courses' },
-    { id: 'event', label: 'Event' },
+    { id: 'intake', label: 'Intake Months' },
   ]
 
   const handleSearch = async (searchQuery: string) => {
@@ -62,7 +62,7 @@ export function SearchFilter() {
       destination: 'Search for countries...',
       university: 'Please Select option',
       courses: 'Search for courses...',
-      event: 'Search for events...',
+      intake: 'Search by intake month (e.g. September, January)...',
     }
     return placeholders[activeTab]
   }
@@ -75,8 +75,8 @@ export function SearchFilter() {
         return `${result.name}${result.country ? `, ${result.country}` : ''}`
       case 'courses':
         return `${result.name}${result.university ? ` - ${result.university}` : ''}${result.country ? `, ${result.country}` : ''}`
-      case 'event':
-        return `${result.name}${result.location ? ` - ${result.location}` : ''}${result.country ? `, ${result.country}` : ''}`
+      case 'intake':
+        return `${result.name}${result.university ? ` - ${result.university}` : ''}${result.country ? `, ${result.country}` : ''}`
       default:
         return result.name
     }
@@ -90,8 +90,8 @@ export function SearchFilter() {
         return `/university/${nameToSlug(result.name)}`
       case 'courses':
         return `/course/${nameToSlug(result.name, result.code)}`
-      case 'event':
-        return `/#events`
+      case 'intake':
+        return `/course/${nameToSlug(result.name, result.code)}`
       default:
         return '/'
     }

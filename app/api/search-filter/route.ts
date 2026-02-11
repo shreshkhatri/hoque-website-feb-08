@@ -1,15 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Hardcoded events data
-const HARDCODED_EVENTS = [
-  { id: 1, name: 'Universities Application Week', location: 'Kochi, India', country: 'India' },
-  { id: 2, name: 'IELTS/PTE Preparation Workshop', location: 'Kochi, India', country: 'India' },
-  { id: 3, name: 'Universities Application Week', location: 'Dhaka, Bangladesh', country: 'Bangladesh' },
-  { id: 4, name: 'Universities Application Week', location: 'Islamabad, Pakistan', country: 'Pakistan' },
-  { id: 5, name: 'Universities Application Week', location: 'Kathmandu, Nepal', country: 'Nepal' },
-  { id: 6, name: 'Universities Application Week', location: 'Colombo, Sri Lanka', country: 'Sri Lanka' },
-]
 
 export async function GET(request: NextRequest) {
   try {
@@ -75,21 +66,40 @@ export async function GET(request: NextRequest) {
         country: c.universities?.countries?.name,
         type: 'course',
       })) || []
-    } else if (type === 'event') {
-      // Search for events using hardcoded data
-      const lowerQuery = query.toLowerCase()
-      results = HARDCODED_EVENTS.filter(
-        (e) =>
-          e.name.toLowerCase().includes(lowerQuery) ||
-          e.location.toLowerCase().includes(lowerQuery) ||
-          e.country.toLowerCase().includes(lowerQuery)
-      ).slice(0, limit).map((e) => ({
-        id: e.id,
-        name: e.name,
-        location: e.location,
-        country: e.country,
-        type: 'event',
-      }))
+    } else if (type === 'intake') {
+      // Search for courses by intake month
+      const { data: intakeData, error: intakeError } = await supabase
+        .from('course_intake_months')
+        .select('course_id, month')
+        .ilike('month', `%${query}%`)
+        .limit(50)
+
+      if (intakeError) throw intakeError
+
+      if (intakeData && intakeData.length > 0) {
+        const courseIds = [...new Set(intakeData.map((r: any) => r.course_id))]
+        const { data: coursesData, error: coursesError } = await supabase
+          .from('courses')
+          .select('id, name, code, universities(id, name, countries(id, name))')
+          .in('id', courseIds)
+          .limit(limit)
+
+        if (coursesError) throw coursesError
+
+        results = coursesData?.map((c: any) => {
+          const intakeMonths = intakeData
+            .filter((r: any) => r.course_id === c.id)
+            .map((r: any) => r.month)
+          return {
+            id: c.id,
+            name: `${c.name} (${intakeMonths.join(', ')})`,
+            code: c.code,
+            university: c.universities?.name,
+            country: c.universities?.countries?.name,
+            type: 'intake',
+          }
+        }) || []
+      }
     }
 
     return NextResponse.json({

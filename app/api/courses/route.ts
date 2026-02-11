@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
     const countryId = searchParams.get('country_id')
     const level = searchParams.get('level')
     const searchQuery = searchParams.get('search')
+    const intakeMonth = searchParams.get('intake_month')
 
     // If country filter is provided, first get university IDs for that country
     let universityIds: number[] = []
@@ -57,6 +58,23 @@ export async function GET(request: NextRequest) {
 
     if (searchQuery) {
       query = query.or(`name.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`)
+    }
+
+    // Filter by intake month using the course_intake_months junction table
+    if (intakeMonth) {
+      const { data: intakeCourseIds } = await supabase
+        .from('course_intake_months')
+        .select('course_id')
+        .eq('month', intakeMonth)
+
+      const courseIds = intakeCourseIds?.map((r) => r.course_id) || []
+      if (courseIds.length === 0) {
+        return NextResponse.json(
+          { data: [], count: 0, limit, offset, hasMore: false },
+          { status: 200 },
+        )
+      }
+      query = query.in('id', courseIds)
     }
 
     const { data, error, count } = await query.range(offset, offset + limit - 1)
