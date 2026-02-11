@@ -63,14 +63,67 @@ export function SearchFilter() {
   const handleSearch = async (searchQuery: string) => {
     setQuery(searchQuery)
 
-    // For intake tab, if an intake month is selected, search for courses with that month
-    if (activeTab === 'intake' && selectedIntake) {
+    // For intake tab with selected month, search with both intake and query
+    if (activeTab === 'intake' && selectedIntake && selectedIntake !== 'All') {
+      if (searchQuery.length === 0) {
+        // No text query, just show courses for the selected intake
+        setIsLoading(true)
+        setShowResults(true)
+
+        try {
+          const response = await fetch(
+            `/api/search-filter?q=${encodeURIComponent(selectedIntake)}&type=intake`,
+          )
+          const data = await response.json()
+          setResults(data.results || [])
+        } catch (error) {
+          console.error('[v0] Search error:', error)
+          setResults([])
+        } finally {
+          setIsLoading(false)
+        }
+        return
+      }
+
+      // With text query, search for courses matching the text in selected intake
+      if (searchQuery.length < 2) {
+        setResults([])
+        setShowResults(false)
+        return
+      }
+
       setIsLoading(true)
       setShowResults(true)
 
       try {
         const response = await fetch(
-          `/api/search-filter?q=${encodeURIComponent(selectedIntake)}&type=intake`,
+          `/api/search-filter?q=${encodeURIComponent(searchQuery)}&type=courses&intake=${encodeURIComponent(selectedIntake)}`,
+        )
+        const data = await response.json()
+        setResults(data.results || [])
+      } catch (error) {
+        console.error('[v0] Search error:', error)
+        setResults([])
+      } finally {
+        setIsLoading(false)
+      }
+      return
+    }
+
+    // For intake tab with "All" selected, search all courses
+    if (activeTab === 'intake' && selectedIntake === 'All') {
+      if (searchQuery.length < 2) {
+        setResults([])
+        setShowResults(false)
+        return
+      }
+
+      setIsLoading(true)
+      setShowResults(true)
+
+      try {
+        const response = await fetch(
+          `/api/search-filter?q=${encodeURIComponent(searchQuery)}&type=courses`,
         )
         const data = await response.json()
         setResults(data.results || [])
@@ -112,7 +165,7 @@ export function SearchFilter() {
       destination: 'Search for countries...',
       university: 'Please Select option',
       courses: 'Search for courses...',
-      intake: selectedIntake ? `Showing courses for ${selectedIntake}` : 'Select an intake month below',
+      intake: selectedIntake ? `Search courses for ${selectedIntake}...` : 'Select an intake month below',
     }
     return placeholders[activeTab]
   }
@@ -186,22 +239,43 @@ export function SearchFilter() {
                 {loadingIntakeMonths ? (
                   <div className="text-sm text-muted-foreground">Loading available months...</div>
                 ) : intakeMonths.length > 0 ? (
-                  intakeMonths.map((month) => (
+                  <>
+                    {/* All Option */}
                     <button
-                      key={month}
                       onClick={() => {
-                        setSelectedIntake(month)
-                        handleSearch('')
+                        setSelectedIntake('All')
+                        setQuery('')
+                        setResults([])
+                        setShowResults(false)
                       }}
                       className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-200 border ${
-                        selectedIntake === month
+                        selectedIntake === 'All'
                           ? 'bg-primary text-primary-foreground border-primary shadow-md'
                           : 'border-border text-foreground hover:border-primary hover:bg-primary/5'
                       }`}
                     >
-                      {month}
+                      All
                     </button>
-                  ))
+                    {/* Individual months */}
+                    {intakeMonths.map((month) => (
+                      <button
+                        key={month}
+                        onClick={() => {
+                          setSelectedIntake(month)
+                          setQuery('')
+                          setResults([])
+                          setShowResults(false)
+                        }}
+                        className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-200 border ${
+                          selectedIntake === month
+                            ? 'bg-primary text-primary-foreground border-primary shadow-md'
+                            : 'border-border text-foreground hover:border-primary hover:bg-primary/5'
+                        }`}
+                      >
+                        {month}
+                      </button>
+                    ))}
+                  </>
                 ) : (
                   <div className="text-sm text-muted-foreground">No intake months available</div>
                 )}
@@ -209,9 +283,8 @@ export function SearchFilter() {
             </div>
           )}
 
-          {/* Search and Button */}
-          {activeTab !== 'intake' && (
-            <div className="flex flex-col sm:flex-row gap-4">
+          {/* Search and Button - Show for all tabs including intake */}
+          <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1 relative">
                 <Search
                   size={20}
@@ -263,56 +336,7 @@ export function SearchFilter() {
                 Search Q
               </button>
             </div>
-          )}
 
-          {/* For Intake Tab - Show Results Grid */}
-          {activeTab === 'intake' && selectedIntake && (
-            <div className="space-y-4">
-              <button
-                onClick={() => handleSearch('')}
-                className="w-full sm:w-auto px-8 py-3 bg-primary text-primary-foreground rounded-full font-semibold hover:shadow-lg transition-shadow whitespace-nowrap"
-              >
-                {isLoading ? 'Searching...' : 'View Courses'}
-              </button>
-
-              {/* Results Section */}
-              {showResults && (
-                <div className="mt-6">
-                  {isLoading ? (
-                    <div className="text-center py-8 text-muted-foreground">
-                      <div className="inline-block">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                      </div>
-                      <p className="mt-2">Searching courses...</p>
-                    </div>
-                  ) : results.length > 0 ? (
-                    <div className="space-y-3">
-                      <p className="text-sm font-medium text-foreground">
-                        Found {results.length} course{results.length !== 1 ? 's' : ''}
-                      </p>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {results.map((result) => (
-                          <Link
-                            key={`${result.id}-${activeTab}`}
-                            href={getResultLink(result)}
-                            className="block p-4 bg-background border border-border rounded-lg hover:border-primary hover:bg-primary/5 transition-all"
-                          >
-                            <div className="font-medium text-foreground">
-                              {getResultDisplay(result)}
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="text-center py-8 text-muted-foreground">
-                      No courses found for {selectedIntake}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
         </div>
       </div>
     </section>
