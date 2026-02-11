@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   description: 'Expert educational consultancy helping international students secure places at top universities worldwide. Personalised guidance for admissions, visas, scholarships, and more.',
   generator: 'v0.app',
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
     apple: '/icon.png',
   },
   openGraph: {
