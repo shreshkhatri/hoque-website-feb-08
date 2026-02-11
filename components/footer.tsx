@@ -28,7 +28,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8 md:gap-8 gap-y-8 justify-center md:justify-start">
           {/* Study Destinations */}
-          <div className="space-y-4 md:col-span-1">
+          <div className="space-y-4 md:col-span-1 text-center md:text-left">
             <h3 className="font-semibold text-foreground text-base">Study Destinations</h3>
             <ul className="space-y-3">
               {countries && countries.length > 0 ? (
@@ -49,11 +49,11 @@ export function Footer() {
           </div>
 
           {/* Our Services */}
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 text-center md:text-left">
             <h3 className="font-semibold text-foreground text-base mb-4">Our Services</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Column 1 */}
-              <ul className="space-y-3">
+              <ul className="space-y-3 text-center md:text-left">
               {[
                 { label: 'One to One', href: '/services/one-to-one-consultation' },
                 { label: 'University Selection', href: '/services/uk-university-selection' },
@@ -72,7 +72,7 @@ export function Footer() {
                 ))}
               </ul>
               {/* Column 2 */}
-              <ul className="space-y-3">
+              <ul className="space-y-3 text-center md:text-left">
               {[
                 { label: 'VISA Application Support', href: '/services/visa-application-support' },
                 { label: 'Scholarships & Funding Support', href: '/services/scholarships-funding-support' },
@@ -93,7 +93,7 @@ export function Footer() {
           </div>
 
           {/* Quick Links */}
-          <div className="space-y-4 md:col-span-1">
+          <div className="space-y-4 md:col-span-1 text-center md:text-left">
             <h3 className="font-semibold text-foreground text-base">Quick Links</h3>
             <ul className="space-y-3">
               {[
@@ -114,12 +114,12 @@ export function Footer() {
           </div>
 
           {/* Follow / Brand */}
-          <div className="md:col-span-1 space-y-4">
+          <div className="md:col-span-1 space-y-4 text-center md:text-left">
             <h3 className="font-semibold text-foreground text-base">Follow</h3>
-            <div className="space-y-4">
+            <div className="space-y-4 flex flex-col items-center md:items-start">
               <img src="/hoque-logo.png" alt="HOQUE" className="h-8 w-auto mb-4" />
               {/* Social Media Links */}
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center justify-center md:justify-start space-x-4">
                 <a
                   href="https://facebook.com"
                   target="_blank"
@@ -167,9 +167,9 @@ export function Footer() {
             <h3 className="font-semibold text-foreground text-base mb-4 text-center md:text-left">Global Head Office</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-center md:justify-start">
               {/* Address */}
-              <div className="flex gap-2">
+              <div className="flex flex-col items-center md:flex-row md:items-start gap-2">
                 <MapPin size={20} className="flex-shrink-0 text-primary mt-0.5" />
-                <div>
+                <div className="text-center md:text-left">
                   <p className="font-medium text-foreground mb-2">Address</p>
                   <p>HOQUE</p>
                   <p>Unit 102, 65 Whitechapel High Street</p>
@@ -178,9 +178,9 @@ export function Footer() {
                 </div>
               </div>
               {/* Phone */}
-              <div className="flex items-start gap-2">
+              <div className="flex flex-col items-center md:flex-row md:items-start gap-2">
                 <Phone size={20} className="flex-shrink-0 text-primary mt-0.5" />
-                <div>
+                <div className="text-center md:text-left">
                   <p className="font-medium text-foreground mb-2">Phone</p>
                   <a 
                     href="tel:+447878944475" 
@@ -191,9 +191,9 @@ export function Footer() {
                 </div>
               </div>
               {/* Email */}
-              <div className="flex items-start gap-2">
+              <div className="flex flex-col items-center md:flex-row md:items-start gap-2">
                 <Mail size={20} className="flex-shrink-0 text-primary mt-0.5" />
-                <div>
+                <div className="text-center md:text-left">
                   <p className="font-medium text-foreground mb-2">Email</p>
                   <a 
                     href="mailto:Info@hoque.org.uk" 
