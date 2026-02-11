@@ -40,7 +40,7 @@ export function ServicesSection() {
       accentColor: 'group-hover:bg-amber-100',
     },
     {
-      icon: Passport,
+      icon: FileCheck,
       title: 'VISA Application Support',
       description:
         'Comprehensive support with student visa applications, documentation, and interview preparation.',
