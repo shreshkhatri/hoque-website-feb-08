@@ -398,11 +398,12 @@ export function ContactPageClient() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-auto" style={{ maxWidth: 'fit-content' }}>
+            <div className="flex flex-wrap justify-center gap-8">
               {officeLocations.map((office, index) => (
                 <div
                   key={index}
-                  className="bg-card border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow w-full max-w-sm"
+                  className="bg-card border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+                  style={{ flex: '0 0 calc(33.333% - 2.67rem)', minWidth: '280px' }}
                 >
                   <div className="flex items-center gap-2 mb-2">
                     <MapPin className="text-primary" size={24} />
