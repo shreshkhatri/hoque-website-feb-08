@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: '%s | HOQUE',
     default: 'HOQUE - Your Gateway to World-Class Universities',
   },
-  description: 'Expert educational consultancy helping international students secure places at top universities worldwide. Personalised guidance for admissions, visas, scholarships, and more.',
+  description: 'Expert educational institute helping international students secure places at top universities worldwide. Personalised guidance for admissions, visas, scholarships, and more.',
   generator: 'v0.app',
   icons: {
     icon: '/favicon.png',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'HOQUE - Your Gateway to World-Class Universities',
-    description: 'Expert educational consultancy helping international students secure places at top universities worldwide. Personalised guidance for admissions, visas, scholarships, and more.',
+    description: 'Expert educational institute helping international students secure places at top universities worldwide. Personalised guidance for admissions, visas, scholarships, and more.',
     url: 'https://www.hoque.org.uk',
     siteName: 'HOQUE',
     images: [
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
         url: '/icon.png',
         width: 1200,
         height: 630,
-        alt: 'HOQUE Consultancy - Official UK University Representative',
+        alt: 'HOQUE  - Official UK University Representative',
       },
     ],
     locale: 'en_GB',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'HOQUE - Your Gateway to World-Class Universities',
-    description: 'Expert educational consultancy helping international students secure places at top universities worldwide. Personalised guidance for admissions, visas, scholarships, and more.',
+    description: 'Expert educational institute helping international students secure places at top universities worldwide. Personalised guidance for admissions, visas, scholarships, and more.',
     images: ['/icon.png'],
   },
 }
