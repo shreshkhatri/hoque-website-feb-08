@@ -29,6 +29,7 @@ export function CoursesPageClient() {
   const [courses, setCourses] = useState<CourseWithUniversity[]>([])
   const [featuredCourses, setFeaturedCourses] = useState<CourseWithUniversity[]>([])
   const [countries, setCountries] = useState<Country[]>([])
+  const [intakeMonths, setIntakeMonths] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
   const [featuredLoading, setFeaturedLoading] = useState(true)
   const [searchResults, setSearchResults] = useState(null)
@@ -39,6 +40,7 @@ export function CoursesPageClient() {
   // Filter states
   const [selectedCountry, setSelectedCountry] = useState<number | null>(null)
   const [selectedLevel, setSelectedLevel] = useState<string>('All')
+  const [selectedIntake, setSelectedIntake] = useState<string>('All')
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [debouncedSearch, setDebouncedSearch] = useState<string>('')
 
@@ -83,6 +85,26 @@ export function CoursesPageClient() {
     fetchCountries()
   }, [])
 
+  // Fetch distinct intake months on mount
+  useEffect(() => {
+    const fetchIntakeMonths = async () => {
+      try {
+        const { data } = await supabase
+          .from('course_intake_months')
+          .select('month')
+        
+        if (data) {
+          const uniqueMonths = [...new Set(data.map((d: { month: string }) => d.month))].sort()
+          setIntakeMonths(uniqueMonths)
+        }
+      } catch (error) {
+        console.error('[v0] Error fetching intake months:', error)
+      }
+    }
+
+    fetchIntakeMonths()
+  }, [])
+
   // Debounce search query
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -97,7 +119,7 @@ export function CoursesPageClient() {
     if (selectedCountry) {
       fetchCourses(true)
     }
-  }, [selectedCountry, selectedLevel, debouncedSearch])
+  }, [selectedCountry, selectedLevel, selectedIntake, debouncedSearch])
 
   const fetchCourses = async (reset = true) => {
     try {
@@ -111,6 +133,9 @@ export function CoursesPageClient() {
       }
       if (selectedLevel && selectedLevel !== 'All') {
         url.searchParams.append('level', selectedLevel)
+      }
+      if (selectedIntake && selectedIntake !== 'All') {
+        url.searchParams.append('intake_month', selectedIntake)
       }
       if (debouncedSearch) {
         url.searchParams.append('search', debouncedSearch)
@@ -224,6 +249,38 @@ export function CoursesPageClient() {
                   </div>
                 </div>
 
+                {/* Intake Month Tabs */}
+                {intakeMonths.length > 0 && (
+                  <div className="mb-8">
+                    <h3 className="text-sm font-semibold text-foreground mb-4">Intake Month</h3>
+                    <div className="flex flex-wrap gap-2">
+                      <button
+                        onClick={() => setSelectedIntake('All')}
+                        className={`px-4 py-2 rounded-full font-medium transition-all duration-200 border ${
+                          selectedIntake === 'All'
+                            ? 'bg-primary text-primary-foreground border-primary'
+                            : 'border-border text-foreground hover:border-primary hover:text-primary'
+                        }`}
+                      >
+                        All
+                      </button>
+                      {intakeMonths.map((month) => (
+                        <button
+                          key={month}
+                          onClick={() => setSelectedIntake(month)}
+                          className={`px-4 py-2 rounded-full font-medium transition-all duration-200 border ${
+                            selectedIntake === month
+                              ? 'bg-primary text-primary-foreground border-primary'
+                              : 'border-border text-foreground hover:border-primary hover:text-primary'
+                          }`}
+                        >
+                          {month}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Search Box */}
                 <div>
                   <h3 className="text-sm font-semibold text-foreground mb-4">Search Courses</h3>
@@ -250,6 +307,11 @@ export function CoursesPageClient() {
                     {selectedLevel !== 'All' && (
                       <>
                         {' '}for <span className="font-semibold">{selectedLevel}</span> courses
+                      </>
+                    )}
+                    {selectedIntake !== 'All' && (
+                      <>
+                        {' '}with <span className="font-semibold">{selectedIntake}</span> intake
                       </>
                     )}
                   </p>
