@@ -398,28 +398,26 @@ export function ContactPageClient() {
               </p>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-auto" style={{ maxWidth: 'fit-content' }}>
               {officeLocations.map((office, index) => (
                 <div
                   key={index}
-                  className="w-full sm:w-1/3 flex justify-center"
+                  className="bg-card border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow w-full max-w-sm"
                 >
-                  <div className="bg-card border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow h-full w-full max-w-sm">
-                    <div className="flex items-center gap-2 mb-2">
-                      <MapPin className="text-primary" size={24} />
-                      <h3 className="text-2xl font-bold text-foreground">
-                        {office.city}
-                      </h3>
-                    </div>
-                    <p className="text-sm font-medium text-primary">
-                      {office.label}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {office.country}
-                    </p>
+                  <div className="flex items-center gap-2 mb-2">
+                    <MapPin className="text-primary" size={24} />
+                    <h3 className="text-2xl font-bold text-foreground">
+                      {office.city}
+                    </h3>
                   </div>
+                  <p className="text-sm font-medium text-primary">
+                    {office.label}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {office.country}
+                  </p>
 
-                  <div className="space-y-4 text-sm">
+                  <div className="space-y-4 text-sm mt-6">
                     <div>
                       <p className="text-muted-foreground mb-1 font-medium">Address</p>
                       <p className="text-foreground leading-relaxed">
@@ -445,7 +443,7 @@ export function ContactPageClient() {
                       >
                         {office.email}
                       </a>
-                  </div>
+                    </div>
                   </div>
                 </div>
               ))}
