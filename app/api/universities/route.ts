@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     let query = supabase
       .from('universities')
       .select('*', { count: 'exact' })
-      .order('rank_uk', { ascending: true })
+      .order('id', { ascending: true })
 
     // Filter by country if provided
     if (countryId) {

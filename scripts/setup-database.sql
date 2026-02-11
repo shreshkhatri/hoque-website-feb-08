@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS universities (
   name VARCHAR(255) NOT NULL,
   country VARCHAR(100) NOT NULL,
   city VARCHAR(100) NOT NULL,
-  rank_uk INT,
   rank_world INT,
   description TEXT,
   logo_url VARCHAR(500),

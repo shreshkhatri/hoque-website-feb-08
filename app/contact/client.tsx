@@ -80,24 +80,51 @@ export function ContactPageClient() {
   const officeLocations = [
     {
       city: 'London',
-      address: '125 Kingsway, London WC2B 6NH, United Kingdom',
-      phone: '+44 (0)20 7946 0000',
-      email: 'london@uniAdmission.co.uk',
-      hours: 'Mon - Fri: 9:00 AM - 6:00 PM',
+      country: 'United Kingdom',
+      address: '119-121 Whitechapel Road (3rd Floor), London, E1 1DT, United Kingdom',
+      phone: '+44 (0)20 XXXX XXXX',
+      email: 'london@hoque.org.uk',
+      label: 'UK Head Office',
     },
     {
-      city: 'Manchester',
-      address: '42 Deansgate, Manchester M3 2BA, United Kingdom',
-      phone: '+44 (0)161 222 5000',
-      email: 'manchester@uniAdmission.co.uk',
-      hours: 'Mon - Fri: 9:00 AM - 5:30 PM',
+      city: 'New York',
+      country: 'USA',
+      address: '1362 Ocean Ave, Brooklyn, HOQ1230, USA',
+      phone: '+1 XXX XXX XXXX',
+      email: 'newyork@hoque.org.uk',
+      label: 'New York Office',
     },
     {
-      city: 'Edinburgh',
-      address: '88 Princes Street, Edinburgh EH2 2ER, United Kingdom',
-      phone: '+44 (0)131 225 7000',
-      email: 'edinburgh@uniAdmission.co.uk',
-      hours: 'Mon - Fri: 9:00 AM - 5:30 PM',
+      city: 'Dhaka',
+      country: 'Bangladesh',
+      address: 'Eastern Plaza 5th Floor, Unit-6/17, Hatirpool, Dhaka-1205, Bangladesh',
+      phone: '+880 XXX XXX XXXX',
+      email: 'dhaka@hoque.org.uk',
+      label: 'Dhaka Office',
+    },
+    {
+      city: 'Sylhet',
+      country: 'Bangladesh',
+      address: 'Liakat Bhaban, 2nd Floor, Jallarpar Road, West Zindabazar, Sylhet-3100',
+      phone: '+880 XXX XXX XXXX',
+      email: 'sylhet@hoque.org.uk',
+      label: 'Sylhet Office',
+    },
+    {
+      city: 'Mumbai',
+      country: 'India',
+      address: '201, Aditya Heritage, Near Rustomjee Elanza Ave, Mindspace, Malad West, Mumbai, Maharashtra, 400064',
+      phone: '+91 XXX XXX XXXX',
+      email: 'mumbai@hoque.org.uk',
+      label: 'Mumbai Office',
+    },
+    {
+      city: 'Kathmandu',
+      country: 'Nepal',
+      address: 'TBD',
+      phone: '+977 XXX XXX XXXX',
+      email: 'kathmandu@hoque.org.uk',
+      label: 'Kathmandu Office',
     },
   ]
 
@@ -356,56 +383,65 @@ export function ContactPageClient() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-foreground mb-4">
-                Our UK Offices
+                Our Global Offices
               </h2>
               <p className="text-muted-foreground text-lg">
-                Visit us at any of our locations
+                Visit us at any of our international locations
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {officeLocations.map((office, index) => (
                 <div
                   key={index}
                   className="bg-card border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
                 >
-                  <h3 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
-                    <MapPin className="text-primary" size={28} />
-                    {office.city}
-                  </h3>
+                  <div className="mb-6">
+                    <div className="flex items-center gap-2 mb-2">
+                      <MapPin className="text-primary" size={24} />
+                      <h3 className="text-2xl font-bold text-foreground">
+                        {office.city}
+                      </h3>
+                    </div>
+                    <p className="text-sm font-medium text-primary">
+                      {office.label}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {office.country}
+                    </p>
+                  </div>
 
                   <div className="space-y-4 text-sm">
                     <div>
-                      <p className="text-muted-foreground mb-1">Address</p>
-                      <p className="font-medium text-foreground">
+                      <p className="text-muted-foreground mb-1 font-medium">Address</p>
+                      <p className="text-foreground leading-relaxed">
                         {office.address}
                       </p>
                     </div>
 
                     <div>
-                      <p className="text-muted-foreground mb-1">Phone</p>
+                      <p className="text-muted-foreground mb-1 font-medium">Phone</p>
                       <a
-                        href={`tel:${office.phone}`}
-                        className="font-medium text-primary hover:underline"
+                        href={`tel:${office.phone.replace(/\s/g, '')}`}
+                        className="text-primary hover:underline"
                       >
                         {office.phone}
                       </a>
+                      <p className="text-xs text-muted-foreground mt-0.5 italic">
+                        (To be updated)
+                      </p>
                     </div>
 
                     <div>
-                      <p className="text-muted-foreground mb-1">Email</p>
+                      <p className="text-muted-foreground mb-1 font-medium">Email</p>
                       <a
                         href={`mailto:${office.email}`}
-                        className="font-medium text-primary hover:underline"
+                        className="text-primary hover:underline break-all"
                       >
                         {office.email}
                       </a>
-                    </div>
-
-                    <div>
-                      <p className="text-muted-foreground mb-1">Hours</p>
-                      <p className="font-medium text-foreground">
-                        {office.hours}
+                      <p className="text-xs text-muted-foreground mt-0.5 italic">
+                        (To be updated)
                       </p>
                     </div>
                   </div>

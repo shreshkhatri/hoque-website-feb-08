@@ -63,7 +63,6 @@ Your Hoque website is fully integrated with Supabase. All database operations, s
 - country (text)
 - country_id (int, foreign key)
 - city (text)
-- rank_uk (int)
 - rank_world (int)
 - description (text)
 - logo_url (text)

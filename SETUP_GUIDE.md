@@ -61,7 +61,7 @@ Visit the preview and click on "Universities" or "Courses" to see if data loads.
 \`\`\`
 - id (unique identifier)
 - name, city, country
-- rank_uk, rank_world
+- rank_world
 - description
 - website_url, logo_url
 - founded_year
