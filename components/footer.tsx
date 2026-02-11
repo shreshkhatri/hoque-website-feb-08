@@ -22,10 +22,41 @@ export async function Footer() {
   return (
     <footer className="bg-card border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-8 mb-8">
-          {/* Meet Us - Two Column Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
+          {/* Study Destinations */}
+          <div className="space-y-4 md:col-span-1">
+            <h3 className="font-semibold text-foreground text-base">Study Destinations</h3>
+            <ul className="space-y-3">
+              {countries && countries.length > 0 ? (
+                countries.slice(0, 5).map((country) => (
+                  <li key={country.name}>
+                    <Link
+                      href={`/country/${nameToSlug(country.name)}`}
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      Study in {country.name}
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <li className="text-sm text-muted-foreground">No destinations available</li>
+              )}
+              {countries && countries.length > 5 && (
+                <li>
+                  <Link
+                    href="/countries"
+                    className="text-sm text-primary hover:underline font-medium"
+                  >
+                    View all →
+                  </Link>
+                </li>
+              )}
+            </ul>
+          </div>
+
+          {/* Our Services */}
           <div className="md:col-span-2">
-            <h3 className="font-semibold text-foreground text-base mb-4">Meet Us</h3>
+            <h3 className="font-semibold text-foreground text-base mb-4">Our Services</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Column 1 */}
               <ul className="space-y-3">
@@ -67,40 +98,6 @@ export async function Footer() {
             </div>
           </div>
 
-          {/* Global Head Office */}
-          <div className="space-y-4 md:col-span-1">
-            <h3 className="font-semibold text-foreground text-base">Global Head Office</h3>
-            <div className="space-y-3 text-xs text-muted-foreground">
-              <div className="flex gap-2">
-                <MapPin size={20} className="flex-shrink-0 text-primary mt-0.5" />
-                <div>
-                  <p>HOQUE</p>
-                  <p>Unit 102, 65 Whitechapel High Street</p>
-                  <p>London, England</p>
-                  <p>E1 1DU, United Kingdom</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone size={18} className="flex-shrink-0 text-primary" />
-                <a 
-                  href="tel:+447878944475" 
-                  className="hover:text-primary transition-colors font-medium"
-                >
-                  +44 7878 944475
-                </a>
-              </div>
-              <div className="flex items-center gap-2">
-                <Mail size={18} className="flex-shrink-0 text-primary" />
-                <a 
-                  href="mailto:Info@hoque.org.uk" 
-                  className="hover:text-primary transition-colors font-medium"
-                >
-                  Info@hoque.org.uk
-                </a>
-              </div>
-            </div>
-          </div>
-
           {/* Quick Links */}
           <div className="space-y-4 md:col-span-1">
             <h3 className="font-semibold text-foreground text-base">Quick Links</h3>
@@ -119,37 +116,6 @@ export async function Footer() {
                   </Link>
                 </li>
               ))}
-            </ul>
-          </div>
-
-          {/* Study Destinations */}
-          <div className="space-y-4 md:col-span-1">
-            <h3 className="font-semibold text-foreground text-base">Study Destinations</h3>
-            <ul className="space-y-3">
-              {countries && countries.length > 0 ? (
-                countries.slice(0, 5).map((country) => (
-                  <li key={country.name}>
-                    <Link
-                      href={`/country/${nameToSlug(country.name)}`}
-                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      Study in {country.name}
-                    </Link>
-                  </li>
-                ))
-              ) : (
-                <li className="text-sm text-muted-foreground">No destinations available</li>
-              )}
-              {countries && countries.length > 5 && (
-                <li>
-                  <Link
-                    href="/countries"
-                    className="text-sm text-primary hover:underline font-medium"
-                  >
-                    View all →
-                  </Link>
-                </li>
-              )}
             </ul>
           </div>
 
@@ -196,6 +162,52 @@ export async function Footer() {
                 >
                   <Instagram size={24} />
                 </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Global Head Office Details - Below Social Media Links */}
+        <div className="bg-muted/50 rounded-lg p-6 mb-8">
+          <div className="space-y-3 text-xs text-muted-foreground">
+            <h3 className="font-semibold text-foreground text-base mb-4">Global Head Office</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Address */}
+              <div className="flex gap-2">
+                <MapPin size={20} className="flex-shrink-0 text-primary mt-0.5" />
+                <div>
+                  <p className="font-medium text-foreground mb-2">Address</p>
+                  <p>HOQUE</p>
+                  <p>Unit 102, 65 Whitechapel High Street</p>
+                  <p>London, England</p>
+                  <p>E1 1DU, United Kingdom</p>
+                </div>
+              </div>
+              {/* Phone */}
+              <div className="flex items-start gap-2">
+                <Phone size={20} className="flex-shrink-0 text-primary mt-0.5" />
+                <div>
+                  <p className="font-medium text-foreground mb-2">Phone</p>
+                  <a 
+                    href="tel:+447878944475" 
+                    className="hover:text-primary transition-colors font-medium text-sm"
+                  >
+                    +44 7878 944475
+                  </a>
+                </div>
+              </div>
+              {/* Email */}
+              <div className="flex items-start gap-2">
+                <Mail size={20} className="flex-shrink-0 text-primary mt-0.5" />
+                <div>
+                  <p className="font-medium text-foreground mb-2">Email</p>
+                  <a 
+                    href="mailto:Info@hoque.org.uk" 
+                    className="hover:text-primary transition-colors font-medium text-sm"
+                  >
+                    Info@hoque.org.uk
+                  </a>
+                </div>
               </div>
             </div>
           </div>
