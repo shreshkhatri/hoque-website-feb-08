@@ -257,9 +257,9 @@ export function CoursesPageClient() {
             </div>
           </div>
 
-          {/* Featured Courses Section */}
+          {/* Featured Courses Section - Moved to Bottom */}
           {!featuredLoading && featuredCourses.length > 0 && (
-            <div>
+            <div className="pt-12 border-t border-border">
               <div className="flex items-center gap-2 mb-8">
                 <Sparkles size={24} className="text-primary" />
                 <h2 className="text-2xl md:text-3xl font-bold text-foreground">
