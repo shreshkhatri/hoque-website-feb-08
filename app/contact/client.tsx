@@ -121,7 +121,7 @@ export function ContactPageClient() {
     {
       city: 'Colombo',
       country: 'Sri-Lanka',
-      address: 'Adwait Marga, Kathmandu - 28, Putalisadak, Post Code 44600',
+      address: 'TBC',
       phone: '+94 XXX XXX XXXX',
       email: 'srilanka@hoque.org.uk',
       label: 'Sri-Lanka Office',
@@ -202,112 +202,112 @@ export function ContactPageClient() {
                           </p>
                         </div>
                       )}
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-foreground mb-2">
-                            First Name
-                          </label>
-                          <input
-                            type="text"
-                            name="firstName"
-                            value={formData.firstName}
-                            onChange={handleChange}
-                            required
-                            className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-                            placeholder="John"
-                          />
+                      <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-foreground mb-2">
+                              First Name
+                            </label>
+                            <input
+                              type="text"
+                              name="firstName"
+                              value={formData.firstName}
+                              onChange={handleChange}
+                              required
+                              className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+                              placeholder="John"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-foreground mb-2">
+                              Last Name
+                            </label>
+                            <input
+                              type="text"
+                              name="lastName"
+                              value={formData.lastName}
+                              onChange={handleChange}
+                              required
+                              className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+                              placeholder="Doe"
+                            />
+                          </div>
                         </div>
-                        <div>
-                          <label className="block text-sm font-medium text-foreground mb-2">
-                            Last Name
-                          </label>
-                          <input
-                            type="text"
-                            name="lastName"
-                            value={formData.lastName}
-                            onChange={handleChange}
-                            required
-                            className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-                            placeholder="Doe"
-                          />
-                        </div>
-                      </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-foreground mb-2">
+                              Email
+                            </label>
+                            <input
+                              type="email"
+                              name="email"
+                              value={formData.email}
+                              onChange={handleChange}
+                              required
+                              className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+                              placeholder="john@example.com"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-foreground mb-2">
+                              Phone Number
+                            </label>
+                            <input
+                              type="tel"
+                              name="phone"
+                              value={formData.phone}
+                              onChange={handleChange}
+                              className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+                              placeholder="+44 (0)20 7946 0000"
+                            />
+                          </div>
+                        </div>
+
                         <div>
                           <label className="block text-sm font-medium text-foreground mb-2">
-                            Email
+                            Subject
                           </label>
-                          <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
+                          <select
+                            name="subject"
+                            value={formData.subject}
                             onChange={handleChange}
                             required
                             className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-                            placeholder="john@example.com"
-                          />
+                          >
+                            <option value="">Select a subject</option>
+                            <option value="admission">Admission Inquiry</option>
+                            <option value="course">Course Information</option>
+                            <option value="visa">Visa & Documentation</option>
+                            <option value="scholarships">Scholarships</option>
+                            <option value="other">Other</option>
+                          </select>
                         </div>
+
                         <div>
                           <label className="block text-sm font-medium text-foreground mb-2">
-                            Phone Number
+                            Message
                           </label>
-                          <input
-                            type="tel"
-                            name="phone"
-                            value={formData.phone}
+                          <textarea
+                            name="message"
+                            value={formData.message}
                             onChange={handleChange}
-                            className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
-                            placeholder="+44 (0)20 7946 0000"
+                            required
+                            rows={6}
+                            className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground resize-none"
+                            placeholder="Tell us about your university aspirations..."
                           />
                         </div>
-                      </div>
 
-                      <div>
-                        <label className="block text-sm font-medium text-foreground mb-2">
-                          Subject
-                        </label>
-                        <select
-                          name="subject"
-                          value={formData.subject}
-                          onChange={handleChange}
-                          required
-                          className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground"
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className="w-full bg-primary text-primary-foreground font-semibold py-3 rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          <option value="">Select a subject</option>
-                          <option value="admission">Admission Inquiry</option>
-                          <option value="course">Course Information</option>
-                          <option value="visa">Visa & Documentation</option>
-                          <option value="scholarships">Scholarships</option>
-                          <option value="other">Other</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-foreground mb-2">
-                          Message
-                        </label>
-                        <textarea
-                          name="message"
-                          value={formData.message}
-                          onChange={handleChange}
-                          required
-                          rows={6}
-                          className="w-full px-4 py-3 bg-muted border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-foreground resize-none"
-                          placeholder="Tell us about your university aspirations..."
-                        />
-                      </div>
-
-                      <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full bg-primary text-primary-foreground font-semibold py-3 rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        <Send size={20} />
-                        {loading ? 'Sending...' : 'Send Message'}
-                      </button>
-                    </form>
+                          <Send size={20} />
+                          {loading ? 'Sending...' : 'Send Message'}
+                        </button>
+                      </form>
                     </>
                   )}
                 </div>
@@ -398,11 +398,13 @@ export function ContactPageClient() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="flex flex-wrap justify-center gap-8">
               {officeLocations.map((office, index) => (
                 <div
                   key={index}
-                  className="bg-card border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+                  className="w-full sm:w-1/2 lg:w-1/3 flex justify-center"
+                >
+                  <div className="bg-card border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow w-full max-w-sm"
                 >
                   <div className="mb-6">
                     <div className="flex items-center gap-2 mb-2">
@@ -446,6 +448,7 @@ export function ContactPageClient() {
                         {office.email}
                       </a>
                     </div>
+                  </div>
                   </div>
                 </div>
               ))}
