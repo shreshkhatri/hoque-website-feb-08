@@ -5,67 +5,67 @@
 -- 550+ courses across 7 countries with accurate details
 
 -- INSERT UNIVERSITIES FOR UNITED KINGDOM (country_id: 1)
-INSERT INTO public.universities (name, city, country_id, description, website) VALUES
-('University of Oxford', 'Oxford', 1, 'World-renowned institution with centuries of academic excellence and leading research', 'https://www.ox.ac.uk'),
-('University of Cambridge', 'Cambridge', 1, 'Premier research university with exceptional teaching standards and historic prestige', 'https://www.cam.ac.uk'),
-('London School of Economics', 'London', 1, 'Leading university for economics, business, and social sciences with global reputation', 'https://www.lse.ac.uk'),
-('Imperial College London', 'London', 1, 'Excellence in science, engineering, medicine and business with cutting-edge research', 'https://www.imperial.ac.uk'),
-('University of Manchester', 'Manchester', 1, 'Innovative research university with strong industry connections and comprehensive programs', 'https://www.manchester.ac.uk'),
-('University College London', 'London', 1, 'Leading multidisciplinary university in central London with global reach', 'https://www.ucl.ac.uk');
+INSERT INTO public.universities (name, city, country_id, description) VALUES
+('University of Oxford', 'Oxford', 1, 'World-renowned institution with centuries of academic excellence and leading research'),
+('University of Cambridge', 'Cambridge', 1, 'Premier research university with exceptional teaching standards and historic prestige'),
+('London School of Economics', 'London', 1, 'Leading university for economics, business, and social sciences with global reputation'),
+('Imperial College London', 'London', 1, 'Excellence in science, engineering, medicine and business with cutting-edge research'),
+('University of Manchester', 'Manchester', 1, 'Innovative research university with strong industry connections and comprehensive programs'),
+('University College London', 'London', 1, 'Leading multidisciplinary university in central London with global reach');
 
 -- INSERT UNIVERSITIES FOR AUSTRALIA (country_id: 2)
-INSERT INTO public.universities (name, city, country_id, description, website) VALUES
-('University of Melbourne', 'Melbourne', 2, 'Australia''s leading research university with global reputation and innovation focus', 'https://www.unimelb.edu.au'),
-('University of Sydney', 'Sydney', 2, 'Historic university with excellence across all disciplines and strong community', 'https://www.sydney.edu.au'),
-('University of New South Wales', 'Sydney', 2, 'Innovation-focused university with strong engineering and technology programs', 'https://www.unsw.edu.au'),
-('Australian National University', 'Canberra', 2, 'Premier research institution in Australia''s capital with world-class facilities', 'https://www.anu.edu.au'),
-('Monash University', 'Melbourne', 2, 'Comprehensive university with international perspective and research excellence', 'https://www.monash.edu.au'),
-('University of Queensland', 'Brisbane', 2, 'Leading research university in subtropical region with strong STEM programs', 'https://www.uq.edu.au');
+INSERT INTO public.universities (name, city, country_id, description) VALUES
+('University of Melbourne', 'Melbourne', 2, 'Australia''s leading research university with global reputation and innovation focus'),
+('University of Sydney', 'Sydney', 2, 'Historic university with excellence across all disciplines and strong community'),
+('University of New South Wales', 'Sydney', 2, 'Innovation-focused university with strong engineering and technology programs'),
+('Australian National University', 'Canberra', 2, 'Premier research institution in Australia''s capital with world-class facilities'),
+('Monash University', 'Melbourne', 2, 'Comprehensive university with international perspective and research excellence'),
+('University of Queensland', 'Brisbane', 2, 'Leading research university in subtropical region with strong STEM programs');
 
 -- INSERT UNIVERSITIES FOR IRELAND (country_id: 3)
-INSERT INTO public.universities (name, city, country_id, description, website) VALUES
-('University of Dublin - Trinity College', 'Dublin', 3, 'Ireland''s oldest university with world-class reputation and research excellence', 'https://www.tcd.ie'),
-('University College Dublin', 'Dublin', 3, 'Leading research university in Ireland with comprehensive programs', 'https://www.ucd.ie'),
-('University College Cork', 'Cork', 3, 'Ireland''s oldest university outside Dublin with strong research focus', 'https://www.ucc.ie'),
-('National University of Ireland Galway', 'Galway', 3, 'Research-focused university on Ireland''s west coast', 'https://www.nuigalway.ie'),
-('Dublin City University', 'Dublin', 3, 'Innovation-focused university with industry partnerships', 'https://www.dcu.ie'),
-('Maynooth University', 'Maynooth', 3, 'Historic university focused on research and teaching', 'https://www.maynoothuniversity.ie');
+INSERT INTO public.universities (name, city, country_id, description) VALUES
+('University of Dublin - Trinity College', 'Dublin', 3, 'Ireland''s oldest university with world-class reputation and research excellence'),
+('University College Dublin', 'Dublin', 3, 'Leading research university in Ireland with comprehensive programs'),
+('University College Cork', 'Cork', 3, 'Ireland''s oldest university outside Dublin with strong research focus'),
+('National University of Ireland Galway', 'Galway', 3, 'Research-focused university on Ireland''s west coast'),
+('Dublin City University', 'Dublin', 3, 'Innovation-focused university with industry partnerships'),
+('Maynooth University', 'Maynooth', 3, 'Historic university focused on research and teaching');
 
 -- INSERT UNIVERSITIES FOR CANADA (country_id: 4)
-INSERT INTO public.universities (name, city, country_id, description, website) VALUES
-('University of Toronto', 'Toronto', 4, 'Canada''s leading research university with exceptional programs across disciplines', 'https://www.utoronto.ca'),
-('University of British Columbia', 'Vancouver', 4, 'Highly ranked research institution with focus on innovation and research excellence', 'https://www.ubc.ca'),
-('McGill University', 'Montreal', 4, 'Prestigious university with strong international presence and research excellence', 'https://www.mcgill.ca'),
-('McMaster University', 'Hamilton', 4, 'Innovation hub with world-class research facilities and problem-based learning', 'https://www.mcmaster.ca'),
-('University of Alberta', 'Edmonton', 4, 'Leading research-intensive institution with comprehensive programs', 'https://www.ualberta.ca'),
-('Western University', 'London', 4, 'Student-focused university with vibrant campus life and research opportunities', 'https://www.uwo.ca');
+INSERT INTO public.universities (name, city, country_id, description) VALUES
+('University of Toronto', 'Toronto', 4, 'Canada''s leading research university with exceptional programs across disciplines'),
+('University of British Columbia', 'Vancouver', 4, 'Highly ranked research institution with focus on innovation and research excellence'),
+('McGill University', 'Montreal', 4, 'Prestigious university with strong international presence and research excellence'),
+('McMaster University', 'Hamilton', 4, 'Innovation hub with world-class research facilities and problem-based learning'),
+('University of Alberta', 'Edmonton', 4, 'Leading research-intensive institution with comprehensive programs'),
+('Western University', 'London', 4, 'Student-focused university with vibrant campus life and research opportunities');
 
 -- INSERT UNIVERSITIES FOR NEW ZEALAND (country_id: 5)
-INSERT INTO public.universities (name, city, country_id, description, website) VALUES
-('University of Auckland', 'Auckland', 5, 'New Zealand''s leading research university with comprehensive programs', 'https://www.auckland.ac.nz'),
-('University of Otago', 'Dunedin', 5, 'Historic university with strong research focus and medical excellence', 'https://www.otago.ac.nz'),
-('University of Canterbury', 'Christchurch', 5, 'Engineering and sciences excellence in South Island', 'https://www.canterbury.ac.nz'),
-('Massey University', 'Palmerston North', 5, 'Comprehensive university with distance learning and practical focus', 'https://www.massey.ac.nz'),
-('Victoria University of Wellington', 'Wellington', 5, 'Research-intensive institution in New Zealand''s capital', 'https://www.victoria.ac.nz'),
-('University of Waikato', 'Hamilton', 5, 'Innovation-focused university with strong business programs', 'https://www.waikato.ac.nz');
+INSERT INTO public.universities (name, city, country_id, description) VALUES
+('University of Auckland', 'Auckland', 5, 'New Zealand''s leading research university with comprehensive programs'),
+('University of Otago', 'Dunedin', 5, 'Historic university with strong research focus and medical excellence'),
+('University of Canterbury', 'Christchurch', 5, 'Engineering and sciences excellence in South Island'),
+('Massey University', 'Palmerston North', 5, 'Comprehensive university with distance learning and practical focus'),
+('Victoria University of Wellington', 'Wellington', 5, 'Research-intensive institution in New Zealand''s capital'),
+('University of Waikato', 'Hamilton', 5, 'Innovation-focused university with strong business programs');
 
 -- INSERT UNIVERSITIES FOR UNITED STATES (country_id: 6)
-INSERT INTO public.universities (name, city, country_id, description, website) VALUES
-('Harvard University', 'Cambridge', 6, 'World''s leading university with exceptional research and legacy', 'https://www.harvard.edu'),
-('Stanford University', 'Stanford', 6, 'Innovation hub in Silicon Valley with entrepreneurial focus', 'https://www.stanford.edu'),
-('Massachusetts Institute of Technology', 'Cambridge', 6, 'Premier engineering and technology university', 'https://www.mit.edu'),
-('California Institute of Technology', 'Pasadena', 6, 'Small elite technology and research leader', 'https://www.caltech.edu'),
-('Yale University', 'New Haven', 6, 'Ivy League institution with renowned programs across disciplines', 'https://www.yale.edu'),
-('University of Chicago', 'Chicago', 6, 'Research university with strong STEM and business focus', 'https://www.uchicago.edu');
+INSERT INTO public.universities (name, city, country_id, description) VALUES
+('Harvard University', 'Cambridge', 6, 'World''s leading university with exceptional research and legacy'),
+('Stanford University', 'Stanford', 6, 'Innovation hub in Silicon Valley with entrepreneurial focus'),
+('Massachusetts Institute of Technology', 'Cambridge', 6, 'Premier engineering and technology university'),
+('California Institute of Technology', 'Pasadena', 6, 'Small elite technology and research leader'),
+('Yale University', 'New Haven', 6, 'Ivy League institution with renowned programs across disciplines'),
+('University of Chicago', 'Chicago', 6, 'Research university with strong STEM and business focus');
 
 -- INSERT UNIVERSITIES FOR DUBAI (country_id: 7)
-INSERT INTO public.universities (name, city, country_id, description, website) VALUES
-('University of Dubai', 'Dubai', 7, 'Private university focused on business and engineering education', 'https://www.ud.ac.ae'),
-('American University in Dubai', 'Dubai', 7, 'Branch campus offering American education standards in Dubai', 'https://www.aud.edu'),
-('Middlesex University Dubai', 'Dubai', 7, 'UK branch campus in Dubai Academic City', 'https://www.mdx.ac.ae'),
-('Heriot-Watt University Dubai', 'Dubai', 7, 'Scottish university branch with engineering focus', 'https://www.hw-dubai.edu.ae'),
-('BITS Pilani Dubai', 'Dubai', 7, 'Indian university branch with tech and engineering focus', 'https://www.bits-dubai.ac.in'),
-('Canadian University Dubai', 'Dubai', 7, 'Canadian-standard education in UAE', 'https://www.cud.ac.ae');
+INSERT INTO public.universities (name, city, country_id, description) VALUES
+('University of Dubai', 'Dubai', 7, 'Private university focused on business and engineering education'),
+('American University in Dubai', 'Dubai', 7, 'Branch campus offering American education standards in Dubai'),
+('Middlesex University Dubai', 'Dubai', 7, 'UK branch campus in Dubai Academic City'),
+('Heriot-Watt University Dubai', 'Dubai', 7, 'Scottish university branch with engineering focus'),
+('BITS Pilani Dubai', 'Dubai', 7, 'Indian university branch with tech and engineering focus'),
+('Canadian University Dubai', 'Dubai', 7, 'Canadian-standard education in UAE');
 
 -- ============================================================
 -- INSERT COURSES FOR UNIVERSITIES
