@@ -1,11 +1,28 @@
 import Link from 'next/link'
 import { Facebook, Linkedin, Youtube, Instagram, Phone, Mail, MapPin } from 'lucide-react'
+import { supabase } from '@/lib/supabase'
 
-export function Footer() {
+// Helper to convert name to slug
+function nameToSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim()
+}
+
+export async function Footer() {
+  // Fetch countries from database
+  const { data: countries } = await supabase
+    .from('countries')
+    .select('name')
+    .order('name', { ascending: true })
+
   return (
     <footer className="bg-card border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-8 mb-8">
           {/* Meet Us - Two Column Layout */}
           <div className="md:col-span-2">
             <h3 className="font-semibold text-foreground text-base mb-4">Meet Us</h3>
@@ -102,6 +119,37 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
+            </ul>
+          </div>
+
+          {/* Study Destinations */}
+          <div className="space-y-4 md:col-span-1">
+            <h3 className="font-semibold text-foreground text-base">Study Destinations</h3>
+            <ul className="space-y-3">
+              {countries && countries.length > 0 ? (
+                countries.slice(0, 5).map((country) => (
+                  <li key={country.name}>
+                    <Link
+                      href={`/country/${nameToSlug(country.name)}`}
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      Study in {country.name}
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <li className="text-sm text-muted-foreground">No destinations available</li>
+              )}
+              {countries && countries.length > 5 && (
+                <li>
+                  <Link
+                    href="/countries"
+                    className="text-sm text-primary hover:underline font-medium"
+                  >
+                    View all →
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
 
