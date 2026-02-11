@@ -33,10 +33,10 @@ export function ApplicationProcess() {
       description:
         'Get comprehensive guidance on documentation, housing, and preparation before you arrive at university.',
       icon: FileCheck,
-      bgColor: 'bg-emerald-500/10',
-      borderColor: 'border-emerald-200 dark:border-emerald-800',
-      textColor: 'text-emerald-700 dark:text-emerald-300',
-      numberBg: 'bg-gradient-to-br from-emerald-500 to-emerald-600',
+      bgColor: 'bg-teal-500/10',
+      borderColor: 'border-teal-200 dark:border-teal-800',
+      textColor: 'text-teal-700 dark:text-teal-300',
+      numberBg: 'bg-gradient-to-br from-teal-500 to-teal-600',
     },
     {
       number: 4,
@@ -44,10 +44,10 @@ export function ApplicationProcess() {
       description:
         'Access resources and guidance for English language proficiency exams required for admission.',
       icon: Zap,
-      bgColor: 'bg-rose-500/10',
-      borderColor: 'border-rose-200 dark:border-rose-800',
-      textColor: 'text-rose-700 dark:text-rose-300',
-      numberBg: 'bg-gradient-to-br from-rose-500 to-rose-600',
+      bgColor: 'bg-amber-500/10',
+      borderColor: 'border-amber-200 dark:border-amber-800',
+      textColor: 'text-amber-700 dark:text-amber-300',
+      numberBg: 'bg-gradient-to-br from-amber-500 to-amber-600',
     },
   ]
 
