@@ -26,7 +26,7 @@ export function Footer() {
   return (
     <footer className="bg-card border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8 md:gap-8 gap-y-8 justify-center md:justify-start">
           {/* Study Destinations */}
           <div className="space-y-4 md:col-span-1">
             <h3 className="font-semibold text-foreground text-base">Study Destinations</h3>
@@ -164,8 +164,8 @@ export function Footer() {
         {/* Global Head Office Details - Below Social Media Links */}
         <div className="bg-muted/50 rounded-lg p-6 mb-8">
           <div className="space-y-3 text-xs text-muted-foreground">
-            <h3 className="font-semibold text-foreground text-base mb-4">Global Head Office</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <h3 className="font-semibold text-foreground text-base mb-4 text-center md:text-left">Global Head Office</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-center md:justify-start">
               {/* Address */}
               <div className="flex gap-2">
                 <MapPin size={20} className="flex-shrink-0 text-primary mt-0.5" />
@@ -209,8 +209,8 @@ export function Footer() {
 
         {/* Divider */}
         <div className="border-t border-border py-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="text-sm text-muted-foreground">
+          <div className="flex flex-col md:flex-row items-center md:justify-between justify-center gap-4">
+            <div className="text-sm text-muted-foreground text-center md:text-left">
               <p>© 2026 HOQUE. All rights reserved. Developed by <a href="https://www.linkedin.com/in/shreshkc" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Suresh Khatri</a></p>
             </div>
             <div className="flex items-center space-x-6">
