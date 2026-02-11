@@ -97,7 +97,7 @@ export function ContactPageClient() {
     {
       city: 'Dhaka',
       country: 'Bangladesh',
-      address: 'Eastern Plaza 5th Floor, Unit-6/17, Hatirpool, Dhaka-1205, Bangladesh',
+      address: 'Green Landmark Tower 129 Kolabagan Dhanmondi Dhaka 1205',
       phone: '+880 XXX XXX XXXX',
       email: 'bangladesh@hoque.org.uk',
       label: 'Bangladesh Office',
