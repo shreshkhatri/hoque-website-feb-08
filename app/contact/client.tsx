@@ -404,8 +404,7 @@ export function ContactPageClient() {
                   key={index}
                   className="w-full max-w-sm"
                 >
-                  <div className="bg-card border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow h-full"
-                >
+                  <div className="bg-card border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow h-full">
                   <div className="mb-6">
                     <div className="flex items-center gap-2 mb-2">
                       <MapPin className="text-primary" size={24} />
