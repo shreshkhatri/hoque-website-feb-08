@@ -118,6 +118,14 @@ export function ContactPageClient() {
       email: 'mumbai@hoque.org.uk',
       label: 'Mumbai Office',
     },
+    {
+      city: 'Kathmandu',
+      country: 'Nepal',
+      address: 'TBD',
+      phone: '+977 XXX XXX XXXX',
+      email: 'kathmandu@hoque.org.uk',
+      label: 'Kathmandu Office',
+    },
   ]
 
   return (
