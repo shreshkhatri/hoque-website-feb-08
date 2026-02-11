@@ -22,6 +22,8 @@ export function ContactPageClient() {
     message: '',
   })
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -33,12 +35,27 @@ export function ContactPageClient() {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log('Form submitted:', formData)
-    setSubmitted(true)
-    setTimeout(() => {
+    setLoading(true)
+    setError(null)
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to send message')
+      }
+
+      setSubmitted(true)
       setFormData({
         firstName: '',
         lastName: '',
@@ -47,8 +64,17 @@ export function ContactPageClient() {
         subject: '',
         message: '',
       })
-      setSubmitted(false)
-    }, 3000)
+
+      // Reset form after 5 seconds
+      setTimeout(() => {
+        setSubmitted(false)
+      }, 5000)
+    } catch (err) {
+      console.error('[v0] Error submitting form:', err)
+      setError(err instanceof Error ? err.message : 'Failed to send message. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const officeLocations = [
@@ -104,15 +130,43 @@ export function ContactPageClient() {
                   </h2>
 
                   {submitted ? (
-                    <div className="bg-primary/10 border border-primary rounded-lg p-6 text-center">
-                      <p className="text-lg font-semibold text-foreground mb-2">
-                        Thank you for your message!
+                    <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg p-8 text-center">
+                      <div className="flex justify-center mb-4">
+                        <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                          <svg
+                            className="w-8 h-8 text-green-600 dark:text-green-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                      <p className="text-lg font-semibold text-green-900 dark:text-green-100 mb-2">
+                        Message Sent Successfully!
                       </p>
-                      <p className="text-muted-foreground">
-                        We&apos;ll get back to you within 24 hours.
+                      <p className="text-green-700 dark:text-green-300 mb-4">
+                        Thank you for contacting us. We appreciate your message and will get back to you within 24 hours.
+                      </p>
+                      <p className="text-sm text-green-600 dark:text-green-400">
+                        Please check your email for any updates regarding your inquiry.
                       </p>
                     </div>
                   ) : (
+                    <>
+                      {error && (
+                        <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
+                          <p className="text-sm text-red-800 dark:text-red-200">
+                            {error}
+                          </p>
+                        </div>
+                      )}
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
@@ -212,12 +266,13 @@ export function ContactPageClient() {
 
                       <button
                         type="submit"
-                        className="w-full bg-primary text-primary-foreground font-semibold py-3 rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
+                        disabled={loading}
+                        className="w-full bg-primary text-primary-foreground font-semibold py-3 rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <Send size={20} />
-                        Send Message
+                        {loading ? 'Sending...' : 'Send Message'}
                       </button>
-                    </form>
+                    </>
                   )}
                 </div>
               </div>
