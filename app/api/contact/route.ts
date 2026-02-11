@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { supabase } from '@/lib/supabase'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
@@ -21,8 +21,6 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
-
-    const supabase = await createClient()
 
     // Insert contact message into database
     const { data, error } = await supabase
