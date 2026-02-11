@@ -8,8 +8,8 @@ import { ExploreDestinations } from '@/components/explore-destinations'
 import { ServicesSection } from '@/components/services-section'
 import { ApplicationProcess } from '@/components/application-process'
 import { QuickOverview } from '@/components/quick-overview'
-import { TopUniversities } from '@/components/top-universities'
-import { UpcomingEvents } from '@/components/upcoming-events'
+// import { TopUniversities } from '@/components/top-universities'
+// import { UpcomingEvents } from '@/components/upcoming-events'
 import { StudentTestimonials } from '@/components/student-testimonials'
 import { UniversityPartners } from '@/components/university-partners'
 import { Footer } from '@/components/footer'
@@ -26,8 +26,8 @@ export default function Home() {
       <ServicesSection />
       <ApplicationProcess />
       <QuickOverview />
-      <TopUniversities />
-      <UpcomingEvents />
+      {/* <TopUniversities /> */}
+      {/* <UpcomingEvents /> */}
       <StudentTestimonials />
       <UniversityPartners />
       <Footer />
