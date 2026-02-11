@@ -81,9 +81,9 @@ export function ContactPageClient() {
     {
       city: 'London',
       country: 'United Kingdom',
-      address: '119-121 Whitechapel Road (3rd Floor), London, E1 1DT, United Kingdom',
-      phone: '+44 (0)20 XXXX XXXX',
-      email: 'london@hoque.org.uk',
+      address: 'Unit 102, 65 Whitechapel High Street,E1 1DU, England',
+      phone: '+44 7878 944475',
+      email: 'info@hoque.org.uk',
       label: 'UK Head Office',
     },
     {
@@ -99,32 +99,40 @@ export function ContactPageClient() {
       country: 'Bangladesh',
       address: 'Eastern Plaza 5th Floor, Unit-6/17, Hatirpool, Dhaka-1205, Bangladesh',
       phone: '+880 XXX XXX XXXX',
-      email: 'dhaka@hoque.org.uk',
-      label: 'Dhaka Office',
-    },
-    {
-      city: 'Sylhet',
-      country: 'Bangladesh',
-      address: 'Liakat Bhaban, 2nd Floor, Jallarpar Road, West Zindabazar, Sylhet-3100',
-      phone: '+880 XXX XXX XXXX',
-      email: 'sylhet@hoque.org.uk',
-      label: 'Sylhet Office',
+      email: 'bangladesh@hoque.org.uk',
+      label: 'Bangladesh Office',
     },
     {
       city: 'Mumbai',
       country: 'India',
       address: '201, Aditya Heritage, Near Rustomjee Elanza Ave, Mindspace, Malad West, Mumbai, Maharashtra, 400064',
       phone: '+91 XXX XXX XXXX',
-      email: 'mumbai@hoque.org.uk',
-      label: 'Mumbai Office',
+      email: 'India@hoque.org.uk',
+      label: 'India Office',
     },
     {
       city: 'Kathmandu',
       country: 'Nepal',
-      address: 'TBD',
+      address: 'Adwait Marga, Kathmandu - 28, Putalisadak, Post Code 44600',
       phone: '+977 XXX XXX XXXX',
-      email: 'kathmandu@hoque.org.uk',
-      label: 'Kathmandu Office',
+      email: 'nepal@hoque.org.uk',
+      label: 'Nepal Office',
+    },
+    {
+      city: 'Colombo',
+      country: 'Sri-Lanka',
+      address: 'Adwait Marga, Kathmandu - 28, Putalisadak, Post Code 44600',
+      phone: '+94 XXX XXX XXXX',
+      email: 'srilanka@hoque.org.uk',
+      label: 'Sri-Lanka Office',
+    },
+    {
+      city: 'Islamabad',
+      country: 'Pakistan',
+      address: 'TBC',
+      phone: '+92 XXX XXX XXXX',
+      email: 'pakistan@hoque.org.uk',
+      label: 'Pakistan Office',
     },
   ]
 
@@ -427,9 +435,6 @@ export function ContactPageClient() {
                       >
                         {office.phone}
                       </a>
-                      <p className="text-xs text-muted-foreground mt-0.5 italic">
-                        (To be updated)
-                      </p>
                     </div>
 
                     <div>
@@ -440,9 +445,6 @@ export function ContactPageClient() {
                       >
                         {office.email}
                       </a>
-                      <p className="text-xs text-muted-foreground mt-0.5 italic">
-                        (To be updated)
-                      </p>
                     </div>
                   </div>
                 </div>
