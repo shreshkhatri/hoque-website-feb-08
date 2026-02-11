@@ -187,15 +187,15 @@ export function CoursesPageClient() {
                 {countries.length > 0 && (
                   <div className="mb-8">
                     <h3 className="text-sm font-semibold text-foreground mb-4">Select Country</h3>
-                    <div className="space-y-2">
+                    <div className="flex flex-wrap gap-2">
                       {countries.map((country) => (
                         <button
                           key={country.id}
                           onClick={() => setSelectedCountry(country.id)}
-                          className={`w-full text-left px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                          className={`px-4 py-2 rounded-full font-medium transition-all duration-200 border ${
                             selectedCountry === country.id
-                              ? 'bg-primary text-primary-foreground'
-                              : 'bg-muted text-foreground hover:bg-muted/80'
+                              ? 'bg-primary text-primary-foreground border-primary'
+                              : 'border-border text-foreground hover:border-primary hover:text-primary'
                           }`}
                         >
                           {country.name}
@@ -208,15 +208,15 @@ export function CoursesPageClient() {
                 {/* Program Level Tabs */}
                 <div className="mb-8">
                   <h3 className="text-sm font-semibold text-foreground mb-4">Program Level</h3>
-                  <div className="space-y-2">
+                  <div className="flex flex-wrap gap-2">
                     {programLevels.map((level) => (
                       <button
                         key={level}
                         onClick={() => setSelectedLevel(level)}
-                        className={`w-full text-left px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                        className={`px-4 py-2 rounded-full font-medium transition-all duration-200 border ${
                           selectedLevel === level
-                            ? 'bg-primary text-primary-foreground'
-                            : 'bg-muted text-foreground hover:bg-muted/80'
+                            ? 'bg-primary text-primary-foreground border-primary'
+                            : 'border-border text-foreground hover:border-primary hover:text-primary'
                         }`}
                       >
                         {level}
