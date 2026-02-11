@@ -448,6 +448,7 @@ export function ContactPageClient() {
                       </a>
                     </div>
                   </div>
+                  </div>
                 </div>
               ))}
             </div>
