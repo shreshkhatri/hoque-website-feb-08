@@ -28,7 +28,7 @@ export async function Footer() {
             <h3 className="font-semibold text-foreground text-base">Study Destinations</h3>
             <ul className="space-y-3">
               {countries && countries.length > 0 ? (
-                countries.slice(0, 5).map((country) => (
+                countries.map((country) => (
                   <li key={country.name}>
                     <Link
                       href={`/country/${nameToSlug(country.name)}`}
@@ -40,16 +40,6 @@ export async function Footer() {
                 ))
               ) : (
                 <li className="text-sm text-muted-foreground">No destinations available</li>
-              )}
-              {countries && countries.length > 5 && (
-                <li>
-                  <Link
-                    href="/countries"
-                    className="text-sm text-primary hover:underline font-medium"
-                  >
-                    View all →
-                  </Link>
-                </li>
               )}
             </ul>
           </div>
