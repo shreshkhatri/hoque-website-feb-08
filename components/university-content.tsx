@@ -92,7 +92,7 @@ export function UniversityContent({ university, courses }: UniversityContentProp
   const uniqueLevels = [...new Set(courses.map(c => c.level))]
   
   // Calculate stats based on existing fields
-  const acceptanceRate = university.rank_uk ? Math.max(30, 90 - university.rank_uk) : 65
+  const acceptanceRate = 65
   const intlStudentsPercent = university.student_population ? Math.min(45, Math.floor(university.student_population / 1000) + 15) : 25
 
   return (
@@ -313,17 +313,6 @@ export function UniversityContent({ university, courses }: UniversityContentProp
                         <p className="font-medium text-foreground">{university.city}, {university.country}</p>
                       </div>
                     </div>
-                    {university.rank_uk && (
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                          <Award className="w-5 h-5 text-primary" />
-                        </div>
-                        <div>
-                          <p className="text-sm text-muted-foreground">UK Ranking</p>
-                          <p className="font-medium text-foreground">#{university.rank_uk}</p>
-                        </div>
-                      </div>
-                    )}
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
                         <Users className="w-5 h-5 text-primary" />

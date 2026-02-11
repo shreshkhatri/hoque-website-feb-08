@@ -73,9 +73,9 @@ export function TopUniversities() {
                     </p>
                   </div>
                   <div className="text-right">
-                    {uni.rank_uk && (
+                    {uni.rank_world && (
                       <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 text-primary font-bold">
-                        #{uni.rank_uk}
+                        #{uni.rank_world}
                       </div>
                     )}
                   </div>

@@ -215,10 +215,10 @@ export function UniversitiesPageClient() {
                         {uni.city}, {uni.country}
                       </p>
                     </div>
-                    {uni.rank_uk && (
+                    {uni.rank_world && (
                       <div className="text-right">
                         <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 text-primary font-bold">
-                          #{uni.rank_uk}
+                          #{uni.rank_world}
                         </div>
                       </div>
                     )}

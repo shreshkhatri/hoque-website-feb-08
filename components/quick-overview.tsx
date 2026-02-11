@@ -140,16 +140,10 @@ export function QuickOverview() {
                       className="group flex items-center gap-3 p-3 rounded-lg hover:bg-primary/5 transition-colors"
                     >
                       <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        {uni.rank_uk ? (
-                          <span className="text-xs font-bold text-primary">
-                            #{uni.rank_uk}
-                          </span>
-                        ) : (
-                          <GraduationCap
-                            size={16}
-                            className="text-primary"
-                          />
-                        )}
+                        <GraduationCap
+                          size={16}
+                          className="text-primary"
+                        />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-foreground truncate group-hover:text-primary transition-colors">
