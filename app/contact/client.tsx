@@ -84,7 +84,7 @@ export function ContactPageClient() {
       address: 'Unit 102, 65 Whitechapel High Street,E1 1DU, England',
       phone: '+44 7878 944475',
       email: 'info@hoque.org.uk',
-      label: 'UK Head Office',
+      label: 'HOQUE UK HEAD OFFICE',
     },
     {
       city: 'New York',
@@ -92,7 +92,7 @@ export function ContactPageClient() {
       address: '1362 Ocean Ave, Brooklyn, HOQ1230, USA',
       phone: '+1 XXX XXX XXXX',
       email: 'newyork@hoque.org.uk',
-      label: 'New York Office',
+      label: 'HOQUE USA OFFICE',
     },
     {
       city: 'Dhaka',
@@ -100,23 +100,23 @@ export function ContactPageClient() {
       address: 'Green Landmark Tower 129 Kolabagan Dhanmondi Dhaka 1205',
       phone: '+880 XXX XXX XXXX',
       email: 'bangladesh@hoque.org.uk',
-      label: 'Bangladesh Office',
+      label: 'HOQUE BANGLADESH OFFICE',
     },
     {
-      city: 'Mumbai',
+      city: 'Kerala',
       country: 'India',
-      address: '201, Aditya Heritage, Near Rustomjee Elanza Ave, Mindspace, Malad West, Mumbai, Maharashtra, 400064',
+      address: 'Teepeyem Square, 3rd floor, Mahatma Gandhi Road. Ravipuram, Kochi, Kerala 682015',
       phone: '+91 XXX XXX XXXX',
       email: 'India@hoque.org.uk',
-      label: 'India Office',
+      label: 'HOQUE KOCHI INDIA OFFICE',
     },
     {
       city: 'Kathmandu',
       country: 'Nepal',
-      address: 'Adwait Marga, Kathmandu - 28, Putalisadak, Post Code 44600',
+      address: 'Adwait Marga, Kathmandu - 28, Putalisadak 44600',
       phone: '+977 970-2691031',
       email: 'nepal@hoque.org.uk',
-      label: 'Nepal Office',
+      label: 'HOQUE NEPAL OFFICE',
     },
     {
       city: 'Colombo',
@@ -124,7 +124,7 @@ export function ContactPageClient() {
       address: 'TBC',
       phone: '+94 XXX XXX XXXX',
       email: 'srilanka@hoque.org.uk',
-      label: 'Sri-Lanka Office',
+      label: 'HOQUE SRI-LANKA OFFICE',
     },
     {
       city: 'Islamabad',
@@ -132,7 +132,7 @@ export function ContactPageClient() {
       address: 'TBC',
       phone: '+92 XXX XXX XXXX',
       email: 'pakistan@hoque.org.uk',
-      label: 'Pakistan Office',
+      label: 'HOQUE PAKISTAN OFFICE',
     },
   ]
 
