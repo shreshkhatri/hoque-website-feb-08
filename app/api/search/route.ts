@@ -1,6 +1,14 @@
 import { supabase } from '@/lib/supabase'
 import { NextRequest, NextResponse } from 'next/server'
 
+// List of universities to exclude
+const EXCLUDED_UNIVERSITIES = [
+  'Universities Ulster',
+  'Southampton Solent University',
+  'Oxford Book University',
+  'Swansea University',
+]
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
@@ -27,6 +35,7 @@ export async function GET(request: NextRequest) {
         .or(
           `name.ilike.${searchTerm},city.ilike.${searchTerm},country.ilike.${searchTerm},description.ilike.${searchTerm}`,
         )
+        .not('name', 'in', `(${EXCLUDED_UNIVERSITIES.map((u) => `"${u}"`).join(',')})`)
         .limit(10)
 
       if (uniError) throw uniError
@@ -35,6 +44,14 @@ export async function GET(request: NextRequest) {
 
     // Search courses
     if (type === 'all' || type === 'course') {
+      // First, get excluded university IDs
+      const { data: excludedUnis } = await supabase
+        .from('universities')
+        .select('id')
+        .in('name', EXCLUDED_UNIVERSITIES)
+
+      const excludedUniIds = excludedUnis?.map((u) => u.id) || []
+
       const { data: courseData, error: courseError } = await supabase
         .from('courses')
         .select(
@@ -51,6 +68,7 @@ export async function GET(request: NextRequest) {
         .or(
           `name.ilike.${searchTerm},code.ilike.${searchTerm},description.ilike.${searchTerm},level.ilike.${searchTerm}`,
         )
+        .not('university_id', 'in', `(${excludedUniIds.join(',')})`)
         .limit(20)
 
       if (courseError) throw courseError

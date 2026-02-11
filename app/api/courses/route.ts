@@ -1,6 +1,14 @@
 import { supabase } from '@/lib/supabase'
 import { NextRequest, NextResponse } from 'next/server'
 
+// List of universities to exclude
+const EXCLUDED_UNIVERSITIES = [
+  'Universities Ulster',
+  'Southampton Solent University',
+  'Oxford Book University',
+  'Swansea University',
+]
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
@@ -11,6 +19,14 @@ export async function GET(request: NextRequest) {
     const searchQuery = searchParams.get('search')
     const intakeMonth = searchParams.get('intake_month')
 
+    // Get excluded university IDs
+    const { data: excludedUnis } = await supabase
+      .from('universities')
+      .select('id')
+      .in('name', EXCLUDED_UNIVERSITIES)
+
+    const excludedUniIds = excludedUnis?.map((u) => u.id) || []
+
     // If country filter is provided, first get university IDs for that country
     let universityIds: number[] = []
     if (countryId) {
@@ -18,6 +34,7 @@ export async function GET(request: NextRequest) {
         .from('universities')
         .select('id')
         .eq('country_id', parseInt(countryId))
+        .not('id', 'in', `(${excludedUniIds.join(',')})`)
 
       universityIds = universities?.map((u) => u.id) || []
 
@@ -46,6 +63,7 @@ export async function GET(request: NextRequest) {
         { count: 'exact' },
       )
       .order('name', { ascending: true })
+      .not('university_id', 'in', `(${excludedUniIds.join(',')})`)
 
     // Filter by university IDs (which belong to the selected country)
     if (countryId && universityIds.length > 0) {

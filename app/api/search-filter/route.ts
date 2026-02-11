@@ -1,6 +1,13 @@
 import { supabase } from '@/lib/supabase'
 import { NextRequest, NextResponse } from 'next/server'
 
+// List of universities to exclude
+const EXCLUDED_UNIVERSITIES = [
+  'Universities Ulster',
+  'Southampton Solent University',
+  'Oxford Book University',
+  'Swansea University',
+]
 
 export async function GET(request: NextRequest) {
   try {
@@ -38,6 +45,7 @@ export async function GET(request: NextRequest) {
         .from('universities')
         .select('id, name, countries(id, name)')
         .ilike('name', `%${query}%`)
+        .not('name', 'in', `(${EXCLUDED_UNIVERSITIES.map((u) => `"${u}"`).join(',')})`)
         .limit(limit)
 
       if (error) throw error
@@ -48,6 +56,14 @@ export async function GET(request: NextRequest) {
         type: 'university',
       })) || []
     } else if (type === 'courses') {
+      // First, get excluded university IDs
+      const { data: excludedUnis } = await supabase
+        .from('universities')
+        .select('id')
+        .in('name', EXCLUDED_UNIVERSITIES)
+
+      const excludedUniIds = excludedUnis?.map((u) => u.id) || []
+
       // Search for courses
       const { data, error } = await supabase
         .from('courses')
@@ -55,6 +71,7 @@ export async function GET(request: NextRequest) {
           'id, name, code, universities(id, name, countries(id, name))',
         )
         .ilike('name', `%${query}%`)
+        .not('university_id', 'in', `(${excludedUniIds.join(',')})`)
         .limit(limit)
 
       if (error) throw error
@@ -67,6 +84,14 @@ export async function GET(request: NextRequest) {
         type: 'course',
       })) || []
     } else if (type === 'intake') {
+      // First, get excluded university IDs
+      const { data: excludedUnis } = await supabase
+        .from('universities')
+        .select('id')
+        .in('name', EXCLUDED_UNIVERSITIES)
+
+      const excludedUniIds = excludedUnis?.map((u) => u.id) || []
+
       // Search for courses by intake month
       const { data: intakeData, error: intakeError } = await supabase
         .from('course_intake_months')
@@ -82,6 +107,7 @@ export async function GET(request: NextRequest) {
           .from('courses')
           .select('id, name, code, universities(id, name, countries(id, name))')
           .in('id', courseIds)
+          .not('university_id', 'in', `(${excludedUniIds.join(',')})`)
           .limit(limit)
 
         if (coursesError) throw coursesError
