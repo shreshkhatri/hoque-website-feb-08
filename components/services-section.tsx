@@ -12,10 +12,10 @@ export function ServicesSection() {
       description:
         'Expert guidance through every step of the university application process. We help you navigate admissions, interviews, and more.',
       href: '/services/university-application',
-      bgColor: 'bg-blue-50',
-      iconBg: 'bg-blue-100',
-      iconColor: 'text-blue-600',
-      accentColor: 'group-hover:bg-blue-100',
+      bgColor: 'bg-blue-100',
+      iconBg: 'bg-blue-200',
+      iconColor: 'text-blue-700',
+      accentColor: 'group-hover:bg-blue-200',
     },
     {
       icon: Compass,
@@ -23,10 +23,10 @@ export function ServicesSection() {
       description:
         'Browse through our network of 100+ partner universities and find the perfect institution for your academic goals.',
       href: '/universities',
-      bgColor: 'bg-emerald-50',
-      iconBg: 'bg-emerald-100',
-      iconColor: 'text-emerald-600',
-      accentColor: 'group-hover:bg-emerald-100',
+      bgColor: 'bg-emerald-100',
+      iconBg: 'bg-emerald-200',
+      iconColor: 'text-emerald-700',
+      accentColor: 'group-hover:bg-emerald-200',
     },
     {
       icon: MessageCircle,
@@ -34,10 +34,10 @@ export function ServicesSection() {
       description:
         'Personalised consultation with our expert counsellors to discuss your unique educational aspirations.',
       href: '/services/one-to-one-consultation',
-      bgColor: 'bg-amber-50',
-      iconBg: 'bg-amber-100',
-      iconColor: 'text-amber-600',
-      accentColor: 'group-hover:bg-amber-100',
+      bgColor: 'bg-amber-100',
+      iconBg: 'bg-amber-200',
+      iconColor: 'text-amber-700',
+      accentColor: 'group-hover:bg-amber-200',
     },
     {
       icon: FileCheck,
@@ -45,10 +45,10 @@ export function ServicesSection() {
       description:
         'Comprehensive support with student visa applications, documentation, and interview preparation.',
       href: '/services/visa-application-support',
-      bgColor: 'bg-purple-50',
-      iconBg: 'bg-purple-100',
-      iconColor: 'text-purple-600',
-      accentColor: 'group-hover:bg-purple-100',
+      bgColor: 'bg-purple-100',
+      iconBg: 'bg-purple-200',
+      iconColor: 'text-purple-700',
+      accentColor: 'group-hover:bg-purple-200',
     },
   ]
 
