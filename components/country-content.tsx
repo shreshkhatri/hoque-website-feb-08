@@ -438,8 +438,8 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                                 <MapPin className="w-3 h-3" />
                                 {uni.city}
                               </p>
-                              {uni.rank_uk && (
-                                <Badge variant="secondary" className="mt-2">UK Rank #{uni.rank_uk}</Badge>
+                              {uni.rank_world && (
+                                <Badge variant="secondary" className="mt-2">World Rank #{uni.rank_world}</Badge>
                               )}
                             </div>
                           </div>
@@ -525,9 +525,6 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                             {uni.city}
                           </p>
                           <div className="flex flex-wrap gap-2 mt-3">
-                            {uni.rank_uk && (
-                              <Badge variant="secondary">UK #{uni.rank_uk}</Badge>
-                            )}
                             {uni.rank_world && (
                               <Badge variant="outline">World #{uni.rank_world}</Badge>
                             )}

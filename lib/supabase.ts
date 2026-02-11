@@ -47,7 +47,6 @@ export type University = {
   country: string
   country_id: number | null
   city: string
-  rank_uk: number | null
   rank_world: number | null
   description: string | null
   logo_url: string | null
@@ -339,7 +338,6 @@ async function seedDatabase() {
         country: 'United Kingdom',
         country_id: countryData[0].id,
         city: 'Oxford',
-        rank_uk: 1,
         rank_world: 3,
         description:
           "Historic collegiate university and one of the world's leading institutions for education and research.",
@@ -352,7 +350,6 @@ async function seedDatabase() {
         country: 'United Kingdom',
         country_id: countryData[0].id,
         city: 'Cambridge',
-        rank_uk: 2,
         rank_world: 2,
         description:
           'One of the oldest universities in the world, renowned for its academic excellence and research.',
@@ -365,7 +362,6 @@ async function seedDatabase() {
         country: 'United Kingdom',
         country_id: countryData[0].id,
         city: 'London',
-        rank_uk: 3,
         rank_world: 6,
         description:
           'Leading science, engineering, medicine and business institution located in South Kensington.',
@@ -378,7 +374,6 @@ async function seedDatabase() {
         country: 'United Kingdom',
         country_id: countryData[0].id,
         city: 'London',
-        rank_uk: 4,
         rank_world: 8,
         description:
           "Founded in 1826, UCL is among the world's top multidisciplinary universities.",
@@ -391,7 +386,6 @@ async function seedDatabase() {
         country: 'United Kingdom',
         country_id: countryData[0].id,
         city: 'London',
-        rank_uk: 5,
         rank_world: 27,
         description:
           'Specialises in social sciences and is a leading institution for economics and business.',
@@ -404,7 +398,6 @@ async function seedDatabase() {
         country: 'United Kingdom',
         country_id: countryData[0].id,
         city: 'Edinburgh',
-        rank_uk: 6,
         rank_world: 23,
         description:
           "One of the UK's ancient universities with world-class research and teaching.",
@@ -417,7 +410,6 @@ async function seedDatabase() {
         country: 'United Kingdom',
         country_id: countryData[0].id,
         city: 'Manchester',
-        rank_uk: 7,
         rank_world: 54,
         description:
           'Major research university known for innovation and world-changing research.',
@@ -430,7 +422,6 @@ async function seedDatabase() {
         country: 'United Kingdom',
         country_id: countryData[0].id,
         city: 'Bristol',
-        rank_uk: 8,
         rank_world: 68,
         description:
           'Russell Group university known for high-quality teaching and research.',
@@ -443,7 +434,6 @@ async function seedDatabase() {
         country: 'United Kingdom',
         country_id: countryData[0].id,
         city: 'Coventry',
-        rank_uk: 9,
         rank_world: 80,
         description:
           'Highly rated for teaching and research with strong industry connections.',
@@ -456,7 +446,6 @@ async function seedDatabase() {
         country: 'United Kingdom',
         country_id: countryData[0].id,
         city: 'Durham',
-        rank_uk: 10,
         rank_world: 102,
         description:
           'Ancient university known for research excellence and student experience.',

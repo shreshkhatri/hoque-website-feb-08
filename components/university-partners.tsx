@@ -28,15 +28,11 @@ export function UniversityPartners() {
     { name: 'University of Hull', logo: '/logos/hull-university.png' },
     { name: 'University of Portsmouth', logo: '/logos/portsmouth-university.png' },
     { name: 'University of Wales Trinity Saint David', logo: '/logos/wales-trinity-st-david-university.png' },
-    { name: 'Ulster University', logo: null },
-    { name: 'Oxford Brookes University', logo: null },
     { name: 'University for the Creative Arts', logo: '/logos/uca-university.png' },
-    { name: 'Southampton Solent University', logo: null },
     { name: 'Northumbria University Newcastle', logo: '/logos/northumbria-newcastle-university.png' },
     { name: "Queen's University Belfast", logo: '/logos/queen-belfast-university.png' },
     { name: 'University of East Anglia', logo: '/logos/uea-university.png' },
-    { name: 'Swansea University', logo: null },
-    { name: 'Wrexham University', logo: '/logos/wrexham-university.png' },
+    { name: 'Wrexham University', logo: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/QA%20logo-nqkVlAskF7VGcipr6fp9TErKcQ5ZXo.jpeg' },
   ]
 
   return (
