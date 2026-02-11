@@ -29,10 +29,10 @@ export const metadata: Metadata = {
     siteName: 'HOQUE',
     images: [
       {
-        url: 'https://www.hoque.org.uk/og-image.jpg',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'HOQUE - Your Gateway to World-Class Universities',
+        alt: 'HOQUE Consultancy - Official UK University Representative',
       },
     ],
     locale: 'en_GB',
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'HOQUE - Your Gateway to World-Class Universities',
     description: 'Expert educational consultancy helping international students secure places at top universities worldwide. Personalised guidance for admissions, visas, scholarships, and more.',
-    images: ['https://www.hoque.org.uk/og-image.jpg'],
+    images: ['/og-image.png'],
   },
 }
 
