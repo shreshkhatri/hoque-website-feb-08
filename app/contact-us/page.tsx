@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { ContactPageClient } from './client'
+import { ContactPageClient } from '../contact/client'
 
 export const metadata: Metadata = {
   title: 'Contact Us - HOQUE | Get Expert University Guidance',
@@ -11,11 +11,11 @@ export const metadata: Metadata = {
     title: 'Contact HOQUE - University Admission Experts',
     description:
       'Get in touch with our expert advisors to discuss your educational journey and university admission process.',
-    url: 'https://hoque.org.uk/contact',
+    url: 'https://hoque.org.uk/contact-us',
     type: 'website',
   },
 }
 
-export default function ContactPage() {
+export default function ContactUsPage() {
   return <ContactPageClient />
 }
