@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Building2 } from 'lucide-react'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 
@@ -29,14 +29,14 @@ const ALL_PARTNERS = [
   { name: 'University of Hull', logo: '/logos/hull-university.png' },
   { name: 'University of Portsmouth', logo: '/logos/portsmouth-university.png' },
   { name: 'University of Wales Trinity Saint David', logo: '/logos/wales-trinity-st-david-university.png' },
-  { name: 'Ulster University', logo: '/logos/ulster-university.png' },
-  { name: 'Oxford Brookes University', logo: '/logos/oxford-brookes-university.png' },
+  { name: 'Ulster University', logo: null },
+  { name: 'Oxford Brookes University', logo: null },
   { name: 'University for the Creative Arts', logo: '/logos/uca-university.png' },
-  { name: 'Southampton Solent University', logo: '/logos/southampton-solent-university.png' },
+  { name: 'Southampton Solent University', logo: null },
   { name: 'Northumbria University Newcastle', logo: '/logos/northumbria-newcastle-university.png' },
   { name: "Queen's University Belfast", logo: '/logos/queen-belfast-university.png' },
   { name: 'University of East Anglia', logo: '/logos/uea-university.png' },
-  { name: 'Swansea University', logo: '/logos/swansea-university.png' },
+  { name: 'Swansea University', logo: null },
   { name: 'Wrexham University', logo: '/logos/wrexham-university.png' },
 ]
 
@@ -74,13 +74,17 @@ export function PartnersClient() {
               className="group flex flex-col items-center justify-center p-6 bg-card border border-border rounded-lg hover:border-primary hover:shadow-lg transition-all duration-300"
             >
               <div className="w-full h-32 flex items-center justify-center mb-4">
-                <Image
-                  src={partner.logo || '/placeholder.svg'}
-                  alt={partner.name}
-                  width={140}
-                  height={140}
-                  className="opacity-70 group-hover:opacity-100 transition-opacity object-contain"
-                />
+                {partner.logo ? (
+                  <Image
+                    src={partner.logo}
+                    alt={partner.name}
+                    width={140}
+                    height={140}
+                    className="opacity-70 group-hover:opacity-100 transition-opacity object-contain"
+                  />
+                ) : (
+                  <Building2 className="w-16 h-16 text-muted-foreground group-hover:text-primary transition-colors" />
+                )}
               </div>
               <p className="text-sm md:text-base font-medium text-foreground group-hover:text-primary transition-colors text-center text-balance line-clamp-3">
                 {partner.name}

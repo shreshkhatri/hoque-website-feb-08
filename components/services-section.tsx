@@ -1,31 +1,43 @@
 'use client'
 
-import { GraduationCap, Globe, Users, FileCheck } from 'lucide-react'
+import { BookOpen, Compass, MessageCircle, FileCheck } from 'lucide-react'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
 export function ServicesSection() {
   const services = [
     {
-      icon: GraduationCap,
+      icon: BookOpen,
       title: 'University Admission Process',
       description:
         'Expert guidance through every step of the university application process. We help you navigate admissions, interviews, and more.',
       href: '/services/university-application',
+      bgColor: 'bg-blue-100',
+      iconBg: 'bg-blue-200',
+      iconColor: 'text-blue-700',
+      accentColor: 'group-hover:bg-blue-200',
     },
     {
-      icon: Globe,
+      icon: Compass,
       title: 'Explore Universities',
       description:
         'Browse through our network of 100+ partner universities and find the perfect institution for your academic goals.',
       href: '/universities',
+      bgColor: 'bg-emerald-100',
+      iconBg: 'bg-emerald-200',
+      iconColor: 'text-emerald-700',
+      accentColor: 'group-hover:bg-emerald-200',
     },
     {
-      icon: Users,
+      icon: MessageCircle,
       title: 'One to One Consultation',
       description:
         'Personalised consultation with our expert counsellors to discuss your unique educational aspirations.',
       href: '/services/one-to-one-consultation',
+      bgColor: 'bg-amber-100',
+      iconBg: 'bg-amber-200',
+      iconColor: 'text-amber-700',
+      accentColor: 'group-hover:bg-amber-200',
     },
     {
       icon: FileCheck,
@@ -33,6 +45,10 @@ export function ServicesSection() {
       description:
         'Comprehensive support with student visa applications, documentation, and interview preparation.',
       href: '/services/visa-application-support',
+      bgColor: 'bg-purple-100',
+      iconBg: 'bg-purple-200',
+      iconColor: 'text-purple-700',
+      accentColor: 'group-hover:bg-purple-200',
     },
   ]
 
@@ -54,13 +70,13 @@ export function ServicesSection() {
             const Icon = service.icon
             return (
               <Link key={index} href={service.href}>
-                <div className="group relative bg-card border border-border rounded-2xl p-8 hover:border-primary hover:shadow-xl transition-all duration-300 h-full cursor-pointer">
-                  {/* Background accent */}
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:bg-primary/10 transition-colors" />
+                <div className={`group relative ${service.bgColor} border border-border/40 rounded-2xl p-8 hover:shadow-lg transition-all duration-300 h-full cursor-pointer`}>
+                  {/* Decorative accent circle */}
+                  <div className={`absolute top-0 right-0 w-40 h-40 ${service.accentColor} rounded-full -mr-20 -mt-20 opacity-30 transition-all duration-300`} />
 
                   <div className="relative z-10">
-                    <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
-                      <Icon className="w-7 h-7 text-primary" />
+                    <div className={`w-16 h-16 ${service.iconBg} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                      <Icon className={`w-8 h-8 ${service.iconColor}`} />
                     </div>
 
                     <h3 className="text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">

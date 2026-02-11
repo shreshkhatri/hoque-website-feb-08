@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
+import { Building2 } from 'lucide-react'
 
 export function UniversityPartners() {
   const partners = [
@@ -27,14 +28,14 @@ export function UniversityPartners() {
     { name: 'University of Hull', logo: '/logos/hull-university.png' },
     { name: 'University of Portsmouth', logo: '/logos/portsmouth-university.png' },
     { name: 'University of Wales Trinity Saint David', logo: '/logos/wales-trinity-st-david-university.png' },
-    { name: 'Ulster University', logo: '/logos/ulster-university.png' },
-    { name: 'Oxford Brookes University', logo: '/logos/oxford-brookes-university.png' },
+    { name: 'Ulster University', logo: null },
+    { name: 'Oxford Brookes University', logo: null },
     { name: 'University for the Creative Arts', logo: '/logos/uca-university.png' },
-    { name: 'Southampton Solent University', logo: '/logos/southampton-solent-university.png' },
+    { name: 'Southampton Solent University', logo: null },
     { name: 'Northumbria University Newcastle', logo: '/logos/northumbria-newcastle-university.png' },
     { name: "Queen's University Belfast", logo: '/logos/queen-belfast-university.png' },
     { name: 'University of East Anglia', logo: '/logos/uea-university.png' },
-    { name: 'Swansea University', logo: '/logos/swansea-university.png' },
+    { name: 'Swansea University', logo: null },
     { name: 'Wrexham University', logo: '/logos/wrexham-university.png' },
   ]
 
@@ -65,13 +66,17 @@ export function UniversityPartners() {
               >
                 <div className="text-center w-full">
                   <div className="mb-2 sm:mb-3 flex justify-center h-20 sm:h-24 md:h-28 items-center">
-                    <Image
-                      src={partner.logo || '/placeholder.svg'}
-                      alt={partner.name}
-                      width={100}
-                      height={100}
-                      className="opacity-70 group-hover:opacity-100 transition-opacity object-contain"
-                    />
+                    {partner.logo ? (
+                      <Image
+                        src={partner.logo}
+                        alt={partner.name}
+                        width={100}
+                        height={100}
+                        className="opacity-70 group-hover:opacity-100 transition-opacity object-contain"
+                      />
+                    ) : (
+                      <Building2 className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-muted-foreground group-hover:text-primary transition-colors" />
+                    )}
                   </div>
                   <p className="text-xs sm:text-sm md:text-base font-medium text-foreground group-hover:text-primary transition-colors text-balance line-clamp-2">
                     {partner.name}
@@ -88,13 +93,17 @@ export function UniversityPartners() {
               >
                 <div className="text-center w-full">
                   <div className="mb-2 sm:mb-3 flex justify-center h-20 sm:h-24 md:h-28 items-center">
-                    <Image
-                      src={partner.logo || '/placeholder.svg'}
-                      alt={partner.name}
-                      width={100}
-                      height={100}
-                      className="opacity-70 group-hover:opacity-100 transition-opacity object-contain"
-                    />
+                    {partner.logo ? (
+                      <Image
+                        src={partner.logo}
+                        alt={partner.name}
+                        width={100}
+                        height={100}
+                        className="opacity-70 group-hover:opacity-100 transition-opacity object-contain"
+                      />
+                    ) : (
+                      <Building2 className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-muted-foreground group-hover:text-primary transition-colors" />
+                    )}
                   </div>
                   <p className="text-xs sm:text-sm md:text-base font-medium text-foreground group-hover:text-primary transition-colors text-balance line-clamp-2">
                     {partner.name}
