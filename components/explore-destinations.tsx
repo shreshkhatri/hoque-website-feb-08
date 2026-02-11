@@ -122,7 +122,7 @@ export function ExploreDestinations() {
             <div className="relative h-56 sm:h-64 rounded-3xl overflow-hidden shadow-lg bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
               <div className="text-center">
                 <p className="text-white text-xl sm:text-2xl font-semibold text-balance">
-                  + More <br />Coming Soon ...
+                  More <br />Coming Soon ...
                 </p>
               </div>
             </div>
