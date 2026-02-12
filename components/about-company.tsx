@@ -18,7 +18,7 @@ export function AboutCompany() {
                 About HOQUE
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Founded in 2015, Hoque has been the trusted partner for 
+                Founded in 2015, HOQUE has been the trusted partner for 
                 international students seeking admission to the world's most 
                 prestigious universities. We specialize in guiding students through 
                 every step of their educational journey.

@@ -224,7 +224,7 @@ export function ApplicationFormClient() {
           {/* Header */}
           <div className="mb-12">
             <h1 className="text-4xl font-bold text-foreground mb-2">Student Application Form</h1>
-            <p className="text-foreground/60">Complete your application to Hoque</p>
+            <p className="text-foreground/60">Complete your application to HOQUE</p>
           </div>
 
           {/* Step Indicator */}
@@ -653,7 +653,7 @@ export function ApplicationFormClient() {
                       className="mt-1 w-4 h-4 rounded border-border cursor-pointer"
                     />
                     <label htmlFor="privacy" className="text-sm text-foreground/80 cursor-pointer">
-                      By submitting this form, you agree to the Hoque privacy notice and terms of service. We will process your data securely.
+                      By submitting this form, you agree to the HOQUE privacy notice and terms of service. We will process your data securely.
                     </label>
                   </div>
                   {errors.privacy && (

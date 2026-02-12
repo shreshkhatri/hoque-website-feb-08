@@ -50,7 +50,7 @@ export async function generateMetadata({
     title: `Study in ${country.name}`,
     description:
       country.description ||
-      `Explore study abroad opportunities in ${country.name}. Get expert guidance on universities, visas, and admissions from Hoque.`,
+      `Explore study abroad opportunities in ${country.name}. Get expert guidance on universities, visas, and admissions from HOQUE.`,
     openGraph: {
       title: `Study in ${country.name}`,
       description:
