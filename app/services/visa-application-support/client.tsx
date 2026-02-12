@@ -98,7 +98,7 @@ export function VisaApplicationSupportClient() {
                 Professional guidance for student visa applications worldwide. We assist international students through the entire visa process with our official partner solicitor firm.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
+                <Button size="lg">
                   Book Free Consultation
                 </Button>
                 <Button size="lg" variant="outline">
@@ -307,7 +307,7 @@ export function VisaApplicationSupportClient() {
 
             <div className="text-center mt-12">
               <Link href="/universities">
-                <Button variant="outline" size="lg" className="rounded-full bg-transparent">
+                <Button variant="outline" size="lg">
                   Explore All Universities
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -323,7 +323,7 @@ export function VisaApplicationSupportClient() {
             <p className="text-lg text-foreground/80 mb-8 max-w-2xl mx-auto">
               Submit your application today and take the first step toward your dream university.
             </p>
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
+            <Button asChild size="lg">
               <Link href="/application-form">
                 Apply Now
                 <ArrowRight className="ml-2 h-5 w-5" />

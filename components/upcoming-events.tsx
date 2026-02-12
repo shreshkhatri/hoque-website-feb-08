@@ -148,7 +148,7 @@ export function UpcomingEvents() {
                   </div>
 
                   {/* Register Button */}
-                  <Button asChild className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+                  <Button asChild className="w-full">
                     <a href={`/events/${event.id}`}>View Details</a>
                   </Button>
                 </div>

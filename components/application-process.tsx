@@ -136,7 +136,7 @@ export function ApplicationProcess() {
             </div>
 
             <Link href="/universities">
-              <button className="w-full bg-gradient-to-r from-primary to-primary/80 text-primary-foreground py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <button className="w-full bg-gradient-to-r from-foreground to-accent text-white py-3 rounded-full font-semibold uppercase tracking-wider hover:shadow-lg hover:brightness-110 transition-all duration-300">
                 Explore Universities
               </button>
             </Link>

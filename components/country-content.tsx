@@ -264,7 +264,7 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
               <span className="text-5xl md:text-6xl">{country.flag_emoji}</span>
               <h1 className="text-3xl md:text-5xl font-bold">Study in {country.name}</h1>
             </div>
-            <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold mt-4">
+            <Button size="lg" className="mt-4">
               Explore Universities
               <ChevronRight className="ml-1 w-4 h-4" />
             </Button>

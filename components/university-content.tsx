@@ -166,7 +166,7 @@ export function UniversityContent({ university, courses }: UniversityContentProp
             
             {/* CTA Button */}
             <div className="md:self-center">
-              <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold">
+              <Button size="lg">
                 Apply Now
                 <ChevronRight className="ml-1 w-4 h-4" />
               </Button>
@@ -288,7 +288,7 @@ export function UniversityContent({ university, courses }: UniversityContentProp
                   {courses.length > 5 && (
                     <Button 
                       variant="outline" 
-                      className="w-full mt-4 bg-transparent"
+                      className="w-full mt-4"
                       onClick={() => setActiveTab('courses')}
                     >
                       View All {courses.length} Courses
@@ -337,7 +337,7 @@ export function UniversityContent({ university, courses }: UniversityContentProp
                     <Button className="w-full" size="lg">
                       Apply Now
                     </Button>
-                    <Button variant="outline" className="w-full bg-transparent" size="lg">
+                    <Button variant="outline" className="w-full" size="lg">
                       Book a Consultation
                     </Button>
                   </div>

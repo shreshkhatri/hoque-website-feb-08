@@ -119,7 +119,7 @@ export function UniversityPartners() {
           </p>
           <Link
             href="/partner-universities"
-            className="inline-flex items-center space-x-2 px-8 py-3 border border-primary text-primary rounded-lg font-medium hover:bg-primary hover:text-primary-foreground transition-colors"
+            className="inline-flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-foreground to-accent text-white rounded-full font-semibold uppercase tracking-wider hover:shadow-lg hover:brightness-110 transition-all"
           >
             <span>View All Partners</span>
             <svg
