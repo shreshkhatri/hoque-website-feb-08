@@ -135,11 +135,6 @@ html {
   .cursor-pointer {
     cursor: pointer;
   }
-  
-  /* Section and page titles uppercase */
-  h1, h2 {
-    @apply uppercase tracking-wide;
-  }
 }
 
 /* Utility to hide scrollbar */
