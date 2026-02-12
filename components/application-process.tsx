@@ -125,10 +125,10 @@ export function ApplicationProcess() {
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/40 transition-colors group"
                 >
                   <div className="relative">
-                    <CheckCircle2 className="w-6 h-6 text-green-500 flex-shrink-0 group-hover:scale-110 transition-transform" />
-                    <div className="absolute inset-0 bg-green-400/20 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+<CheckCircle2 className="w-6 h-6 text-amber-500 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                  <div className="absolute inset-0 bg-amber-400/20 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                  <span className="text-foreground font-medium group-hover:text-green-600 transition-colors">
+                  <span className="text-foreground font-medium group-hover:text-amber-600 transition-colors">
                     {programme}
                   </span>
                 </div>

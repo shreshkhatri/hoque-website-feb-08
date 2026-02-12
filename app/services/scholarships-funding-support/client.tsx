@@ -266,7 +266,7 @@ export function ScholarshipsFundingSupportClient() {
               <div className="grid gap-4">
                 {benefits.map((benefit, index) => (
                   <div key={index} className="flex items-start gap-4 p-4">
-                    <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
+                    <CheckCircle2 className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
                     <p className="text-lg text-foreground">{benefit}</p>
                   </div>
                 ))}

@@ -172,7 +172,7 @@ export function UcasApplicationHelpClient() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <CheckCircle2 className="text-primary mt-1 flex-shrink-0" size={24} />
+                    <CheckCircle2 className="text-amber-500 mt-1 flex-shrink-0" size={24} />
                     <div>
                       <h3 className="font-semibold text-foreground">Free Support</h3>
                       <p className="text-sm text-foreground/60">Independent advice at no cost</p>

@@ -530,7 +530,7 @@ export function UniversityContent({ university, courses }: UniversityContentProp
                 <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
                   {['Modern Library', 'Sports Complex', 'Student Union', 'Research Labs', 'Cafeterias', 'IT Centers'].map((facility, index) => (
                     <div key={index} className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
-                      <CheckCircle className="w-5 h-5 text-green-500" />
+                      <CheckCircle className="w-5 h-5 text-amber-500" />
                       <span className="text-foreground">{facility}</span>
                     </div>
                   ))}

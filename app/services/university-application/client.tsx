@@ -101,19 +101,19 @@ export function UniversityApplicationClient() {
               <div className="bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg p-8 border border-primary/20">
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0" />
+                    <CheckCircle2 className="w-6 h-6 text-amber-500 flex-shrink-0" />
                     <span className="text-foreground font-medium">No Application Fees</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0" />
+                    <CheckCircle2 className="w-6 h-6 text-amber-500 flex-shrink-0" />
                     <span className="text-foreground font-medium">Expert Guidance</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0" />
+                    <CheckCircle2 className="w-6 h-6 text-amber-500 flex-shrink-0" />
                     <span className="text-foreground font-medium">Document Support</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0" />
+                    <CheckCircle2 className="w-6 h-6 text-amber-500 flex-shrink-0" />
                     <span className="text-foreground font-medium">Personal Statement Help</span>
                   </div>
                 </div>
@@ -214,7 +214,7 @@ export function UniversityApplicationClient() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="flex gap-4">
-                <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
+                <CheckCircle2 className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">Personalized Support</h3>
                   <p className="text-muted-foreground">
@@ -223,7 +223,7 @@ export function UniversityApplicationClient() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
+                <CheckCircle2 className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">Expert Team</h3>
                   <p className="text-muted-foreground">
@@ -232,7 +232,7 @@ export function UniversityApplicationClient() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
+                <CheckCircle2 className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">Document Assistance</h3>
                   <p className="text-muted-foreground">
@@ -241,7 +241,7 @@ export function UniversityApplicationClient() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
+                <CheckCircle2 className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">Zero Application Fees</h3>
                   <p className="text-muted-foreground">

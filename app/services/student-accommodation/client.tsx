@@ -135,7 +135,7 @@ export function StudentAccommodationClient() {
                     <ul className="space-y-2">
                       {type.features.map((feature, idx) => (
                         <li key={idx} className="flex items-center gap-2 text-sm text-foreground/80">
-                          <CheckCircle2 size={16} className="text-primary" />
+                          <CheckCircle2 size={16} className="text-amber-500" />
                           {feature}
                         </li>
                       ))}

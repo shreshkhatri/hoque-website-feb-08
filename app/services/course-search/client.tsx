@@ -213,7 +213,7 @@ export function CourseSearchClient() {
                 'Complete fee breakdown and comparisons',
               ].map((benefit, index) => (
                 <div key={index} className="flex items-start gap-4">
-                  <CheckCircle2 className="h-6 w-6 flex-shrink-0 text-primary mt-1" />
+                  <CheckCircle2 className="h-6 w-6 flex-shrink-0 text-amber-500 mt-1" />
                   <span className="text-foreground">{benefit}</span>
                 </div>
               ))}

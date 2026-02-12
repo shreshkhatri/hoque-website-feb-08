@@ -145,7 +145,7 @@ export function OneToOneConsultationClient() {
                   key={index}
                   className="flex items-start gap-3 p-4 rounded-lg bg-background border border-border hover:border-primary/50 transition-colors"
                 >
-                  <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
                   <p className="text-foreground font-medium">{area}</p>
                 </div>
               ))}

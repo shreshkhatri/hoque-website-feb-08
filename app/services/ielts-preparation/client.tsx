@@ -96,19 +96,19 @@ export function IELTSPreparationClient() {
               <h3 className="text-xl font-semibold text-foreground mb-4">Why Choose Academic IELTS?</h3>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
-                  <CheckCircle2 size={20} className="text-primary flex-shrink-0 mt-1" />
+                  <CheckCircle2 size={20} className="text-amber-500 flex-shrink-0 mt-1" />
                   <span className="text-foreground">Accepted by thousands of universities worldwide for undergraduate and postgraduate admission</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <CheckCircle2 size={20} className="text-primary flex-shrink-0 mt-1" />
+                  <CheckCircle2 size={20} className="text-amber-500 flex-shrink-0 mt-1" />
                   <span className="text-foreground">IELTS UKVI may be required for certain student visa applications</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <CheckCircle2 size={20} className="text-primary flex-shrink-0 mt-1" />
+                  <CheckCircle2 size={20} className="text-amber-500 flex-shrink-0 mt-1" />
                   <span className="text-foreground">Recognized by professional bodies for professional registration</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <CheckCircle2 size={20} className="text-primary flex-shrink-0 mt-1" />
+                  <CheckCircle2 size={20} className="text-amber-500 flex-shrink-0 mt-1" />
                   <span className="text-foreground">Results valid for 2 years from the test date</span>
                 </li>
               </ul>
@@ -181,42 +181,42 @@ export function IELTSPreparationClient() {
             <h2 className="text-3xl font-bold text-foreground mb-8">Why Study IELTS with HOQUE?</h2>
             <div className="grid sm:grid-cols-2 gap-6">
               <div className="flex gap-4">
-                <CheckCircle2 size={24} className="text-primary flex-shrink-0" />
+                <CheckCircle2 size={24} className="text-amber-500 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">Expert Trained Consultants</h3>
                   <p className="text-sm text-muted-foreground">Learn from experienced IELTS professionals with proven track records.</p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <CheckCircle2 size={24} className="text-primary flex-shrink-0" />
+                <CheckCircle2 size={24} className="text-amber-500 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">Intensive Courses</h3>
                   <p className="text-sm text-muted-foreground">Accelerated programs designed to help you achieve your target score quickly.</p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <CheckCircle2 size={24} className="text-primary flex-shrink-0" />
+                <CheckCircle2 size={24} className="text-amber-500 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">Personalized Attention</h3>
                   <p className="text-sm text-muted-foreground">Small class sizes and one-on-one support tailored to your needs.</p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <CheckCircle2 size={24} className="text-primary flex-shrink-0" />
+                <CheckCircle2 size={24} className="text-amber-500 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">Flexible Learning</h3>
                   <p className="text-sm text-muted-foreground">In-person classes, online tutoring, or blended options available.</p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <CheckCircle2 size={24} className="text-primary flex-shrink-0" />
+                <CheckCircle2 size={24} className="text-amber-500 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">Mock Exams</h3>
                   <p className="text-sm text-muted-foreground">Practice under exam conditions with detailed performance analysis.</p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <CheckCircle2 size={24} className="text-primary flex-shrink-0" />
+                <CheckCircle2 size={24} className="text-amber-500 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-foreground mb-2">Proven Results</h3>
                   <p className="text-sm text-muted-foreground">Our students consistently achieve their target IELTS scores.</p>

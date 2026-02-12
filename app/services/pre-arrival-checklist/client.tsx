@@ -162,7 +162,7 @@ export function PreArrivalChecklistClient() {
                     <ul className="space-y-3">
                       {section.items.map((item, itemIndex) => (
                         <li key={itemIndex} className="flex items-start gap-3">
-                          <CheckCircle2 className="text-green-500 flex-shrink-0 mt-1" size={20} />
+                          <CheckCircle2 className="text-amber-500 flex-shrink-0 mt-1" size={20} />
                           <span className="text-foreground">{item}</span>
                         </li>
                       ))}

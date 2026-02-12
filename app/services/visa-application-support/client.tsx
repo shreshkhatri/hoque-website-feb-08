@@ -227,7 +227,7 @@ export function VisaApplicationSupportClient() {
                 },
               ].map((item, index) => (
                 <div key={index} className="flex gap-4">
-                  <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
+                  <CheckCircle2 className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
                     <p className="text-foreground/70">{item.description}</p>
