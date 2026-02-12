@@ -77,10 +77,10 @@ export function UKUniversitySelectionClient() {
               University Selection
             </h1>
             <p className="text-xl text-foreground/70 mb-8 max-w-2xl text-balance">
-              Find your perfect university and access free application services to study at leading institutions worldwide with Hoque.
+              Find your perfect university and access free application services to study at leading institutions worldwide with HOQUE.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
+              <Button size="lg">
                 Book Free Consultation
               </Button>
               <Link href="/universities">
@@ -269,7 +269,7 @@ export function UKUniversitySelectionClient() {
 
             <div className="text-center mt-12">
               <Link href="/universities">
-                <Button variant="outline" size="lg" className="rounded-full bg-transparent">
+                <Button variant="outline" size="lg">
                   Explore All Universities
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -290,7 +290,7 @@ export function UKUniversitySelectionClient() {
               </p>
             </div>
 
-            <Button asChild size="lg" className="rounded-full bg-primary hover:bg-primary/90">
+            <Button asChild size="lg">
               <Link href="/application-form">
                 Apply Now
                 <ArrowRight className="ml-2 h-5 w-5" />

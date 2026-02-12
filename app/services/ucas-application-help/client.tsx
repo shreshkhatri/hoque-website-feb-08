@@ -86,7 +86,7 @@ export function UcasApplicationHelpClient() {
   ]
 
   const relatedServices = [
-    { title: 'One to One Consultancy', href: '/services/one-to-one-consultation' },
+    { title: 'One to One Consultation', href: '/services/one-to-one-consultation' },
     { title: 'University Application', href: '/services/university-application' },
     { title: 'Course Search', href: '/courses' },
     { title: 'University Selection', href: '/services/uk-university-selection' },
@@ -110,7 +110,7 @@ export function UcasApplicationHelpClient() {
                 confidence and secure placements at top universities.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
+                <Button size="lg">
                   Start Your Application
                 </Button>
                 <Link href="/services/one-to-one-consultation">
@@ -172,7 +172,7 @@ export function UcasApplicationHelpClient() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <CheckCircle2 className="text-primary mt-1 flex-shrink-0" size={24} />
+                    <CheckCircle2 className="text-amber-500 mt-1 flex-shrink-0" size={24} />
                     <div>
                       <h3 className="font-semibold text-foreground">Free Support</h3>
                       <p className="text-sm text-foreground/60">Independent advice at no cost</p>
@@ -266,7 +266,7 @@ export function UcasApplicationHelpClient() {
                   </Button>
                 </a>
                 <Link href="/services/one-to-one-consultation">
-                  <Button className="bg-primary hover:bg-primary/90">Get Personalized Help</Button>
+                  <Button>Get Personalized Help</Button>
                 </Link>
               </div>
             </div>
@@ -279,11 +279,11 @@ export function UcasApplicationHelpClient() {
             <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-8 md:p-12">
               <h2 className="text-3xl font-bold text-foreground mb-6">Ready to Apply?</h2>
               <p className="text-lg text-foreground/80 mb-8">
-                Hoque will help you apply to the most suitable universities. Our team tracks your
+                HOQUE will help you apply to the most suitable universities. Our team tracks your
                 application progress and ensures your success. Don&apos;t delay – start your UCAS application today!
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button size="lg" className="bg-primary hover:bg-primary/90">
+                <Button size="lg">
                   Apply Now
                 </Button>
                 <Link href="/services/university-application">
@@ -358,7 +358,7 @@ export function UcasApplicationHelpClient() {
 
             <div className="text-center mt-12">
               <Link href="/universities">
-                <Button variant="outline" size="lg" className="rounded-full bg-transparent">
+                <Button variant="outline" size="lg">
                   Explore All Universities
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -376,7 +376,7 @@ export function UcasApplicationHelpClient() {
             <p className="text-lg text-foreground/70 mb-8">
               Submit your application today and take the first step toward your dream university.
             </p>
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
+            <Button asChild size="lg">
               <Link href="/application-form">
                 Apply Now
                 <ArrowRight className="ml-2 h-5 w-5" />

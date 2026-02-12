@@ -4,7 +4,7 @@ import { UcasApplicationHelpClient } from './client'
 export const metadata: Metadata = {
   title: 'UCAS Application Help | Expert UCAS Support - HOQUE',
   description:
-    'Get professional UCAS application help from Hoque. Recognized UCAS centre offering free independent advice on UCAS applications.',
+    'Get professional UCAS application help from HOQUE. Recognized UCAS centre offering free independent advice on UCAS applications.',
   keywords:
     'UCAS application help, UCAS support, university application, UCAS centre, application assistance',
   openGraph: {

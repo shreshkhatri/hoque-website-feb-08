@@ -432,34 +432,44 @@ export function Header() {
                         }`}
                       >
                         <a
-                          href="/services/accommodation-support"
+                          href="/services/student-accommodation"
                           onClick={() => {
                             setShowServicesDropdown(false)
                             setHoveredService(null)
                           }}
                           className="block px-6 py-3 text-sm text-foreground hover:bg-primary hover:text-primary-foreground transition-colors first:rounded-t-lg"
                         >
-                          Accommodation Support
+                          Student Accommodation
                         </a>
                         <a
-                          href="/services/financial-guidance"
+                          href="/services/scholarships-funding-support"
                           onClick={() => {
                             setShowServicesDropdown(false)
                             setHoveredService(null)
                           }}
                           className="block px-6 py-3 text-sm text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                         >
-                          Financial Guidance
+                          Scholarships & Funding Support
                         </a>
                         <a
-                          href="/services/student-life-orientation"
+                          href="/services/ielts-preparation"
+                          onClick={() => {
+                            setShowServicesDropdown(false)
+                            setHoveredService(null)
+                          }}
+                          className="block px-6 py-3 text-sm text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                        >
+                          IELTS Preparation
+                        </a>
+                        <a
+                          href="/services/pre-arrival-checklist"
                           onClick={() => {
                             setShowServicesDropdown(false)
                             setHoveredService(null)
                           }}
                           className="block px-6 py-3 text-sm text-foreground hover:bg-primary hover:text-primary-foreground transition-colors last:rounded-b-lg"
                         >
-                          Student Life Orientation
+                          Pre-Arrival Checklist
                         </a>
                       </div>
                     )}

@@ -205,7 +205,7 @@ export function ApplicationFormClient() {
               </div>
               <h1 className="text-3xl font-bold text-foreground mb-4">Application Submitted Successfully</h1>
               <p className="text-foreground/60 mb-8">Thank you for your application! Our team will review your submission and contact you within 2-3 business days.</p>
-              <Button onClick={() => window.location.href = '/'} className="bg-primary hover:bg-primary/90">
+              <Button onClick={() => window.location.href = '/'}>
                 Return to Home
               </Button>
             </div>
@@ -224,7 +224,7 @@ export function ApplicationFormClient() {
           {/* Header */}
           <div className="mb-12">
             <h1 className="text-4xl font-bold text-foreground mb-2">Student Application Form</h1>
-            <p className="text-foreground/60">Complete your application to Hoque</p>
+            <p className="text-foreground/60">Complete your application to HOQUE</p>
           </div>
 
           {/* Step Indicator */}
@@ -653,7 +653,7 @@ export function ApplicationFormClient() {
                       className="mt-1 w-4 h-4 rounded border-border cursor-pointer"
                     />
                     <label htmlFor="privacy" className="text-sm text-foreground/80 cursor-pointer">
-                      By submitting this form, you agree to the Hoque privacy notice and terms of service. We will process your data securely.
+                      By submitting this form, you agree to the HOQUE privacy notice and terms of service. We will process your data securely.
                     </label>
                   </div>
                   {errors.privacy && (
@@ -681,12 +681,12 @@ export function ApplicationFormClient() {
                 <Button
                   type="button"
                   onClick={() => goToStep(currentStep + 1)}
-                  className="px-8 bg-primary hover:bg-primary/90"
+                  className="px-8"
                 >
                   Next
                 </Button>
               ) : (
-                <Button type="submit" className="px-8 bg-primary hover:bg-primary/90">
+                <Button type="submit" className="px-8">
                   Submit Application
                 </Button>
               )}

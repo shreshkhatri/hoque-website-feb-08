@@ -66,7 +66,7 @@ export function ApplicationProcess() {
             Simple Application Process
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            It's easy to apply to any programme at a university with Hoque.
+            It's easy to apply to any programme at a university with HOQUE.
             Contact us for a free one-on-one consultation.
           </p>
         </div>
@@ -125,10 +125,10 @@ export function ApplicationProcess() {
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/40 transition-colors group"
                 >
                   <div className="relative">
-                    <CheckCircle2 className="w-6 h-6 text-green-500 flex-shrink-0 group-hover:scale-110 transition-transform" />
-                    <div className="absolute inset-0 bg-green-400/20 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+<CheckCircle2 className="w-6 h-6 text-amber-500 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                  <div className="absolute inset-0 bg-amber-400/20 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                  <span className="text-foreground font-medium group-hover:text-green-600 transition-colors">
+                  <span className="text-foreground font-medium group-hover:text-amber-600 transition-colors">
                     {programme}
                   </span>
                 </div>
@@ -136,7 +136,7 @@ export function ApplicationProcess() {
             </div>
 
             <Link href="/universities">
-              <button className="w-full bg-gradient-to-r from-primary to-primary/80 text-primary-foreground py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105">
+              <button className="w-full bg-gradient-to-r from-foreground to-accent text-white py-3 rounded-full font-semibold uppercase tracking-wider hover:shadow-lg hover:brightness-110 transition-all duration-300">
                 Explore Universities
               </button>
             </Link>

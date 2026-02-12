@@ -332,8 +332,8 @@ export function SearchFilter() {
                   </div>
                 )}
               </div>
-              <button className="w-full sm:w-auto px-8 py-3 bg-primary text-primary-foreground rounded-full font-semibold hover:shadow-lg transition-shadow whitespace-nowrap">
-                Search Q
+              <button className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-foreground to-accent text-white rounded-full font-semibold uppercase tracking-wider hover:shadow-lg hover:brightness-110 transition-all whitespace-nowrap">
+                Search
               </button>
             </div>
 

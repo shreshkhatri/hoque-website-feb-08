@@ -102,7 +102,7 @@ export function AboutPageClient() {
               ].map((promise, i) => (
                 <div key={i} className="flex items-start space-x-4 bg-card border border-border rounded-lg p-4">
                   <CheckCircle
-                    className="w-6 h-6 text-primary flex-shrink-0 mt-1"
+                    className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1"
                     size={24}
                   />
                   <p className="text-foreground text-lg">{promise}</p>

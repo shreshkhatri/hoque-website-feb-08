@@ -77,7 +77,7 @@ export function OneToOneConsultationClient() {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full bg-transparent">
+              <Button asChild variant="outline" size="lg">
                 <Link href="#process">Learn More</Link>
               </Button>
             </div>
@@ -145,7 +145,7 @@ export function OneToOneConsultationClient() {
                   key={index}
                   className="flex items-start gap-3 p-4 rounded-lg bg-background border border-border hover:border-primary/50 transition-colors"
                 >
-                  <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
                   <p className="text-foreground font-medium">{area}</p>
                 </div>
               ))}
@@ -310,7 +310,7 @@ export function OneToOneConsultationClient() {
 
             <div className="text-center mt-12">
               <Link href="/universities">
-                <Button variant="outline" size="lg" className="rounded-full bg-transparent">
+                <Button variant="outline" size="lg">
                   Explore All Universities
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -331,7 +331,7 @@ export function OneToOneConsultationClient() {
               </p>
             </div>
 
-            <Button asChild size="lg" className="rounded-full bg-primary hover:bg-primary/90">
+            <Button asChild size="lg">
               <Link href="/application-form">
                 Apply Now
                 <ArrowRight className="ml-2 h-5 w-5" />

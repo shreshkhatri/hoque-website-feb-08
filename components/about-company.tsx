@@ -18,7 +18,7 @@ export function AboutCompany() {
                 About HOQUE
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Founded in 2015, Hoque has been the trusted partner for 
+                Founded in 2015, HOQUE has been the trusted partner for 
                 international students seeking admission to the world's most 
                 prestigious universities. We specialize in guiding students through 
                 every step of their educational journey.
@@ -35,14 +35,14 @@ export function AboutCompany() {
 
             <div className="space-y-3 pt-2">
               {[
-                'Expert consultancy from university admission officers',
+                'Expert guidance from university admission officers',
                 'Personalized guidance tailored to your goals',
                 'Support across 50+ countries worldwide',
                 'Strong relationships with top universities globally',
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <CheckCircle
-                    className="w-5 h-5 text-primary flex-shrink-0 mt-0.5"
+                    className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5"
                   />
                   <span className="text-foreground">{item}</span>
                 </div>

@@ -158,7 +158,7 @@ export function CourseContent({ course }: CourseContentProps) {
       {course.entry_requirements && (
         <div className="bg-card border border-border rounded-lg p-8 mb-8">
           <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
-            <CheckCircle size={28} className="text-primary" />
+            <CheckCircle size={28} className="text-amber-500" />
             <span>Entry Requirements</span>
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed">
