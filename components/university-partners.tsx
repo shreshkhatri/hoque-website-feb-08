@@ -32,7 +32,8 @@ export function UniversityPartners() {
     { name: 'Northumbria University Newcastle', logo: '/logos/northumbria-newcastle-university.png' },
     { name: "Queen's University Belfast", logo: '/logos/queen-belfast-university.png' },
     { name: 'University of East Anglia', logo: '/logos/uea-university.png' },
-    { name: 'Wrexham University', logo: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/QA%20logo-nqkVlAskF7VGcipr6fp9TErKcQ5ZXo.jpeg' },
+    { name: 'Wrexham University', logo: 'logos/wrexham-university.png' },
+    { name: 'QA Higher Education', logo: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/QA%20logo-nqkVlAskF7VGcipr6fp9TErKcQ5ZXo.jpeg' },
   ]
 
   return (
