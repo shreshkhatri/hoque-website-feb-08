@@ -165,7 +165,7 @@ export function ScholarshipsFundingSupportClient() {
                 return (
                   <div
                     key={index}
-                    className="p-6 border border-border rounded-lg hover:border-primary transition-colors group"
+                    className="p-6 border border-border rounded-lg hover:border-accent transition-colors group"
                   >
                     <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                       <IconComponent className="w-6 h-6 text-primary" />
@@ -290,7 +290,7 @@ export function ScholarshipsFundingSupportClient() {
               {faqs.map((faq, index) => (
                 <div
                   key={index}
-                  className="p-6 border border-border rounded-lg hover:border-primary/50 transition-colors"
+                  className="p-6 border border-border rounded-lg hover:border-accent/50 transition-colors"
                 >
                   <h3 className="text-lg font-semibold text-foreground mb-3">
                     {faq.question}
@@ -320,7 +320,7 @@ export function ScholarshipsFundingSupportClient() {
                 <Link
                   key={index}
                   href={service.href}
-                  className="p-6 bg-background border border-border rounded-lg hover:border-primary hover:shadow-lg transition-all group"
+                  className="p-6 bg-background border border-border rounded-lg hover:border-accent hover:shadow-lg transition-all group"
                 >
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
@@ -361,7 +361,7 @@ export function ScholarshipsFundingSupportClient() {
                 { name: 'University of Bristol', rank: 'World Top 100' },
                 { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
-                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
+                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-accent hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
                   <p className="text-sm text-muted-foreground">{uni.rank}</p>
                 </div>

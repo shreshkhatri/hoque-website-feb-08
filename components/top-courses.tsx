@@ -78,7 +78,7 @@ export function TopCourses() {
               <Link
                 key={course.id}
                 href={`/course/${nameToSlug(course.name, course.code)}`}
-                className="group bg-card border border-border rounded-xl p-6 hover:border-primary hover:shadow-lg transition-all duration-300"
+                className="group bg-card border border-border rounded-xl p-6 hover:border-accent hover:shadow-lg transition-all duration-300"
               >
                 {/* Course level badge */}
                 <div className="flex items-start justify-between mb-3">

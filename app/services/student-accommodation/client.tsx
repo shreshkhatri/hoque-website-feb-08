@@ -198,7 +198,7 @@ export function StudentAccommodationClient() {
                 <Link
                   key={index}
                   href={service.href}
-                  className="group bg-card border border-border rounded-lg p-6 hover:border-primary hover:bg-primary/5 transition-all"
+                  className="group bg-card border border-border rounded-lg p-6 hover:border-accent hover:bg-primary/5 transition-all"
                 >
                   <div className="flex items-center justify-between">
                     <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
@@ -239,7 +239,7 @@ export function StudentAccommodationClient() {
                 { name: 'University of Bristol', rank: 'World Top 100' },
                 { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
-                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
+                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-accent hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
                   <p className="text-sm text-muted-foreground">{uni.rank}</p>
                 </div>

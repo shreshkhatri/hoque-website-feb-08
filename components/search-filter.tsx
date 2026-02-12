@@ -251,7 +251,7 @@ export function SearchFilter() {
                       className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-200 border ${
                         selectedIntake === 'All'
                           ? 'bg-primary text-primary-foreground border-primary shadow-md'
-                          : 'border-border text-foreground hover:border-primary hover:bg-primary/5'
+                          : 'border-border text-foreground hover:border-accent hover:bg-primary/5'
                       }`}
                     >
                       All
@@ -269,7 +269,7 @@ export function SearchFilter() {
                         className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-200 border ${
                           selectedIntake === month
                             ? 'bg-primary text-primary-foreground border-primary shadow-md'
-                            : 'border-border text-foreground hover:border-primary hover:bg-primary/5'
+                            : 'border-border text-foreground hover:border-accent hover:bg-primary/5'
                         }`}
                       >
                         {month}

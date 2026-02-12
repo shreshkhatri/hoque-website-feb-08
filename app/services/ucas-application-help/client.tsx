@@ -216,7 +216,7 @@ export function UcasApplicationHelpClient() {
                 const Icon = step.icon
                 return (
                   <div key={idx} className="relative">
-                    <div className="bg-card rounded-lg p-6 border-2 border-primary/20 hover:border-primary/50 transition-colors text-center">
+                    <div className="bg-card rounded-lg p-6 border-2 border-primary/20 hover:border-accent/50 transition-colors text-center">
                       <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold text-lg mx-auto mb-4">
                         {step.number}
                       </div>
@@ -308,7 +308,7 @@ export function UcasApplicationHelpClient() {
             <div className="grid md:grid-cols-3 gap-6">
               {relatedServices.map((service, idx) => (
                 <Link key={idx} href={service.href} className="group">
-                  <div className="bg-card rounded-lg p-6 border border-border group-hover:border-primary/50 group-hover:shadow-lg transition-all">
+                  <div className="bg-card rounded-lg p-6 border border-border group-hover:border-accent/50 group-hover:shadow-lg transition-all">
                     <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors mb-2">
                       {service.title}
                     </h3>
@@ -349,7 +349,7 @@ export function UcasApplicationHelpClient() {
                 { name: 'University of Bristol', rank: 'World Top 100' },
                 { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
-                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
+                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-accent hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
                   <p className="text-sm text-muted-foreground">{uni.rank}</p>
                 </div>

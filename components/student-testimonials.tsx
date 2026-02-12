@@ -176,7 +176,7 @@ export function StudentTestimonials() {
                   key={testimonial.id}
                   className={`flex-shrink-0 w-full md:w-[calc((100%-3rem)/3)]`}
                 >
-                  <div className="bg-card border border-border rounded-xl p-6 hover:border-primary hover:shadow-lg transition-all duration-300 flex flex-col">
+                  <div className="bg-card border border-border rounded-xl p-6 hover:border-accent hover:shadow-lg transition-all duration-300 flex flex-col">
                     {/* Quote Icon */}
                     <Quote className="w-10 h-10 text-primary/20 mb-4" />
 

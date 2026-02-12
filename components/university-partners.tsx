@@ -59,7 +59,7 @@ export function UniversityPartners() {
             {partners.map((partner, index) => (
               <div
                 key={`first-${index}`}
-                className="group flex-shrink-0 w-40 sm:w-48 md:w-56 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-card border border-border rounded-lg hover:border-primary hover:shadow-lg transition-all duration-300"
+                className="group flex-shrink-0 w-40 sm:w-48 md:w-56 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-card border border-border rounded-lg hover:border-accent hover:shadow-lg transition-all duration-300"
               >
                 <div className="text-center w-full">
                   <div className="mb-2 sm:mb-3 flex justify-center h-20 sm:h-24 md:h-28 items-center">
@@ -86,7 +86,7 @@ export function UniversityPartners() {
             {partners.map((partner, index) => (
               <div
                 key={`second-${index}`}
-                className="group flex-shrink-0 w-40 sm:w-48 md:w-56 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-card border border-border rounded-lg hover:border-primary hover:shadow-lg transition-all duration-300"
+                className="group flex-shrink-0 w-40 sm:w-48 md:w-56 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-card border border-border rounded-lg hover:border-accent hover:shadow-lg transition-all duration-300"
               >
                 <div className="text-center w-full">
                   <div className="mb-2 sm:mb-3 flex justify-center h-20 sm:h-24 md:h-28 items-center">

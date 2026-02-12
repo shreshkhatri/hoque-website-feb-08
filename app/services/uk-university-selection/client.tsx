@@ -148,7 +148,7 @@ export function UKUniversitySelectionClient() {
               {universities.map((uni, index) => (
                 <div
                   key={index}
-                  className="bg-card border border-border rounded-lg p-6 hover:shadow-lg hover:border-primary/50 transition-all"
+                  className="bg-card border border-border rounded-lg p-6 hover:shadow-lg hover:border-accent/50 transition-all"
                 >
                   <h3 className="text-lg font-semibold text-foreground mb-2">
                     {uni.name}
@@ -219,7 +219,7 @@ export function UKUniversitySelectionClient() {
                 <Link
                   key={index}
                   href={service.href}
-                  className="bg-card border border-border rounded-lg p-6 hover:shadow-lg hover:border-primary/50 transition-all group"
+                  className="bg-card border border-border rounded-lg p-6 hover:shadow-lg hover:border-accent/50 transition-all group"
                 >
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
@@ -260,7 +260,7 @@ export function UKUniversitySelectionClient() {
                 { name: 'University of Bristol', rank: 'World Top 100' },
                 { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
-                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
+                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-accent hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
                   <p className="text-sm text-muted-foreground">{uni.rank}</p>
                 </div>

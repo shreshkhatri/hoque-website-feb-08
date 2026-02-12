@@ -68,7 +68,7 @@ export function PartnersClient() {
           {displayedPartners.map((partner, index) => (
             <div
               key={`${partner.name}-${index}`}
-              className="group flex flex-col items-center justify-center p-6 bg-card border border-border rounded-lg hover:border-primary hover:shadow-lg transition-all duration-300"
+              className="group flex flex-col items-center justify-center p-6 bg-card border border-border rounded-lg hover:border-accent hover:shadow-lg transition-all duration-300"
             >
               <div className="w-full h-32 flex items-center justify-center mb-4">
                 {partner.logo ? (

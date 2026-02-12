@@ -143,7 +143,7 @@ export function OneToOneConsultationClient() {
               {consultationAreas.map((area, index) => (
                 <div
                   key={index}
-                  className="flex items-start gap-3 p-4 rounded-lg bg-background border border-border hover:border-primary/50 transition-colors"
+                  className="flex items-start gap-3 p-4 rounded-lg bg-background border border-border hover:border-accent/50 transition-colors"
                 >
                   <CheckCircle2 className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
                   <p className="text-foreground font-medium">{area}</p>
@@ -231,7 +231,7 @@ export function OneToOneConsultationClient() {
               {offices.map((office, index) => (
                 <div
                   key={index}
-                  className="p-6 rounded-lg bg-card border border-border hover:border-primary/50 transition-colors text-center"
+                  className="p-6 rounded-lg bg-card border border-border hover:border-accent/50 transition-colors text-center"
                 >
                   <MapPin className="w-8 h-8 text-primary mx-auto mb-3" />
                   <h3 className="text-lg font-bold text-foreground">{office.city}</h3>
@@ -262,7 +262,7 @@ export function OneToOneConsultationClient() {
                 <Link
                   key={index}
                   href={service.href}
-                  className="p-6 rounded-lg bg-background border border-border hover:border-primary hover:shadow-lg transition-all group"
+                  className="p-6 rounded-lg bg-background border border-border hover:border-accent hover:shadow-lg transition-all group"
                 >
                   <div className="text-3xl mb-3">{service.icon}</div>
                   <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
@@ -301,7 +301,7 @@ export function OneToOneConsultationClient() {
                 { name: 'University of Bristol', rank: 'World Top 100' },
                 { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
-                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
+                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-accent hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
                   <p className="text-sm text-muted-foreground">{uni.rank}</p>
                 </div>

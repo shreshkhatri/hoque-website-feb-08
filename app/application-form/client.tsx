@@ -607,7 +607,7 @@ export function ApplicationFormClient() {
                           />
                           <label
                             htmlFor={key}
-                            className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg border-2 border-dashed border-primary/30 hover:border-primary/60 bg-primary/5 cursor-pointer transition-colors"
+                            className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg border-2 border-dashed border-primary/30 hover:border-accent/60 bg-primary/5 cursor-pointer transition-colors"
                           >
                             <Upload size={18} className="text-primary" />
                             <span className="text-sm text-foreground/60">{files[key as keyof typeof files]?.name || 'Choose file'}</span>

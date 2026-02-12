@@ -219,7 +219,7 @@ export function CoursesPageClient() {
                           className={`px-4 py-2 rounded-full font-medium transition-all duration-200 border ${
                             selectedCountry === country.id
                               ? 'bg-primary text-primary-foreground border-primary'
-                              : 'border-border text-foreground hover:border-primary hover:text-primary'
+                              : 'border-border text-foreground hover:border-accent hover:text-primary'
                           }`}
                         >
                           {country.name}
@@ -240,7 +240,7 @@ export function CoursesPageClient() {
                         className={`px-4 py-2 rounded-full font-medium transition-all duration-200 border ${
                           selectedLevel === level
                             ? 'bg-primary text-primary-foreground border-primary'
-                            : 'border-border text-foreground hover:border-primary hover:text-primary'
+                            : 'border-border text-foreground hover:border-accent hover:text-primary'
                         }`}
                       >
                         {level}
@@ -259,7 +259,7 @@ export function CoursesPageClient() {
                         className={`px-4 py-2 rounded-full font-medium transition-all duration-200 border ${
                           selectedIntake === 'All'
                             ? 'bg-primary text-primary-foreground border-primary'
-                            : 'border-border text-foreground hover:border-primary hover:text-primary'
+                            : 'border-border text-foreground hover:border-accent hover:text-primary'
                         }`}
                       >
                         All
@@ -271,7 +271,7 @@ export function CoursesPageClient() {
                           className={`px-4 py-2 rounded-full font-medium transition-all duration-200 border ${
                             selectedIntake === month
                               ? 'bg-primary text-primary-foreground border-primary'
-                              : 'border-border text-foreground hover:border-primary hover:text-primary'
+                              : 'border-border text-foreground hover:border-accent hover:text-primary'
                           }`}
                         >
                           {month}
@@ -348,7 +348,7 @@ export function CoursesPageClient() {
                     <Link
                       key={course.id}
                       href={`/course/${nameToSlug(course.name, course.code)}`}
-                      className="group bg-card border border-border rounded-xl p-6 hover:border-primary hover:shadow-lg transition-all duration-300"
+                      className="group bg-card border border-border rounded-xl p-6 hover:border-accent hover:shadow-lg transition-all duration-300"
                     >
                       <div className="flex items-start justify-between mb-3">
                         <span
@@ -460,7 +460,7 @@ export function CoursesPageClient() {
                   <Link
                     key={course.id}
                     href={`/course/${nameToSlug(course.name, course.code)}`}
-                    className="group relative bg-gradient-to-br from-primary/5 to-accent/5 border-2 border-primary/30 rounded-xl p-6 hover:border-primary hover:shadow-xl transition-all duration-300 overflow-hidden"
+                    className="group relative bg-gradient-to-br from-primary/5 to-accent/5 border-2 border-primary/30 rounded-xl p-6 hover:border-accent hover:shadow-xl transition-all duration-300 overflow-hidden"
                   >
                     {/* Featured badge */}
                     <div className="absolute -top-1 -right-1 bg-primary text-primary-foreground px-3 py-1 rounded-bl-lg text-xs font-bold">

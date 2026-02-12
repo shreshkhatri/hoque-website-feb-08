@@ -424,7 +424,7 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                       href={`/university/${nameToSlug(uni.name)}`}
                       className="group"
                     >
-                      <Card className="h-full hover:border-primary transition-colors">
+                      <Card className="h-full hover:border-accent transition-colors">
                         <CardContent className="p-6">
                           <div className="flex items-start gap-4">
                             <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -506,7 +506,7 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                   href={`/university/${nameToSlug(uni.name)}`}
                   className="group"
                 >
-                  <Card className="h-full hover:border-primary hover:shadow-lg transition-all">
+                  <Card className="h-full hover:border-accent hover:shadow-lg transition-all">
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4">
                         <div className="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -583,7 +583,7 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
 
             <div className="grid gap-4">
               {filteredCourses.map((course) => (
-                <Card key={course.id} className="hover:border-primary transition-colors">
+                <Card key={course.id} className="hover:border-accent transition-colors">
                   <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="flex-1">

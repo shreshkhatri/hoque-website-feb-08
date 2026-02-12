@@ -167,7 +167,7 @@ export function EventsClient() {
       <div className={`bg-card border rounded-lg overflow-hidden transition-all h-full flex flex-col ${
         isPast 
           ? 'opacity-60 grayscale border-border/50' 
-          : 'border-border hover:shadow-lg hover:border-primary/50'
+          : 'border-border hover:shadow-lg hover:border-accent/50'
       }`}>
         <div className="p-6 flex-1 flex flex-col">
           <div className="flex items-start justify-between mb-4">
@@ -264,7 +264,7 @@ export function EventsClient() {
             <div className="relative">
               <button
                 onClick={() => setShowCountryDropdown(!showCountryDropdown)}
-                className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground flex items-center justify-between hover:border-primary transition-colors"
+                className="w-full px-4 py-3 rounded-lg border border-border bg-background text-foreground flex items-center justify-between hover:border-accent transition-colors"
               >
                 <span className="flex items-center gap-2">
                   <MapPin size={20} />
