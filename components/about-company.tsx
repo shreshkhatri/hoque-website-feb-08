@@ -76,8 +76,8 @@ export function AboutCompany() {
             {/* Floating stats card */}
             <div className="absolute -bottom-6 -left-6 bg-card border border-border rounded-xl p-6 shadow-xl">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center">
-                  <span className="text-2xl font-bold text-primary">98%</span>
+                <div className="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center">
+                  <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">98%</span>
                 </div>
                 <div>
                   <p className="font-semibold text-foreground">Success Rate</p>
@@ -91,13 +91,13 @@ export function AboutCompany() {
         {/* Stats section */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 pt-16 border-t border-border">
           {[
-            { number: '5000+', label: 'Students Guided' },
-            { number: '98%', label: 'Success Rate' },
-            { number: '10+', label: 'Years Experience' },
-            { number: '50+', label: 'Countries Served' },
+            { number: '5000+', label: 'Students Guided', color: 'text-blue-600 dark:text-blue-400' },
+            { number: '98%', label: 'Success Rate', color: 'text-emerald-600 dark:text-emerald-400' },
+            { number: '10+', label: 'Years Experience', color: 'text-amber-600 dark:text-amber-400' },
+            { number: '50+', label: 'Countries Served', color: 'text-rose-600 dark:text-rose-400' },
           ].map((stat, i) => (
             <div key={i} className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
+              <div className={`text-3xl md:text-4xl font-bold ${stat.color} mb-2`}>
                 {stat.number}
               </div>
               <div className="text-muted-foreground">{stat.label}</div>

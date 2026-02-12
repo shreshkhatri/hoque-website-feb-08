@@ -59,6 +59,8 @@ export function PreArrivalChecklistClient() {
     {
       category: 'Immigration Documents',
       icon: AlertCircle,
+      iconBg: 'bg-rose-100 dark:bg-rose-900/30',
+      iconColor: 'text-rose-600 dark:text-rose-400',
       items: [
         'Home Office letter with BRP card collection details',
         'Police Clearance Certificate (if applicable)',
@@ -69,6 +71,8 @@ export function PreArrivalChecklistClient() {
     {
       category: 'Accommodation & Other',
       icon: Home,
+      iconBg: 'bg-purple-100 dark:bg-purple-900/30',
+      iconColor: 'text-purple-600 dark:text-purple-400',
       items: [
         'Confirmed accommodation address',
         'Accommodation booking confirmation',
@@ -160,10 +164,10 @@ export function PreArrivalChecklistClient() {
               {checklist.map((section, index) => {
                 const Icon = section.icon
                 return (
-                  <div key={index} className="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+                  <div key={index} className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all">
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="bg-primary/10 p-2 rounded-lg">
-                        <Icon className="text-primary" size={24} />
+                      <div className={`${section.iconBg} p-3 rounded-xl`}>
+                        <Icon className={section.iconColor} size={24} />
                       </div>
                       <h3 className="text-xl font-bold text-foreground">{section.category}</h3>
                     </div>
@@ -187,19 +191,28 @@ export function PreArrivalChecklistClient() {
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold mb-12 text-foreground text-center">Preparation Timeline</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {timeline.map((phase, index) => (
-                <div key={index} className="bg-card border border-border rounded-lg p-6">
-                  <h3 className="text-lg font-bold text-primary mb-4">{phase.month}</h3>
-                  <ul className="space-y-2">
-                    {phase.tasks.map((task, taskIndex) => (
-                      <li key={taskIndex} className="flex items-start gap-2">
-                        <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
-                        <span className="text-sm text-foreground">{task}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+              {timeline.map((phase, index) => {
+                const colors = [
+                  { bg: 'bg-blue-500/10', border: 'border-blue-200 dark:border-blue-800', title: 'text-blue-600 dark:text-blue-400', dot: 'bg-blue-500' },
+                  { bg: 'bg-teal-500/10', border: 'border-teal-200 dark:border-teal-800', title: 'text-teal-600 dark:text-teal-400', dot: 'bg-teal-500' },
+                  { bg: 'bg-amber-500/10', border: 'border-amber-200 dark:border-amber-800', title: 'text-amber-600 dark:text-amber-400', dot: 'bg-amber-500' },
+                  { bg: 'bg-rose-500/10', border: 'border-rose-200 dark:border-rose-800', title: 'text-rose-600 dark:text-rose-400', dot: 'bg-rose-500' },
+                ]
+                const c = colors[index]
+                return (
+                  <div key={index} className={`${c.bg} border ${c.border} rounded-xl p-6 hover:shadow-md transition-all`}>
+                    <h3 className={`text-lg font-bold ${c.title} mb-4`}>{phase.month}</h3>
+                    <ul className="space-y-2">
+                      {phase.tasks.map((task, taskIndex) => (
+                        <li key={taskIndex} className="flex items-start gap-2">
+                          <div className={`w-2 h-2 ${c.dot} rounded-full mt-2 flex-shrink-0`} />
+                          <span className="text-sm text-foreground">{task}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </section>
@@ -209,12 +222,22 @@ export function PreArrivalChecklistClient() {
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold mb-12 text-foreground text-center">Helpful Tips</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {tips.map((tip, index) => (
-                <div key={index} className="bg-gradient-to-br from-primary/5 to-transparent border border-border rounded-lg p-6">
-                  <h3 className="text-lg font-bold text-foreground mb-3">{tip.title}</h3>
-                  <p className="text-muted-foreground">{tip.description}</p>
-                </div>
-              ))}
+              {tips.map((tip, index) => {
+                const tipColors = [
+                  'border-blue-200 dark:border-blue-800 bg-blue-500/5',
+                  'border-amber-200 dark:border-amber-800 bg-amber-500/5',
+                  'border-teal-200 dark:border-teal-800 bg-teal-500/5',
+                  'border-rose-200 dark:border-rose-800 bg-rose-500/5',
+                  'border-emerald-200 dark:border-emerald-800 bg-emerald-500/5',
+                  'border-purple-200 dark:border-purple-800 bg-purple-500/5',
+                ]
+                return (
+                  <div key={index} className={`border ${tipColors[index]} rounded-xl p-6 hover:shadow-md transition-all`}>
+                    <h3 className="text-lg font-bold text-foreground mb-3">{tip.title}</h3>
+                    <p className="text-muted-foreground">{tip.description}</p>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </section>

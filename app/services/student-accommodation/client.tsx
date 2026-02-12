@@ -13,24 +13,32 @@ export function StudentAccommodationClient() {
       description: 'Safe, secure, and convenient accommodation provided by universities with support services and community.',
       icon: Home,
       features: ['On-campus location', 'Meal plans available', '24/7 support', 'Community events'],
+      iconBg: 'bg-blue-100 dark:bg-blue-900/30',
+      iconColor: 'text-blue-600 dark:text-blue-400',
     },
     {
       title: 'Private Student Housing',
       description: 'Purpose-built student accommodation with modern facilities, flexible contracts, and excellent value.',
       icon: MapPin,
       features: ['Modern amenities', 'All-inclusive bills', 'Social spaces', 'Short-term contracts'],
+      iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
+      iconColor: 'text-emerald-600 dark:text-emerald-400',
     },
     {
       title: 'Host Family Accommodation',
       description: 'Stay with a carefully selected local family for an authentic cultural experience and language immersion.',
       icon: Users,
       features: ['Family environment', 'Local integration', 'Home-cooked meals', 'Personal support'],
+      iconBg: 'bg-amber-100 dark:bg-amber-900/30',
+      iconColor: 'text-amber-600 dark:text-amber-400',
     },
     {
       title: 'Private Rental',
       description: 'Independent living in private apartments or shared houses with complete freedom and flexibility.',
       icon: Shield,
       features: ['Full independence', 'Various locations', 'Flexible terms', 'Furnished options'],
+      iconBg: 'bg-rose-100 dark:bg-rose-900/30',
+      iconColor: 'text-rose-600 dark:text-rose-400',
     },
   ]
 
@@ -58,10 +66,10 @@ export function StudentAccommodationClient() {
   ]
 
   const accommodationBenefits = [
-    { icon: Shield, title: 'Safety & Security', description: 'All accommodations verified for safety standards and security features' },
-    { icon: DollarSign, title: 'Budget-Friendly', description: 'Options for every budget from halls to private rentals' },
-    { icon: Clock, title: 'Quick Process', description: 'Fast accommodation allocation once your offer is confirmed' },
-    { icon: Users, title: 'Community', description: 'Connect with other international and local students' },
+    { icon: Shield, title: 'Safety & Security', description: 'All accommodations verified for safety standards and security features', iconBg: 'bg-blue-100 dark:bg-blue-900/30', iconColor: 'text-blue-600 dark:text-blue-400' },
+    { icon: DollarSign, title: 'Budget-Friendly', description: 'Options for every budget from halls to private rentals', iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400' },
+    { icon: Clock, title: 'Quick Process', description: 'Fast accommodation allocation once your offer is confirmed', iconBg: 'bg-amber-100 dark:bg-amber-900/30', iconColor: 'text-amber-600 dark:text-amber-400' },
+    { icon: Users, title: 'Community', description: 'Connect with other international and local students', iconBg: 'bg-rose-100 dark:bg-rose-900/30', iconColor: 'text-rose-600 dark:text-rose-400' },
   ]
 
   const relatedServices = [
@@ -124,10 +132,10 @@ export function StudentAccommodationClient() {
               {accommodationTypes.map((type, index) => {
                 const Icon = type.icon
                 return (
-                  <div key={index} className="bg-card border border-border rounded-lg p-8 hover:shadow-lg transition-shadow">
+                  <div key={index} className="bg-card border border-border rounded-xl p-8 hover:shadow-lg transition-all">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="p-3 bg-primary/10 rounded-lg">
-                        <Icon size={24} className="text-primary" />
+                      <div className={`p-3 ${type.iconBg} rounded-xl`}>
+                        <Icon size={24} className={type.iconColor} />
                       </div>
                       <h3 className="text-xl font-semibold text-foreground">{type.title}</h3>
                     </div>
@@ -152,20 +160,29 @@ export function StudentAccommodationClient() {
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-foreground mb-12 text-center">How to Secure Accommodation</h2>
             <div className="grid md:grid-cols-4 gap-6">
-              {accommodationProcess.map((item, index) => (
-                <div key={index} className="relative">
-                  {index < accommodationProcess.length - 1 && (
-                    <div className="hidden md:block absolute top-12 left-full w-full h-1 bg-primary/20 -ml-4" />
-                  )}
-                  <div className="bg-card border border-border rounded-lg p-6 relative z-10">
-                    <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-white font-bold mb-4 mx-auto">
-                      {item.step}
+              {accommodationProcess.map((item, index) => {
+                const colors = [
+                  { gradient: 'bg-gradient-to-br from-blue-500 to-blue-600', bg: 'bg-blue-500/10', border: 'border-blue-200 dark:border-blue-800' },
+                  { gradient: 'bg-gradient-to-br from-teal-500 to-teal-600', bg: 'bg-teal-500/10', border: 'border-teal-200 dark:border-teal-800' },
+                  { gradient: 'bg-gradient-to-br from-amber-500 to-amber-600', bg: 'bg-amber-500/10', border: 'border-amber-200 dark:border-amber-800' },
+                  { gradient: 'bg-gradient-to-br from-emerald-500 to-emerald-600', bg: 'bg-emerald-500/10', border: 'border-emerald-200 dark:border-emerald-800' },
+                ]
+                const c = colors[index]
+                return (
+                  <div key={index} className="relative">
+                    {index < accommodationProcess.length - 1 && (
+                      <div className="hidden md:block absolute top-12 left-full w-full h-1 bg-muted-foreground/20 -ml-4" />
+                    )}
+                    <div className={`${c.bg} border ${c.border} rounded-xl p-6 relative z-10 hover:shadow-md transition-all`}>
+                      <div className={`flex items-center justify-center w-14 h-14 rounded-full ${c.gradient} text-white font-bold text-xl mb-4 mx-auto shadow-lg`}>
+                        {item.step}
+                      </div>
+                      <h3 className="font-semibold text-foreground text-center mb-2">{item.title}</h3>
+                      <p className="text-sm text-foreground/70 text-center">{item.description}</p>
                     </div>
-                    <h3 className="font-semibold text-foreground text-center mb-2">{item.title}</h3>
-                    <p className="text-sm text-foreground/70 text-center">{item.description}</p>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </section>
@@ -178,8 +195,10 @@ export function StudentAccommodationClient() {
               {accommodationBenefits.map((benefit, index) => {
                 const Icon = benefit.icon
                 return (
-                  <div key={index} className="bg-card border border-border rounded-lg p-6 text-center hover:shadow-lg transition-shadow">
-                    <Icon size={32} className="text-primary mx-auto mb-4" />
+                  <div key={index} className="bg-card border border-border rounded-xl p-6 text-center hover:shadow-lg transition-all">
+                    <div className={`w-14 h-14 ${benefit.iconBg} rounded-xl flex items-center justify-center mx-auto mb-4`}>
+                      <Icon size={28} className={benefit.iconColor} />
+                    </div>
                     <h3 className="font-semibold text-foreground mb-2">{benefit.title}</h3>
                     <p className="text-sm text-foreground/70">{benefit.description}</p>
                   </div>
