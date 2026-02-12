@@ -35,7 +35,7 @@ export function AboutCompany() {
 
             <div className="space-y-3 pt-2">
               {[
-                'Expert consultancy from university admission officers',
+                'Expert guidance from university admission officers',
                 'Personalized guidance tailored to your goals',
                 'Support across 50+ countries worldwide',
                 'Strong relationships with top universities globally',

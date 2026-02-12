@@ -55,7 +55,7 @@ export function IELTSPreparationClient() {
   ]
 
   const relatedServices = [
-    { title: 'One to One Consultancy', href: '/services/one-to-one-consultation' },
+    { title: 'One to One Consultation', href: '/services/one-to-one-consultation' },
     { title: 'Student Accommodation', href: '/services/student-accommodation' },
     { title: 'Pre-Arrival Checklist', href: '/services/pre-arrival-checklist' },
     { title: 'University Application', href: '/services/university-application' }

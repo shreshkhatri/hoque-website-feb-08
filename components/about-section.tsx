@@ -9,7 +9,7 @@ export function AboutSection() {
           {/* Left Content */}
           <div className="flex-1 space-y-6">
             <p className="text-lg text-foreground leading-relaxed text-justify">
-              With a global network of offices and a head office in London, HOQUE is a trusted educational consultancy supporting international students worldwide. We proudly offer a 100% free application service for <span className="font-semibold">Foundation, Undergraduate, Postgraduate,</span> and <span className="font-semibold">PhD</span> programs at leading universities for study abroad
+              With a global network of offices and a head office in London, HOQUE is a trusted educational institute supporting international students worldwide. We proudly offer a 100% free application service for <span className="font-semibold">Foundation, Undergraduate, Postgraduate,</span> and <span className="font-semibold">PhD</span> programs at leading universities for study abroad
             </p>
           </div>
 

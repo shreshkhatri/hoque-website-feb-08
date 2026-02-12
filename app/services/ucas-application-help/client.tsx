@@ -86,7 +86,7 @@ export function UcasApplicationHelpClient() {
   ]
 
   const relatedServices = [
-    { title: 'One to One Consultancy', href: '/services/one-to-one-consultation' },
+    { title: 'One to One Consultation', href: '/services/one-to-one-consultation' },
     { title: 'University Application', href: '/services/university-application' },
     { title: 'Course Search', href: '/courses' },
     { title: 'University Selection', href: '/services/uk-university-selection' },
