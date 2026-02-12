@@ -205,7 +205,7 @@ export function ApplicationFormClient() {
               </div>
               <h1 className="text-3xl font-bold text-foreground mb-4">Application Submitted Successfully</h1>
               <p className="text-foreground/60 mb-8">Thank you for your application! Our team will review your submission and contact you within 2-3 business days.</p>
-              <Button onClick={() => window.location.href = '/'} className="bg-primary hover:bg-primary/90">
+              <Button onClick={() => window.location.href = '/'}>
                 Return to Home
               </Button>
             </div>
@@ -681,12 +681,12 @@ export function ApplicationFormClient() {
                 <Button
                   type="button"
                   onClick={() => goToStep(currentStep + 1)}
-                  className="px-8 bg-primary hover:bg-primary/90"
+                  className="px-8"
                 >
                   Next
                 </Button>
               ) : (
-                <Button type="submit" className="px-8 bg-primary hover:bg-primary/90">
+                <Button type="submit" className="px-8">
                   Submit Application
                 </Button>
               )}

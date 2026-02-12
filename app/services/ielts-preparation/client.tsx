@@ -75,7 +75,7 @@ export function IELTSPreparationClient() {
               Get intensive IELTS training from our expert consultants. Achieve your target band score with personalised coaching available in London, Bangladesh, and India.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
+              <Button size="lg">
                 Book Free Consultation
               </Button>
               <Button size="lg" variant="outline">
@@ -294,7 +294,7 @@ export function IELTSPreparationClient() {
 
             <div className="text-center mt-12">
               <Link href="/universities">
-                <Button variant="outline" size="lg" className="rounded-full bg-transparent">
+                <Button variant="outline" size="lg">
                   Explore All Universities
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -310,7 +310,7 @@ export function IELTSPreparationClient() {
             <p className="text-lg mb-8 opacity-90 text-pretty">
               Submit your application today and take the first step toward your dream university.
             </p>
-            <Button asChild size="lg" variant="secondary" className="bg-white text-primary hover:bg-white/90">
+            <Button asChild size="lg">
               <Link href="/application-form">
                 Apply Now
                 <ArrowRight className="ml-2 h-5 w-5" />

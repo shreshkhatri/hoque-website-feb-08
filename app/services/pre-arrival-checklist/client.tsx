@@ -128,7 +128,7 @@ export function PreArrivalChecklistClient() {
               Important information before you travel to the UK. Ensure you have all required documents and preparations.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <Button size="lg" className="bg-primary hover:bg-primary/90">
+              <Button size="lg">
                 Download Checklist
               </Button>
               <Button size="lg" variant="outline">
@@ -285,7 +285,7 @@ export function PreArrivalChecklistClient() {
 
             <div className="text-center mt-12">
               <Link href="/universities">
-                <Button variant="outline" size="lg" className="rounded-full bg-transparent">
+                <Button variant="outline" size="lg">
                   Explore All Universities
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -301,7 +301,7 @@ export function PreArrivalChecklistClient() {
             <p className="text-lg text-muted-foreground mb-8">
               Submit your application today and take the first step toward your dream university.
             </p>
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
+            <Button asChild size="lg">
               <Link href="/application-form">
                 Apply Now
                 <ArrowRight className="ml-2 h-5 w-5" />

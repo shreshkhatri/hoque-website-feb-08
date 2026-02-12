@@ -376,7 +376,7 @@ export function EventsClient() {
             </p>
           </div>
 
-          <Button asChild size="lg" className="rounded-full bg-primary hover:bg-primary/90">
+          <Button asChild size="lg">
             <Link href="/application-form">
               Apply Now
             </Link>
