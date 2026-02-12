@@ -11,6 +11,8 @@ export function PreArrivalChecklistClient() {
     {
       category: 'Travel Documents',
       icon: Plane,
+      iconBg: 'bg-blue-100 dark:bg-blue-900/30',
+      iconColor: 'text-blue-600 dark:text-blue-400',
       items: [
         'Valid passport (valid for more than 6 months)',
         'Entry clearance/stamped visa',
@@ -21,6 +23,8 @@ export function PreArrivalChecklistClient() {
     {
       category: 'Academic Documents',
       icon: FileText,
+      iconBg: 'bg-amber-100 dark:bg-amber-900/30',
+      iconColor: 'text-amber-600 dark:text-amber-400',
       items: [
         'All academic certificates and transcripts',
         'IELTS or other English language proficiency test results',
@@ -31,6 +35,8 @@ export function PreArrivalChecklistClient() {
     {
       category: 'University Documents',
       icon: FileText,
+      iconBg: 'bg-teal-100 dark:bg-teal-900/30',
+      iconColor: 'text-teal-600 dark:text-teal-400',
       items: [
         'Offer letter from university',
         'Acceptance letter (conditional/unconditional)',
@@ -41,6 +47,8 @@ export function PreArrivalChecklistClient() {
     {
       category: 'Financial Documents',
       icon: DollarSign,
+      iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
+      iconColor: 'text-emerald-600 dark:text-emerald-400',
       items: [
         'Bank statements (not less than 28 days old)',
         'Proof of funding for tuition fees',

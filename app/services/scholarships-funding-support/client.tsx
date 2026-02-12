@@ -12,21 +12,29 @@ export function ScholarshipsFundingSupportClient() {
       icon: Award,
       title: 'Merit-Based Scholarships',
       description: 'Awarded to high-achieving international students with excellent academic records and potential.',
+      iconBg: 'bg-amber-100 dark:bg-amber-900/30',
+      iconColor: 'text-amber-600 dark:text-amber-400',
     },
     {
       icon: DollarSign,
       title: 'Need-Based Funding',
       description: 'Financial support for students who demonstrate financial need to complete their studies.',
+      iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
+      iconColor: 'text-emerald-600 dark:text-emerald-400',
     },
     {
       icon: BookOpen,
       title: 'Subject-Specific Scholarships',
       description: 'Scholarships available for specific courses and programs at our partner universities.',
+      iconBg: 'bg-blue-100 dark:bg-blue-900/30',
+      iconColor: 'text-blue-600 dark:text-blue-400',
     },
     {
       icon: Users,
       title: 'Country-Specific Bursaries',
       description: 'Special bursaries and grants available for students from specific countries and regions.',
+      iconBg: 'bg-rose-100 dark:bg-rose-900/30',
+      iconColor: 'text-rose-600 dark:text-rose-400',
     },
   ]
 
@@ -165,10 +173,10 @@ export function ScholarshipsFundingSupportClient() {
                 return (
                   <div
                     key={index}
-                    className="p-6 border border-border rounded-lg hover:border-accent transition-colors group"
+                    className="p-6 border border-border rounded-xl hover:border-accent transition-all group"
                   >
-                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                      <IconComponent className="w-6 h-6 text-primary" />
+                    <div className={`w-14 h-14 ${type.iconBg} rounded-xl flex items-center justify-center mb-4`}>
+                      <IconComponent className={`w-7 h-7 ${type.iconColor}`} />
                     </div>
                     <h3 className="text-xl font-semibold text-foreground mb-2">
                       {type.title}
@@ -229,10 +237,18 @@ export function ScholarshipsFundingSupportClient() {
               </p>
             </div>
             <div className="grid md:grid-cols-4 gap-6">
-              {processSteps.map((step, index) => (
+              {processSteps.map((step, index) => {
+                const colors = [
+                  { gradient: 'bg-gradient-to-br from-blue-500 to-blue-600', bgColor: 'bg-blue-500/10', border: 'border-blue-200 dark:border-blue-800' },
+                  { gradient: 'bg-gradient-to-br from-teal-500 to-teal-600', bgColor: 'bg-teal-500/10', border: 'border-teal-200 dark:border-teal-800' },
+                  { gradient: 'bg-gradient-to-br from-amber-500 to-amber-600', bgColor: 'bg-amber-500/10', border: 'border-amber-200 dark:border-amber-800' },
+                  { gradient: 'bg-gradient-to-br from-emerald-500 to-emerald-600', bgColor: 'bg-emerald-500/10', border: 'border-emerald-200 dark:border-emerald-800' },
+                ]
+                const c = colors[index]
+                return (
                 <div key={index} className="relative">
-                  <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-primary text-white rounded-full font-bold text-lg mb-4">
+                  <div className={`text-center ${c.bgColor} border ${c.border} rounded-xl p-6 hover:shadow-md transition-all`}>
+                    <div className={`inline-flex items-center justify-center w-16 h-16 ${c.gradient} text-white rounded-full font-bold text-xl mb-4 shadow-lg`}>
                       {step.number}
                     </div>
                     <h3 className="text-xl font-semibold text-foreground mb-3">
@@ -243,10 +259,11 @@ export function ScholarshipsFundingSupportClient() {
                     </p>
                   </div>
                   {index < processSteps.length - 1 && (
-                    <div className="hidden md:block absolute top-8 -right-3 w-6 h-0.5 bg-primary/20" />
+                    <div className="hidden md:block absolute top-8 -right-3 w-6 h-0.5 bg-muted-foreground/30" />
                   )}
                 </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </section>

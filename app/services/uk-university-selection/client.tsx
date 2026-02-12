@@ -36,21 +36,29 @@ export function UKUniversitySelectionClient() {
       icon: CheckCircle2,
       title: 'Expert Guidance',
       description: 'Our expert consultants provide personalised university selection advice',
+      iconBg: 'bg-blue-100 dark:bg-blue-900/30',
+      iconColor: 'text-blue-600 dark:text-blue-400',
     },
     {
       icon: Award,
       title: 'Free Application Support',
       description: 'Receive free application service to your chosen institutions with guaranteed offers',
+      iconBg: 'bg-amber-100 dark:bg-amber-900/30',
+      iconColor: 'text-amber-600 dark:text-amber-400',
     },
     {
       icon: Users,
       title: 'Partner Universities',
       description: 'Access to over 100+ partner universities worldwide with global reputations',
+      iconBg: 'bg-teal-100 dark:bg-teal-900/30',
+      iconColor: 'text-teal-600 dark:text-teal-400',
     },
     {
       icon: BookOpen,
       title: 'Multiple Study Levels',
       description: 'Support for Foundation, Undergraduate, Postgraduate, and PhD applications',
+      iconBg: 'bg-rose-100 dark:bg-rose-900/30',
+      iconColor: 'text-rose-600 dark:text-rose-400',
     },
   ]
 
@@ -117,10 +125,10 @@ export function UKUniversitySelectionClient() {
               {benefits.map((benefit, index) => {
                 const Icon = benefit.icon
                 return (
-                  <div key={index} className="bg-card rounded-lg p-8 border border-border hover:shadow-lg transition-shadow">
+                  <div key={index} className="bg-card rounded-xl p-8 border border-border hover:shadow-lg transition-all">
                     <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0">
-                        <Icon className="w-8 h-8 text-primary" />
+                      <div className={`w-14 h-14 ${benefit.iconBg} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                        <Icon className={`w-7 h-7 ${benefit.iconColor}`} />
                       </div>
                       <div>
                         <h3 className="text-xl font-semibold text-foreground mb-2">
@@ -175,25 +183,37 @@ export function UKUniversitySelectionClient() {
                   step: '1',
                   title: 'Free Consultation',
                   description: 'Meet with our expert consultant to discuss your goals',
+                  gradient: 'bg-gradient-to-br from-blue-500 to-blue-600',
+                  bgColor: 'bg-blue-500/10',
+                  borderColor: 'border-blue-200 dark:border-blue-800',
                 },
                 {
                   step: '2',
                   title: 'University Matching',
                   description: 'We match you with universities that fit your academic profile',
+                  gradient: 'bg-gradient-to-br from-teal-500 to-teal-600',
+                  bgColor: 'bg-teal-500/10',
+                  borderColor: 'border-teal-200 dark:border-teal-800',
                 },
                 {
                   step: '3',
                   title: 'Application Support',
                   description: 'Receive comprehensive support throughout the application process',
+                  gradient: 'bg-gradient-to-br from-amber-500 to-amber-600',
+                  bgColor: 'bg-amber-500/10',
+                  borderColor: 'border-amber-200 dark:border-amber-800',
                 },
                 {
                   step: '4',
                   title: 'Guaranteed Offer',
                   description: 'Secure your place at your chosen university',
+                  gradient: 'bg-gradient-to-br from-emerald-500 to-emerald-600',
+                  bgColor: 'bg-emerald-500/10',
+                  borderColor: 'border-emerald-200 dark:border-emerald-800',
                 },
               ].map((item, index) => (
-                <div key={index} className="bg-card rounded-lg p-6 border border-border text-center">
-                  <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                <div key={index} className={`${item.bgColor} rounded-xl p-6 border ${item.borderColor} text-center hover:shadow-md transition-all`}>
+                  <div className={`w-14 h-14 ${item.gradient} text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4 shadow-lg`}>
                     {item.step}
                   </div>
                   <h3 className="text-lg font-semibold text-foreground mb-2">

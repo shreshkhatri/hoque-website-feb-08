@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckCircle2, FileText, DollarSign, MessageSquare, MapPin, Clock, ArrowRight } from 'lucide-react'
+import { CheckCircle2, FileText, DollarSign, MessageSquare, MapPin, Clock, ArrowRight, PhoneCall, ClipboardCheck, Send, ShieldCheck, Users, Award, Briefcase, HeartHandshake } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Header } from '@/components/header'
@@ -12,19 +12,28 @@ export function VisaApplicationSupportClient() {
       title: 'Confirmation of Acceptance for Studies (CAS)',
       description: 'Get your CAS from the university - this is worth 50 points',
       icon: FileText,
-      points: '50 Points'
+      points: '50 Points',
+      bgColor: 'bg-blue-100 dark:bg-blue-900/30',
+      iconColor: 'text-blue-600 dark:text-blue-400',
+      badgeBg: 'bg-blue-600',
     },
     {
       title: 'Maintenance (Bank Statement)',
       description: 'Demonstrate sufficient funds held for 28 consecutive days',
       icon: DollarSign,
-      points: '10 Points'
+      points: '10 Points',
+      bgColor: 'bg-emerald-100 dark:bg-emerald-900/30',
+      iconColor: 'text-emerald-600 dark:text-emerald-400',
+      badgeBg: 'bg-emerald-600',
     },
     {
       title: 'English Language Proficiency',
       description: 'IELTS 5.5 or equivalent proof of English proficiency',
       icon: MessageSquare,
-      points: '10 Points'
+      points: '10 Points',
+      bgColor: 'bg-amber-100 dark:bg-amber-900/30',
+      iconColor: 'text-amber-600 dark:text-amber-400',
+      badgeBg: 'bg-amber-600',
     },
   ]
 
@@ -32,22 +41,38 @@ export function VisaApplicationSupportClient() {
     {
       step: 1,
       title: 'Initial Consultation',
-      description: 'Discuss your visa requirements and gather necessary information'
+      description: 'Discuss your visa requirements and gather necessary information',
+      icon: PhoneCall,
+      gradient: 'bg-gradient-to-br from-blue-500 to-blue-600',
+      bgColor: 'bg-blue-500/10',
+      borderColor: 'border-blue-200 dark:border-blue-800',
     },
     {
       step: 2,
       title: 'Document Preparation',
-      description: 'Prepare and organize all required documents with our guidance'
+      description: 'Prepare and organize all required documents with our guidance',
+      icon: ClipboardCheck,
+      gradient: 'bg-gradient-to-br from-teal-500 to-teal-600',
+      bgColor: 'bg-teal-500/10',
+      borderColor: 'border-teal-200 dark:border-teal-800',
     },
     {
       step: 3,
       title: 'Application Submission',
-      description: 'Submit your application through our official partner solicitor firm'
+      description: 'Submit your application through our official partner solicitor firm',
+      icon: Send,
+      gradient: 'bg-gradient-to-br from-amber-500 to-amber-600',
+      bgColor: 'bg-amber-500/10',
+      borderColor: 'border-amber-200 dark:border-amber-800',
     },
     {
       step: 4,
       title: 'Credibility Interview Support',
-      description: 'Prepare for visa credibility interviews with expert guidance'
+      description: 'Prepare for visa credibility interviews with expert guidance',
+      icon: ShieldCheck,
+      gradient: 'bg-gradient-to-br from-rose-500 to-rose-600',
+      bgColor: 'bg-rose-500/10',
+      borderColor: 'border-rose-200 dark:border-rose-800',
     },
   ]
 
@@ -132,10 +157,12 @@ export function VisaApplicationSupportClient() {
               {visaRequirements.map((req, index) => {
                 const Icon = req.icon
                 return (
-                  <div key={index} className="bg-card border border-border rounded-lg p-8 hover:shadow-lg transition-shadow">
-                    <div className="flex items-start justify-between mb-4">
-                      <Icon className="w-10 h-10 text-primary" />
-                      <span className="text-primary font-bold text-lg">{req.points}</span>
+                  <div key={index} className="bg-card border border-border rounded-xl p-8 hover:shadow-lg transition-all">
+                    <div className="flex items-start justify-between mb-5">
+                      <div className={`w-14 h-14 ${req.bgColor} rounded-xl flex items-center justify-center`}>
+                        <Icon className={`w-7 h-7 ${req.iconColor}`} />
+                      </div>
+                      <span className={`${req.badgeBg} text-white font-bold text-sm px-3 py-1 rounded-full`}>{req.points}</span>
                     </div>
                     <h3 className="text-xl font-semibold text-foreground mb-3">{req.title}</h3>
                     <p className="text-foreground/70">{req.description}</p>
@@ -175,22 +202,26 @@ export function VisaApplicationSupportClient() {
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-foreground mb-12 text-center">Our Visa Application Process</h2>
             <div className="grid md:grid-cols-4 gap-6">
-              {visaProcess.map((item) => (
-                <div key={item.step} className="relative">
-                  <div className="bg-card border border-border rounded-lg p-6">
-                    <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg mb-4">
-                      {item.step}
+              {visaProcess.map((item) => {
+                const StepIcon = item.icon
+                return (
+                  <div key={item.step} className="relative">
+                    <div className={`${item.bgColor} border ${item.borderColor} rounded-xl p-6 hover:shadow-md transition-all`}>
+                      <div className={`w-14 h-14 ${item.gradient} text-white rounded-full flex items-center justify-center font-bold text-xl mb-4 shadow-lg`}>
+                        {item.step}
+                      </div>
+                      <StepIcon className={`w-5 h-5 mb-3 ${item.borderColor.includes('blue') ? 'text-blue-600' : item.borderColor.includes('teal') ? 'text-teal-600' : item.borderColor.includes('amber') ? 'text-amber-600' : 'text-rose-600'}`} />
+                      <h3 className="text-lg font-semibold text-foreground mb-3">{item.title}</h3>
+                      <p className="text-foreground/70 text-sm">{item.description}</p>
                     </div>
-                    <h3 className="text-lg font-semibold text-foreground mb-3">{item.title}</h3>
-                    <p className="text-foreground/70 text-sm">{item.description}</p>
+                    {item.step < 4 && (
+                      <div className="hidden md:block absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2 z-10">
+                        <ArrowRight className="w-5 h-5 text-muted-foreground" />
+                      </div>
+                    )}
                   </div>
-                  {item.step < 4 && (
-                    <div className="hidden md:block absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2">
-                      <div className="text-primary text-2xl">→</div>
-                    </div>
-                  )}
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </section>
@@ -203,37 +234,60 @@ export function VisaApplicationSupportClient() {
               {[
                 {
                   title: 'Official Partner Solicitor Firm',
-                  description: 'We work with an official partner solicitor firm for visa applications to embassies, British High Commissions, and the Home Office.'
+                  description: 'We work with an official partner solicitor firm for visa applications to embassies, British High Commissions, and the Home Office.',
+                  icon: ShieldCheck,
+                  iconBg: 'bg-blue-100 dark:bg-blue-900/30',
+                  iconColor: 'text-blue-600 dark:text-blue-400',
                 },
                 {
                   title: 'Expert Guidance',
-                  description: 'Our professionals provide expert guidance through every step of the visa application process.'
+                  description: 'Our professionals provide expert guidance through every step of the visa application process.',
+                  icon: Award,
+                  iconBg: 'bg-amber-100 dark:bg-amber-900/30',
+                  iconColor: 'text-amber-600 dark:text-amber-400',
                 },
                 {
                   title: 'Document Preparation',
-                  description: 'We help prepare and organize all required documents to ensure your application is complete and accurate.'
+                  description: 'We help prepare and organize all required documents to ensure your application is complete and accurate.',
+                  icon: ClipboardCheck,
+                  iconBg: 'bg-teal-100 dark:bg-teal-900/30',
+                  iconColor: 'text-teal-600 dark:text-teal-400',
                 },
                 {
                   title: 'Interview Preparation',
-                  description: 'We provide support for credibility interviews to help you present your genuine student intentions clearly.'
+                  description: 'We provide support for credibility interviews to help you present your genuine student intentions clearly.',
+                  icon: Users,
+                  iconBg: 'bg-rose-100 dark:bg-rose-900/30',
+                  iconColor: 'text-rose-600 dark:text-rose-400',
                 },
                 {
                   title: 'Experience & Expertise',
-                  description: 'With years of experience assisting international students, we understand visa requirements thoroughly.'
+                  description: 'With years of experience assisting international students, we understand visa requirements thoroughly.',
+                  icon: Briefcase,
+                  iconBg: 'bg-purple-100 dark:bg-purple-900/30',
+                  iconColor: 'text-purple-600 dark:text-purple-400',
                 },
                 {
                   title: 'Personalized Support',
-                  description: 'We provide tailored support based on your specific circumstances and university requirements.'
+                  description: 'We provide tailored support based on your specific circumstances and university requirements.',
+                  icon: HeartHandshake,
+                  iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
+                  iconColor: 'text-emerald-600 dark:text-emerald-400',
                 },
-              ].map((item, index) => (
-                <div key={index} className="flex gap-4">
-                  <CheckCircle2 className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
-                    <p className="text-foreground/70">{item.description}</p>
+              ].map((item, index) => {
+                const Icon = item.icon
+                return (
+                  <div key={index} className="flex gap-4">
+                    <div className={`w-10 h-10 ${item.iconBg} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                      <Icon className={`w-5 h-5 ${item.iconColor}`} />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
+                      <p className="text-foreground/70">{item.description}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </section>
