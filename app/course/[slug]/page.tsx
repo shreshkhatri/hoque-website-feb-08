@@ -60,12 +60,12 @@ export async function generateMetadata({
     title,
     description:
       course.description ||
-      `Study ${course.name}${universityName ? ` at ${universityName}` : ''}. Get expert guidance on admissions from Hoque.`,
+      `Study ${course.name}${universityName ? ` at ${universityName}` : ''}. Get expert guidance on admissions from HOQUE.`,
     openGraph: {
       title,
       description:
         course.description ||
-        `Explore ${course.name} with Hoque`,
+        `Explore ${course.name} with HOQUE`,
       type: 'website',
     },
   }

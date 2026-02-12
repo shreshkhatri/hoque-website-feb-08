@@ -66,7 +66,7 @@ export function ApplicationProcess() {
             Simple Application Process
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            It's easy to apply to any programme at a university with Hoque.
+            It's easy to apply to any programme at a university with HOQUE.
             Contact us for a free one-on-one consultation.
           </p>
         </div>
