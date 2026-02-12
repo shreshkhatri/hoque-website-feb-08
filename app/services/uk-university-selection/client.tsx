@@ -77,7 +77,7 @@ export function UKUniversitySelectionClient() {
               University Selection
             </h1>
             <p className="text-xl text-foreground/70 mb-8 max-w-2xl text-balance">
-              Find your perfect university and access free application services to study at leading institutions worldwide with HOQUE.
+              Find your perfect university and access free application services to study at leading institutions worldwide with Hoque.
             </p>
             <div className="flex flex-wrap gap-4">
               <Button size="lg" className="bg-primary hover:bg-primary/90">

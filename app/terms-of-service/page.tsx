@@ -22,7 +22,7 @@ export default function TermsOfService() {
         {/* Introduction */}
         <section className="mb-8">
           <p className="text-foreground text-base leading-relaxed mb-4">
-            Welcome to HOQUE. These Terms of Service ("Terms") govern your use of our website and services. By accessing and using our website, you agree to be bound by these Terms. If you do not agree with any part of these Terms, please do not use our services.
+            Welcome to HOQUE Consultancy. These Terms of Service ("Terms") govern your use of our website and services. By accessing and using our website, you agree to be bound by these Terms. If you do not agree with any part of these Terms, please do not use our services.
           </p>
         </section>
 
@@ -32,7 +32,7 @@ export default function TermsOfService() {
             1. Acceptance of Terms
           </h2>
           <p className="text-foreground text-base leading-relaxed">
-            By using the HOQUE website and services, you agree to comply with and be legally bound by these Terms of Service and our Privacy Policy. We reserve the right to modify these Terms at any time. Your continued use of our services following the posting of revised Terms constitutes your acceptance of such changes.
+            By using the HOQUE Consultancy website and services, you agree to comply with and be legally bound by these Terms of Service and our Privacy Policy. We reserve the right to modify these Terms at any time. Your continued use of our services following the posting of revised Terms constitutes your acceptance of such changes.
           </p>
         </section>
 
@@ -42,7 +42,7 @@ export default function TermsOfService() {
             2. Use License
           </h2>
           <p className="text-foreground text-base leading-relaxed mb-4">
-            Permission is granted to temporarily download one copy of the materials (information or software) on HOQUE's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
+            Permission is granted to temporarily download one copy of the materials (information or software) on HOQUE Consultancy's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
           </p>
           <ul className="list-disc list-inside space-y-2 text-foreground text-base leading-relaxed">
             <li>Modify or copy the materials</li>
@@ -60,7 +60,7 @@ export default function TermsOfService() {
             3. Description of Services
           </h2>
           <p className="text-foreground text-base leading-relaxed mb-4">
-            HOQUE provides educational services including but not limited to:
+            HOQUE Consultancy provides educational consultancy services including but not limited to:
           </p>
           <ul className="list-disc list-inside space-y-2 text-foreground text-base leading-relaxed">
             <li>University selection and guidance</li>
@@ -99,10 +99,10 @@ export default function TermsOfService() {
             5. Intellectual Property Rights
           </h2>
           <p className="text-foreground text-base leading-relaxed mb-4">
-            All content on the HOQUE website, including text, graphics, logos, images, and software, is the property of HOQUE or its content suppliers and is protected by international copyright laws. You may not reproduce, distribute, or transmit any content without our prior written permission.
+            All content on the HOQUE Consultancy website, including text, graphics, logos, images, and software, is the property of HOQUE Consultancy or its content suppliers and is protected by international copyright laws. You may not reproduce, distribute, or transmit any content without our prior written permission.
           </p>
           <p className="text-foreground text-base leading-relaxed">
-            The HOQUE name, logo, and all related marks are trademarks of HOQUE and may not be used without permission.
+            The HOQUE name, logo, and all related marks are trademarks of HOQUE Consultancy and may not be used without permission.
           </p>
         </section>
 
@@ -112,7 +112,7 @@ export default function TermsOfService() {
             6. Disclaimer of Warranties
           </h2>
           <p className="text-foreground text-base leading-relaxed mb-4">
-            The materials on HOQUE's website are provided on an "as-is" basis. HOQUE makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including:
+            The materials on HOQUE Consultancy's website are provided on an "as-is" basis. HOQUE Consultancy makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including:
           </p>
           <ul className="list-disc list-inside space-y-2 text-foreground text-base leading-relaxed">
             <li>Implied warranties of merchantability</li>
@@ -120,7 +120,7 @@ export default function TermsOfService() {
             <li>Non-infringement of intellectual property rights</li>
           </ul>
           <p className="text-foreground text-base leading-relaxed mt-4">
-            Further, HOQUE does not warrant that the information contained on the website is accurate, reliable, or complete.
+            Further, HOQUE Consultancy does not warrant that the information contained on the website is accurate, reliable, or complete.
           </p>
         </section>
 
@@ -130,10 +130,10 @@ export default function TermsOfService() {
             7. Limitations of Liability
           </h2>
           <p className="text-foreground text-base leading-relaxed mb-4">
-            In no event shall HOQUE or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on the website, even if HOQUE or an authorized representative has been notified orally or in writing of the possibility of such damage.
+            In no event shall HOQUE Consultancy or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on the website, even if HOQUE Consultancy or an authorized representative has been notified orally or in writing of the possibility of such damage.
           </p>
           <p className="text-foreground text-base leading-relaxed">
-            Our services are advisory in nature. HOQUE does not guarantee admission to any university or institution, nor does it guarantee the success of visa applications or other related outcomes.
+            Our services are advisory in nature. HOQUE Consultancy does not guarantee admission to any university or institution, nor does it guarantee the success of visa applications or other related outcomes.
           </p>
         </section>
 
@@ -143,7 +143,7 @@ export default function TermsOfService() {
             8. Accuracy of Materials
           </h2>
           <p className="text-foreground text-base leading-relaxed">
-            The materials appearing on HOQUE's website could include technical, typographical, or photographic errors. HOQUE does not warrant that any of the materials on the website are accurate, complete, or current. HOQUE may make changes to the materials contained on its website at any time without notice.
+            The materials appearing on HOQUE Consultancy's website could include technical, typographical, or photographic errors. HOQUE Consultancy does not warrant that any of the materials on the website are accurate, complete, or current. HOQUE Consultancy may make changes to the materials contained on its website at any time without notice.
           </p>
         </section>
 
@@ -153,7 +153,7 @@ export default function TermsOfService() {
             9. Links
           </h2>
           <p className="text-foreground text-base leading-relaxed mb-4">
-            HOQUE has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by HOQUE of the site. Use of any such linked website is at the user's own risk.
+            HOQUE Consultancy has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by HOQUE Consultancy of the site. Use of any such linked website is at the user's own risk.
           </p>
           <p className="text-foreground text-base leading-relaxed">
             If you believe that a link on our website infringes upon your intellectual property rights, please notify us immediately.
@@ -166,7 +166,7 @@ export default function TermsOfService() {
             10. Modifications
           </h2>
           <p className="text-foreground text-base leading-relaxed">
-            HOQUE may revise these Terms of Service for its website at any time without notice. By using this website, you are agreeing to be bound by the then current version of these Terms of Service.
+            HOQUE Consultancy may revise these Terms of Service for its website at any time without notice. By using this website, you are agreeing to be bound by the then current version of these Terms of Service.
           </p>
         </section>
 
@@ -186,7 +186,7 @@ export default function TermsOfService() {
             12. Termination of Services
           </h2>
           <p className="text-foreground text-base leading-relaxed mb-4">
-            HOQUE reserves the right to terminate or suspend your access to its services at any time, with or without cause, and with or without notice. Reasons for termination may include:
+            HOQUE Consultancy reserves the right to terminate or suspend your access to its services at any time, with or without cause, and with or without notice. Reasons for termination may include:
           </p>
           <ul className="list-disc list-inside space-y-2 text-foreground text-base leading-relaxed">
             <li>Violation of these Terms of Service</li>
@@ -203,7 +203,7 @@ export default function TermsOfService() {
             13. Communication
           </h2>
           <p className="text-foreground text-base leading-relaxed mb-4">
-            By using our services, you consent to receive communications from HOQUE via email, phone, or other electronic means. These communications may include service updates, important notices, and promotional materials.
+            By using our services, you consent to receive communications from HOQUE Consultancy via email, phone, or other electronic means. These communications may include service updates, important notices, and promotional materials.
           </p>
           <p className="text-foreground text-base leading-relaxed">
             You can opt out of non-essential communications at any time by contacting us directly or using the unsubscribe option in our emails.
@@ -216,7 +216,7 @@ export default function TermsOfService() {
             14. Confidentiality
           </h2>
           <p className="text-foreground text-base leading-relaxed">
-            HOQUE is committed to maintaining the confidentiality of all information you provide. We will not disclose your personal or academic information to any third party without your explicit consent, except where required by law. For details on how we handle your information, please refer to our Privacy Policy.
+            HOQUE Consultancy is committed to maintaining the confidentiality of all information you provide. We will not disclose your personal or academic information to any third party without your explicit consent, except where required by law. For details on how we handle your information, please refer to our Privacy Policy.
           </p>
         </section>
 
@@ -229,7 +229,7 @@ export default function TermsOfService() {
             If you have any questions about these Terms of Service, please contact us:
           </p>
           <div className="bg-card border border-border rounded-lg p-6">
-            <p className="text-foreground font-semibold mb-3">HOQUE</p>
+            <p className="text-foreground font-semibold mb-3">HOQUE Consultancy</p>
             <p className="text-foreground text-base mb-2">
               <strong>Address:</strong> 119-121 Whitechapel Road, 3rd Floor, London, E1 1DT, United Kingdom
             </p>
@@ -245,7 +245,7 @@ export default function TermsOfService() {
         {/* Legal Notice */}
         <section className="border-t border-border pt-8">
           <p className="text-xs text-muted-foreground">
-            These Terms of Service are provided for informational purposes and govern the use of HOQUE's website and educational services. We reserve all rights not expressly granted in these terms. Your use of our services constitutes your acceptance of these terms in their entirety.
+            These Terms of Service are provided for informational purposes and govern the use of HOQUE Consultancy's website and educational consultancy services. We reserve all rights not expressly granted in these terms. Your use of our services constitutes your acceptance of these terms in their entirety.
           </p>
         </section>
       </main>

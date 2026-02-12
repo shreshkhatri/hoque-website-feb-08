@@ -60,7 +60,7 @@ export function ServicesSection() {
             Explore Our Services
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Comprehensive education services designed to support your
+            Comprehensive education consultancy services designed to support your
             journey to studying at world-class universities
           </p>
         </div>

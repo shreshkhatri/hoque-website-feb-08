@@ -22,7 +22,7 @@ export default function PrivacyPolicy() {
         {/* Introduction */}
         <section className="mb-8">
           <p className="text-foreground text-base leading-relaxed mb-4">
-            At HOQUE, we are committed to protecting your privacy and ensuring transparency about how we collect, use, and protect your personal information. This Privacy Policy outlines our practices regarding data collection and usage for our educational services.
+            At HOQUE Consultancy, we are committed to protecting your privacy and ensuring transparency about how we collect, use, and protect your personal information. This Privacy Policy outlines our practices regarding data collection and usage for our educational consultancy services.
           </p>
         </section>
 
@@ -72,7 +72,7 @@ export default function PrivacyPolicy() {
             We use the information we collect for the following purposes:
           </p>
           <ul className="list-disc list-inside space-y-2 text-foreground text-base leading-relaxed">
-            <li>Providing educational services and guidance</li>
+            <li>Providing educational consultancy services and guidance</li>
             <li>Processing university applications on your behalf</li>
             <li>Offering visa and immigration support</li>
             <li>Facilitating accommodation arrangements</li>
@@ -119,7 +119,7 @@ export default function PrivacyPolicy() {
             5. Data Retention
           </h2>
           <p className="text-foreground text-base leading-relaxed">
-            We retain your personal information for as long as necessary to provide our services and fulfill the purposes outlined in this policy. After the completion of our services, we retain records as required by law or for legitimate business purposes. You may request deletion of your data, subject to legal and contractual obligations.
+            We retain your personal information for as long as necessary to provide our services and fulfill the purposes outlined in this policy. After the completion of our consultancy services, we retain records as required by law or for legitimate business purposes. You may request deletion of your data, subject to legal and contractual obligations.
           </p>
         </section>
 
@@ -203,7 +203,7 @@ export default function PrivacyPolicy() {
             If you have any questions, concerns, or requests regarding this Privacy Policy or our privacy practices, please contact us:
           </p>
           <div className="bg-card border border-border rounded-lg p-6">
-            <p className="text-foreground font-semibold mb-3">HOQUE</p>
+            <p className="text-foreground font-semibold mb-3">HOQUE Consultancy</p>
             <p className="text-foreground text-base mb-2">
               <strong>Address:</strong> 119-121 Whitechapel Road, 3rd Floor, London, E1 1DT, United Kingdom
             </p>
@@ -219,7 +219,7 @@ export default function PrivacyPolicy() {
         {/* Legal Notice */}
         <section className="border-t border-border pt-8">
           <p className="text-xs text-muted-foreground">
-            This Privacy Policy is provided for informational purposes and complies with standard data protection practices followed by educational institutes. We are committed to maintaining your trust by protecting your personal information and providing transparency in our data handling practices.
+            This Privacy Policy is provided for informational purposes and complies with standard data protection practices followed by educational consultancies. We are committed to maintaining your trust by protecting your personal information and providing transparency in our data handling practices.
           </p>
         </section>
       </main>

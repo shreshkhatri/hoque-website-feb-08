@@ -76,7 +76,7 @@ export default function BlogPage() {
                 </div>
                 <h3 className="font-semibold text-foreground mb-2">Expert Tips</h3>
                 <p className="text-sm text-muted-foreground">
-                  Comprehensive guides from our experts
+                  Comprehensive guides from our consultancy experts
                 </p>
               </div>
 
