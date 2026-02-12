@@ -240,7 +240,7 @@ export function PreArrivalChecklistClient() {
                 { title: 'Scholarships & Funding Support', href: '/services/scholarships-funding-support' },
               ].map((service, index) => (
                 <Link key={index} href={service.href}>
-                  <div className="bg-card border border-border rounded-lg p-6 hover:border-primary hover:shadow-lg transition-all cursor-pointer">
+                  <div className="bg-card border border-border rounded-lg p-6 hover:border-accent hover:shadow-lg transition-all cursor-pointer">
                     <h3 className="font-bold text-foreground text-lg hover:text-primary transition-colors">{service.title}</h3>
                   </div>
                 </Link>
@@ -276,7 +276,7 @@ export function PreArrivalChecklistClient() {
                 { name: 'University of Bristol', rank: 'World Top 100' },
                 { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
-                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
+                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-accent hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
                   <p className="text-sm text-muted-foreground">{uni.rank}</p>
                 </div>

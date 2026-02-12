@@ -204,7 +204,7 @@ export function UniversitiesPageClient() {
                 <Link
                   key={uni.id}
                   href={`/university/${nameToSlug(uni.name)}`}
-                  className="group bg-card border border-border rounded-xl p-6 hover:border-primary hover:shadow-lg transition-all duration-300"
+                  className="group bg-card border border-border rounded-xl p-6 hover:border-accent hover:shadow-lg transition-all duration-300"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="space-y-1 flex-1">

@@ -285,7 +285,7 @@ export function IELTSPreparationClient() {
                 { name: 'University of Bristol', rank: 'World Top 100' },
                 { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
-                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
+                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-accent hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
                   <p className="text-sm text-muted-foreground">{uni.rank}</p>
                 </div>

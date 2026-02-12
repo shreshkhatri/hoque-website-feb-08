@@ -382,7 +382,7 @@ export function UniversityContent({ university, courses }: UniversityContentProp
 
             <div className="grid gap-4">
               {filteredCourses.map((course) => (
-                <Card key={course.id} className="hover:border-primary transition-colors">
+                <Card key={course.id} className="hover:border-accent transition-colors">
                   <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="flex-1">

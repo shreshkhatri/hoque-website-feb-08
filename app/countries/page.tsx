@@ -67,7 +67,7 @@ export default function CountriesPage() {
                 <Link
                   key={country.id}
                   href={`/country/${nameToSlug(country.name)}`}
-                  className="group bg-card border border-border rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden hover:border-primary/50"
+                  className="group bg-card border border-border rounded-lg shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden hover:border-accent/50"
                 >
                   <div className="p-6">
                     {/* Flag and Title */}

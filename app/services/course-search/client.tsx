@@ -162,7 +162,7 @@ export function CourseSearchClient() {
               {courseCategories.map((category, index) => (
                 <div
                   key={index}
-                  className="group rounded-lg border border-border bg-card p-6 transition-all hover:border-primary hover:shadow-md"
+                  className="group rounded-lg border border-border bg-card p-6 transition-all hover:border-accent hover:shadow-md"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -228,7 +228,7 @@ export function CourseSearchClient() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
               {relatedServices.map((service, index) => (
                 <Link key={index} href={service.href}>
-                  <div className="rounded-lg border border-border bg-card p-6 text-center transition-all hover:border-primary hover:shadow-md cursor-pointer h-full flex flex-col justify-center">
+                  <div className="rounded-lg border border-border bg-card p-6 text-center transition-all hover:border-accent hover:shadow-md cursor-pointer h-full flex flex-col justify-center">
                     <h3 className="font-semibold text-foreground hover:text-primary transition-colors">
                       {service.title}
                     </h3>
@@ -266,7 +266,7 @@ export function CourseSearchClient() {
                 { name: 'University of Bristol', rank: 'World Top 100' },
                 { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
-                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
+                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-accent hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
                   <p className="text-sm text-muted-foreground">{uni.rank}</p>
                 </div>

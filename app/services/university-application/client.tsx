@@ -262,7 +262,7 @@ export function UniversityApplicationClient() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {relatedServices.map((service, index) => (
                 <Link key={index} href={service.href}>
-                  <div className="bg-card p-6 rounded-lg border border-border hover:border-primary hover:shadow-lg transition-all cursor-pointer h-full">
+                  <div className="bg-card p-6 rounded-lg border border-border hover:border-accent hover:shadow-lg transition-all cursor-pointer h-full">
                     <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
                       {service.title}
                     </h3>
@@ -301,7 +301,7 @@ export function UniversityApplicationClient() {
                 { name: 'University of Bristol', rank: 'World Top 100' },
                 { name: 'Duke University', rank: 'World Top 25' },
               ].map((uni, idx) => (
-                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-primary hover:shadow-lg transition-all text-center">
+                <div key={idx} className="p-6 rounded-lg bg-card border border-border hover:border-accent hover:shadow-lg transition-all text-center">
                   <h3 className="font-bold text-foreground mb-2">{uni.name}</h3>
                   <p className="text-sm text-muted-foreground">{uni.rank}</p>
                 </div>
