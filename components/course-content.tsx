@@ -158,9 +158,9 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
         </div>
 
         {/* Quick Stats Bar */}
-        <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-border border-t border-border">
+        <div className="grid grid-cols-2 md:grid-cols-5 divide-x divide-y md:divide-y-0 divide-border border-t border-border">
           {course.duration_years && (
-            <div className="flex items-center gap-3 px-6 py-4">
+            <div className="flex items-center gap-3 px-5 py-4">
               <Clock size={20} className="text-accent flex-shrink-0" />
               <div>
                 <p className="text-xs text-muted-foreground uppercase tracking-wide">Duration</p>
@@ -171,10 +171,10 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
             </div>
           )}
           {course.tuition_fees_international && (
-            <div className="flex items-center gap-3 px-6 py-4">
+            <div className="flex items-center gap-3 px-5 py-4">
               <Zap size={20} className="text-accent flex-shrink-0" />
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Tuition (Int'l)</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">Tuition (Int{"'"}l)</p>
                 <p className="text-sm font-semibold text-foreground">
                   {'\u00A3'}{course.tuition_fees_international.toLocaleString()}/yr
                 </p>
@@ -182,7 +182,7 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
             </div>
           )}
           {course.intake_months && (
-            <div className="flex items-center gap-3 px-6 py-4">
+            <div className="flex items-center gap-3 px-5 py-4">
               <Calendar size={20} className="text-accent flex-shrink-0" />
               <div>
                 <p className="text-xs text-muted-foreground uppercase tracking-wide">Intakes</p>
@@ -191,7 +191,7 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
             </div>
           )}
           {course.level && (
-            <div className="flex items-center gap-3 px-6 py-4">
+            <div className="flex items-center gap-3 px-5 py-4">
               <BookOpen size={20} className="text-accent flex-shrink-0" />
               <div>
                 <p className="text-xs text-muted-foreground uppercase tracking-wide">Level</p>
@@ -199,6 +199,15 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
               </div>
             </div>
           )}
+          <div className="flex items-center gap-3 px-5 py-4">
+            <Award size={20} className="text-accent flex-shrink-0" />
+            <div>
+              <p className="text-xs text-muted-foreground uppercase tracking-wide">Scholarship</p>
+              <p className="text-sm font-semibold text-foreground">
+                {course.scholarships ? 'Available' : 'Check with University'}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -222,13 +231,22 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
           {/* Key Features */}
           {course.key_features && (
             <section className="bg-card border border-border rounded-xl p-8">
-              <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2.5">
+              <h2 className="text-xl font-bold text-foreground mb-5 flex items-center gap-2.5">
                 <Star size={22} className="text-primary" />
                 Key Features
               </h2>
-              <ul className="space-y-2.5">
-                {renderMultilineText(course.key_features)}
-              </ul>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {course.key_features.split('\n').filter(l => l.trim()).map((line, i) => {
+                  const text = line.trim().replace(/^-\s*/, '')
+                  if (!text) return null
+                  return (
+                    <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-primary/5 border border-primary/10">
+                      <CheckCircle size={16} className="text-primary mt-0.5 flex-shrink-0" />
+                      <span className="text-sm text-foreground leading-relaxed">{text}</span>
+                    </div>
+                  )
+                })}
+              </div>
             </section>
           )}
 
@@ -236,17 +254,19 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
           <section className="bg-card border border-border rounded-xl p-8">
             <h2 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2.5">
               <CheckCircle size={22} className="text-primary" />
-              Entry Requirements
+              Requirements
             </h2>
-            <div className="space-y-6">
+            <div className="space-y-0 divide-y divide-border">
               {/* Academic Requirements */}
               {course.academic_requirements && (
-                <div>
-                  <h3 className="text-base font-semibold text-foreground mb-2 flex items-center gap-2">
-                    <GraduationCap size={16} className="text-muted-foreground" />
-                    Academic Requirements
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed pl-6">
+                <div className="pb-6">
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <GraduationCap size={16} className="text-primary" />
+                    </div>
+                    <h3 className="text-base font-semibold text-foreground">Academic Requirements</h3>
+                  </div>
+                  <p className="text-muted-foreground leading-relaxed pl-[42px] text-sm">
                     {course.academic_requirements}
                   </p>
                 </div>
@@ -254,25 +274,34 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
 
               {/* English Language Requirements */}
               {course.english_language_requirements && (
-                <div>
-                  <h3 className="text-base font-semibold text-foreground mb-2 flex items-center gap-2">
-                    <Globe size={16} className="text-muted-foreground" />
-                    English Language Requirements
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed pl-6">
-                    {course.english_language_requirements}
-                  </p>
+                <div className="py-6">
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <div className="h-8 w-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                      <Globe size={16} className="text-accent" />
+                    </div>
+                    <h3 className="text-base font-semibold text-foreground">English Language Requirements</h3>
+                  </div>
+                  <div className="pl-[42px] space-y-1.5">
+                    {course.english_language_requirements.split(/\.\s+/).filter(s => s.trim()).map((sentence, i) => (
+                      <div key={i} className="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed">
+                        <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accent/60 flex-shrink-0" />
+                        <span>{sentence.trim().replace(/\.$/, '')}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 
               {/* Other Requirements */}
               {course.other_requirements && (
-                <div>
-                  <h3 className="text-base font-semibold text-foreground mb-2 flex items-center gap-2">
-                    <CheckCircle size={16} className="text-muted-foreground" />
-                    Other Requirements
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed pl-6">
+                <div className="pt-6">
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <div className="h-8 w-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                      <FileText size={16} className="text-muted-foreground" />
+                    </div>
+                    <h3 className="text-base font-semibold text-foreground">Other Requirements</h3>
+                  </div>
+                  <p className="text-muted-foreground leading-relaxed pl-[42px] text-sm">
                     {course.other_requirements}
                   </p>
                 </div>
@@ -280,9 +309,11 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
 
               {/* Fallback to single entry_requirements field */}
               {!course.academic_requirements && !course.english_language_requirements && course.entry_requirements && (
-                <p className="text-muted-foreground leading-relaxed">
-                  {course.entry_requirements}
-                </p>
+                <div className="pb-2">
+                  <p className="text-muted-foreground leading-relaxed text-sm">
+                    {course.entry_requirements}
+                  </p>
+                </div>
               )}
             </div>
           </section>
@@ -290,13 +321,22 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
           {/* Document Requirements */}
           {course.document_requirements && (
             <section className="bg-card border border-border rounded-xl p-8">
-              <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2.5">
+              <h2 className="text-xl font-bold text-foreground mb-5 flex items-center gap-2.5">
                 <FileText size={22} className="text-primary" />
                 Document Requirements
               </h2>
-              <ul className="space-y-2.5">
-                {renderMultilineText(course.document_requirements)}
-              </ul>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {course.document_requirements.split('\n').filter(l => l.trim()).map((line, i) => {
+                  const text = line.trim().replace(/^-\s*/, '')
+                  if (!text) return null
+                  return (
+                    <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 border border-border">
+                      <FileText size={14} className="text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <span className="text-sm text-foreground leading-relaxed">{text}</span>
+                    </div>
+                  )
+                })}
+              </div>
             </section>
           )}
 
