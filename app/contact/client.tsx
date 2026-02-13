@@ -448,28 +448,7 @@ export function ContactPageClient() {
                   </div>
                 </div>
               ))}
-              <div
-                className="bg-card border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
-                style={{ flex: '0 0 calc(33.333% - 2.67rem)', minWidth: '280px' }}
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <MapPin className="text-primary" size={24} />
-                  <h3 className="text-2xl font-bold text-foreground">
-                    New Zealand Office
-                  </h3>
-                </div>
-                <p className="text-sm font-medium text-primary">
-                  HOQUE NEW ZEALAND OFFICE
-                </p>
-                <div className="h-full bg-accent">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <p className="text-md text-muted-foreground">
-                      Updating soon
-                    </p>
-                  </div>
-                </div>
 
-              </div>
             </div>
           </div>
         </section>
