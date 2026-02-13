@@ -92,8 +92,8 @@ export async function GET(request: NextRequest) {
       query = query.or(`name.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`)
     }
 
-    // Filter by intake months using the course_intake_months junction table
-    // Support both single intake_month and comma-separated intake_months
+    // Filter by intake months using the courses.intake_months varchar column
+    // The column stores comma-separated month names like "September,January,May"
     const monthsToFilter = intakeMonths
       ? intakeMonths.split(',').map((m) => m.trim()).filter(Boolean)
       : intakeMonth
@@ -101,19 +101,9 @@ export async function GET(request: NextRequest) {
         : []
 
     if (monthsToFilter.length > 0) {
-      const { data: intakeCourseIds } = await supabase
-        .from('course_intake_months')
-        .select('course_id')
-        .in('month', monthsToFilter)
-
-      const courseIds = [...new Set(intakeCourseIds?.map((r) => r.course_id) || [])]
-      if (courseIds.length === 0) {
-        return NextResponse.json(
-          { data: [], count: 0, limit, offset, hasMore: false },
-          { status: 200 },
-        )
-      }
-      query = query.in('id', courseIds)
+      // Build an OR filter to match any of the selected months using ilike
+      const orConditions = monthsToFilter.map((m) => `intake_months.ilike.%${m}%`).join(',')
+      query = query.or(orConditions)
     }
 
     const { data, error, count } = await query.range(offset, offset + limit - 1)

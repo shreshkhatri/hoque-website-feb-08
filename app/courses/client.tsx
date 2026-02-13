@@ -160,7 +160,6 @@ export function CoursesPageClient() {
           .eq('university_id', selectedUniversity)
           .order('name', { ascending: true })
 
-        console.log('[v0] Campuses fetched for university', selectedUniversity, ':', data)
         if (data) {
           setCampuses(data)
         } else {
@@ -177,18 +176,20 @@ export function CoursesPageClient() {
     fetchCampuses()
   }, [selectedUniversity])
 
-  // Fetch distinct intake months on mount
+  // Fetch distinct intake months from courses table (stored as comma-separated strings)
   useEffect(() => {
     const fetchIntakeMonths = async () => {
       try {
         const { data } = await supabase
-          .from('course_intake_months')
-          .select('month')
-        
-        console.log('[v0] Intake months raw data:', data)
+          .from('courses')
+          .select('intake_months')
+          .not('intake_months', 'is', null)
+
         if (data) {
-          const uniqueMonths = [...new Set(data.map((d: { month: string }) => d.month))].sort()
-          console.log('[v0] Unique intake months:', uniqueMonths)
+          const allMonths = data.flatMap((d: { intake_months: string }) =>
+            d.intake_months.split(',').map((m: string) => m.trim()).filter(Boolean)
+          )
+          const uniqueMonths = [...new Set(allMonths)].sort()
           setIntakeMonths(uniqueMonths)
         }
       } catch (error) {
