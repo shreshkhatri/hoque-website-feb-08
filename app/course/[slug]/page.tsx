@@ -24,12 +24,17 @@ async function getCourseBySlug(slug: string) {
 
   if (!courses) return null
 
-  // Find course whose name+code converts to the given slug
-  const course = courses.find(
+  // First try exact match with name+code slug
+  const exactMatch = courses.find(
     (c) => nameToSlug(c.name, c.code) === slug
   )
+  if (exactMatch) return exactMatch
 
-  return course || null
+  // Fallback: try matching by name-only slug (for hardcoded links without code)
+  const nameOnlyMatch = courses.find(
+    (c) => nameToSlug(c.name) === slug
+  )
+  return nameOnlyMatch || null
 }
 
 // Fetch similar courses by field_of_study, excluding current course
