@@ -59,7 +59,7 @@ export function Header() {
   const fetchTopCourses = async () => {
     // Hardcoded courses list (6 total)
     const hardcodedCourses: Course[] = [
-      { id: 1, name: "MBA Global", code: "MBA-GBL-001", university_id: 77, level: "Master", duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
+      { id: 1, name: "MBA Global", code: "MBA-GBL-GRE-001", university_id: 77, level: "Master", duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
       { id: 2, name: "MSc Data Science and Artificial Intelligence", code: "MSDS-QUB-001", university_id: 75, level: "Master", duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
       { id: 3, name: "MSc Business with International Business", code: "MSIB-NOR-001", university_id: 76, level: "Master", duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
       { id: 4, name: "MSc Project Management", code: "MSPM-LSB-001", university_id: 79, level: "Master", duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
