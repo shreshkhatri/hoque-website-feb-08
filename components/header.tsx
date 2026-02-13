@@ -52,8 +52,6 @@ export function Header() {
       { id: 77, name: "University of Greenwich", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
       { id: 97, name: "University of Greater Manchester", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
       { id: 79, name: "London South Bank University", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
-      { id: 1, name: "University of Bristol", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
-      { id: 2, name: "London School of Economics", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
     ]
     setUniversities(hardcodedUniversities)
   }
@@ -188,11 +186,10 @@ export function Header() {
 
           {/* Dynamic Search Box - appears when hero search scrolls out of view */}
           <div
-            className={`search-box-compact hidden md:block flex-1 max-w-xs lg:max-w-sm transition-all duration-300 ease-in-out ${
-              showHeaderSearch
+            className={`search-box-compact hidden md:block flex-1 max-w-xs lg:max-w-sm transition-all duration-300 ease-in-out ${showHeaderSearch
                 ? 'opacity-100 translate-y-0'
                 : 'opacity-0 -translate-y-2 pointer-events-none'
-            }`}
+              }`}
           >
             <SearchBox compact className="w-full" />
           </div>
@@ -309,11 +306,10 @@ export function Header() {
                     <button
                       onMouseEnter={() => setHoveredService('consultation')}
                       onClick={() => setHoveredService(hoveredService === 'consultation' ? null : 'consultation')}
-                      className={`w-full text-left px-6 py-3 text-sm font-medium transition-colors flex items-center justify-between first:rounded-t-lg ${
-                        hoveredService === 'consultation'
+                      className={`w-full text-left px-6 py-3 text-sm font-medium transition-colors flex items-center justify-between first:rounded-t-lg ${hoveredService === 'consultation'
                           ? 'bg-primary text-primary-foreground'
                           : 'text-foreground hover:bg-muted'
-                      }`}
+                        }`}
                     >
                       Free Consultation
                       <ChevronRight size={16} />
@@ -321,9 +317,8 @@ export function Header() {
 
                     {hoveredService === 'consultation' && (
                       <div
-                        className={`absolute top-0 bg-card border border-border rounded-lg shadow-lg min-w-48 z-[60] ${
-                          subMenuPosition === 'right' ? 'left-full ml-2' : 'right-full mr-2'
-                        }`}
+                        className={`absolute top-0 bg-card border border-border rounded-lg shadow-lg min-w-48 z-[60] ${subMenuPosition === 'right' ? 'left-full ml-2' : 'right-full mr-2'
+                          }`}
                         ref={servicesSubMenuRef}
                       >
                         <a
@@ -364,11 +359,10 @@ export function Header() {
                     <button
                       onMouseEnter={() => setHoveredService('application')}
                       onClick={() => setHoveredService(hoveredService === 'application' ? null : 'application')}
-                      className={`w-full text-left px-6 py-3 text-sm font-medium transition-colors flex items-center justify-between ${
-                        hoveredService === 'application'
+                      className={`w-full text-left px-6 py-3 text-sm font-medium transition-colors flex items-center justify-between ${hoveredService === 'application'
                           ? 'bg-primary text-primary-foreground'
                           : 'text-foreground hover:bg-muted'
-                      }`}
+                        }`}
                     >
                       Free Application
                       <ChevronRight size={16} />
@@ -376,9 +370,8 @@ export function Header() {
 
                     {hoveredService === 'application' && (
                       <div
-                        className={`absolute top-0 bg-card border border-border rounded-lg shadow-lg min-w-48 z-[60] ${
-                          subMenuPosition === 'right' ? 'left-full ml-2' : 'right-full mr-2'
-                        }`}
+                        className={`absolute top-0 bg-card border border-border rounded-lg shadow-lg min-w-48 z-[60] ${subMenuPosition === 'right' ? 'left-full ml-2' : 'right-full mr-2'
+                          }`}
                       >
                         <a
                           href="/services/university-application"
@@ -418,11 +411,10 @@ export function Header() {
                     <button
                       onMouseEnter={() => setHoveredService('support')}
                       onClick={() => setHoveredService(hoveredService === 'support' ? null : 'support')}
-                      className={`w-full text-left px-6 py-3 text-sm font-medium transition-colors flex items-center justify-between last:rounded-b-lg ${
-                        hoveredService === 'support'
+                      className={`w-full text-left px-6 py-3 text-sm font-medium transition-colors flex items-center justify-between last:rounded-b-lg ${hoveredService === 'support'
                           ? 'bg-primary text-primary-foreground'
                           : 'text-foreground hover:bg-muted'
-                      }`}
+                        }`}
                     >
                       International Student Support
                       <ChevronRight size={16} />
@@ -430,9 +422,8 @@ export function Header() {
 
                     {hoveredService === 'support' && (
                       <div
-                        className={`absolute top-0 bg-card border border-border rounded-lg shadow-lg min-w-48 z-[60] ${
-                          subMenuPosition === 'right' ? 'left-full ml-2' : 'right-full mr-2'
-                        }`}
+                        className={`absolute top-0 bg-card border border-border rounded-lg shadow-lg min-w-48 z-[60] ${subMenuPosition === 'right' ? 'left-full ml-2' : 'right-full mr-2'
+                          }`}
                       >
                         <a
                           href="/services/student-accommodation"
@@ -583,9 +574,8 @@ export function Header() {
 
       {mobileDrawerMounted && (
         <nav
-          className={`md:hidden fixed top-16 left-0 right-0 bottom-0 flex flex-col p-4 space-y-4 border-t border-border bg-background overflow-y-auto z-40 transition-transform duration-300 ease-in-out ${
-            mobileDrawerVisible ? 'translate-x-0' : 'translate-x-full'
-          }`}
+          className={`md:hidden fixed top-16 left-0 right-0 bottom-0 flex flex-col p-4 space-y-4 border-t border-border bg-background overflow-y-auto z-40 transition-transform duration-300 ease-in-out ${mobileDrawerVisible ? 'translate-x-0' : 'translate-x-full'
+            }`}
         >
           <Link href="/about" className="text-foreground hover:text-primary transition-colors font-medium" onClick={closeMobileDrawer}>
             About
