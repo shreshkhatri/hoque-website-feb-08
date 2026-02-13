@@ -125,7 +125,7 @@ export function UKUniversitySelectionClient() {
               {benefits.map((benefit, index) => {
                 const Icon = benefit.icon
                 return (
-                  <div key={index} className="bg-card rounded-xl p-8 border border-border hover:shadow-lg transition-all">
+                  <div key={index} className="bg-card rounded-xl p-8 border border-border hover:shadow-lg transition-all h-full flex flex-col">
                     <div className="flex items-start gap-4">
                       <div className={`w-14 h-14 ${benefit.iconBg} rounded-xl flex items-center justify-center flex-shrink-0`}>
                         <Icon className={`w-7 h-7 ${benefit.iconColor}`} />
@@ -212,7 +212,7 @@ export function UKUniversitySelectionClient() {
                   borderColor: 'border-emerald-200 dark:border-emerald-800',
                 },
               ].map((item, index) => (
-                <div key={index} className={`${item.bgColor} rounded-xl p-6 border ${item.borderColor} text-center hover:shadow-md transition-all`}>
+                <div key={index} className={`${item.bgColor} rounded-xl p-6 border ${item.borderColor} text-center hover:shadow-md transition-all h-full flex flex-col`}>
                   <div className={`w-14 h-14 ${item.gradient} text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4 shadow-lg`}>
                     {item.step}
                   </div>

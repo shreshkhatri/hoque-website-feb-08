@@ -164,7 +164,7 @@ export function PreArrivalChecklistClient() {
               {checklist.map((section, index) => {
                 const Icon = section.icon
                 return (
-                  <div key={index} className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all">
+                  <div key={index} className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all h-full flex flex-col">
                     <div className="flex items-center gap-3 mb-6">
                       <div className={`${section.iconBg} p-3 rounded-xl`}>
                         <Icon className={section.iconColor} size={24} />
@@ -200,7 +200,7 @@ export function PreArrivalChecklistClient() {
                 ]
                 const c = colors[index]
                 return (
-                  <div key={index} className={`${c.bg} border ${c.border} rounded-xl p-6 hover:shadow-md transition-all`}>
+                  <div key={index} className={`${c.bg} border ${c.border} rounded-xl p-6 hover:shadow-md transition-all h-full flex flex-col`}>
                     <h3 className={`text-lg font-bold ${c.title} mb-4`}>{phase.month}</h3>
                     <ul className="space-y-2">
                       {phase.tasks.map((task, taskIndex) => (

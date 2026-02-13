@@ -173,7 +173,7 @@ export function ScholarshipsFundingSupportClient() {
                 return (
                   <div
                     key={index}
-                    className="p-6 border border-border rounded-xl hover:border-accent transition-all group"
+                    className="p-6 border border-border rounded-xl hover:border-accent transition-all group h-full flex flex-col"
                   >
                     <div className={`w-14 h-14 ${type.iconBg} rounded-xl flex items-center justify-center mb-4`}>
                       <IconComponent className={`w-7 h-7 ${type.iconColor}`} />
@@ -247,7 +247,7 @@ export function ScholarshipsFundingSupportClient() {
                 const c = colors[index]
                 return (
                 <div key={index} className="relative">
-                  <div className={`text-center ${c.bgColor} border ${c.border} rounded-xl p-6 hover:shadow-md transition-all`}>
+                  <div className={`text-center ${c.bgColor} border ${c.border} rounded-xl p-6 hover:shadow-md transition-all h-full flex flex-col`}>
                     <div className={`inline-flex items-center justify-center w-16 h-16 ${c.gradient} text-white rounded-full font-bold text-xl mb-4 shadow-lg`}>
                       {step.number}
                     </div>

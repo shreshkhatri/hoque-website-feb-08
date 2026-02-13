@@ -160,9 +160,9 @@ export function CourseSearchClient() {
             <h2 className="mb-12 text-center text-3xl font-bold text-foreground">Popular Course Categories</h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {courseCategories.map((category, index) => (
-                <div
+              <div
                   key={index}
-                  className="group rounded-lg border border-border bg-card p-6 transition-all hover:border-accent hover:shadow-md"
+                  className="rounded-lg border border-border bg-card p-6 transition-all hover:border-accent hover:shadow-md h-full flex flex-col"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -193,7 +193,7 @@ export function CourseSearchClient() {
                 ]
                 const c = colors[index]
                 return (
-                  <div key={index} className={`text-center ${c.bgColor} border ${c.border} rounded-xl p-6 hover:shadow-md transition-all`}>
+                  <div key={index} className={`text-center ${c.bgColor} border ${c.border} rounded-xl p-6 hover:shadow-md transition-all h-full flex flex-col`}>
                     <div className={`mb-4 flex h-16 w-16 items-center justify-center rounded-full ${c.gradient} mx-auto shadow-lg`}>
                       <span className="text-2xl font-bold text-white">{step.number}</span>
                     </div>

@@ -124,7 +124,7 @@ export function IELTSPreparationClient() {
               {ieltsComponents.map((comp) => {
                 const Icon = comp.icon
                 return (
-                  <div key={comp.title} className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all">
+                  <div key={comp.title} className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all h-full flex flex-col">
                     <div className={`w-14 h-14 ${comp.iconBg} rounded-xl flex items-center justify-center mb-4`}>
                       <Icon size={28} className={comp.iconColor} />
                     </div>
@@ -143,7 +143,7 @@ export function IELTSPreparationClient() {
             <h2 className="text-3xl font-bold text-foreground mb-12 text-center">Study with Us Around the World</h2>
             <div className="grid md:grid-cols-3 gap-8">
               {branches.map((branch) => (
-                <div key={branch.city} className="bg-card border border-border rounded-xl p-8 hover:shadow-lg transition-all">
+                <div key={branch.city} className="bg-card border border-border rounded-xl p-8 hover:shadow-lg transition-all h-full flex flex-col">
                   <div className={`w-12 h-12 ${branch.iconBg} rounded-xl flex items-center justify-center mb-4`}>
                     <MapPin size={24} className={branch.iconColor} />
                   </div>
@@ -175,7 +175,7 @@ export function IELTSPreparationClient() {
                 ]
                 const c = colors[index]
                 return (
-                  <div key={item.step} className={`${c.bgColor} border ${c.border} rounded-xl p-6 hover:shadow-md transition-all`}>
+                  <div key={item.step} className={`${c.bgColor} border ${c.border} rounded-xl p-6 hover:shadow-md transition-all h-full flex flex-col`}>
                     <div className={`${c.gradient} text-white rounded-full w-14 h-14 flex items-center justify-center font-bold text-xl mb-4 shadow-lg`}>
                       {item.step}
                     </div>

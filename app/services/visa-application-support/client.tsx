@@ -157,7 +157,7 @@ export function VisaApplicationSupportClient() {
               {visaRequirements.map((req, index) => {
                 const Icon = req.icon
                 return (
-                  <div key={index} className="bg-card border border-border rounded-xl p-8 hover:shadow-lg transition-all">
+                  <div key={index} className="bg-card border border-border rounded-xl p-8 hover:shadow-lg transition-all h-full flex flex-col">
                     <div className="flex items-start justify-between mb-5">
                       <div className={`w-14 h-14 ${req.bgColor} rounded-xl flex items-center justify-center`}>
                         <Icon className={`w-7 h-7 ${req.iconColor}`} />
@@ -206,7 +206,7 @@ export function VisaApplicationSupportClient() {
                 const StepIcon = item.icon
                 return (
                   <div key={item.step} className="relative">
-                    <div className={`${item.bgColor} border ${item.borderColor} rounded-xl p-6 hover:shadow-md transition-all`}>
+                    <div className={`${item.bgColor} border ${item.borderColor} rounded-xl p-6 hover:shadow-md transition-all h-full flex flex-col`}>
                       <div className={`w-14 h-14 ${item.gradient} text-white rounded-full flex items-center justify-center font-bold text-xl mb-4 shadow-lg`}>
                         {item.step}
                       </div>

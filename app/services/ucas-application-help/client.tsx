@@ -222,7 +222,7 @@ export function UcasApplicationHelpClient() {
               {whyChooseUcas.map((item, idx) => {
                 const Icon = item.icon
                 return (
-                  <div key={idx} className="bg-card rounded-xl p-6 border border-border hover:shadow-lg transition-all">
+                  <div key={idx} className="bg-card rounded-xl p-6 border border-border hover:shadow-lg transition-all h-full flex flex-col">
                     <div className={`w-14 h-14 ${item.iconBg} rounded-xl flex items-center justify-center mb-4`}>
                       <Icon size={28} className={item.iconColor} />
                     </div>
@@ -246,7 +246,7 @@ export function UcasApplicationHelpClient() {
                 const Icon = step.icon
                 return (
                   <div key={idx} className="relative">
-                    <div className={`${step.bgColor} rounded-xl p-6 border ${step.borderColor} hover:shadow-md transition-all text-center`}>
+                    <div className={`${step.bgColor} rounded-xl p-6 border ${step.borderColor} hover:shadow-md transition-all text-center h-full flex flex-col`}>
                       <div className={`w-14 h-14 ${step.gradient} rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4 shadow-lg`}>
                         {step.number}
                       </div>

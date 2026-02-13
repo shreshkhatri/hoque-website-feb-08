@@ -132,7 +132,7 @@ export function StudentAccommodationClient() {
               {accommodationTypes.map((type, index) => {
                 const Icon = type.icon
                 return (
-                  <div key={index} className="bg-card border border-border rounded-xl p-8 hover:shadow-lg transition-all">
+                  <div key={index} className="bg-card border border-border rounded-xl p-8 hover:shadow-lg transition-all h-full flex flex-col">
                     <div className="flex items-center gap-3 mb-4">
                       <div className={`p-3 ${type.iconBg} rounded-xl`}>
                         <Icon size={24} className={type.iconColor} />
@@ -170,7 +170,7 @@ export function StudentAccommodationClient() {
                 const c = colors[index]
                 return (
                   <div key={index}>
-                    <div className={`${c.bg} border ${c.border} rounded-xl p-6 hover:shadow-md transition-all`}>
+                    <div className={`${c.bg} border ${c.border} rounded-xl p-6 hover:shadow-md transition-all h-full flex flex-col`}>
                       <div className={`flex items-center justify-center w-14 h-14 rounded-full ${c.gradient} text-white font-bold text-xl mb-4 mx-auto shadow-lg`}>
                         {item.step}
                       </div>
@@ -192,7 +192,7 @@ export function StudentAccommodationClient() {
               {accommodationBenefits.map((benefit, index) => {
                 const Icon = benefit.icon
                 return (
-                  <div key={index} className="bg-card border border-border rounded-xl p-6 text-center hover:shadow-lg transition-all">
+                  <div key={index} className="bg-card border border-border rounded-xl p-6 text-center hover:shadow-lg transition-all h-full flex flex-col">
                     <div className={`w-14 h-14 ${benefit.iconBg} rounded-xl flex items-center justify-center mx-auto mb-4`}>
                       <Icon size={28} className={benefit.iconColor} />
                     </div>

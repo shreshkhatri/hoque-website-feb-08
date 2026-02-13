@@ -175,7 +175,7 @@ export function OneToOneConsultationClient() {
                 ]
                 const color = colors[index]
                 return (
-                  <div key={index} className={`${color.bgColor} border ${color.border} rounded-xl p-5 hover:shadow-md transition-all`}>
+                  <div key={index} className={`${color.bgColor} border ${color.border} rounded-xl p-5 hover:shadow-md transition-all h-full flex flex-col`}>
                     <div className="flex items-center gap-3 mb-3">
                       <div className={`w-10 h-10 rounded-full ${color.gradient} text-white flex items-center justify-center font-bold shadow-lg`}>
                         {index + 1}

@@ -196,7 +196,7 @@ export function UniversityApplicationClient() {
               {requiredDocuments.map((doc, index) => {
                 const Icon = doc.icon
                 return (
-                  <div key={index} className="bg-card p-6 rounded-xl border border-border hover:shadow-lg transition-all">
+                  <div key={index} className="bg-card p-6 rounded-xl border border-border hover:shadow-lg transition-all h-full flex flex-col">
                     <div className="flex items-start gap-4">
                       <div className={`w-10 h-10 ${doc.iconBg} rounded-lg flex items-center justify-center flex-shrink-0`}>
                         <Icon className={`w-5 h-5 ${doc.iconColor}`} />
@@ -224,7 +224,7 @@ export function UniversityApplicationClient() {
                 const StepIcon = item.icon
                 return (
                   <div key={index} className="relative">
-                    <div className={`${item.bgColor} border ${item.borderColor} p-6 rounded-xl h-full hover:shadow-md transition-all`}>
+                    <div className={`${item.bgColor} border ${item.borderColor} p-6 rounded-xl h-full flex flex-col hover:shadow-md transition-all`}>
                       <div className={`flex items-center justify-center w-12 h-12 rounded-full ${item.gradient} text-white font-bold text-lg mb-4 shadow-lg`}>
                         {item.step}
                       </div>
