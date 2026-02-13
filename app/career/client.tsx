@@ -20,6 +20,15 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import Link from 'next/link'
+
+function generateSlug(id: number, title: string, city: string): string {
+  const slug = `${title}-${city}`
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+  return `${id}-${slug}`
+}
 
 interface Vacancy {
   id: number
@@ -243,13 +252,13 @@ function VacancyCard({
                   Apply before {formatDate(vacancy.application_deadline)}
                 </p>
               </div>
-              <a
-                href={`mailto:careers@hoqueconsultancy.com?subject=Application for ${vacancy.title} - ${vacancy.location_city}`}
-                className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-2.5 text-sm font-semibold text-accent-foreground shadow-sm transition-all hover:bg-accent/90 hover:shadow-md"
-              >
-                Apply Now
-                <ArrowRight className="h-4 w-4" />
-              </a>
+  <Link
+  href={`/career/${generateSlug(vacancy.id, vacancy.title, vacancy.location_city)}`}
+  className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-2.5 text-sm font-semibold text-accent-foreground shadow-sm transition-all hover:bg-accent/90 hover:shadow-md"
+  >
+  Apply Now
+  <ArrowRight className="h-4 w-4" />
+  </Link>
             </div>
           )}
         </div>
