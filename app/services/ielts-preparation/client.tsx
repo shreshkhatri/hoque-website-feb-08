@@ -8,16 +8,16 @@ import { Footer } from '@/components/footer'
 
 export function IELTSPreparationClient() {
   const ieltsComponents = [
-    { title: 'Listening', icon: Volume2, description: 'Master listening skills with authentic materials and exam techniques.' },
-    { title: 'Reading', icon: BookOpen, description: 'Develop comprehensive reading strategies for faster comprehension.' },
-    { title: 'Writing', icon: PenTool, description: 'Perfect your writing with task-specific guidance and feedback.' },
-    { title: 'Speaking', icon: Users, description: 'Build confidence through interactive speaking practice sessions.' }
+    { title: 'Listening', icon: Volume2, description: 'Master listening skills with authentic materials and exam techniques.', iconBg: 'bg-blue-100 dark:bg-blue-900/30', iconColor: 'text-blue-600 dark:text-blue-400' },
+    { title: 'Reading', icon: BookOpen, description: 'Develop comprehensive reading strategies for faster comprehension.', iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400' },
+    { title: 'Writing', icon: PenTool, description: 'Perfect your writing with task-specific guidance and feedback.', iconBg: 'bg-amber-100 dark:bg-amber-900/30', iconColor: 'text-amber-600 dark:text-amber-400' },
+    { title: 'Speaking', icon: Users, description: 'Build confidence through interactive speaking practice sessions.', iconBg: 'bg-rose-100 dark:bg-rose-900/30', iconColor: 'text-rose-600 dark:text-rose-400' }
   ]
 
   const branches = [
-    { city: 'London', country: 'United Kingdom', description: 'State-of-the-art IELTS classes' },
-    { city: 'Dhaka', country: 'Bangladesh', description: 'Comprehensive IELTS training programs' },
-    { city: 'Bangalore', country: 'India', description: 'Professional IELTS coaching centers' }
+    { city: 'London', country: 'United Kingdom', description: 'State-of-the-art IELTS classes', iconBg: 'bg-blue-100 dark:bg-blue-900/30', iconColor: 'text-blue-600 dark:text-blue-400' },
+    { city: 'Dhaka', country: 'Bangladesh', description: 'Comprehensive IELTS training programs', iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400' },
+    { city: 'Bangalore', country: 'India', description: 'Professional IELTS coaching centers', iconBg: 'bg-amber-100 dark:bg-amber-900/30', iconColor: 'text-amber-600 dark:text-amber-400' }
   ]
 
   const process = [
@@ -124,8 +124,10 @@ export function IELTSPreparationClient() {
               {ieltsComponents.map((comp) => {
                 const Icon = comp.icon
                 return (
-                  <div key={comp.title} className="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
-                    <Icon size={32} className="text-primary mb-4" />
+                  <div key={comp.title} className="bg-card border border-border rounded-xl p-6 hover:shadow-lg transition-all h-full flex flex-col">
+                    <div className={`w-14 h-14 ${comp.iconBg} rounded-xl flex items-center justify-center mb-4`}>
+                      <Icon size={28} className={comp.iconColor} />
+                    </div>
                     <h3 className="text-xl font-semibold text-foreground mb-3">{comp.title}</h3>
                     <p className="text-sm text-muted-foreground">{comp.description}</p>
                   </div>
@@ -141,8 +143,10 @@ export function IELTSPreparationClient() {
             <h2 className="text-3xl font-bold text-foreground mb-12 text-center">Study with Us Around the World</h2>
             <div className="grid md:grid-cols-3 gap-8">
               {branches.map((branch) => (
-                <div key={branch.city} className="bg-card border border-border rounded-lg p-8 hover:shadow-lg transition-shadow">
-                  <MapPin size={28} className="text-primary mb-4" />
+                <div key={branch.city} className="bg-card border border-border rounded-xl p-8 hover:shadow-lg transition-all h-full flex flex-col">
+                  <div className={`w-12 h-12 ${branch.iconBg} rounded-xl flex items-center justify-center mb-4`}>
+                    <MapPin size={24} className={branch.iconColor} />
+                  </div>
                   <h3 className="text-2xl font-bold text-foreground mb-2">{branch.city}</h3>
                   <p className="text-sm text-muted-foreground mb-3">{branch.country}</p>
                   <p className="text-sm text-foreground">{branch.description}</p>
@@ -162,15 +166,24 @@ export function IELTSPreparationClient() {
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-foreground mb-12 text-center">Our IELTS Preparation Process</h2>
             <div className="grid md:grid-cols-4 gap-6">
-              {process.map((item) => (
-                <div key={item.step} className="relative">
-                  <div className="bg-primary text-primary-foreground rounded-full w-12 h-12 flex items-center justify-center font-bold text-lg mb-4">
-                    {item.step}
+              {process.map((item, index) => {
+                const colors = [
+                  { gradient: 'bg-gradient-to-br from-blue-500 to-blue-600', bgColor: 'bg-blue-500/10', border: 'border-blue-200 dark:border-blue-800' },
+                  { gradient: 'bg-gradient-to-br from-teal-500 to-teal-600', bgColor: 'bg-teal-500/10', border: 'border-teal-200 dark:border-teal-800' },
+                  { gradient: 'bg-gradient-to-br from-amber-500 to-amber-600', bgColor: 'bg-amber-500/10', border: 'border-amber-200 dark:border-amber-800' },
+                  { gradient: 'bg-gradient-to-br from-emerald-500 to-emerald-600', bgColor: 'bg-emerald-500/10', border: 'border-emerald-200 dark:border-emerald-800' },
+                ]
+                const c = colors[index]
+                return (
+                  <div key={item.step} className={`${c.bgColor} border ${c.border} rounded-xl p-6 hover:shadow-md transition-all h-full flex flex-col`}>
+                    <div className={`${c.gradient} text-white rounded-full w-14 h-14 flex items-center justify-center font-bold text-xl mb-4 shadow-lg`}>
+                      {item.step}
+                    </div>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground">{item.description}</p>
                   </div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground">{item.description}</p>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </section>

@@ -121,9 +121,9 @@ export function CourseSearchClient() {
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <h2 className="mb-12 text-center text-3xl font-bold text-foreground">Why Choose Our Course Search Service?</h2>
             <div className="grid gap-8 md:grid-cols-3">
-              <div className="rounded-lg border border-border bg-card p-8 transition-shadow hover:shadow-lg">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                  <Search className="text-primary" size={24} />
+              <div className="rounded-xl border border-border bg-card p-8 transition-all hover:shadow-lg">
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900/30">
+                  <Search className="text-blue-600 dark:text-blue-400" size={28} />
                 </div>
                 <h3 className="mb-2 text-xl font-semibold text-foreground">Comprehensive Database</h3>
                 <p className="text-muted-foreground">
@@ -131,9 +131,9 @@ export function CourseSearchClient() {
                 </p>
               </div>
 
-              <div className="rounded-lg border border-border bg-card p-8 transition-shadow hover:shadow-lg">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                  <BookOpen className="text-primary" size={24} />
+              <div className="rounded-xl border border-border bg-card p-8 transition-all hover:shadow-lg">
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-emerald-100 dark:bg-emerald-900/30">
+                  <BookOpen className="text-emerald-600 dark:text-emerald-400" size={28} />
                 </div>
                 <h3 className="mb-2 text-xl font-semibold text-foreground">Detailed Information</h3>
                 <p className="text-muted-foreground">
@@ -141,9 +141,9 @@ export function CourseSearchClient() {
                 </p>
               </div>
 
-              <div className="rounded-lg border border-border bg-card p-8 transition-shadow hover:shadow-lg">
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                  <Compass className="text-primary" size={24} />
+              <div className="rounded-xl border border-border bg-card p-8 transition-all hover:shadow-lg">
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-amber-100 dark:bg-amber-900/30">
+                  <Compass className="text-amber-600 dark:text-amber-400" size={28} />
                 </div>
                 <h3 className="mb-2 text-xl font-semibold text-foreground">Expert Guidance</h3>
                 <p className="text-muted-foreground">
@@ -160,9 +160,9 @@ export function CourseSearchClient() {
             <h2 className="mb-12 text-center text-3xl font-bold text-foreground">Popular Course Categories</h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {courseCategories.map((category, index) => (
-                <div
+              <div
                   key={index}
-                  className="group rounded-lg border border-border bg-card p-6 transition-all hover:border-accent hover:shadow-md"
+                  className="rounded-lg border border-border bg-card p-6 transition-all hover:border-accent hover:shadow-md h-full flex flex-col"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -184,15 +184,24 @@ export function CourseSearchClient() {
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <h2 className="mb-12 text-center text-3xl font-bold text-foreground">How Our Course Search Works</h2>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-              {steps.map((step, index) => (
-                <div key={index} className="text-center">
-                  <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 mx-auto">
-                    <span className="text-2xl font-bold text-primary">{step.number}</span>
+              {steps.map((step, index) => {
+                const colors = [
+                  { gradient: 'bg-gradient-to-br from-blue-500 to-blue-600', bgColor: 'bg-blue-500/10', border: 'border-blue-200 dark:border-blue-800' },
+                  { gradient: 'bg-gradient-to-br from-teal-500 to-teal-600', bgColor: 'bg-teal-500/10', border: 'border-teal-200 dark:border-teal-800' },
+                  { gradient: 'bg-gradient-to-br from-amber-500 to-amber-600', bgColor: 'bg-amber-500/10', border: 'border-amber-200 dark:border-amber-800' },
+                  { gradient: 'bg-gradient-to-br from-emerald-500 to-emerald-600', bgColor: 'bg-emerald-500/10', border: 'border-emerald-200 dark:border-emerald-800' },
+                ]
+                const c = colors[index]
+                return (
+                  <div key={index} className={`text-center ${c.bgColor} border ${c.border} rounded-xl p-6 hover:shadow-md transition-all h-full flex flex-col`}>
+                    <div className={`mb-4 flex h-16 w-16 items-center justify-center rounded-full ${c.gradient} mx-auto shadow-lg`}>
+                      <span className="text-2xl font-bold text-white">{step.number}</span>
+                    </div>
+                    <h3 className="mb-2 text-lg font-semibold text-foreground">{step.title}</h3>
+                    <p className="text-sm text-muted-foreground">{step.description}</p>
                   </div>
-                  <h3 className="mb-2 text-lg font-semibold text-foreground">{step.title}</h3>
-                  <p className="text-sm text-muted-foreground">{step.description}</p>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </section>

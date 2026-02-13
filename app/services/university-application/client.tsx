@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckCircle2, FileText, Users, Clock, AlertCircle, ArrowRight } from 'lucide-react'
+import { CheckCircle2, FileText, Users, Clock, AlertCircle, ArrowRight, GraduationCap, ScrollText, Briefcase, Languages, UserCheck, Stamp, PhoneCall, ClipboardCheck, Send, HeartHandshake } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Header } from '@/components/header'
@@ -11,32 +11,44 @@ export function UniversityApplicationClient() {
     {
       title: 'Official Transcripts and Certificates',
       description: 'Scanned copies of official transcripts from your current or former school, college, and university',
-      icon: FileText,
+      icon: GraduationCap,
+      iconBg: 'bg-blue-100 dark:bg-blue-900/30',
+      iconColor: 'text-blue-600 dark:text-blue-400',
     },
     {
       title: 'Personal Statement',
       description: 'Explain why you chose this university, how the course relates to your qualifications, and your career goals',
-      icon: FileText,
+      icon: ScrollText,
+      iconBg: 'bg-amber-100 dark:bg-amber-900/30',
+      iconColor: 'text-amber-600 dark:text-amber-400',
     },
     {
       title: 'CV or Resume',
       description: 'Some programmes require additional documentation such as a CV/Resume or professional references',
-      icon: FileText,
+      icon: Briefcase,
+      iconBg: 'bg-teal-100 dark:bg-teal-900/30',
+      iconColor: 'text-teal-600 dark:text-teal-400',
     },
     {
       title: 'English Language Proficiency',
       description: 'IELTS 6.0 with minimum 5.5 in each skill or Medium of Instruction certificate (MOI)',
-      icon: AlertCircle,
+      icon: Languages,
+      iconBg: 'bg-rose-100 dark:bg-rose-900/30',
+      iconColor: 'text-rose-600 dark:text-rose-400',
     },
     {
       title: 'References',
       description: 'Academic or professional references may be required for some programmes',
-      icon: Users,
+      icon: UserCheck,
+      iconBg: 'bg-purple-100 dark:bg-purple-900/30',
+      iconColor: 'text-purple-600 dark:text-purple-400',
     },
     {
       title: 'Previous Visa Documents',
       description: 'Copies of previous UK Visas, visa refusal letters, or CAS letters if applicable',
-      icon: FileText,
+      icon: Stamp,
+      iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
+      iconColor: 'text-emerald-600 dark:text-emerald-400',
     },
   ]
 
@@ -45,21 +57,41 @@ export function UniversityApplicationClient() {
       step: 1,
       title: 'Initial Consultation',
       description: 'Meet with our team to discuss your university goals and application requirements',
+      icon: PhoneCall,
+      gradient: 'bg-gradient-to-br from-blue-500 to-blue-600',
+      bgColor: 'bg-blue-500/10',
+      borderColor: 'border-blue-200 dark:border-blue-800',
+      textColor: 'text-blue-600 dark:text-blue-400',
     },
     {
       step: 2,
       title: 'Document Preparation',
       description: 'Prepare and review all required documents including personal statement and transcripts',
+      icon: ClipboardCheck,
+      gradient: 'bg-gradient-to-br from-teal-500 to-teal-600',
+      bgColor: 'bg-teal-500/10',
+      borderColor: 'border-teal-200 dark:border-teal-800',
+      textColor: 'text-teal-600 dark:text-teal-400',
     },
     {
       step: 3,
       title: 'Application Submission',
       description: 'Submit your complete application through the university portal with our guidance',
+      icon: Send,
+      gradient: 'bg-gradient-to-br from-amber-500 to-amber-600',
+      bgColor: 'bg-amber-500/10',
+      borderColor: 'border-amber-200 dark:border-amber-800',
+      textColor: 'text-amber-600 dark:text-amber-400',
     },
     {
       step: 4,
       title: 'Follow-up Support',
       description: 'Receive updates and support throughout the decision-making process',
+      icon: HeartHandshake,
+      gradient: 'bg-gradient-to-br from-rose-500 to-rose-600',
+      bgColor: 'bg-rose-500/10',
+      borderColor: 'border-rose-200 dark:border-rose-800',
+      textColor: 'text-rose-600 dark:text-rose-400',
     },
   ]
 
@@ -164,9 +196,11 @@ export function UniversityApplicationClient() {
               {requiredDocuments.map((doc, index) => {
                 const Icon = doc.icon
                 return (
-                  <div key={index} className="bg-card p-6 rounded-lg border border-border hover:shadow-lg transition-shadow">
+                  <div key={index} className="bg-card p-6 rounded-xl border border-border hover:shadow-lg transition-all h-full flex flex-col">
                     <div className="flex items-start gap-4">
-                      <Icon className="w-6 h-6 text-primary flex-shrink-0 mt-1" />
+                      <div className={`w-10 h-10 ${doc.iconBg} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                        <Icon className={`w-5 h-5 ${doc.iconColor}`} />
+                      </div>
                       <div>
                         <h3 className="font-semibold text-foreground mb-2">{doc.title}</h3>
                         <p className="text-sm text-muted-foreground">{doc.description}</p>
@@ -186,22 +220,26 @@ export function UniversityApplicationClient() {
               Our Application Process
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {applicationSteps.map((item, index) => (
-                <div key={index} className="relative">
-                  <div className="bg-card p-6 rounded-lg border border-primary/30 h-full">
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white font-bold mb-4">
-                      {item.step}
+              {applicationSteps.map((item, index) => {
+                const StepIcon = item.icon
+                return (
+                  <div key={index} className="relative">
+                    <div className={`${item.bgColor} border ${item.borderColor} p-6 rounded-xl h-full flex flex-col hover:shadow-md transition-all`}>
+                      <div className={`flex items-center justify-center w-12 h-12 rounded-full ${item.gradient} text-white font-bold text-lg mb-4 shadow-lg`}>
+                        {item.step}
+                      </div>
+                      <StepIcon className={`w-5 h-5 mb-3 ${item.textColor}`} />
+                      <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
+                      <p className="text-sm text-muted-foreground">{item.description}</p>
                     </div>
-                    <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground">{item.description}</p>
+                    {index < applicationSteps.length - 1 && (
+                      <div className="hidden lg:block absolute top-1/2 right-0 translate-x-1/2 transform -translate-y-1/2 z-10">
+                        <ArrowRight className="w-5 h-5 text-muted-foreground" />
+                      </div>
+                    )}
                   </div>
-                  {index < applicationSteps.length - 1 && (
-                    <div className="hidden lg:block absolute top-1/2 right-0 translate-x-1/2 transform -translate-y-1/2">
-                      <ArrowRight className="w-6 h-6 text-primary" />
-                    </div>
-                  )}
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </section>
@@ -213,42 +251,25 @@ export function UniversityApplicationClient() {
               Why Choose HOQUE?
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="flex gap-4">
-                <CheckCircle2 className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">Personalized Support</h3>
-                  <p className="text-muted-foreground">
-                    We provide one-to-one guidance tailored to your specific needs and university requirements.
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <CheckCircle2 className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">Expert Team</h3>
-                  <p className="text-muted-foreground">
-                    Our consultants have extensive experience with university applications and admissions worldwide.
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <CheckCircle2 className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">Document Assistance</h3>
-                  <p className="text-muted-foreground">
-                    We help you prepare and refine your personal statement, CV, and all supporting documents.
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <CheckCircle2 className="w-6 h-6 text-amber-500 flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-semibold text-foreground mb-2">Zero Application Fees</h3>
-                  <p className="text-muted-foreground">
-                    No hidden charges for foundation, undergraduate, postgraduate, or PhD applications.
-                  </p>
-                </div>
-              </div>
+              {[
+                { title: 'Personalized Support', description: 'We provide one-to-one guidance tailored to your specific needs and university requirements.', icon: HeartHandshake, iconBg: 'bg-blue-100 dark:bg-blue-900/30', iconColor: 'text-blue-600 dark:text-blue-400' },
+                { title: 'Expert Team', description: 'Our consultants have extensive experience with university applications and admissions worldwide.', icon: Users, iconBg: 'bg-amber-100 dark:bg-amber-900/30', iconColor: 'text-amber-600 dark:text-amber-400' },
+                { title: 'Document Assistance', description: 'We help you prepare and refine your personal statement, CV, and all supporting documents.', icon: ClipboardCheck, iconBg: 'bg-teal-100 dark:bg-teal-900/30', iconColor: 'text-teal-600 dark:text-teal-400' },
+                { title: 'Zero Application Fees', description: 'No hidden charges for foundation, undergraduate, postgraduate, or PhD applications.', icon: CheckCircle2, iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400' },
+              ].map((item, index) => {
+                const Icon = item.icon
+                return (
+                  <div key={index} className="flex gap-4">
+                    <div className={`w-10 h-10 ${item.iconBg} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                      <Icon className={`w-5 h-5 ${item.iconColor}`} />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
+                      <p className="text-muted-foreground">{item.description}</p>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </section>

@@ -13,24 +13,40 @@ export function UcasApplicationHelpClient() {
       title: 'Create UCAS Account',
       description: 'Set up your UCAS application account and register as a new applicant',
       icon: Users,
+      gradient: 'bg-gradient-to-br from-blue-500 to-blue-600',
+      bgColor: 'bg-blue-500/10',
+      borderColor: 'border-blue-200 dark:border-blue-800',
+      iconColor: 'text-blue-600 dark:text-blue-400',
     },
     {
       number: '2',
       title: 'Fill Application Form',
       description: 'Complete your personal details, education history, and course preferences',
       icon: ClipboardList,
+      gradient: 'bg-gradient-to-br from-teal-500 to-teal-600',
+      bgColor: 'bg-teal-500/10',
+      borderColor: 'border-teal-200 dark:border-teal-800',
+      iconColor: 'text-teal-600 dark:text-teal-400',
     },
     {
       number: '3',
       title: 'Submit Application',
       description: 'Submit your application through the UCAS portal with our guidance',
       icon: CheckCircle2,
+      gradient: 'bg-gradient-to-br from-amber-500 to-amber-600',
+      bgColor: 'bg-amber-500/10',
+      borderColor: 'border-amber-200 dark:border-amber-800',
+      iconColor: 'text-amber-600 dark:text-amber-400',
     },
     {
       number: '4',
       title: 'Track Progress',
       description: 'Monitor your application status and receive offers from universities',
       icon: Trophy,
+      gradient: 'bg-gradient-to-br from-emerald-500 to-emerald-600',
+      bgColor: 'bg-emerald-500/10',
+      borderColor: 'border-emerald-200 dark:border-emerald-800',
+      iconColor: 'text-emerald-600 dark:text-emerald-400',
     },
   ]
 
@@ -39,31 +55,43 @@ export function UcasApplicationHelpClient() {
       icon: CheckCircle2,
       title: 'Official UCAS Centre',
       description: 'Recognized UCAS centre providing free, independent advice and support',
+      iconBg: 'bg-blue-100 dark:bg-blue-900/30',
+      iconColor: 'text-blue-600 dark:text-blue-400',
     },
     {
       icon: Users,
       title: 'Expert Counsellors',
       description: 'Our trained professionals guide you through every step of the UCAS process',
+      iconBg: 'bg-amber-100 dark:bg-amber-900/30',
+      iconColor: 'text-amber-600 dark:text-amber-400',
     },
     {
       icon: ClipboardList,
       title: 'Comprehensive Support',
       description: 'From application creation to tracking, we handle everything for you',
+      iconBg: 'bg-teal-100 dark:bg-teal-900/30',
+      iconColor: 'text-teal-600 dark:text-teal-400',
     },
     {
       icon: Globe,
       title: 'Access to 100K+ Courses',
       description: 'Help you navigate 100,000+ undergraduate and postgraduate courses available',
+      iconBg: 'bg-rose-100 dark:bg-rose-900/30',
+      iconColor: 'text-rose-600 dark:text-rose-400',
     },
     {
       icon: Trophy,
       title: 'Success Focused',
       description: 'Our track record demonstrates successful university placements for our students',
+      iconBg: 'bg-purple-100 dark:bg-purple-900/30',
+      iconColor: 'text-purple-600 dark:text-purple-400',
     },
     {
       icon: Phone,
       title: 'Personal Support',
       description: 'One-on-one assistance to ensure your application stands out',
+      iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
+      iconColor: 'text-emerald-600 dark:text-emerald-400',
     },
   ]
 
@@ -194,8 +222,10 @@ export function UcasApplicationHelpClient() {
               {whyChooseUcas.map((item, idx) => {
                 const Icon = item.icon
                 return (
-                  <div key={idx} className="bg-card rounded-lg p-6 border border-border hover:shadow-lg transition-shadow">
-                    <Icon size={32} className="text-primary mb-4" />
+                  <div key={idx} className="bg-card rounded-xl p-6 border border-border hover:shadow-lg transition-all h-full flex flex-col">
+                    <div className={`w-14 h-14 ${item.iconBg} rounded-xl flex items-center justify-center mb-4`}>
+                      <Icon size={28} className={item.iconColor} />
+                    </div>
                     <h3 className="text-lg font-semibold text-foreground mb-3">{item.title}</h3>
                     <p className="text-foreground/70">{item.description}</p>
                   </div>
@@ -216,17 +246,17 @@ export function UcasApplicationHelpClient() {
                 const Icon = step.icon
                 return (
                   <div key={idx} className="relative">
-                    <div className="bg-card rounded-lg p-6 border-2 border-primary/20 hover:border-accent/50 transition-colors text-center">
-                      <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold text-lg mx-auto mb-4">
+                    <div className={`${step.bgColor} rounded-xl p-6 border ${step.borderColor} hover:shadow-md transition-all text-center h-full flex flex-col`}>
+                      <div className={`w-14 h-14 ${step.gradient} rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4 shadow-lg`}>
                         {step.number}
                       </div>
-                      <Icon size={28} className="text-primary mx-auto mb-4" />
+                      <Icon size={24} className={`${step.iconColor} mx-auto mb-4`} />
                       <h3 className="font-semibold text-foreground mb-2">{step.title}</h3>
                       <p className="text-sm text-foreground/70">{step.description}</p>
                     </div>
                     {idx < ucasSteps.length - 1 && (
-                      <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2">
-                        <ArrowRight size={24} className="text-primary/40" />
+                      <div className="hidden md:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
+                        <ArrowRight size={20} className="text-muted-foreground" />
                       </div>
                     )}
                   </div>

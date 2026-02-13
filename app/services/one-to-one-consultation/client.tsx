@@ -90,8 +90,8 @@ export function OneToOneConsultationClient() {
             <div className="grid md:grid-cols-3 gap-8 mb-16">
               <div className="text-center space-y-4">
                 <div className="flex justify-center mb-4">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                    <Users className="w-8 h-8 text-primary" />
+                  <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center">
+                    <Users className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                   </div>
                 </div>
                 <h3 className="text-xl font-bold text-foreground">Expert Guidance</h3>
@@ -102,8 +102,8 @@ export function OneToOneConsultationClient() {
 
               <div className="text-center space-y-4">
                 <div className="flex justify-center mb-4">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                    <Clock className="w-8 h-8 text-primary" />
+                  <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-2xl flex items-center justify-center">
+                    <Clock className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
                   </div>
                 </div>
                 <h3 className="text-xl font-bold text-foreground">100% Free</h3>
@@ -114,8 +114,8 @@ export function OneToOneConsultationClient() {
 
               <div className="text-center space-y-4">
                 <div className="flex justify-center mb-4">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
-                    <MapPin className="w-8 h-8 text-primary" />
+                  <div className="w-16 h-16 bg-amber-100 dark:bg-amber-900/30 rounded-2xl flex items-center justify-center">
+                    <MapPin className="w-8 h-8 text-amber-600 dark:text-amber-400" />
                   </div>
                 </div>
                 <h3 className="text-xl font-bold text-foreground">Multiple Locations</h3>
@@ -166,17 +166,26 @@ export function OneToOneConsultationClient() {
             </div>
 
             <div className="grid md:grid-cols-4 gap-6">
-              {processSteps.map((step, index) => (
-                <div key={index} className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
-                      {index + 1}
+              {processSteps.map((step, index) => {
+                const colors = [
+                  { gradient: 'bg-gradient-to-br from-blue-500 to-blue-600', bgColor: 'bg-blue-500/10', border: 'border-blue-200 dark:border-blue-800' },
+                  { gradient: 'bg-gradient-to-br from-teal-500 to-teal-600', bgColor: 'bg-teal-500/10', border: 'border-teal-200 dark:border-teal-800' },
+                  { gradient: 'bg-gradient-to-br from-amber-500 to-amber-600', bgColor: 'bg-amber-500/10', border: 'border-amber-200 dark:border-amber-800' },
+                  { gradient: 'bg-gradient-to-br from-rose-500 to-rose-600', bgColor: 'bg-rose-500/10', border: 'border-rose-200 dark:border-rose-800' },
+                ]
+                const color = colors[index]
+                return (
+                  <div key={index} className={`${color.bgColor} border ${color.border} rounded-xl p-5 hover:shadow-md transition-all h-full flex flex-col`}>
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className={`w-10 h-10 rounded-full ${color.gradient} text-white flex items-center justify-center font-bold shadow-lg`}>
+                        {index + 1}
+                      </div>
+                      <h3 className="text-lg font-bold text-foreground">{step.title}</h3>
                     </div>
-                    <h3 className="text-lg font-bold text-foreground">{step.title}</h3>
+                    <p className="text-muted-foreground">{step.description}</p>
                   </div>
-                  <p className="text-muted-foreground">{step.description}</p>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </section>
@@ -228,19 +237,30 @@ export function OneToOneConsultationClient() {
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {offices.map((office, index) => (
+              {offices.map((office, index) => {
+                const iconColors = [
+                  { bg: 'bg-blue-100 dark:bg-blue-900/30', color: 'text-blue-600 dark:text-blue-400' },
+                  { bg: 'bg-emerald-100 dark:bg-emerald-900/30', color: 'text-emerald-600 dark:text-emerald-400' },
+                  { bg: 'bg-amber-100 dark:bg-amber-900/30', color: 'text-amber-600 dark:text-amber-400' },
+                  { bg: 'bg-rose-100 dark:bg-rose-900/30', color: 'text-rose-600 dark:text-rose-400' },
+                ]
+                const ic = iconColors[index]
+                return (
                 <div
                   key={index}
-                  className="p-6 rounded-lg bg-card border border-border hover:border-accent/50 transition-colors text-center"
+                  className="p-6 rounded-xl bg-card border border-border hover:border-accent/50 transition-all text-center"
                 >
-                  <MapPin className="w-8 h-8 text-primary mx-auto mb-3" />
+                  <div className={`w-12 h-12 ${ic.bg} rounded-xl flex items-center justify-center mx-auto mb-3`}>
+                    <MapPin className={`w-6 h-6 ${ic.color}`} />
+                  </div>
                   <h3 className="text-lg font-bold text-foreground">{office.city}</h3>
                   <p className="text-muted-foreground">{office.country}</p>
                   <Button asChild variant="link" className="mt-4 text-primary">
                     <Link href="/contact">Get Details</Link>
                   </Button>
                 </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </section>
