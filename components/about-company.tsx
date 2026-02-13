@@ -18,27 +18,24 @@ export function AboutCompany() {
                 About HOQUE
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Founded in 2015, HOQUE has been the trusted partner for 
-                international students seeking admission to the world's most 
-                prestigious universities. We specialize in guiding students through 
-                every step of their educational journey.
+                Since 2009, HOQUE has provided expert educational guidance and advice to international students throughout the UK. With a head office in London and a global network of offices including Dhaka, Colombo, Islamabad, New York, Dubai, Mumbai, Hyderabad, Gujarat, Kochi, Sri Lanka, Sylhet, Chattogram, and Nepal, we have a team of fully trained counsellors dedicated to helping students achieve their dreams of studying in the UK.
               </p>
             </div>
 
             <p className="text-muted-foreground leading-relaxed">
-              Our dedicated team of experienced education consultants works closely 
-              with each student to craft compelling applications, prepare for interviews, 
-              and secure the best possible outcomes. We understand the challenges of 
-              navigating the complex university admission process and are here to make 
-              your dreams a reality.
+              HOQUE is managed by Mr. Fazlul Hoque, an internationally experienced and qualified higher educational advisor and successful entrepreneur with proven expertise in strategy, marketing, and corporate governance across a range of higher educational services for international students in the United Kingdom. Having been an international student himself, Mr. Hoque successfully completed his Master of Business Administration (MBA) from Liverpool John Moores University, UK, and brings first-hand understanding of the challenges and opportunities that await international students.
+            </p>
+
+            <p className="text-muted-foreground leading-relaxed">
+              As a visionary leader, Mr. Hoque has instilled a strong understanding of key principles within international student recruitment, support activities, events, marketing, and strategic development at HOQUE. He is passionate about continuing the proud tradition of imparting knowledge and education by supporting international students in their journey to access higher education from UK universities, helping them not only discover personal success but also contribute to the betterment of society by creating leaders for tomorrow.
             </p>
 
             <div className="space-y-3 pt-2">
               {[
-                'Expert guidance from university admission officers',
-                'Personalized guidance tailored to your goals',
-                'Support across 50+ countries worldwide',
-                'Strong relationships with top universities globally',
+                '15+ years of experience guiding international students',
+                '14 global offices serving students worldwide',
+                '100% free application service for UK universities',
+                'Strong partnerships with leading UK universities',
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <CheckCircle
@@ -47,15 +44,6 @@ export function AboutCompany() {
                   <span className="text-foreground">{item}</span>
                 </div>
               ))}
-            </div>
-
-            <div className="pt-4">
-              <Button asChild size="lg" className="group">
-                <Link href="/about">
-                  Learn More About Us
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
             </div>
           </div>
 
@@ -72,16 +60,16 @@ export function AboutCompany() {
               {/* Overlay gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
             </div>
-            
+
             {/* Floating stats card */}
             <div className="absolute -bottom-6 -left-6 bg-card border border-border rounded-xl p-6 shadow-xl">
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center">
-                  <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">98%</span>
+                  <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">15+</span>
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground">Success Rate</p>
-                  <p className="text-sm text-muted-foreground">5000+ students guided</p>
+                  <p className="font-semibold text-foreground">Years Experience</p>
+                  <p className="text-sm text-muted-foreground">Since 2009</p>
                 </div>
               </div>
             </div>
@@ -91,10 +79,10 @@ export function AboutCompany() {
         {/* Stats section */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 pt-16 border-t border-border">
           {[
-            { number: '5000+', label: 'Students Guided', color: 'text-blue-600 dark:text-blue-400' },
-            { number: '98%', label: 'Success Rate', color: 'text-emerald-600 dark:text-emerald-400' },
-            { number: '10+', label: 'Years Experience', color: 'text-amber-600 dark:text-amber-400' },
-            { number: '50+', label: 'Countries Served', color: 'text-rose-600 dark:text-rose-400' },
+            { number: '15+', label: 'Years Experience', color: 'text-blue-600 dark:text-blue-400' },
+            { number: '14', label: 'Global Offices', color: 'text-emerald-600 dark:text-emerald-400' },
+            { number: '5000+', label: 'Students Guided', color: 'text-amber-600 dark:text-amber-400' },
+            { number: '28+', label: 'Partner Universities', color: 'text-rose-600 dark:text-rose-400' },
           ].map((stat, i) => (
             <div key={i} className="text-center">
               <div className={`text-3xl md:text-4xl font-bold ${stat.color} mb-2`}>

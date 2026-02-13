@@ -119,6 +119,14 @@ export function ContactPageClient() {
       label: 'HOQUE NEPAL OFFICE',
     },
     {
+      city: 'Dubai',
+      country: 'United Arab Emirates',
+      address: 'IFZA Business Park, DDP, Premises Number 74649-001 Dubai Silicon Oasis',
+      phone: '+971 553592759',
+      email: 'info@hoque.org.uk',
+      label: 'HOQUE DUBAI OFFICE',
+    },
+    {
       city: 'Colombo',
       country: 'Sri-Lanka',
       address: 'TBC',
@@ -133,6 +141,15 @@ export function ContactPageClient() {
       phone: '+92 XXX XXX XXXX',
       email: 'pakistan@hoque.org.uk',
       label: 'HOQUE PAKISTAN OFFICE',
+    },
+    {
+      city: 'Auckland',
+      country: 'New Zealand',
+      address: 'Updating Soon',
+      phone: 'Updating Soon',
+      email: 'newzealand@hoque.org.uk',
+      label: 'HOQUE NEW ZEALAND OFFICE',
+      isComingSoon: true,
     },
   ]
 
@@ -402,9 +419,19 @@ export function ContactPageClient() {
               {officeLocations.map((office, index) => (
                 <div
                   key={index}
-                  className="bg-card border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow"
+                  className={`${office.isComingSoon
+                    ? 'bg-gradient-to-br from-amber-50/50 via-orange-50/50 to-amber-50/50 dark:from-amber-950/20 dark:via-orange-950/20 dark:to-amber-950/20 border-amber-200 dark:border-amber-800/50'
+                    : 'bg-card border-border'
+                    } border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow relative`}
                   style={{ flex: '0 0 calc(33.333% - 2.67rem)', minWidth: '280px' }}
                 >
+                  {office.isComingSoon && (
+                    <div className="absolute top-4 right-4">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200 border border-amber-300 dark:border-amber-700">
+                        Coming Soon
+                      </span>
+                    </div>
+                  )}
                   <div className="flex items-center gap-2 mb-2">
                     <MapPin className="text-primary" size={24} />
                     <h3 className="text-2xl font-bold text-foreground">
@@ -421,19 +448,25 @@ export function ContactPageClient() {
                   <div className="space-y-4 text-sm mt-6">
                     <div>
                       <p className="text-muted-foreground mb-1 font-medium">Address</p>
-                      <p className="text-foreground leading-relaxed">
+                      <p className={`${office.isComingSoon ? 'text-amber-700 dark:text-amber-300 italic' : 'text-foreground'} leading-relaxed`}>
                         {office.address}
                       </p>
                     </div>
 
                     <div>
                       <p className="text-muted-foreground mb-1 font-medium">Phone</p>
-                      <a
-                        href={`tel:${office.phone.replace(/\s/g, '')}`}
-                        className="text-primary hover:underline"
-                      >
-                        {office.phone}
-                      </a>
+                      {office.isComingSoon ? (
+                        <p className="text-amber-700 dark:text-amber-300 italic">
+                          {office.phone}
+                        </p>
+                      ) : (
+                        <a
+                          href={`tel:${office.phone.replace(/\s/g, '')}`}
+                          className="text-primary hover:underline"
+                        >
+                          {office.phone}
+                        </a>
+                      )}
                     </div>
 
                     <div>
@@ -448,6 +481,7 @@ export function ContactPageClient() {
                   </div>
                 </div>
               ))}
+
             </div>
           </div>
         </section>

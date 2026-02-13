@@ -21,10 +21,8 @@ export function UniversitiesPageClient() {
   const [searchResults, setSearchResults] = useState(null)
   const [hasMore, setHasMore] = useState(false)
   const [currentOffset, setCurrentOffset] = useState(0)
-  const [displayedUniversities, setDisplayedUniversities] = useState<University[]>([])
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [debouncedSearch, setDebouncedSearch] = useState<string>('')
-  const itemsToShow = 5
 
   // Fetch countries on mount
   useEffect(() => {
@@ -59,11 +57,6 @@ export function UniversitiesPageClient() {
 
     return () => clearTimeout(timer)
   }, [searchQuery])
-
-  // Update displayed universities when full list changes
-  useEffect(() => {
-    setDisplayedUniversities(universities.slice(0, itemsToShow))
-  }, [universities, itemsToShow])
 
   const fetchUniversities = async (reset = true) => {
     try {
@@ -197,10 +190,10 @@ export function UniversitiesPageClient() {
               </div>
             ))}
           </div>
-        ) : displayedUniversities.length > 0 ? (
+        ) : universities.length > 0 ? (
           <div>
             <div className="grid md:grid-cols-2 gap-6">
-              {displayedUniversities.map((uni) => (
+              {universities.map((uni) => (
                 <Link
                   key={uni.id}
                   href={`/university/${nameToSlug(uni.name)}`}

@@ -18,7 +18,7 @@ export function AboutPageClient() {
               About Us
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto text-balance">
-              Transforming educational opportunities for students worldwide through expert guidance and support
+              Empowering international students since 2009 with expert guidance and 100% free application services to leading UK universities
             </p>
           </div>
         </section>
@@ -34,40 +34,40 @@ export function AboutPageClient() {
                 Our Expertise
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Our team comprises experienced education consultants, university admission officers, and career advisors.
+                Our team of fully trained counsellors and education advisors brings years of experience in supporting international students.
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
               {[
                 {
-                  title: 'University Admissions',
+                  title: 'University Partnerships',
                   description:
-                    'Former admission officers from top universities worldwide guiding your application process.',
-                  count: '50+',
-                  label: 'Universities Covered',
+                    'Strong relationships with 28+ leading UK universities ensuring quality education opportunities.',
+                  count: '28+',
+                  label: 'Partner Universities',
                   icon: GraduationCap,
                   iconBg: 'bg-blue-100 dark:bg-blue-900/30',
                   iconColor: 'text-blue-600 dark:text-blue-400',
                   countColor: 'text-blue-600 dark:text-blue-400',
                 },
                 {
-                  title: 'Student Support',
+                  title: 'Global Presence',
                   description:
-                    'Dedicated mentors available throughout your entire academic journey abroad.',
-                  count: '5000+',
-                  label: 'Students Helped',
+                    'Operating from 14 offices worldwide to provide accessible support wherever you are.',
+                  count: '14',
+                  label: 'Global Offices',
                   icon: HeartHandshake,
                   iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
                   iconColor: 'text-emerald-600 dark:text-emerald-400',
                   countColor: 'text-emerald-600 dark:text-emerald-400',
                 },
                 {
-                  title: 'Career Coaching',
+                  title: 'Proven Experience',
                   description:
-                    'Professional career advisors helping you plan your future beyond graduation.',
-                  count: '98%',
-                  label: 'Success Rate',
+                    'Over 15 years of excellence in guiding international students to UK universities.',
+                  count: '15+',
+                  label: 'Years Experience',
                   icon: Target,
                   iconBg: 'bg-amber-100 dark:bg-amber-900/30',
                   iconColor: 'text-amber-600 dark:text-amber-400',
@@ -111,12 +111,12 @@ export function AboutPageClient() {
 
             <div className="space-y-4">
               {[
-                { text: 'Transparent communication at every step of the process', icon: MessageCircle, iconBg: 'bg-blue-100 dark:bg-blue-900/30', iconColor: 'text-blue-600 dark:text-blue-400', border: 'border-blue-200 dark:border-blue-800' },
-                { text: 'Personalized strategy for each student based on their unique profile', icon: Target, iconBg: 'bg-amber-100 dark:bg-amber-900/30', iconColor: 'text-amber-600 dark:text-amber-400', border: 'border-amber-200 dark:border-amber-800' },
-                { text: 'Access to our extensive network of universities and industry professionals', icon: Globe, iconBg: 'bg-teal-100 dark:bg-teal-900/30', iconColor: 'text-teal-600 dark:text-teal-400', border: 'border-teal-200 dark:border-teal-800' },
-                { text: 'Continuous support from application submission through graduation', icon: HeartHandshake, iconBg: 'bg-rose-100 dark:bg-rose-900/30', iconColor: 'text-rose-600 dark:text-rose-400', border: 'border-rose-200 dark:border-rose-800' },
-                { text: 'Competitive pricing with flexible payment options', icon: DollarSign, iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400', border: 'border-emerald-200 dark:border-emerald-800' },
-                { text: 'A proven track record of successful admissions to top-tier institutions', icon: Award, iconBg: 'bg-purple-100 dark:bg-purple-900/30', iconColor: 'text-purple-600 dark:text-purple-400', border: 'border-purple-200 dark:border-purple-800' },
+                { text: '100% free application service for Foundation, Undergraduate, Postgraduate, and PhD programs', icon: DollarSign, iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400', border: 'border-emerald-200 dark:border-emerald-800' },
+                { text: 'Personalized counselling from fully trained education advisors', icon: MessageCircle, iconBg: 'bg-blue-100 dark:bg-blue-900/30', iconColor: 'text-blue-600 dark:text-blue-400', border: 'border-blue-200 dark:border-blue-800' },
+                { text: 'Strong partnerships with 28+ leading UK universities', icon: Award, iconBg: 'bg-purple-100 dark:bg-purple-900/30', iconColor: 'text-purple-600 dark:text-purple-400', border: 'border-purple-200 dark:border-purple-800' },
+                { text: 'Global support network with 14 offices worldwide', icon: Globe, iconBg: 'bg-teal-100 dark:bg-teal-900/30', iconColor: 'text-teal-600 dark:text-teal-400', border: 'border-teal-200 dark:border-teal-800' },
+                { text: 'Comprehensive support from application to enrollment', icon: HeartHandshake, iconBg: 'bg-rose-100 dark:bg-rose-900/30', iconColor: 'text-rose-600 dark:text-rose-400', border: 'border-rose-200 dark:border-rose-800' },
+                { text: '15+ years of proven expertise in international student recruitment', icon: Target, iconBg: 'bg-amber-100 dark:bg-amber-900/30', iconColor: 'text-amber-600 dark:text-amber-400', border: 'border-amber-200 dark:border-amber-800' },
               ].map((promise, i) => {
                 const Icon = promise.icon
                 return (
