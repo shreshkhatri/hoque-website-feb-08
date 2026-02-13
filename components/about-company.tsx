@@ -25,7 +25,7 @@ export function AboutCompany() {
             <p className="text-muted-foreground leading-relaxed">
               HOQUE is managed by Mr. Fazlul Hoque, an internationally experienced and qualified higher educational advisor and successful entrepreneur with proven expertise in strategy, marketing, and corporate governance across a range of higher educational services for international students in the United Kingdom. Having been an international student himself, Mr. Hoque successfully completed his Master of Business Administration (MBA) from Liverpool John Moores University, UK, and brings first-hand understanding of the challenges and opportunities that await international students.
             </p>
-            
+
             <p className="text-muted-foreground leading-relaxed">
               As a visionary leader, Mr. Hoque has instilled a strong understanding of key principles within international student recruitment, support activities, events, marketing, and strategic development at HOQUE. He is passionate about continuing the proud tradition of imparting knowledge and education by supporting international students in their journey to access higher education from UK universities, helping them not only discover personal success but also contribute to the betterment of society by creating leaders for tomorrow.
             </p>
@@ -45,15 +45,6 @@ export function AboutCompany() {
                 </div>
               ))}
             </div>
-
-            <div className="pt-4">
-              <Button asChild size="lg" className="group">
-                <Link href="/about">
-                  Learn More About Us
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </Button>
-            </div>
           </div>
 
           {/* Right side - Image */}
@@ -69,7 +60,7 @@ export function AboutCompany() {
               {/* Overlay gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
             </div>
-            
+
             {/* Floating stats card */}
             <div className="absolute -bottom-6 -left-6 bg-card border border-border rounded-xl p-6 shadow-xl">
               <div className="flex items-center gap-4">
