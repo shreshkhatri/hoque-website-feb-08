@@ -15,7 +15,7 @@ async function insertUniversitiesAndCourses() {
   try {
     console.log('[v0] Starting database insertion...');
 
-    // Universities data
+    // Universities data with all required fields (matching schema)
     const universities = [
       {
         name: "Queen's University Belfast",
@@ -25,6 +25,7 @@ async function insertUniversitiesAndCourses() {
         website_url: 'https://www.qub.ac.uk',
         founded_year: 1845,
         student_population: 25000,
+        rank_world: 180,
       },
       {
         name: 'Northumbria University',
@@ -34,6 +35,7 @@ async function insertUniversitiesAndCourses() {
         website_url: 'https://www.northumbria.ac.uk',
         founded_year: 1969,
         student_population: 34000,
+        rank_world: 450,
       },
       {
         name: 'University of Greenwich',
@@ -43,6 +45,7 @@ async function insertUniversitiesAndCourses() {
         website_url: 'https://www.gre.ac.uk',
         founded_year: 1890,
         student_population: 18000,
+        rank_world: 700,
       },
       {
         name: 'Middlesex University',
@@ -52,6 +55,7 @@ async function insertUniversitiesAndCourses() {
         website_url: 'https://www.mdx.ac.uk',
         founded_year: 1973,
         student_population: 20000,
+        rank_world: 600,
       },
       {
         name: 'London South Bank University',
@@ -61,6 +65,7 @@ async function insertUniversitiesAndCourses() {
         website_url: 'https://www.lsbu.ac.uk',
         founded_year: 1892,
         student_population: 15000,
+        rank_world: 750,
       },
     ];
 
