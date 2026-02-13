@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '5')
     const offset = parseInt(searchParams.get('offset') || '0')
     const countryId = searchParams.get('country_id')
+    const universityId = searchParams.get('university_id')
     const level = searchParams.get('level')
     const searchQuery = searchParams.get('search')
     const intakeMonth = searchParams.get('intake_month')
@@ -69,6 +70,11 @@ export async function GET(request: NextRequest) {
     // Filter by university IDs (which belong to the selected country)
     if (countryId && universityIds.length > 0) {
       query = query.in('university_id', universityIds)
+    }
+
+    // Filter by specific university if provided
+    if (universityId) {
+      query = query.eq('university_id', parseInt(universityId))
     }
 
     if (level) {

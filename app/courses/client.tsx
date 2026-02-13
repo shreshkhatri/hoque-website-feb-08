@@ -29,12 +29,20 @@ interface Country {
   name: string
 }
 
+interface University {
+  id: number
+  name: string
+  city: string
+  country_id: number
+}
+
 const programLevels = ['All', 'Undergraduate', 'Master', 'PhD', 'Diploma', 'Certificate']
 
 export function CoursesPageClient() {
   const [courses, setCourses] = useState<CourseWithUniversity[]>([])
   const [featuredCourses, setFeaturedCourses] = useState<CourseWithUniversity[]>([])
   const [countries, setCountries] = useState<Country[]>([])
+  const [universities, setUniversities] = useState<University[]>([])
   const [intakeMonths, setIntakeMonths] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
   const [featuredLoading, setFeaturedLoading] = useState(true)
@@ -45,6 +53,7 @@ export function CoursesPageClient() {
 
   // Filter states
   const [selectedCountry, setSelectedCountry] = useState<number | null>(null)
+  const [selectedUniversity, setSelectedUniversity] = useState<number | null>(null)
   const [selectedLevel, setSelectedLevel] = useState<string>('All')
   const [selectedIntakeMonths, setSelectedIntakeMonths] = useState<string[]>([])
   const [searchQuery, setSearchQuery] = useState<string>('')
@@ -52,6 +61,7 @@ export function CoursesPageClient() {
   
   // UI state for dropdowns
   const [countryOpen, setCountryOpen] = useState(false)
+  const [universityOpen, setUniversityOpen] = useState(false)
   const [levelOpen, setLevelOpen] = useState(false)
 
   // Fetch featured courses on mount
@@ -95,6 +105,35 @@ export function CoursesPageClient() {
     fetchCountries()
   }, [])
 
+  // Fetch universities when country changes
+  useEffect(() => {
+    const fetchUniversities = async () => {
+      if (!selectedCountry) {
+        setUniversities([])
+        setSelectedUniversity(null)
+        return
+      }
+
+      try {
+        const { data } = await supabase
+          .from('universities')
+          .select('id, name, city, country_id')
+          .eq('country_id', selectedCountry)
+          .order('name', { ascending: true })
+
+        if (data) {
+          setUniversities(data)
+          // Reset university selection when country changes
+          setSelectedUniversity(null)
+        }
+      } catch (error) {
+        console.error('[v0] Error fetching universities:', error)
+      }
+    }
+
+    fetchUniversities()
+  }, [selectedCountry])
+
   // Fetch distinct intake months on mount
   useEffect(() => {
     const fetchIntakeMonths = async () => {
@@ -129,7 +168,7 @@ export function CoursesPageClient() {
     if (selectedCountry) {
       fetchCourses(true)
     }
-  }, [selectedCountry, selectedLevel, selectedIntakeMonths, debouncedSearch])
+  }, [selectedCountry, selectedUniversity, selectedLevel, selectedIntakeMonths, debouncedSearch])
 
   const fetchCourses = async (reset = true) => {
     try {
@@ -140,6 +179,9 @@ export function CoursesPageClient() {
       url.searchParams.append('offset', offset.toString())
       if (selectedCountry) {
         url.searchParams.append('country_id', selectedCountry.toString())
+      }
+      if (selectedUniversity) {
+        url.searchParams.append('university_id', selectedUniversity.toString())
       }
       if (selectedLevel && selectedLevel !== 'All') {
         url.searchParams.append('level', selectedLevel)
@@ -280,6 +322,76 @@ export function CoursesPageClient() {
                 </div>
               )}
 
+              {/* University Dropdown */}
+              {universities.length > 0 && (
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold text-foreground">University</Label>
+                  <Popover open={universityOpen} onOpenChange={setUniversityOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={universityOpen}
+                        className="w-full justify-between"
+                      >
+                        <span className="truncate">
+                          {selectedUniversity
+                            ? universities.find((u) => u.id === selectedUniversity)?.name
+                            : 'All Universities'}
+                        </span>
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+                      <Command>
+                        <CommandInput placeholder="Search universities..." />
+                        <CommandList>
+                          <CommandEmpty>No university found.</CommandEmpty>
+                          <CommandGroup>
+                            <CommandItem
+                              value="all-universities"
+                              onSelect={() => {
+                                setSelectedUniversity(null)
+                                setUniversityOpen(false)
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  'mr-2 h-4 w-4',
+                                  selectedUniversity === null ? 'opacity-100' : 'opacity-0'
+                                )}
+                              />
+                              All Universities
+                            </CommandItem>
+                            {universities.map((university) => (
+                              <CommandItem
+                                key={university.id}
+                                value={university.name}
+                                onSelect={() => {
+                                  setSelectedUniversity(university.id)
+                                  setUniversityOpen(false)
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    'mr-2 h-4 w-4',
+                                    selectedUniversity === university.id ? 'opacity-100' : 'opacity-0'
+                                  )}
+                                />
+                                <div className="flex flex-col">
+                                  <span>{university.name}</span>
+                                  <span className="text-xs text-muted-foreground">{university.city}</span>
+                                </div>
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              )}
+
               {/* Program Level Dropdown */}
               <div className="space-y-2">
                 <Label className="text-sm font-semibold text-foreground">Program Level</Label>
@@ -401,6 +513,11 @@ export function CoursesPageClient() {
               </div>
               <p className="text-xs text-muted-foreground mt-3">
                 Searching in <span className="font-semibold">{selectedCountryName || 'all countries'}</span>
+                {selectedUniversity && (
+                  <>
+                    {' '}at <span className="font-semibold">{universities.find((u) => u.id === selectedUniversity)?.name}</span>
+                  </>
+                )}
                 {selectedLevel !== 'All' && (
                   <>
                     {' '}for <span className="font-semibold">{selectedLevel}</span> courses
