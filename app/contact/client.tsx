@@ -463,13 +463,14 @@ export function ContactPageClient() {
                 </p>
 
 
-                <div className="space-y-4 text-sm mt-6">
-                  <div>
-                    <p className="text-xs text-muted-foreground mt-1">
+                <div className="space-y-4 text-sm mt-6 h-full">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <p className="text-xs text-muted-foreground">
                       Updating soon
                     </p>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
