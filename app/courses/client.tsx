@@ -5,8 +5,14 @@ import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import Link from 'next/link'
 import { Course, nameToSlug } from '@/lib/supabase'
-import { ArrowRight, Clock, Zap, Search, X, Calendar, Sparkles } from 'lucide-react'
+import { ArrowRight, Clock, Zap, Search, X, Calendar, Sparkles, ChevronDown, Check, ChevronsUpDown } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Label } from '@/components/ui/label'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
+import { cn } from '@/lib/utils'
 
 interface CourseWithUniversity extends Course {
   universities?: {
@@ -40,9 +46,13 @@ export function CoursesPageClient() {
   // Filter states
   const [selectedCountry, setSelectedCountry] = useState<number | null>(null)
   const [selectedLevel, setSelectedLevel] = useState<string>('All')
-  const [selectedIntake, setSelectedIntake] = useState<string>('All')
+  const [selectedIntakeMonths, setSelectedIntakeMonths] = useState<string[]>([])
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [debouncedSearch, setDebouncedSearch] = useState<string>('')
+  
+  // UI state for dropdowns
+  const [countryOpen, setCountryOpen] = useState(false)
+  const [levelOpen, setLevelOpen] = useState(false)
 
   // Fetch featured courses on mount
   useEffect(() => {
@@ -119,7 +129,7 @@ export function CoursesPageClient() {
     if (selectedCountry) {
       fetchCourses(true)
     }
-  }, [selectedCountry, selectedLevel, selectedIntake, debouncedSearch])
+  }, [selectedCountry, selectedLevel, selectedIntakeMonths, debouncedSearch])
 
   const fetchCourses = async (reset = true) => {
     try {
@@ -134,8 +144,11 @@ export function CoursesPageClient() {
       if (selectedLevel && selectedLevel !== 'All') {
         url.searchParams.append('level', selectedLevel)
       }
-      if (selectedIntake && selectedIntake !== 'All') {
-        url.searchParams.append('intake_month', selectedIntake)
+      // Handle multiple intake months
+      if (selectedIntakeMonths.length > 0) {
+        // For now, we'll filter by the first selected month
+        // TODO: Update API to support multiple intake months
+        url.searchParams.append('intake_month', selectedIntakeMonths[0])
       }
       if (debouncedSearch) {
         url.searchParams.append('search', debouncedSearch)
@@ -180,6 +193,12 @@ export function CoursesPageClient() {
   }
 
   const selectedCountryName = countries.find((c) => c.id === selectedCountry)?.name
+  
+  const handleIntakeToggle = (month: string) => {
+    setSelectedIntakeMonths((prev) =>
+      prev.includes(month) ? prev.filter((m) => m !== month) : [...prev, month]
+    )
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -191,159 +210,225 @@ export function CoursesPageClient() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Hero Section */}
-        <div className="mb-16">
-          <h1 className="text-5xl md:text-6xl font-bold text-foreground mb-4 text-balance">
+        <div className="mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-3 text-balance">
             Explore Courses
           </h1>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base text-muted-foreground">
             Find the perfect course tailored to your interests and goals from our partner universities worldwide
           </p>
         </div>
 
-        {/* Single Column Layout */}
-        <div className="space-y-16">
-          {/* Search & Filters Section */}
-          <div>
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-foreground mb-6">Refine Your Search</h2>
+        {/* Two Column Layout: Sidebar + Main Content */}
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Left Sidebar - Filters */}
+          <aside className="lg:w-80 shrink-0">
+            <div className="sticky top-24 bg-card border border-border rounded-xl p-6 space-y-6">
+              <div>
+                <h2 className="text-lg font-bold text-foreground mb-4">Filters</h2>
+              </div>
 
-                {/* Country Tabs */}
-                {countries.length > 0 && (
-                  <div className="mb-8">
-                    <h3 className="text-sm font-semibold text-foreground mb-4">Select Country</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {countries.map((country) => (
-                        <button
-                          key={country.id}
-                          onClick={() => setSelectedCountry(country.id)}
-                          className={`px-4 py-2 rounded-full font-medium transition-all duration-200 border ${
-                            selectedCountry === country.id
-                              ? 'bg-primary text-primary-foreground border-primary'
-                              : 'border-border text-foreground hover:border-accent hover:text-primary'
-                          }`}
-                        >
-                          {country.name}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Program Level Tabs */}
-                <div className="mb-8">
-                  <h3 className="text-sm font-semibold text-foreground mb-4">Program Level</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {programLevels.map((level) => (
-                      <button
-                        key={level}
-                        onClick={() => setSelectedLevel(level)}
-                        className={`px-4 py-2 rounded-full font-medium transition-all duration-200 border ${
-                          selectedLevel === level
-                            ? 'bg-primary text-primary-foreground border-primary'
-                            : 'border-border text-foreground hover:border-accent hover:text-primary'
-                        }`}
+              {/* Country Dropdown */}
+              {countries.length > 0 && (
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold text-foreground">Country</Label>
+                  <Popover open={countryOpen} onOpenChange={setCountryOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={countryOpen}
+                        className="w-full justify-between"
                       >
-                        {level}
-                      </button>
-                    ))}
-                  </div>
+                        <span className="truncate">
+                          {selectedCountry
+                            ? countries.find((c) => c.id === selectedCountry)?.name
+                            : 'Select country...'}
+                        </span>
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+                      <Command>
+                        <CommandInput placeholder="Search countries..." />
+                        <CommandList>
+                          <CommandEmpty>No country found.</CommandEmpty>
+                          <CommandGroup>
+                            {countries.map((country) => (
+                              <CommandItem
+                                key={country.id}
+                                value={country.name}
+                                onSelect={() => {
+                                  setSelectedCountry(country.id)
+                                  setCountryOpen(false)
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    'mr-2 h-4 w-4',
+                                    selectedCountry === country.id ? 'opacity-100' : 'opacity-0'
+                                  )}
+                                />
+                                {country.name}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
                 </div>
+              )}
 
-                {/* Intake Month Tabs */}
-                {intakeMonths.length > 0 && (
-                  <div className="mb-8">
-                    <h3 className="text-sm font-semibold text-foreground mb-4">Intake Month</h3>
-                    <div className="flex flex-wrap gap-2">
-                      <button
-                        onClick={() => setSelectedIntake('All')}
-                        className={`px-4 py-2 rounded-full font-medium transition-all duration-200 border ${
-                          selectedIntake === 'All'
-                            ? 'bg-primary text-primary-foreground border-primary'
-                            : 'border-border text-foreground hover:border-accent hover:text-primary'
-                        }`}
-                      >
-                        All
-                      </button>
-                      {intakeMonths.map((month) => (
-                        <button
-                          key={month}
-                          onClick={() => setSelectedIntake(month)}
-                          className={`px-4 py-2 rounded-full font-medium transition-all duration-200 border ${
-                            selectedIntake === month
-                              ? 'bg-primary text-primary-foreground border-primary'
-                              : 'border-border text-foreground hover:border-accent hover:text-primary'
-                          }`}
+              {/* Program Level Dropdown */}
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold text-foreground">Program Level</Label>
+                <Popover open={levelOpen} onOpenChange={setLevelOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={levelOpen}
+                      className="w-full justify-between"
+                    >
+                      <span className="truncate">{selectedLevel}</span>
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+                    <Command>
+                      <CommandInput placeholder="Search program levels..." />
+                      <CommandList>
+                        <CommandEmpty>No level found.</CommandEmpty>
+                        <CommandGroup>
+                          {programLevels.map((level) => (
+                            <CommandItem
+                              key={level}
+                              value={level}
+                              onSelect={() => {
+                                setSelectedLevel(level)
+                                setLevelOpen(false)
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  'mr-2 h-4 w-4',
+                                  selectedLevel === level ? 'opacity-100' : 'opacity-0'
+                                )}
+                              />
+                              {level}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              {/* Intake Months Checkboxes */}
+              {intakeMonths.length > 0 && (
+                <div className="space-y-3">
+                  <Label className="text-sm font-semibold text-foreground">Intake Months</Label>
+                  <div className="space-y-2.5 max-h-64 overflow-y-auto pr-2">
+                    {intakeMonths.map((month) => (
+                      <div key={month} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`intake-${month}`}
+                          checked={selectedIntakeMonths.includes(month)}
+                          onCheckedChange={() => handleIntakeToggle(month)}
+                        />
+                        <label
+                          htmlFor={`intake-${month}`}
+                          className="text-sm text-foreground cursor-pointer select-none"
                         >
                           {month}
-                        </button>
-                      ))}
-                    </div>
+                        </label>
+                      </div>
+                    ))}
                   </div>
-                )}
-
-                {/* Search Box */}
-                <div>
-                  <h3 className="text-sm font-semibold text-foreground mb-4">Search Courses</h3>
-                  <div className="relative">
-                    <Search size={20} className="absolute left-4 top-3.5 text-muted-foreground" />
-                    <input
-                      type="text"
-                      placeholder="Search by course name, specialization, or keywords..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-12 pr-10 py-3 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
-                    />
-                    {searchQuery && (
-                      <button
-                        onClick={() => setSearchQuery('')}
-                        className="absolute right-4 top-3.5 text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        <X size={20} />
-                      </button>
-                    )}
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-3">
-                    Searching in <span className="font-semibold">{selectedCountryName}</span>
-                    {selectedLevel !== 'All' && (
-                      <>
-                        {' '}for <span className="font-semibold">{selectedLevel}</span> courses
-                      </>
-                    )}
-                    {selectedIntake !== 'All' && (
-                      <>
-                        {' '}with <span className="font-semibold">{selectedIntake}</span> intake
-                      </>
-                    )}
-                  </p>
+                  {selectedIntakeMonths.length > 0 && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setSelectedIntakeMonths([])}
+                      className="w-full text-xs"
+                    >
+                      Clear All ({selectedIntakeMonths.length})
+                    </Button>
+                  )}
                 </div>
+              )}
             </div>
-          </div>
+          </aside>
 
-          {/* All Courses Section */}
-          <div>
-            <h2 className="text-2xl font-bold text-foreground mb-8">All Courses</h2>
-
-            {/* Results Section */}
-            {loading ? (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[...Array(12)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="bg-card border border-border rounded-xl p-6 animate-pulse"
+          {/* Right Content Area */}
+          <div className="flex-1 space-y-8">
+            {/* Search Box */}
+            <div>
+              <div className="relative">
+                <Search size={20} className="absolute left-4 top-3.5 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Search by course name, specialization, or keywords..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-12 pr-10 py-3 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-4 top-3.5 text-muted-foreground hover:text-foreground transition-colors"
                   >
-                    <div className="h-8 bg-muted rounded w-2/3 mb-4" />
-                    <div className="h-4 bg-muted rounded w-1/2 mb-6" />
-                    <div className="h-20 bg-muted rounded mb-4" />
-                    <div className="h-4 bg-muted rounded w-3/4" />
-                  </div>
-                ))}
+                    <X size={20} />
+                  </button>
+                )}
               </div>
-            ) : courses.length > 0 ? (
-              <div>
-                <p className="text-muted-foreground mb-6 font-medium">
-                  Found {courses.length} course{courses.length !== 1 ? 's' : ''}
-                </p>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <p className="text-xs text-muted-foreground mt-3">
+                Searching in <span className="font-semibold">{selectedCountryName || 'all countries'}</span>
+                {selectedLevel !== 'All' && (
+                  <>
+                    {' '}for <span className="font-semibold">{selectedLevel}</span> courses
+                  </>
+                )}
+                {selectedIntakeMonths.length > 0 && (
+                  <>
+                    {' '}with{' '}
+                    <span className="font-semibold">
+                      {selectedIntakeMonths.slice(0, 2).join(', ')}
+                      {selectedIntakeMonths.length > 2 && ` +${selectedIntakeMonths.length - 2} more`}
+                    </span>{' '}
+                    intake
+                  </>
+                )}
+              </p>
+            </div>
+
+            {/* Search Results Section */}
+            <div>
+              <h2 className="text-2xl font-bold text-foreground mb-6">Search Results</h2>
+
+              {/* Results Section */}
+              {loading ? (
+                <div className="grid sm:grid-cols-2 gap-6">
+                  {[...Array(4)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="bg-card border border-border rounded-xl p-6 animate-pulse"
+                    >
+                      <div className="h-8 bg-muted rounded w-2/3 mb-4" />
+                      <div className="h-4 bg-muted rounded w-1/2 mb-6" />
+                      <div className="h-20 bg-muted rounded mb-4" />
+                      <div className="h-4 bg-muted rounded w-3/4" />
+                    </div>
+                  ))}
+                </div>
+              ) : courses.length > 0 ? (
+                <div>
+                  <p className="text-muted-foreground mb-6 font-medium">
+                    Found {courses.length} course{courses.length !== 1 ? 's' : ''}
+                  </p>
+                  <div className="grid sm:grid-cols-2 gap-6">
                   {courses.slice(0, itemsToShow).map((course) => (
                     <Link
                       key={course.id}
@@ -436,26 +521,24 @@ export function CoursesPageClient() {
                 )}
               </div>
             ) : (
-              <div className="text-center py-16">
-                <p className="text-muted-foreground text-lg mb-4">No courses found matching your criteria.</p>
-                <p className="text-muted-foreground">Try adjusting your filters or search terms.</p>
+              <div className="text-center py-16 bg-card border border-border rounded-xl">
+                <p className="text-muted-foreground text-lg mb-2">No courses found matching your criteria.</p>
+                <p className="text-sm text-muted-foreground">Try adjusting your filters or search terms.</p>
               </div>
             )}
-          </div>
+            </div>
 
-          {/* Featured Courses Section - At Bottom */}
-          {!featuredLoading && featuredCourses.length > 0 && (
-            <div className="pt-12 border-t border-border">
-              <div className="flex items-center gap-2 mb-8">
-                <Sparkles size={24} className="text-primary" />
-                <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                  Featured Courses
-                </h2>
-              </div>
-              <p className="text-muted-foreground mb-8">
-                Discover cutting-edge programmes across various disciplines from our partner universities.
-              </p>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Featured Courses Section */}
+            {!featuredLoading && featuredCourses.length > 0 && (
+              <div className="pt-8 border-t border-border">
+                <div className="flex items-center gap-2 mb-6">
+                  <Sparkles size={24} className="text-primary" />
+                  <h2 className="text-2xl font-bold text-foreground">Featured Courses</h2>
+                </div>
+                <p className="text-muted-foreground mb-6">
+                  Discover cutting-edge programmes across various disciplines from our partner universities.
+                </p>
+                <div className="grid sm:grid-cols-2 gap-6">
                 {featuredCourses.map((course) => (
                   <Link
                     key={course.id}
@@ -522,9 +605,10 @@ export function CoursesPageClient() {
                     </div>
                   </Link>
                 ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </main>
 
