@@ -45,14 +45,17 @@ export function Header() {
 
 
   const fetchTopUniversities = async () => {
-    try {
-      const response = await fetch('/api/universities?limit=5')
-      const result = await response.json()
-      setUniversities(result.data || [])
-    } catch (error) {
-      console.error('Error fetching universities:', error)
-      setUniversities([])
-    }
+    // Hardcoded universities list (7 total)
+    const hardcodedUniversities: University[] = [
+      { id: 75, name: "Queen's University Belfast", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
+      { id: 76, name: "Northumbria University", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
+      { id: 77, name: "University of Greenwich", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
+      { id: 97, name: "University of Greater Manchester", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
+      { id: 79, name: "London South Bank University", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
+      { id: 1, name: "University of Bristol", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
+      { id: 2, name: "London School of Economics", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
+    ]
+    setUniversities(hardcodedUniversities)
   }
 
   const fetchTopCourses = async () => {
@@ -271,7 +274,7 @@ export function Header() {
               </button>
               {showUniDropdown && (
                 <div className="absolute top-full left-0 mt-2 bg-card border border-border rounded-lg shadow-lg min-w-48 z-50">
-                  {universities.slice(0, 8).map((uni) => (
+                  {universities.slice(0, 7).map((uni) => (
                     <Link
                       key={uni.id}
                       href={`/university/${nameToSlug(uni.name)}`}
