@@ -119,6 +119,14 @@ export function ContactPageClient() {
       label: 'HOQUE NEPAL OFFICE',
     },
     {
+      city: 'Dubai',
+      country: 'the United Arab Emirates',
+      address: 'IFZA Business Park, DDP, Premises Number 74649-001 Dubai Silicon Oasis',
+      phone: '+971 553592759',
+      email: 'info@hoque.org.uk',
+      label: 'HOQUE DUBAI OFFICE',
+    },
+    {
       city: 'Colombo',
       country: 'Sri-Lanka',
       address: 'TBC',
@@ -411,11 +419,10 @@ export function ContactPageClient() {
               {officeLocations.map((office, index) => (
                 <div
                   key={index}
-                  className={`${
-                    office.isComingSoon
+                  className={`${office.isComingSoon
                       ? 'bg-gradient-to-br from-amber-50/50 via-orange-50/50 to-amber-50/50 dark:from-amber-950/20 dark:via-orange-950/20 dark:to-amber-950/20 border-amber-200 dark:border-amber-800/50'
                       : 'bg-card border-border'
-                  } border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow relative`}
+                    } border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow relative`}
                   style={{ flex: '0 0 calc(33.333% - 2.67rem)', minWidth: '280px' }}
                 >
                   {office.isComingSoon && (
