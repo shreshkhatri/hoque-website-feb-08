@@ -91,6 +91,14 @@ export type Course = {
   tuition_fees_international: number | null
   intake_months: string | null
   entry_requirements: string | null
+  course_overview: string | null
+  academic_requirements: string | null
+  english_language_requirements: string | null
+  other_requirements: string | null
+  document_requirements: string | null
+  scholarships: string | null
+  key_features: string | null
+  field_of_study: string | null
   created_at: string
 }
 

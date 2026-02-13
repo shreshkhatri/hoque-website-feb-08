@@ -20,7 +20,7 @@ function nameToSlug(name: string, code?: string): string {
 async function getCourseBySlug(slug: string) {
   const { data: courses } = await supabase
     .from('courses')
-    .select('*, universities(*)')
+    .select('*, universities(id, name, city, country_id)')
 
   if (!courses) return null
 
@@ -30,6 +30,20 @@ async function getCourseBySlug(slug: string) {
   )
 
   return course || null
+}
+
+// Fetch similar courses by field_of_study, excluding current course
+async function getSimilarCourses(courseId: number, fieldOfStudy: string | null) {
+  if (!fieldOfStudy) return []
+
+  const { data: similarCourses } = await supabase
+    .from('courses')
+    .select('id, name, code, level, tuition_fees_international, duration_years, field_of_study, universities(id, name, city), countries(id, name, flag_emoji)')
+    .eq('field_of_study', fieldOfStudy)
+    .neq('id', courseId)
+    .limit(6)
+
+  return similarCourses || []
 }
 
 // Generate metadata for SEO
@@ -59,12 +73,12 @@ export async function generateMetadata({
   return {
     title,
     description:
-      course.description ||
+      course.course_overview || course.description ||
       `Study ${course.name}${universityName ? ` at ${universityName}` : ''}. Get expert guidance on admissions from HOQUE.`,
     openGraph: {
       title,
       description:
-        course.description ||
+        course.course_overview || course.description ||
         `Explore ${course.name} with HOQUE`,
       type: 'website',
     },
@@ -96,10 +110,13 @@ export default async function CoursePage({
     notFound()
   }
 
+  // Fetch similar courses based on field_of_study
+  const similarCourses = await getSimilarCourses(course.id, course.field_of_study)
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <CourseContent course={course} />
+      <CourseContent course={course} similarCourses={similarCourses} />
       <Footer />
     </div>
   )
