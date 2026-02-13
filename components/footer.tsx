@@ -99,6 +99,8 @@ export function Footer() {
               {[
                 { label: 'Apply Now', href: '/application-form' },
                 { label: 'Support & Guidance', href: '/faq' },
+                { label: 'Blog', href: '/blog' },
+                { label: 'Career', href: '/career' },
                 { label: 'Contact Us', href: '/contact' },
               ].map((link) => (
                 <li key={link.href}>

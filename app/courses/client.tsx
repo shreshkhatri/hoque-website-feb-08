@@ -36,6 +36,13 @@ interface University {
   country_id: number
 }
 
+interface Campus {
+  id: number
+  name: string
+  city: string | null
+  university_id: number
+}
+
 const programLevels = ['All', 'Undergraduate', 'Master', 'PhD', 'Diploma', 'Certificate']
 
 export function CoursesPageClient() {
@@ -54,6 +61,8 @@ export function CoursesPageClient() {
   // Filter states
   const [selectedCountry, setSelectedCountry] = useState<number | null>(null)
   const [selectedUniversity, setSelectedUniversity] = useState<number | null>(null)
+  const [selectedCampus, setSelectedCampus] = useState<number | null>(null)
+  const [campuses, setCampuses] = useState<Campus[]>([])
   const [selectedLevel, setSelectedLevel] = useState<string>('All')
   const [selectedIntakeMonths, setSelectedIntakeMonths] = useState<string[]>([])
   const [searchQuery, setSearchQuery] = useState<string>('')
@@ -62,6 +71,7 @@ export function CoursesPageClient() {
   // UI state for dropdowns
   const [countryOpen, setCountryOpen] = useState(false)
   const [universityOpen, setUniversityOpen] = useState(false)
+  const [campusOpen, setCampusOpen] = useState(false)
   const [levelOpen, setLevelOpen] = useState(false)
 
   // Fetch featured courses on mount
@@ -134,16 +144,52 @@ export function CoursesPageClient() {
     fetchUniversities()
   }, [selectedCountry])
 
-  // Fetch distinct intake months on mount
+  // Fetch campuses when university changes
+  useEffect(() => {
+    const fetchCampuses = async () => {
+      if (!selectedUniversity) {
+        setCampuses([])
+        setSelectedCampus(null)
+        return
+      }
+
+      try {
+        const { data } = await supabase
+          .from('university_campuses')
+          .select('id, name, city, university_id')
+          .eq('university_id', selectedUniversity)
+          .order('name', { ascending: true })
+
+        if (data) {
+          setCampuses(data)
+        } else {
+          setCampuses([])
+        }
+        // Reset campus selection when university changes
+        setSelectedCampus(null)
+      } catch (error) {
+        console.error('[v0] Error fetching campuses:', error)
+        setCampuses([])
+      }
+    }
+
+    fetchCampuses()
+  }, [selectedUniversity])
+
+  // Fetch distinct intake months from courses table (stored as comma-separated strings)
   useEffect(() => {
     const fetchIntakeMonths = async () => {
       try {
         const { data } = await supabase
-          .from('course_intake_months')
-          .select('month')
-        
+          .from('courses')
+          .select('intake_months')
+          .not('intake_months', 'is', null)
+
         if (data) {
-          const uniqueMonths = [...new Set(data.map((d: { month: string }) => d.month))].sort()
+          const allMonths = data.flatMap((d: { intake_months: string }) =>
+            d.intake_months.split(',').map((m: string) => m.trim()).filter(Boolean)
+          )
+          const uniqueMonths = [...new Set(allMonths)].sort()
           setIntakeMonths(uniqueMonths)
         }
       } catch (error) {
@@ -168,7 +214,7 @@ export function CoursesPageClient() {
     if (selectedCountry) {
       fetchCourses(true)
     }
-  }, [selectedCountry, selectedUniversity, selectedLevel, selectedIntakeMonths, debouncedSearch])
+  }, [selectedCountry, selectedUniversity, selectedCampus, selectedLevel, selectedIntakeMonths, debouncedSearch])
 
   const fetchCourses = async (reset = true) => {
     try {
@@ -183,14 +229,15 @@ export function CoursesPageClient() {
       if (selectedUniversity) {
         url.searchParams.append('university_id', selectedUniversity.toString())
       }
+      if (selectedCampus) {
+        url.searchParams.append('campus_id', selectedCampus.toString())
+      }
       if (selectedLevel && selectedLevel !== 'All') {
         url.searchParams.append('level', selectedLevel)
       }
       // Handle multiple intake months
       if (selectedIntakeMonths.length > 0) {
-        // For now, we'll filter by the first selected month
-        // TODO: Update API to support multiple intake months
-        url.searchParams.append('intake_month', selectedIntakeMonths[0])
+        url.searchParams.append('intake_months', selectedIntakeMonths.join(','))
       }
       if (debouncedSearch) {
         url.searchParams.append('search', debouncedSearch)
@@ -392,6 +439,78 @@ export function CoursesPageClient() {
                 </div>
               )}
 
+              {/* Campus Dropdown - only show when a university is selected and has campuses */}
+              {selectedUniversity && campuses.length > 0 && (
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold text-foreground">Campus</Label>
+                  <Popover open={campusOpen} onOpenChange={setCampusOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={campusOpen}
+                        className="w-full justify-between"
+                      >
+                        <span className="truncate">
+                          {selectedCampus
+                            ? campuses.find((c) => c.id === selectedCampus)?.name
+                            : 'All Campuses'}
+                        </span>
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+                      <Command>
+                        <CommandInput placeholder="Search campuses..." />
+                        <CommandList>
+                          <CommandEmpty>No campus found.</CommandEmpty>
+                          <CommandGroup>
+                            <CommandItem
+                              value="all-campuses"
+                              onSelect={() => {
+                                setSelectedCampus(null)
+                                setCampusOpen(false)
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  'mr-2 h-4 w-4',
+                                  selectedCampus === null ? 'opacity-100' : 'opacity-0'
+                                )}
+                              />
+                              All Campuses
+                            </CommandItem>
+                            {campuses.map((campus) => (
+                              <CommandItem
+                                key={campus.id}
+                                value={`${campus.name} ${campus.city || ''}`}
+                                onSelect={() => {
+                                  setSelectedCampus(campus.id)
+                                  setCampusOpen(false)
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    'mr-2 h-4 w-4',
+                                    selectedCampus === campus.id ? 'opacity-100' : 'opacity-0'
+                                  )}
+                                />
+                                <div className="flex flex-col">
+                                  <span>{campus.name}</span>
+                                  {campus.city && (
+                                    <span className="text-xs text-muted-foreground">{campus.city}</span>
+                                  )}
+                                </div>
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              )}
+
               {/* Program Level Dropdown */}
               <div className="space-y-2">
                 <Label className="text-sm font-semibold text-foreground">Program Level</Label>
@@ -516,6 +635,11 @@ export function CoursesPageClient() {
                 {selectedUniversity && (
                   <>
                     {' '}at <span className="font-semibold">{universities.find((u) => u.id === selectedUniversity)?.name}</span>
+                  </>
+                )}
+                {selectedCampus && (
+                  <>
+                    {' '}(<span className="font-semibold">{campuses.find((c) => c.id === selectedCampus)?.name}</span> campus)
                   </>
                 )}
                 {selectedLevel !== 'All' && (
