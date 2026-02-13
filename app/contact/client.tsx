@@ -459,7 +459,7 @@ export function ContactPageClient() {
                   </h3>
                 </div>
                 <p className="text-sm font-medium text-primary">
-                  label - updating soon
+                  HOQUE NEW ZEALAND OFFICE
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
                   New Zealand
