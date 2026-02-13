@@ -62,7 +62,9 @@ export async function GET(request: NextRequest) {
           level,
           description,
           university_id,
-          universities!inner(id, name, city)
+          campus_id,
+          universities!inner(id, name, city),
+          university_campuses(id, name, location)
         `,
         )
         .or(

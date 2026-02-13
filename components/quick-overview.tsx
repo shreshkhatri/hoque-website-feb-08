@@ -12,7 +12,7 @@ import { nameToSlug } from '@/lib/supabase'
 
 const UNIVERSITIES = [
   { name: "Queen's University Belfast", city: 'Belfast', slug: 'queens-university-belfast' },
-  { name: 'Northumbria University London', city: 'London', slug: 'northumbria-university-london' },
+  { name: 'Northumbria University', city: 'Newcastle', slug: 'northumbria-university' },
   { name: 'University of Greenwich', city: 'London', slug: 'university-of-greenwich' },
   { name: 'University of Greater Manchester', city: 'Manchester', slug: 'university-of-greater-manchester' },
   { name: 'London South Bank University', city: 'London', slug: 'london-south-bank-university' },
@@ -21,7 +21,7 @@ const UNIVERSITIES = [
 const COURSES = [
   { name: 'MBA Global', university: 'University of Greenwich', level: 'Master', duration: '1', code: '' },
   { name: 'MSc Data Science and Artificial Intelligence', university: "Queen's University Belfast", level: 'Master', duration: '1', code: '' },
-  { name: 'MSc Business with International Business', university: 'Northumbria University London', level: 'Master', duration: '1', code: '' },
+  { name: 'MSc Business with International Business', university: 'Northumbria University', level: 'Master', duration: '1', code: '' },
   { name: 'MSc Project Management', university: 'London South Bank University', level: 'Master', duration: '1', code: '' },
   { name: 'MSc Cyber Security', university: "Queen's University Belfast", level: 'Master', duration: '1', code: '' },
   { name: 'MBA with Digital Marketing', university: 'University of Greenwich', level: 'Master', duration: '1.5', code: '' },

@@ -48,7 +48,7 @@ function nameToSlug(name: string, code?: string): string {
 interface CountryContentProps {
   country: Country
   universities: University[]
-  courses: Course[]
+  courses: (Course & { university_campuses?: { id: number; name: string; location: string | null; is_main_campus: boolean } | null })[]
   funFacts?: CountryFunFact[]
   faqs?: CountryFaq[]
   employmentSectors?: CountryEmploymentSector[]
@@ -587,9 +587,15 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                   <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
                           <Badge variant="secondary">{course.level}</Badge>
                           <Badge variant="outline">{course.code}</Badge>
+                          {course.university_campuses && (
+                            <Badge variant="outline" className="flex items-center gap-1">
+                              <MapPin className="w-3 h-3" />
+                              {course.university_campuses.location || course.university_campuses.name}
+                            </Badge>
+                          )}
                         </div>
                         <Link
                           href={`/course/${nameToSlug(course.name, course.code)}`}

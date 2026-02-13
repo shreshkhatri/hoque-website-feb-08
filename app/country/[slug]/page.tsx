@@ -95,7 +95,7 @@ export default async function CountryPage({
   // Fetch courses in this country
   const { data: courses } = await supabase
     .from('courses')
-    .select('*, universities(*)')
+    .select('*, universities(*), university_campuses(id, name, location, is_main_campus)')
     .eq('country_id', country.id)
 
   // Fetch country fun facts

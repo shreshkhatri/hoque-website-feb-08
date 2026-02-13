@@ -68,7 +68,7 @@ export async function GET(request: NextRequest) {
       const { data, error } = await supabase
         .from('courses')
         .select(
-          'id, name, code, universities(id, name, countries(id, name))',
+          'id, name, code, universities(id, name, countries(id, name)), university_campuses(id, name, location)',
         )
         .ilike('name', `%${query}%`)
         .not('university_id', 'in', `(${excludedUniIds.join(',')})`)
@@ -81,6 +81,7 @@ export async function GET(request: NextRequest) {
         code: c.code,
         university: c.universities?.name,
         country: c.universities?.countries?.name,
+        campus: c.university_campuses?.location || c.university_campuses?.name || null,
         type: 'course',
       })) || []
     } else if (type === 'intake') {
