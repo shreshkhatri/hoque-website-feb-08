@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { University, Course } from '@/lib/supabase'
+import { University, Course, UniversityCampus } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -38,9 +38,14 @@ function nameToSlug(name: string, code?: string): string {
   return code ? `${base}-${code.toLowerCase()}` : base
 }
 
+interface CourseWithCampus extends Course {
+  university_campuses?: { id: number; name: string; location: string | null; is_main_campus: boolean } | null
+}
+
 interface UniversityContentProps {
   university: University
-  courses: Course[]
+  courses: CourseWithCampus[]
+  campuses?: UniversityCampus[]
 }
 
 const tabs = [
@@ -76,17 +81,19 @@ const defaultFaqs = [
   { question: 'Can I work while studying?', answer: 'International students can work up to 20 hours per week during term time and full-time during holidays.' },
 ]
 
-export function UniversityContent({ university, courses }: UniversityContentProps) {
+export function UniversityContent({ university, courses, campuses = [] }: UniversityContentProps) {
   const [activeTab, setActiveTab] = useState('overview')
   const [courseSearch, setCourseSearch] = useState('')
   const [levelFilter, setLevelFilter] = useState('all')
+  const [campusFilter, setCampusFilter] = useState('all')
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
 
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.name.toLowerCase().includes(courseSearch.toLowerCase()) ||
                          course.code.toLowerCase().includes(courseSearch.toLowerCase())
     const matchesLevel = levelFilter === 'all' || course.level === levelFilter
-    return matchesSearch && matchesLevel
+    const matchesCampus = campusFilter === 'all' || String(course.campus_id) === campusFilter
+    return matchesSearch && matchesLevel && matchesCampus
   })
 
   const uniqueLevels = [...new Set(courses.map(c => c.level))]
@@ -374,6 +381,23 @@ export function UniversityContent({ university, courses }: UniversityContentProp
                   ))}
                 </select>
               </div>
+              {campuses.length > 1 && (
+                <div className="relative">
+                  <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <select
+                    value={campusFilter}
+                    onChange={(e) => setCampusFilter(e.target.value)}
+                    className="pl-10 pr-8 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary appearance-none min-w-[200px]"
+                  >
+                    <option value="all">All Campuses</option>
+                    {campuses.map(campus => (
+                      <option key={campus.id} value={String(campus.id)}>
+                        {campus.location || campus.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
             </div>
 
             <p className="text-muted-foreground">
@@ -386,9 +410,15 @@ export function UniversityContent({ university, courses }: UniversityContentProp
                   <CardContent className="p-6">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
                           <Badge variant="secondary">{course.level}</Badge>
                           <Badge variant="outline">{course.code}</Badge>
+                          {course.university_campuses && (
+                            <Badge variant="outline" className="flex items-center gap-1">
+                              <MapPin className="w-3 h-3" />
+                              {course.university_campuses.location || course.university_campuses.name}
+                            </Badge>
+                          )}
                         </div>
                         <Link 
                           href={`/course/${nameToSlug(course.name, course.code)}`}
@@ -491,38 +521,105 @@ export function UniversityContent({ university, courses }: UniversityContentProp
         {/* Campuses Tab */}
         {activeTab === 'campuses' && (
           <div className="space-y-6">
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex flex-col md:flex-row gap-6">
-                  <div className="w-full md:w-1/3 h-48 bg-muted rounded-lg overflow-hidden relative">
-                    <Image
-                      src="/hero-bg.jpg"
-                      alt="Main Campus"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <Badge className="mb-2">Main Campus</Badge>
-                    <h3 className="text-xl font-semibold text-foreground mb-2">{university.city} Campus</h3>
-                    <p className="text-muted-foreground mb-4">
-                      The main campus is located in the heart of {university.city}, offering state-of-the-art facilities, 
-                      modern lecture halls, extensive library resources, and vibrant student life.
-                    </p>
-                    <div className="flex flex-wrap gap-4 text-sm">
-                      <span className="flex items-center gap-1 text-muted-foreground">
-                        <MapPin className="w-4 h-4" />
-                        {university.city}, {university.country}
-                      </span>
-                      <span className="flex items-center gap-1 text-muted-foreground">
-                        <Building2 className="w-4 h-4" />
-                        Urban Campus
-                      </span>
+            {campuses.length > 0 ? (
+              campuses.map((campus) => {
+                const campusCourses = courses.filter(c => c.campus_id === campus.id)
+                return (
+                  <Card key={campus.id}>
+                    <CardContent className="p-6">
+                      <div className="flex flex-col md:flex-row gap-6">
+                        <div className="w-full md:w-1/3 h-48 bg-muted rounded-lg overflow-hidden relative">
+                          <Image
+                            src="/hero-bg.jpg"
+                            alt={`${campus.name} Campus`}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            {campus.is_main_campus && <Badge>Main Campus</Badge>}
+                            {!campus.is_main_campus && <Badge variant="secondary">Branch Campus</Badge>}
+                          </div>
+                          <h3 className="text-xl font-semibold text-foreground mb-2">{campus.name}</h3>
+                          {campus.description && (
+                            <p className="text-muted-foreground mb-4">{campus.description}</p>
+                          )}
+                          {!campus.description && (
+                            <p className="text-muted-foreground mb-4">
+                              {campus.is_main_campus
+                                ? `The main campus is located in ${campus.location || university.city}, offering state-of-the-art facilities, modern lecture halls, extensive library resources, and vibrant student life.`
+                                : `The ${campus.name} offers specialised programmes and facilities in ${campus.location || 'a convenient location'}.`
+                              }
+                            </p>
+                          )}
+                          <div className="flex flex-wrap gap-4 text-sm">
+                            {campus.location && (
+                              <span className="flex items-center gap-1 text-muted-foreground">
+                                <MapPin className="w-4 h-4" />
+                                {campus.location}
+                              </span>
+                            )}
+                            <span className="flex items-center gap-1 text-muted-foreground">
+                              <GraduationCap className="w-4 h-4" />
+                              {campusCourses.length} {campusCourses.length === 1 ? 'Course' : 'Courses'}
+                            </span>
+                          </div>
+                          {campusCourses.length > 0 && (
+                            <div className="mt-4 pt-4 border-t border-border">
+                              <p className="text-sm font-medium text-foreground mb-2">Courses at this campus:</p>
+                              <div className="flex flex-wrap gap-2">
+                                {campusCourses.slice(0, 5).map(c => (
+                                  <Link key={c.id} href={`/course/${nameToSlug(c.name, c.code)}`}>
+                                    <Badge variant="outline" className="hover:bg-muted cursor-pointer">{c.name}</Badge>
+                                  </Link>
+                                ))}
+                                {campusCourses.length > 5 && (
+                                  <Badge variant="outline">+{campusCourses.length - 5} more</Badge>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              })
+            ) : (
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex flex-col md:flex-row gap-6">
+                    <div className="w-full md:w-1/3 h-48 bg-muted rounded-lg overflow-hidden relative">
+                      <Image
+                        src="/hero-bg.jpg"
+                        alt="Main Campus"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <Badge className="mb-2">Main Campus</Badge>
+                      <h3 className="text-xl font-semibold text-foreground mb-2">{university.city} Campus</h3>
+                      <p className="text-muted-foreground mb-4">
+                        The main campus is located in the heart of {university.city}, offering state-of-the-art facilities,
+                        modern lecture halls, extensive library resources, and vibrant student life.
+                      </p>
+                      <div className="flex flex-wrap gap-4 text-sm">
+                        <span className="flex items-center gap-1 text-muted-foreground">
+                          <MapPin className="w-4 h-4" />
+                          {university.city}, {university.country}
+                        </span>
+                        <span className="flex items-center gap-1 text-muted-foreground">
+                          <Building2 className="w-4 h-4" />
+                          Urban Campus
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            )}
 
             <Card>
               <CardContent className="p-6">

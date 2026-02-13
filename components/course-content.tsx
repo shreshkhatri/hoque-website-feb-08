@@ -41,6 +41,7 @@ function nameToUniSlug(name: string): string {
 
 interface CourseWithUniversity extends Course {
   universities?: { id: number; name: string; city: string; country_id: number | null }
+  university_campuses?: { id: number; name: string; location: string | null; is_main_campus: boolean } | null
 }
 
 interface SimilarCourse {
@@ -138,7 +139,7 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
             {course.name}
           </h1>
           {universityName && (
-            <div className="flex items-center gap-2 mt-4">
+            <div className="flex items-center gap-2 mt-4 flex-wrap">
               <GraduationCap size={18} className="text-muted-foreground" />
               <Link
                 href={`/university/${universitySlug}`}
@@ -146,7 +147,16 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
               >
                 {universityName}
               </Link>
-              {universityCity && (
+              {course.university_campuses && (
+                <>
+                  <span className="text-muted-foreground">|</span>
+                  <MapPin size={14} className="text-muted-foreground" />
+                  <span className="text-muted-foreground text-sm">
+                    {course.university_campuses.location || course.university_campuses.name}
+                  </span>
+                </>
+              )}
+              {!course.university_campuses && universityCity && (
                 <>
                   <span className="text-muted-foreground">|</span>
                   <MapPin size={14} className="text-muted-foreground" />

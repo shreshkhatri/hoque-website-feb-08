@@ -84,6 +84,7 @@ export type Course = {
   name: string
   code: string
   university_id: number
+  campus_id: number | null
   country_id: number | null
   level: string
   duration_years: number | null

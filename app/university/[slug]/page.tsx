@@ -86,16 +86,23 @@ export default async function UniversityPage({
     notFound()
   }
 
-  // Fetch courses for this university
+  // Fetch campuses for this university
+  const { data: campuses } = await supabase
+    .from('university_campuses')
+    .select('*')
+    .eq('university_id', university.id)
+    .order('is_main_campus', { ascending: false })
+
+  // Fetch courses for this university, including campus info
   const { data: courses } = await supabase
     .from('courses')
-    .select('*')
+    .select('*, university_campuses(id, name, location, is_main_campus)')
     .eq('university_id', university.id)
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <UniversityContent university={university} courses={courses || []} />
+      <UniversityContent university={university} courses={courses || []} campuses={campuses || []} />
       <Footer />
     </div>
   )

@@ -58,7 +58,8 @@ export async function GET(request: NextRequest) {
       .select(
         `
         *,
-        universities(id, name, city, country_id, countries(id, name))
+        universities(id, name, city, country_id, countries(id, name)),
+        university_campuses(id, name, location, is_main_campus)
       `,
         { count: 'exact' },
       )

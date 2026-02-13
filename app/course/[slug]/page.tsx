@@ -20,7 +20,7 @@ function nameToSlug(name: string, code?: string): string {
 async function getCourseBySlug(slug: string) {
   const { data: courses } = await supabase
     .from('courses')
-    .select('*, universities(id, name, city, country_id)')
+    .select('*, universities(id, name, city, country_id), university_campuses(id, name, location, is_main_campus)')
 
   if (!courses) return null
 
