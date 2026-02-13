@@ -54,13 +54,13 @@ export function Footer() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Column 1 */}
               <ul className="space-y-3 text-center md:text-left">
-              {[
-                { label: 'One to One', href: '/services/one-to-one-consultation' },
-                { label: 'University Selection', href: '/services/uk-university-selection' },
-                { label: 'Course Search', href: '/services/course-search' },
-                { label: 'University Application', href: '/services/university-application' },
-                { label: 'UCAS Application Help', href: '/services/ucas-application-help' },
-              ].map((link) => (
+                {[
+                  { label: 'One to One', href: '/services/one-to-one-consultation' },
+                  { label: 'University Selection', href: '/services/uk-university-selection' },
+                  { label: 'Course Search', href: '/services/course-search' },
+                  { label: 'University Application', href: '/services/university-application' },
+                  { label: 'UCAS Application Help', href: '/services/ucas-application-help' },
+                ].map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
@@ -73,12 +73,12 @@ export function Footer() {
               </ul>
               {/* Column 2 */}
               <ul className="space-y-3 text-center md:text-left">
-              {[
-                { label: 'VISA Application Support', href: '/services/visa-application-support' },
-                { label: 'Scholarships & Funding Support', href: '/services/scholarships-funding-support' },
-                { label: 'IELTS Preparation', href: '/services/ielts-preparation' },
-                { label: 'Student Accommodation', href: '/services/student-accommodation' },
-              ].map((link) => (
+                {[
+                  { label: 'VISA Application Support', href: '/services/visa-application-support' },
+                  { label: 'Scholarships & Funding Support', href: '/services/scholarships-funding-support' },
+                  { label: 'IELTS Preparation', href: '/services/ielts-preparation' },
+                  { label: 'Student Accommodation', href: '/services/student-accommodation' },
+                ].map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
@@ -182,8 +182,8 @@ export function Footer() {
                 <Phone size={20} className="flex-shrink-0 text-primary mt-0.5" />
                 <div className="text-center md:text-left">
                   <p className="font-medium text-foreground mb-2">Phone</p>
-                  <a 
-                    href="tel:+447878944475" 
+                  <a
+                    href="tel:+447878944475"
                     className="hover:text-primary transition-colors font-medium text-sm"
                   >
                     +44 7878 944475
@@ -195,8 +195,8 @@ export function Footer() {
                 <Mail size={20} className="flex-shrink-0 text-primary mt-0.5" />
                 <div className="text-center md:text-left">
                   <p className="font-medium text-foreground mb-2">Email</p>
-                  <a 
-                    href="mailto:Info@hoque.org.uk" 
+                  <a
+                    href="mailto:Info@hoque.org.uk"
                     className="hover:text-primary transition-colors font-medium text-sm"
                   >
                     Info@hoque.org.uk
@@ -211,7 +211,7 @@ export function Footer() {
         <div className="border-t border-border py-8">
           <div className="flex flex-col md:flex-row items-center md:justify-between justify-center gap-4">
             <div className="text-sm text-muted-foreground text-center md:text-left">
-              <p>© 2026 HOQUE. All rights reserved. Developed by <a href="https://www.linkedin.com/in/shreshkc" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Suresh Khatri</a></p>
+              <p>© 2026 HOQUE. All rights reserved. </p>
             </div>
             <div className="flex items-center space-x-6">
               {[
