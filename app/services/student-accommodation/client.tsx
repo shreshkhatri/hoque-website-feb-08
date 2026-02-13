@@ -169,11 +169,8 @@ export function StudentAccommodationClient() {
                 ]
                 const c = colors[index]
                 return (
-                  <div key={index} className="relative">
-                    {index < accommodationProcess.length - 1 && (
-                      <div className="hidden md:block absolute top-12 left-full w-full h-1 bg-muted-foreground/20 -ml-4" />
-                    )}
-                    <div className={`${c.bg} border ${c.border} rounded-xl p-6 relative z-10 hover:shadow-md transition-all`}>
+                  <div key={index}>
+                    <div className={`${c.bg} border ${c.border} rounded-xl p-6 hover:shadow-md transition-all`}>
                       <div className={`flex items-center justify-center w-14 h-14 rounded-full ${c.gradient} text-white font-bold text-xl mb-4 mx-auto shadow-lg`}>
                         {item.step}
                       </div>
