@@ -160,6 +160,7 @@ export function CoursesPageClient() {
           .eq('university_id', selectedUniversity)
           .order('name', { ascending: true })
 
+        console.log('[v0] Campuses fetched for university', selectedUniversity, ':', data)
         if (data) {
           setCampuses(data)
         } else {
@@ -184,8 +185,10 @@ export function CoursesPageClient() {
           .from('course_intake_months')
           .select('month')
         
+        console.log('[v0] Intake months raw data:', data)
         if (data) {
           const uniqueMonths = [...new Set(data.map((d: { month: string }) => d.month))].sort()
+          console.log('[v0] Unique intake months:', uniqueMonths)
           setIntakeMonths(uniqueMonths)
         }
       } catch (error) {
