@@ -57,14 +57,16 @@ export function Header() {
   }
 
   const fetchTopCourses = async () => {
-    try {
-      const response = await fetch('/api/courses?limit=5')
-      const result = await response.json()
-      setCourses(result.data || [])
-    } catch (error) {
-      console.error('Error fetching courses:', error)
-      setCourses([])
-    }
+    // Hardcoded courses list (6 total)
+    const hardcodedCourses: Course[] = [
+      { id: 1, name: "MBA Global", code: "MBA-GBL-001", university_id: 77, level: "Master", duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
+      { id: 2, name: "MSc Data Science and Artificial Intelligence", code: "MSDS-QUB-001", university_id: 75, level: "Master", duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
+      { id: 3, name: "MSc Business with International Business", code: "MSIB-NOR-001", university_id: 76, level: "Master", duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
+      { id: 4, name: "MSc Project Management", code: "MSPM-LSB-001", university_id: 79, level: "Master", duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
+      { id: 5, name: "MSc Cyber Security", code: "MSCS-QUB-001", university_id: 75, level: "Master", duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
+      { id: 6, name: "MBA with Digital Marketing", code: "MBA-DM-GRE-001", university_id: 77, level: "Master", duration_years: 1.5, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
+    ]
+    setCourses(hardcodedCourses)
   }
 
   const fetchCountries = async () => {
@@ -240,7 +242,7 @@ export function Header() {
               </button>
               {showCourseDropdown && (
                 <div className="absolute top-full left-0 mt-2 bg-card border border-border rounded-lg shadow-lg min-w-48 z-50">
-                  {courses.slice(0, 8).map((course) => (
+                  {courses.slice(0, 6).map((course) => (
                     <Link
                       key={course.id}
                       href={`/course/${nameToSlug(course.name, course.code)}`}
