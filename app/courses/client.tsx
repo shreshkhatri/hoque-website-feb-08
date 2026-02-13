@@ -331,6 +331,21 @@ export function CoursesPageClient() {
                 <div className="space-y-3">
                   <Label className="text-sm font-semibold text-foreground">Intake Months</Label>
                   <div className="space-y-2.5 max-h-64 overflow-y-auto pr-2">
+                    {/* All option */}
+                    <div className="flex items-center space-x-2 pb-2 border-b border-border">
+                      <Checkbox
+                        id="intake-all"
+                        checked={selectedIntakeMonths.length === 0}
+                        onCheckedChange={() => setSelectedIntakeMonths([])}
+                      />
+                      <label
+                        htmlFor="intake-all"
+                        className="text-sm font-medium text-foreground cursor-pointer select-none"
+                      >
+                        All Intakes
+                      </label>
+                    </div>
+                    {/* Individual months */}
                     {intakeMonths.map((month) => (
                       <div key={month} className="flex items-center space-x-2">
                         <Checkbox
@@ -354,7 +369,7 @@ export function CoursesPageClient() {
                       onClick={() => setSelectedIntakeMonths([])}
                       className="w-full text-xs"
                     >
-                      Clear All ({selectedIntakeMonths.length})
+                      Clear Selection ({selectedIntakeMonths.length})
                     </Button>
                   )}
                 </div>
