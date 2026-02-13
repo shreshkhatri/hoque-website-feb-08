@@ -1,0 +1,44 @@
+# HOQUE University Representative - Robots.txt
+# This file tells search engines how to crawl and index your website
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /.next/
+Disallow: /private/
+Disallow: *?*sort=
+Disallow: *?*filter=
+Disallow: */checkout/confirmation
+Allow: /sitemap.xml
+Allow: /robots.txt
+
+# Specific rules for search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+# Disallow bad bots
+User-agent: MJ12bot
+User-agent: AhrefsBot
+User-agent: SemrushBot
+User-agent: DotBot
+Disallow: /
+
+# Sitemap locations
+Sitemap: https://www.hoque.org.uk/sitemap.xml
+Sitemap: https://www.hoque.org.uk/sitemap.xml
+
+# Crawl delay (in seconds) - standard crawl rate
+Request-rate: 1/1s
+
+# Comment: Last updated
+# Generated: 2026-02-13
