@@ -1,6 +1,3 @@
-'use client'
-
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import {
   ArrowRight,
@@ -9,97 +6,52 @@ import {
   Calendar,
   MapPin,
   Globe,
-  Users,
   Clock,
 } from 'lucide-react'
-import { University, Course, nameToSlug } from '@/lib/supabase'
+import { nameToSlug } from '@/lib/supabase'
 
-interface CourseWithUniversity extends Course {
-  universities?: {
-    id: number
-    name: string
-    city: string
-    country_id: number
-    countries: { id: number; name: string }
-  }
+const UNIVERSITIES = [
+  { name: "Queen's University Belfast", city: 'Belfast', slug: 'queens-university-belfast' },
+  { name: 'Northumbria University London', city: 'London', slug: 'northumbria-university-london' },
+  { name: 'University of Greenwich', city: 'London', slug: 'university-of-greenwich' },
+  { name: 'University of Greater Manchester', city: 'Manchester', slug: 'university-of-greater-manchester' },
+  { name: 'London South Bank University', city: 'London', slug: 'london-south-bank-university' },
+]
+
+const COURSES = [
+  { name: 'MBA Global', university: 'University of Greenwich', level: 'Master', duration: '1', code: '' },
+  { name: 'MSc Data Science and Artificial Intelligence', university: "Queen's University Belfast", level: 'Master', duration: '1', code: '' },
+  { name: 'MSc Business with International Business', university: 'Northumbria University London', level: 'Master', duration: '1', code: '' },
+  { name: 'MSc Project Management', university: 'London South Bank University', level: 'Master', duration: '1', code: '' },
+  { name: 'MSc Cyber Security', university: "Queen's University Belfast", level: 'Master', duration: '1', code: '' },
+  { name: 'MBA with Digital Marketing', university: 'University of Greenwich', level: 'Master', duration: '1.5', code: '' },
+]
+
+const EVENTS = [
+  { id: 'cacb9492-e069-4171-a5d2-db7a0b44c39a', title: 'UK University Fair - London', date: '2026-02-15', location: 'London Convention Centre', event_type: 'university_fair', country: 'United Kingdom' },
+  { id: '3df751e3-f97a-48b6-b7f1-fbc84908ace6', title: 'International Student Panel Discussion', date: '2026-01-28', location: 'Sydney Conference Hall', event_type: 'panel_discussion', country: 'Australia' },
+  { id: 'afb28300-5754-4209-b97f-ef01afc7a5c4', title: 'IELTS Success Stories', date: '2026-01-15', location: 'Dublin Education Centre', event_type: 'seminar', country: 'Ireland' },
+  { id: 'f5908378-85dd-450e-ad69-d6f44e5392e7', title: 'University Application Workshop', date: '2026-03-15', location: 'Toronto International Centre', event_type: 'workshop', country: 'Canada' },
+  { id: '71d80f22-3a86-4ee3-b774-bd2d838b7a56', title: 'IELTS Preparation Workshop', date: '2026-02-20', location: 'Auckland Central Hub', event_type: 'workshop', country: 'New Zealand' },
+  { id: '6dff8f83-33cb-4c0f-a483-1188191a0173', title: 'Oxford & Cambridge Selection Event', date: '2026-03-05', location: 'Dubai Business Plaza', event_type: 'selection_event', country: 'Dubai' },
+]
+
+function formatDate(dateString: string) {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+  })
 }
 
-interface Event {
-  id: string
-  title: string
-  date: string
-  time: string
-  location: string
-  country_name: string
-  event_type: string
+function formatEventType(type: string) {
+  return type
+    .replace(/_/g, ' ')
+    .split(' ')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ')
 }
 
 export function QuickOverview() {
-  const [universities, setUniversities] = useState<University[]>([])
-  const [courses, setCourses] = useState<CourseWithUniversity[]>([])
-  const [events, setEvents] = useState<Event[]>([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    async function fetchAll() {
-      setLoading(true)
-      try {
-        const [uniRes, courseRes, eventRes] = await Promise.all([
-          fetch('/api/universities?limit=4'),
-          fetch('/api/courses?limit=4'),
-          fetch('/api/events'),
-        ])
-
-        const uniData = await uniRes.json()
-        setUniversities(uniData.data || [])
-
-        const courseData = await courseRes.json()
-        setCourses(courseData.data || [])
-
-        if (eventRes.ok) {
-          const allEvents = await eventRes.json()
-          const today = new Date()
-          today.setHours(0, 0, 0, 0)
-          const upcoming = allEvents
-            .filter((e: Event) => {
-              const d = new Date(e.date)
-              d.setHours(0, 0, 0, 0)
-              return d >= today
-            })
-            .sort(
-              (a: Event, b: Event) =>
-                new Date(a.date).getTime() - new Date(b.date).getTime()
-            )
-            .slice(0, 4)
-          setEvents(upcoming)
-        }
-      } catch (error) {
-        console.error('Error fetching overview data:', error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchAll()
-  }, [])
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-    })
-  }
-
-  // Skeleton card for loading state
-  const SkeletonCard = () => (
-    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg animate-pulse">
-      <div className="w-10 h-10 rounded-lg bg-muted flex-shrink-0" />
-      <div className="flex-1 space-y-2">
-        <div className="h-3.5 bg-muted rounded w-3/4" />
-        <div className="h-3 bg-muted rounded w-1/2" />
-      </div>
-    </div>
-  )
 
   return (
     <section className="py-16 px-4 sm:px-6 lg:px-8 bg-background">
@@ -129,51 +81,36 @@ export function QuickOverview() {
             </div>
 
             <div className="p-4 space-y-2">
-              {loading
-                ? Array.from({ length: 4 }).map((_, i) => (
-                    <SkeletonCard key={i} />
-                  ))
-                : universities.map((uni) => (
-                    <Link
-                      key={uni.id}
-                      href={`/university/${nameToSlug(uni.name)}`}
-                      className="group flex items-center gap-3 p-3 rounded-lg hover:bg-primary/5 transition-colors"
-                    >
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <GraduationCap
-                          size={16}
-                          className="text-primary"
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-foreground truncate group-hover:text-primary transition-colors">
-                          {uni.name}
-                        </p>
-                        <div className="flex items-center gap-3 mt-0.5">
-                          <span className="text-xs text-muted-foreground flex items-center gap-1">
-                            <MapPin size={10} className="flex-shrink-0" />
-                            {uni.city}
-                          </span>
-                          {uni.student_population && (
-                            <span className="text-xs text-muted-foreground flex items-center gap-1">
-                              <Users size={10} className="flex-shrink-0" />
-                              {(uni.student_population / 1000).toFixed(0)}k
-                            </span>
-                          )}
-                          {uni.rank_world && (
-                            <span className="text-xs text-muted-foreground flex items-center gap-1">
-                              <Globe size={10} className="flex-shrink-0" />
-                              #{uni.rank_world}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <ArrowRight
-                        size={14}
-                        className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all flex-shrink-0"
-                      />
-                    </Link>
-                  ))}
+              {UNIVERSITIES.map((uni) => (
+                <Link
+                  key={uni.slug}
+                  href={`/university/${uni.slug}`}
+                  className="group flex items-center gap-3 p-3 rounded-lg hover:bg-primary/5 transition-colors"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <GraduationCap size={16} className="text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-foreground truncate group-hover:text-primary transition-colors">
+                      {uni.name}
+                    </p>
+                    <div className="flex items-center gap-3 mt-0.5">
+                      <span className="text-xs text-muted-foreground flex items-center gap-1">
+                        <MapPin size={10} className="flex-shrink-0" />
+                        {uni.city}
+                      </span>
+                      <span className="text-xs text-muted-foreground flex items-center gap-1">
+                        <Globe size={10} className="flex-shrink-0" />
+                        United Kingdom
+                      </span>
+                    </div>
+                  </div>
+                  <ArrowRight
+                    size={14}
+                    className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all flex-shrink-0"
+                  />
+                </Link>
+              ))}
             </div>
 
             <Link
@@ -197,49 +134,38 @@ export function QuickOverview() {
             </div>
 
             <div className="p-4 space-y-2">
-              {loading
-                ? Array.from({ length: 4 }).map((_, i) => (
-                    <SkeletonCard key={i} />
-                  ))
-                : courses.map((course) => (
-                    <Link
-                      key={course.id}
-                      href={`/course/${nameToSlug(course.name, course.code)}`}
-                      className="group flex items-center gap-3 p-3 rounded-lg hover:bg-accent/5 transition-colors"
-                    >
-                      <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                        <BookOpen size={16} className="text-accent" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-foreground truncate group-hover:text-accent transition-colors">
-                          {course.name}
-                        </p>
-                        <div className="flex items-center gap-3 mt-0.5">
-                          <span className="inline-flex items-center text-xs text-muted-foreground">
-                            {course.level}
-                          </span>
-                          {course.duration_years && (
-                            <span className="text-xs text-muted-foreground flex items-center gap-1">
-                              <Clock size={10} className="flex-shrink-0" />
-                              {course.duration_years}yr
-                            </span>
-                          )}
-                          {course.universities && (
-                            <span className="text-xs text-muted-foreground truncate">
-                              {course.universities.name
-                                .split(' ')
-                                .slice(0, 3)
-                                .join(' ')}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <ArrowRight
-                        size={14}
-                        className="text-muted-foreground group-hover:text-accent group-hover:translate-x-0.5 transition-all flex-shrink-0"
-                      />
-                    </Link>
-                  ))}
+              {COURSES.map((course, i) => (
+                <Link
+                  key={i}
+                  href={`/course/${nameToSlug(course.name, course.code)}`}
+                  className="group flex items-center gap-3 p-3 rounded-lg hover:bg-accent/5 transition-colors"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                    <BookOpen size={16} className="text-accent" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-foreground truncate group-hover:text-accent transition-colors">
+                      {course.name}
+                    </p>
+                    <div className="flex items-center gap-3 mt-0.5">
+                      <span className="inline-flex items-center text-xs text-muted-foreground">
+                        {course.level}
+                      </span>
+                      <span className="text-xs text-muted-foreground flex items-center gap-1">
+                        <Clock size={10} className="flex-shrink-0" />
+                        {course.duration}yr
+                      </span>
+                      <span className="text-xs text-muted-foreground truncate">
+                        {course.university.split(' ').slice(0, 3).join(' ')}
+                      </span>
+                    </div>
+                  </div>
+                  <ArrowRight
+                    size={14}
+                    className="text-muted-foreground group-hover:text-accent group-hover:translate-x-0.5 transition-all flex-shrink-0"
+                  />
+                </Link>
+              ))}
             </div>
 
             <Link
@@ -263,61 +189,44 @@ export function QuickOverview() {
             </div>
 
             <div className="p-4 space-y-2">
-              {loading ? (
-                Array.from({ length: 4 }).map((_, i) => (
-                  <SkeletonCard key={i} />
-                ))
-              ) : events.length > 0 ? (
-                events.map((event) => (
-                  <Link
-                    key={event.id}
-                    href={`/events/${event.id}`}
-                    className="group flex items-center gap-3 p-3 rounded-lg hover:bg-chart-1/5 transition-colors"
-                  >
-                    <div className="w-10 h-10 rounded-lg bg-chart-1/10 flex items-center justify-center flex-shrink-0 text-center">
-                      <div>
-                        <div className="text-[10px] font-bold text-chart-1 leading-none">
-                          {formatDate(event.date).split(' ')[0]}
-                        </div>
-                        <div className="text-sm font-bold text-chart-1 leading-tight">
-                          {formatDate(event.date).split(' ')[1]}
-                        </div>
+              {EVENTS.map((event) => (
+                <Link
+                  key={event.id}
+                  href={`/events/${event.id}`}
+                  className="group flex items-center gap-3 p-3 rounded-lg hover:bg-chart-1/5 transition-colors"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-chart-1/10 flex items-center justify-center flex-shrink-0 text-center">
+                    <div>
+                      <div className="text-[10px] font-bold text-chart-1 leading-none">
+                        {formatDate(event.date).split(' ')[0]}
+                      </div>
+                      <div className="text-sm font-bold text-chart-1 leading-tight">
+                        {formatDate(event.date).split(' ')[1]}
                       </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground truncate group-hover:text-chart-1 transition-colors">
-                        {event.title}
-                      </p>
-                      <div className="flex items-center gap-3 mt-0.5">
-                        <span className="text-xs text-muted-foreground flex items-center gap-1">
-                          <MapPin size={10} className="flex-shrink-0" />
-                          <span className="truncate max-w-[100px]">
-                            {event.location}
-                          </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-foreground truncate group-hover:text-chart-1 transition-colors">
+                      {event.title}
+                    </p>
+                    <div className="flex items-center gap-3 mt-0.5">
+                      <span className="text-xs text-muted-foreground flex items-center gap-1">
+                        <MapPin size={10} className="flex-shrink-0" />
+                        <span className="truncate max-w-[100px]">
+                          {event.location}
                         </span>
-                        <span className="inline-flex items-center bg-chart-1/10 text-chart-1 text-[10px] font-medium px-1.5 py-0.5 rounded">
-                          {event.event_type
-                            .replace(/_/g, ' ')
-                            .split(' ')
-                            .map(
-                              (w: string) =>
-                                w.charAt(0).toUpperCase() + w.slice(1)
-                            )
-                            .join(' ')}
-                        </span>
-                      </div>
+                      </span>
+                      <span className="inline-flex items-center bg-chart-1/10 text-chart-1 text-[10px] font-medium px-1.5 py-0.5 rounded">
+                        {formatEventType(event.event_type)}
+                      </span>
                     </div>
-                    <ArrowRight
-                      size={14}
-                      className="text-muted-foreground group-hover:text-chart-1 group-hover:translate-x-0.5 transition-all flex-shrink-0"
-                    />
-                  </Link>
-                ))
-              ) : (
-                <div className="p-6 text-center text-sm text-muted-foreground">
-                  No upcoming events at the moment.
-                </div>
-              )}
+                  </div>
+                  <ArrowRight
+                    size={14}
+                    className="text-muted-foreground group-hover:text-chart-1 group-hover:translate-x-0.5 transition-all flex-shrink-0"
+                  />
+                </Link>
+              ))}
             </div>
 
             <Link
