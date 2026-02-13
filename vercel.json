@@ -103,16 +103,5 @@
       "source": "/sitemap.xml",
       "destination": "/api/sitemap"
     }
-  ],
-  "functions": {
-    "api/**.ts": {
-      "maxDuration": 60
-    }
-  },
-  "crons": [
-    {
-      "path": "/api/cron/generate-sitemap",
-      "schedule": "0 0 * * *"
-    }
   ]
 }
