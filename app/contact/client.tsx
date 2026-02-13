@@ -461,7 +461,7 @@ export function ContactPageClient() {
                 <p className="text-sm font-medium text-primary">
                   HOQUE NEW ZEALAND OFFICE
                 </p>
-                <div className="text-sm h-full">
+                <div className="h-full bg-accent">
                   <div className="w-full h-full flex items-center justify-center">
                     <p className="text-md text-muted-foreground">
                       Updating soon
