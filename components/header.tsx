@@ -59,12 +59,11 @@ export function Header() {
   const fetchTopCourses = async () => {
     // Hardcoded courses list (6 total)
     const hardcodedCourses: Course[] = [
-      { id: 1, name: "MBA Global", code: "", university_id: 77, level: "Master", duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
-      { id: 2, name: "MSc Data Science and Artificial Intelligence", code: "", university_id: 75, level: "Master", duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
-      { id: 3, name: "MSc Business with International Business", code: "", university_id: 76, level: "Master", duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
-      { id: 4, name: "MSc Project Management", code: "", university_id: 79, level: "Master", duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
-      { id: 5, name: "MSc Cyber Security", code: "", university_id: 75, level: "Master", duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
-      { id: 6, name: "MBA with Digital Marketing", code: "", university_id: 77, level: "Master", duration_years: 1.5, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
+      { id: 1, name: 'MBA Global', code: '', university_id: 77, level: 'Master', duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
+      { id: 2, name: 'MSc Data Science and Artificial Intelligence', code: '', university_id: 75, level: 'Master', duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
+      { id: 3, name: 'MSc Business with International Business', code: '', university_id: 76, level: 'Master', duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
+      { id: 4, name: 'MSc Project Management', code: '', university_id: 79, level: 'Master', duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
+      { id: 5, name: 'MSc Cyber Security', code: '', university_id: 75, level: 'Master', duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
     ]
     setCourses(hardcodedCourses)
   }
@@ -242,7 +241,7 @@ export function Header() {
               </button>
               {showCourseDropdown && (
                 <div className="absolute top-full left-0 mt-2 bg-card border border-border rounded-lg shadow-lg min-w-48 z-50">
-                  {courses.slice(0, 6).map((course) => (
+                  {courses.map((course) => (
                     <Link
                       key={course.id}
                       href={`/course/${nameToSlug(course.name, course.code)}`}
