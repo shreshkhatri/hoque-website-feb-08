@@ -461,15 +461,12 @@ export function ContactPageClient() {
                 <p className="text-sm font-medium text-primary">
                   HOQUE NEW ZEALAND OFFICE
                 </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  New Zealand
-                </p>
+
 
                 <div className="space-y-4 text-sm mt-6">
                   <div>
-                    <p className="text-muted-foreground mb-1 font-medium">Address</p>
-                    <p className="text-foreground leading-relaxed">
-                      Welington
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Updating soon
                     </p>
                   </div>
                 </div>
