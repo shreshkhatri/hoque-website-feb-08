@@ -34,7 +34,6 @@ export default function EditUniversityPage() {
     phone: '',
     email: '',
     type: '',
-    accreditation: '',
     student_population: '',
     international_students_percentage: '',
     campus_size: '',
@@ -62,7 +61,6 @@ export default function EditUniversityPage() {
             phone: u.phone || '',
             email: u.email || '',
             type: u.type || '',
-            accreditation: u.accreditation || '',
             student_population: u.student_population?.toString() || '',
             international_students_percentage: u.international_students_percentage?.toString() || '',
             campus_size: u.campus_size || '',
@@ -93,7 +91,6 @@ export default function EditUniversityPage() {
       if (form.phone.trim()) payload.phone = form.phone.trim()
       if (form.email.trim()) payload.email = form.email.trim()
       if (form.type.trim()) payload.type = form.type.trim()
-      if (form.accreditation.trim()) payload.accreditation = form.accreditation.trim()
       if (form.student_population.trim()) payload.student_population = parseInt(form.student_population)
       if (form.international_students_percentage.trim())
         payload.international_students_percentage = parseFloat(form.international_students_percentage)
@@ -304,16 +301,6 @@ export default function EditUniversityPage() {
                     value={form.established_year}
                     onChange={(e) => setForm({ ...form, established_year: e.target.value })}
                     placeholder="1900"
-                    className="bg-white border-slate-200 text-slate-900"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm text-slate-700">Accreditation</Label>
-                  <Input
-                    value={form.accreditation}
-                    onChange={(e) => setForm({ ...form, accreditation: e.target.value })}
-                    placeholder="e.g. AACSB, EQUIS"
                     className="bg-white border-slate-200 text-slate-900"
                   />
                 </div>

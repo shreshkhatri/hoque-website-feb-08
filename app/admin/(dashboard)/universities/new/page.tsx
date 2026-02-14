@@ -71,7 +71,6 @@ export default function NewUniversityPage() {
     address: '',
     ranking: '',
     established_year: '',
-    accreditation: '',
     student_population: '',
     international_students_percentage: '',
     campus_size: '',
@@ -504,17 +503,6 @@ export default function NewUniversityPage() {
                   value={form.established_year}
                   onChange={(e) => setForm({ ...form, established_year: e.target.value })}
                   placeholder="e.g., 1826"
-                  className="bg-white"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="accreditation">Accreditation</Label>
-                <Input
-                  id="accreditation"
-                  value={form.accreditation}
-                  onChange={(e) => setForm({ ...form, accreditation: e.target.value })}
-                  placeholder="e.g., AACSB, EQUIS"
                   className="bg-white"
                 />
               </div>
