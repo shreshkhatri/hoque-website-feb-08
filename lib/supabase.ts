@@ -57,6 +57,9 @@ export type University = {
   international_students_percentage: number | null
   cover_image_url: string | null
   campus_type: string | null
+  highlights: any[] | null
+  required_documents: any[] | null
+  faqs: any[] | null
   created_at: string
 }
 
