@@ -63,19 +63,16 @@ export default function NewUniversityPage() {
     name: '',
     city: '',
     country_id: '',
-    type: '',
+    campus_type: '',
     description: '',
-    website: '',
-    email: '',
-    phone: '',
-    address: '',
-    ranking: '',
-    established_year: '',
+    website_url: '',
+    rank_world: '',
+    founded_year: '',
     student_population: '',
     international_students_percentage: '',
-    campus_size: '',
+    acceptance_rate: '',
     logo_url: '',
-    hero_image_url: '',
+    cover_image_url: '',
   })
 
   const [logoFile, setLogoFile] = useState<File | null>(null)
@@ -203,31 +200,27 @@ export default function NewUniversityPage() {
         console.log('[v0] Logo should be saved to public/logos/', logoFilename)
       }
 
-      let heroPath = form.hero_image_url
+      let coverPath = form.cover_image_url
       if (heroFile) {
-        const heroFilename = `${form.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-hero.${heroFile.name.split('.').pop()}`
-        heroPath = `/universities/${heroFilename}`
-        console.log('[v0] Hero image should be saved to public/universities/', heroFilename)
+        const heroFilename = `${form.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-cover.${heroFile.name.split('.').pop()}`
+        coverPath = `/universities/${heroFilename}`
+        console.log('[v0] Cover image should be saved to public/universities/', heroFilename)
       }
 
       const payload: any = {
         name: form.name.trim(),
-        slug: form.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
         city: form.city.trim(),
         country_id: parseInt(form.country_id),
-        type: form.type.trim() || null,
+        campus_type: form.campus_type.trim() || null,
         description: form.description.trim() || null,
-        website: form.website.trim() || null,
-        email: form.email.trim() || null,
-        phone: form.phone.trim() || null,
-        address: form.address.trim() || null,
-        ranking: form.ranking.trim() || null,
-        established_year: form.established_year ? parseInt(form.established_year) : null,
+        website_url: form.website_url.trim() || null,
+        rank_world: form.rank_world.trim() || null,
+        founded_year: form.founded_year ? parseInt(form.founded_year) : null,
         student_population: form.student_population ? parseInt(form.student_population) : null,
-        international_students_percentage: form.international_students_percentage ? parseFloat(form.international_students_percentage) : null,
-        campus_size: form.campus_size.trim() || null,
+        international_students_percentage: form.international_students_percentage ? parseInt(form.international_students_percentage) : null,
+        acceptance_rate: form.acceptance_rate ? parseInt(form.acceptance_rate) : null,
         logo_url: logoPath || null,
-        hero_image_url: heroPath || null,
+        cover_image_url: coverPath || null,
       }
 
       const res = await fetch('/api/admin/universities', {
@@ -421,54 +414,32 @@ export default function NewUniversityPage() {
           </CardContent>
         </Card>
 
-        {/* Contact Information */}
+        {/* Website & Type */}
         <Card>
           <CardHeader>
-            <CardTitle>Contact Information</CardTitle>
+            <CardTitle>Additional Information</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="website">Website</Label>
+                <Label htmlFor="website_url">Website URL</Label>
                 <Input
-                  id="website"
+                  id="website_url"
                   type="url"
-                  value={form.website}
-                  onChange={(e) => setForm({ ...form, website: e.target.value })}
+                  value={form.website_url}
+                  onChange={(e) => setForm({ ...form, website_url: e.target.value })}
                   placeholder="https://..."
                   className="bg-white"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="campus_type">Campus Type</Label>
                 <Input
-                  id="email"
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder="info@university.edu"
-                  className="bg-white"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone</Label>
-                <Input
-                  id="phone"
-                  value={form.phone}
-                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  placeholder="+44 123 456 7890"
-                  className="bg-white"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="address">Address</Label>
-                <Input
-                  id="address"
-                  value={form.address}
-                  onChange={(e) => setForm({ ...form, address: e.target.value })}
+                  id="campus_type"
+                  value={form.campus_type}
+                  onChange={(e) => setForm({ ...form, campus_type: e.target.value })}
+                  placeholder="e.g., Urban, Suburban, Rural"
                   className="bg-white"
                 />
               </div>
@@ -484,23 +455,23 @@ export default function NewUniversityPage() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="ranking">Ranking</Label>
+                <Label htmlFor="rank_world">World Ranking</Label>
                 <Input
-                  id="ranking"
-                  value={form.ranking}
-                  onChange={(e) => setForm({ ...form, ranking: e.target.value })}
-                  placeholder="e.g., Top 100 globally"
+                  id="rank_world"
+                  value={form.rank_world}
+                  onChange={(e) => setForm({ ...form, rank_world: e.target.value })}
+                  placeholder="e.g., #101-150"
                   className="bg-white"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="established_year">Established Year</Label>
+                <Label htmlFor="founded_year">Founded Year</Label>
                 <Input
-                  id="established_year"
+                  id="founded_year"
                   type="number"
-                  value={form.established_year}
-                  onChange={(e) => setForm({ ...form, established_year: e.target.value })}
+                  value={form.founded_year}
+                  onChange={(e) => setForm({ ...form, founded_year: e.target.value })}
                   placeholder="e.g., 1826"
                   className="bg-white"
                 />
@@ -523,21 +494,21 @@ export default function NewUniversityPage() {
                 <Input
                   id="international_students"
                   type="number"
-                  step="0.1"
                   value={form.international_students_percentage}
                   onChange={(e) => setForm({ ...form, international_students_percentage: e.target.value })}
-                  placeholder="e.g., 25.5"
+                  placeholder="e.g., 25"
                   className="bg-white"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="campus_size">Campus Size</Label>
+                <Label htmlFor="acceptance_rate">Acceptance Rate %</Label>
                 <Input
-                  id="campus_size"
-                  value={form.campus_size}
-                  onChange={(e) => setForm({ ...form, campus_size: e.target.value })}
-                  placeholder="e.g., 200 acres"
+                  id="acceptance_rate"
+                  type="number"
+                  value={form.acceptance_rate}
+                  onChange={(e) => setForm({ ...form, acceptance_rate: e.target.value })}
+                  placeholder="e.g., 15"
                   className="bg-white"
                 />
               </div>
@@ -577,7 +548,7 @@ export default function NewUniversityPage() {
               </div>
 
               <div className="space-y-2">
-                <Label>Hero Background Image</Label>
+                <Label>Cover Image (Hero Background)</Label>
                 <div className="border-2 border-dashed border-slate-200 rounded-lg p-4 text-center hover:border-teal-500 transition-colors bg-white">
                   <input
                     type="file"
@@ -588,11 +559,11 @@ export default function NewUniversityPage() {
                   />
                   <label htmlFor="hero-upload" className="cursor-pointer">
                     {heroPreview ? (
-                      <img src={heroPreview} alt="Hero preview" className="w-full h-32 object-cover mb-2 rounded" />
+                      <img src={heroPreview} alt="Cover preview" className="w-full h-32 object-cover mb-2 rounded" />
                     ) : (
                       <div className="flex flex-col items-center gap-2 py-8">
                         <ImageIcon className="h-8 w-8 text-slate-400" />
-                        <p className="text-sm text-slate-600">Click to upload hero image</p>
+                        <p className="text-sm text-slate-600">Click to upload cover image</p>
                         <p className="text-xs text-slate-500">Saved to: /universities/</p>
                       </div>
                     )}
