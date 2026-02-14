@@ -36,7 +36,9 @@ export default function AdminLoginPage() {
         return
       }
 
-      router.push('/admin/dashboard')
+      // Use window.location for full page navigation so the new cookie is sent with the request
+      window.location.href = '/admin/dashboard'
+      return
     } catch {
       setError('An unexpected error occurred')
       setLoading(false)

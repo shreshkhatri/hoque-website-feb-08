@@ -9,12 +9,6 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     qualities: [50, 75, 85, 90, 100], // Allow various quality levels
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**.blob.vercel-storage.com', // Allow Vercel Blob Storage
-      },
-    ],
   },
   compress: true, // Enable gzip compression
   poweredByHeader: false, // Remove X-Powered-By header
