@@ -26,6 +26,7 @@ export default function AdminLoginPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
+        credentials: 'same-origin',
       })
 
       const data = await res.json()
@@ -36,9 +37,9 @@ export default function AdminLoginPage() {
         return
       }
 
-      // Store the JWT token in localStorage (cookies don't work in iframe environments)
-      localStorage.setItem('admin_token', data.token)
-      router.push('/admin/dashboard')
+      // Cookie is set by the server response. Full navigation ensures cookie is sent.
+      window.location.href = '/admin/dashboard'
+      return
     } catch {
       setError('An unexpected error occurred')
       setLoading(false)
