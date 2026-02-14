@@ -125,7 +125,7 @@ export function Footer() {
                   alt="HOQUE" 
                   width={179} 
                   height={38}
-                  quality={90}
+                  quality={75}
                   className="h-8 w-auto mb-4" 
                 />
               {/* Social Media Links */}
