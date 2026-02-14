@@ -1,3 +1,4 @@
+// Admin authentication utilities - production-grade JWT + httpOnly cookie auth
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
 import { NextRequest } from 'next/server'
@@ -41,7 +42,6 @@ export async function verifyToken(token: string): Promise<AdminSession | null> {
   }
 }
 
-/** Cookie config for production: httpOnly, secure, SameSite=Lax */
 export function getSessionCookieConfig() {
   return {
     name: COOKIE_NAME,
@@ -57,7 +57,6 @@ export function getSessionCookieName() {
   return COOKIE_NAME
 }
 
-/** Extract token from cookie in server components / route handlers */
 export async function getSessionFromCookies(): Promise<AdminSession | null> {
   const cookieStore = await cookies()
   const token = cookieStore.get(COOKIE_NAME)?.value
@@ -65,12 +64,10 @@ export async function getSessionFromCookies(): Promise<AdminSession | null> {
   return verifyToken(token)
 }
 
-/** Verify admin session from cookies - used by API route handlers for double-layer auth */
 export async function verifySession(): Promise<AdminSession | null> {
   return getSessionFromCookies()
 }
 
-/** Extract token from middleware request (no async cookies) */
 export function getTokenFromRequest(request: NextRequest): string | null {
   return request.cookies.get(COOKIE_NAME)?.value || null
 }
