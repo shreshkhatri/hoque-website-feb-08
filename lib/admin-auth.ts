@@ -65,6 +65,11 @@ export async function getSessionFromCookies(): Promise<AdminSession | null> {
   return verifyToken(token)
 }
 
+/** Verify admin session from cookies - used by API route handlers for double-layer auth */
+export async function verifySession(): Promise<AdminSession | null> {
+  return getSessionFromCookies()
+}
+
 /** Extract token from middleware request (no async cookies) */
 export function getTokenFromRequest(request: NextRequest): string | null {
   return request.cookies.get(COOKIE_NAME)?.value || null
