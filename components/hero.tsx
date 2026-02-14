@@ -49,7 +49,7 @@ export function Hero() {
               width={525}
               height={437}
               priority
-              quality={85}
+              quality={75}
               className="w-full max-w-md rounded-3xl shadow-lg object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 525px"
             />
