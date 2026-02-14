@@ -8,8 +8,8 @@ import { HeroSearchProvider } from '@/components/hero-search-context'
 import { getStructuredData } from '@/lib/seo-config'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const _geist = Geist({ subsets: ["latin"], preload: true });
+const _geistMono = Geist_Mono({ subsets: ["latin"], preload: true });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.hoque.org.uk'),
@@ -87,14 +87,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
         
-        {/* Preconnect to external domains */}
+        {/* Critical preconnects only - reduced from 6 to 2 */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://cdn.vercel-analytics.com" />
-        
-        {/* DNS Prefetch for analytics */}
-        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
       </head>
       <body className={`font-sans antialiased overflow-x-hidden`}>
         <HeroSearchProvider>
