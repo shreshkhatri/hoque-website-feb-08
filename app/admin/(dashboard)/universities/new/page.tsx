@@ -76,10 +76,14 @@ export default function NewUniversityPage() {
     cover_image_url: '',
   })
 
-  const [highlights, setHighlights] = useState<string[]>([])
-  const [newHighlight, setNewHighlight] = useState('')
-  const [requiredDocuments, setRequiredDocuments] = useState<string[]>([])
-  const [newDocument, setNewDocument] = useState('')
+  const [highlights, setHighlights] = useState<{icon: string; title: string; description: string}[]>([])
+  const [newHighlight, setNewHighlight] = useState({ icon: 'Award', title: '', description: '' })
+  const [requiredDocuments, setRequiredDocuments] = useState<{name: string; description: string}[]>([])
+  const [newDocument, setNewDocument] = useState({ name: '', description: '' })
+  const [faqs, setFaqs] = useState<{question: string; answer: string}[]>([])
+  const [newFaq, setNewFaq] = useState({ question: '', answer: '' })
+
+  const highlightIconOptions = ['Award', 'Briefcase', 'Users', 'Globe', 'Star', 'GraduationCap', 'Building2', 'BookOpen']
 
   const [logoFile, setLogoFile] = useState<File | null>(null)
   const [logoPreview, setLogoPreview] = useState<string>('')
@@ -228,8 +232,9 @@ export default function NewUniversityPage() {
         acceptance_rate: form.acceptance_rate ? parseInt(form.acceptance_rate) : null,
         logo_url: logoPath || null,
         cover_image_url: coverPath || null,
-        highlights: highlights.length > 0 ? JSON.stringify(highlights) : null,
-        required_documents: requiredDocuments.length > 0 ? JSON.stringify(requiredDocuments) : null,
+        highlights: highlights.length > 0 ? highlights : null,
+        required_documents: requiredDocuments.length > 0 ? requiredDocuments : null,
+        faqs: faqs.length > 0 ? faqs : null,
       }
 
       const res = await fetch('/api/admin/universities', {
@@ -599,46 +604,74 @@ export default function NewUniversityPage() {
         <Card>
           <CardHeader>
             <CardTitle>Highlights</CardTitle>
+            <p className="text-sm text-slate-500">Add key highlights for this university. Each highlight has an icon, a short title, and a brief description.</p>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex gap-2">
-              <Input
-                value={newHighlight}
-                onChange={(e) => setNewHighlight(e.target.value)}
-                placeholder="Add a highlight (e.g., Top research university)"
-                className="bg-white"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && newHighlight.trim()) {
-                    setHighlights([...highlights, newHighlight.trim()])
-                    setNewHighlight('')
-                  }
-                }}
-              />
+            <div className="space-y-3 p-4 border border-slate-200 rounded-lg bg-slate-50">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="space-y-1">
+                  <Label className="text-xs text-slate-600">Icon</Label>
+                  <select
+                    value={newHighlight.icon}
+                    onChange={(e) => setNewHighlight({ ...newHighlight, icon: e.target.value })}
+                    className="w-full h-9 rounded-md border border-slate-200 bg-white px-3 text-sm"
+                  >
+                    {highlightIconOptions.map((icon) => (
+                      <option key={icon} value={icon}>{icon}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs text-slate-600">Title (e.g. "Top Ranked")</Label>
+                  <Input
+                    value={newHighlight.title}
+                    onChange={(e) => setNewHighlight({ ...newHighlight, title: e.target.value })}
+                    placeholder="e.g., Career Support"
+                    className="bg-white"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs text-slate-600">Description</Label>
+                  <Input
+                    value={newHighlight.description}
+                    onChange={(e) => setNewHighlight({ ...newHighlight, description: e.target.value })}
+                    placeholder="e.g., 95% employed within 6 months"
+                    className="bg-white"
+                  />
+                </div>
+              </div>
               <Button
                 type="button"
                 onClick={() => {
-                  if (newHighlight.trim()) {
-                    setHighlights([...highlights, newHighlight.trim()])
-                    setNewHighlight('')
+                  if (newHighlight.title.trim() && newHighlight.description.trim()) {
+                    setHighlights([...highlights, { icon: newHighlight.icon, title: newHighlight.title.trim(), description: newHighlight.description.trim() }])
+                    setNewHighlight({ icon: 'Award', title: '', description: '' })
                   }
                 }}
-                className="bg-teal-600 hover:bg-teal-700"
+                disabled={!newHighlight.title.trim() || !newHighlight.description.trim()}
+                variant="outline"
+                className="w-full"
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-4 w-4 mr-2" />
+                Add Highlight
               </Button>
             </div>
             
             {highlights.length > 0 && (
               <div className="space-y-2">
                 {highlights.map((highlight, index) => (
-                  <div key={index} className="flex items-center gap-2 p-2 bg-slate-50 rounded border border-slate-200">
-                    <span className="flex-1 text-sm text-slate-900">{highlight}</span>
+                  <div key={index} className="flex items-center gap-3 p-3 bg-slate-50 rounded border border-slate-200">
+                    <span className="text-xs font-mono bg-slate-200 px-2 py-0.5 rounded">{highlight.icon}</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-slate-900">{highlight.title}</p>
+                      <p className="text-xs text-slate-600 truncate">{highlight.description}</p>
+                    </div>
                     <Button
                       type="button"
                       variant="ghost"
                       size="sm"
                       onClick={() => setHighlights(highlights.filter((_, i) => i !== index))}
-                      className="h-6 w-6 p-0 text-slate-500 hover:text-red-600"
+                      className="h-6 w-6 p-0 text-slate-500 hover:text-red-600 shrink-0"
                     >
                       <X className="h-4 w-4" />
                     </Button>
@@ -653,46 +686,131 @@ export default function NewUniversityPage() {
         <Card>
           <CardHeader>
             <CardTitle>Required Documents</CardTitle>
+            <p className="text-sm text-slate-500">List the documents international students need to submit. Each document has a name and a brief description of what is required.</p>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex gap-2">
-              <Input
-                value={newDocument}
-                onChange={(e) => setNewDocument(e.target.value)}
-                placeholder="Add a required document (e.g., Passport copy)"
-                className="bg-white"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && newDocument.trim()) {
-                    setRequiredDocuments([...requiredDocuments, newDocument.trim()])
-                    setNewDocument('')
-                  }
-                }}
-              />
+            <div className="space-y-3 p-4 border border-slate-200 rounded-lg bg-slate-50">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <Label className="text-xs text-slate-600">Document Name (e.g. "Academic Transcripts")</Label>
+                  <Input
+                    value={newDocument.name}
+                    onChange={(e) => setNewDocument({ ...newDocument, name: e.target.value })}
+                    placeholder="e.g., Passport Copy"
+                    className="bg-white"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs text-slate-600">Description (e.g. "Official transcripts from all institutions")</Label>
+                  <Input
+                    value={newDocument.description}
+                    onChange={(e) => setNewDocument({ ...newDocument, description: e.target.value })}
+                    placeholder="e.g., Valid passport with at least 6 months validity"
+                    className="bg-white"
+                  />
+                </div>
+              </div>
               <Button
                 type="button"
                 onClick={() => {
-                  if (newDocument.trim()) {
-                    setRequiredDocuments([...requiredDocuments, newDocument.trim()])
-                    setNewDocument('')
+                  if (newDocument.name.trim() && newDocument.description.trim()) {
+                    setRequiredDocuments([...requiredDocuments, { name: newDocument.name.trim(), description: newDocument.description.trim() }])
+                    setNewDocument({ name: '', description: '' })
                   }
                 }}
-                className="bg-teal-600 hover:bg-teal-700"
+                disabled={!newDocument.name.trim() || !newDocument.description.trim()}
+                variant="outline"
+                className="w-full"
               >
-                <Plus className="h-4 w-4" />
+                <Plus className="h-4 w-4 mr-2" />
+                Add Document
               </Button>
             </div>
             
             {requiredDocuments.length > 0 && (
               <div className="space-y-2">
                 {requiredDocuments.map((doc, index) => (
-                  <div key={index} className="flex items-center gap-2 p-2 bg-slate-50 rounded border border-slate-200">
-                    <span className="flex-1 text-sm text-slate-900">{doc}</span>
+                  <div key={index} className="flex items-center gap-3 p-3 bg-slate-50 rounded border border-slate-200">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-slate-900">{doc.name}</p>
+                      <p className="text-xs text-slate-600 truncate">{doc.description}</p>
+                    </div>
                     <Button
                       type="button"
                       variant="ghost"
                       size="sm"
                       onClick={() => setRequiredDocuments(requiredDocuments.filter((_, i) => i !== index))}
-                      className="h-6 w-6 p-0 text-slate-500 hover:text-red-600"
+                      className="h-6 w-6 p-0 text-slate-500 hover:text-red-600 shrink-0"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* FAQs */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Frequently Asked Questions</CardTitle>
+            <p className="text-sm text-slate-500">Add common questions and answers about this university. Each FAQ has a question and a detailed answer.</p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-3 p-4 border border-slate-200 rounded-lg bg-slate-50">
+              <div className="space-y-3">
+                <div className="space-y-1">
+                  <Label className="text-xs text-slate-600">Question (e.g. "What are the entry requirements?")</Label>
+                  <Input
+                    value={newFaq.question}
+                    onChange={(e) => setNewFaq({ ...newFaq, question: e.target.value })}
+                    placeholder="e.g., Is there scholarship available?"
+                    className="bg-white"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs text-slate-600">Answer (provide a detailed, helpful response)</Label>
+                  <Textarea
+                    value={newFaq.answer}
+                    onChange={(e) => setNewFaq({ ...newFaq, answer: e.target.value })}
+                    placeholder="e.g., Yes, the university offers various scholarships for international students based on academic merit and financial need."
+                    rows={3}
+                    className="bg-white"
+                  />
+                </div>
+              </div>
+              <Button
+                type="button"
+                onClick={() => {
+                  if (newFaq.question.trim() && newFaq.answer.trim()) {
+                    setFaqs([...faqs, { question: newFaq.question.trim(), answer: newFaq.answer.trim() }])
+                    setNewFaq({ question: '', answer: '' })
+                  }
+                }}
+                disabled={!newFaq.question.trim() || !newFaq.answer.trim()}
+                variant="outline"
+                className="w-full"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add FAQ
+              </Button>
+            </div>
+            
+            {faqs.length > 0 && (
+              <div className="space-y-2">
+                {faqs.map((faq, index) => (
+                  <div key={index} className="flex items-start gap-3 p-3 bg-slate-50 rounded border border-slate-200">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-slate-900">{faq.question}</p>
+                      <p className="text-xs text-slate-600 mt-1 line-clamp-2">{faq.answer}</p>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setFaqs(faqs.filter((_, i) => i !== index))}
+                      className="h-6 w-6 p-0 text-slate-500 hover:text-red-600 shrink-0"
                     >
                       <X className="h-4 w-4" />
                     </Button>
