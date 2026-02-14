@@ -162,13 +162,13 @@ export default function ApplicationsPage() {
         <p className="text-sm text-slate-400">{total} applications total</p>
         <div className="flex items-center gap-3">
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-[140px] h-9 bg-[#111827] border-slate-700/50 text-slate-200">
+            <SelectTrigger className="w-[140px] h-9 bg-white border-slate-200 text-slate-900">
               <SelectValue placeholder="All status" />
             </SelectTrigger>
-            <SelectContent className="bg-[#111827] border-slate-700/50">
-              <SelectItem value="all" className="text-slate-200 focus:bg-slate-800 focus:text-white">All Status</SelectItem>
+            <SelectContent className="bg-white border-slate-200">
+              <SelectItem value="all" className="text-slate-900 focus:bg-slate-800 focus:text-slate-900">All Status</SelectItem>
               {STATUS_OPTIONS.map((s) => (
-                <SelectItem key={s.value} value={s.value} className="text-slate-200 focus:bg-slate-800 focus:text-white">{s.label}</SelectItem>
+                <SelectItem key={s.value} value={s.value} className="text-slate-900 focus:bg-slate-800 focus:text-slate-900">{s.label}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -178,7 +178,7 @@ export default function ApplicationsPage() {
               placeholder="Search applicants..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 h-9 bg-[#111827] border-slate-700/50 text-slate-200 placeholder:text-slate-500 focus:border-teal-500"
+              className="pl-9 h-9 bg-white border-slate-200 text-slate-900 placeholder:text-slate-500 focus:border-teal-500"
             />
           </div>
         </div>
@@ -188,7 +188,7 @@ export default function ApplicationsPage() {
       <div className="space-y-2">
         {loading
           ? Array.from({ length: 5 }).map((_, i) => (
-              <Card key={i} className="bg-[#111827] border-slate-800/50">
+              <Card key={i} className="bg-white border-slate-200">
                 <CardContent className="p-4">
                   <div className="flex gap-3">
                     <Skeleton className="h-10 w-10 rounded-full bg-slate-700/50" />
@@ -204,7 +204,7 @@ export default function ApplicationsPage() {
           : applications.map((app) => (
               <Card
                 key={app.id}
-                className="bg-[#111827] border-slate-800/50 hover:border-slate-700/80 transition-colors cursor-pointer"
+                className="bg-white border-slate-200 hover:border-slate-700/80 transition-colors cursor-pointer"
                 onClick={() => openDetail(app)}
               >
                 <CardContent className="p-4">
@@ -214,7 +214,7 @@ export default function ApplicationsPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="text-sm font-medium text-white">{app.full_name}</h3>
+                        <h3 className="text-sm font-medium text-slate-900">{app.full_name}</h3>
                         <Badge variant="outline" className={`text-[10px] px-1.5 py-0 ${getStatusStyle(app.status)}`}>
                           {app.status}
                         </Badge>
@@ -260,10 +260,10 @@ export default function ApplicationsPage() {
         <div className="flex items-center justify-between">
           <p className="text-xs text-slate-500">Page {page} of {totalPages}</p>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)} className="h-8 bg-transparent border-slate-700/50 text-slate-300 hover:bg-slate-800 cursor-pointer">
+            <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)} className="h-8 bg-transparent border-slate-200 text-slate-700 hover:bg-slate-800 cursor-pointer">
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)} className="h-8 bg-transparent border-slate-700/50 text-slate-300 hover:bg-slate-800 cursor-pointer">
+            <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)} className="h-8 bg-transparent border-slate-200 text-slate-700 hover:bg-slate-800 cursor-pointer">
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
@@ -272,9 +272,9 @@ export default function ApplicationsPage() {
 
       {/* Detail Sheet */}
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-        <SheetContent className="bg-[#111827] border-slate-700/50 text-white w-full sm:max-w-lg overflow-y-auto">
+        <SheetContent className="bg-white border-slate-200 text-slate-900 w-full sm:max-w-lg overflow-y-auto">
           <SheetHeader>
-            <SheetTitle className="text-white">Application Detail</SheetTitle>
+            <SheetTitle className="text-slate-900">Application Detail</SheetTitle>
           </SheetHeader>
           {selectedApp && (
             <div className="space-y-6 mt-6">
@@ -284,7 +284,7 @@ export default function ApplicationsPage() {
                   {selectedApp.full_name?.charAt(0)?.toUpperCase()}
                 </div>
                 <div>
-                  <h3 className="text-base font-semibold text-white">{selectedApp.full_name}</h3>
+                  <h3 className="text-base font-semibold text-slate-900">{selectedApp.full_name}</h3>
                   <div className="flex items-center gap-3 mt-0.5 flex-wrap">
                     <span className="text-xs text-slate-400 flex items-center gap-1">
                       <Mail className="h-3 w-3" /> {selectedApp.email}
@@ -300,9 +300,9 @@ export default function ApplicationsPage() {
 
               {/* Vacancy Details */}
               {selectedApp.vacancies && (
-                <div className="rounded-lg bg-[#0a0f1a] p-4 border border-slate-800/50">
+                <div className="rounded-lg bg-slate-50 p-4 border border-slate-200">
                   <Label className="text-xs text-slate-500 uppercase tracking-wider">Applied For</Label>
-                  <p className="text-sm font-medium text-white mt-1">{selectedApp.vacancies.title}</p>
+                  <p className="text-sm font-medium text-slate-900 mt-1">{selectedApp.vacancies.title}</p>
                   <div className="flex items-center gap-3 mt-1 text-xs text-slate-400">
                     {selectedApp.vacancies.department && <span>{selectedApp.vacancies.department}</span>}
                     {selectedApp.vacancies.location_city && (
@@ -319,7 +319,7 @@ export default function ApplicationsPage() {
               {selectedApp.cover_letter && (
                 <div className="space-y-1.5">
                   <Label className="text-xs text-slate-500 uppercase tracking-wider">Cover Letter</Label>
-                  <p className="text-sm text-slate-300 whitespace-pre-wrap leading-relaxed">{selectedApp.cover_letter}</p>
+                  <p className="text-sm text-slate-700 whitespace-pre-wrap leading-relaxed">{selectedApp.cover_letter}</p>
                 </div>
               )}
 
@@ -331,7 +331,7 @@ export default function ApplicationsPage() {
                     href={selectedApp.resume_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-1.5 inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-[#0a0f1a] border border-slate-700/50 text-sm text-teal-400 hover:bg-slate-800 transition-colors"
+                    className="mt-1.5 inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-sm text-teal-400 hover:bg-slate-800 transition-colors"
                   >
                     <FileText className="h-4 w-4" />
                     View Resume
@@ -346,21 +346,21 @@ export default function ApplicationsPage() {
               </div>
 
               {/* Follow-up Section */}
-              <div className="border-t border-slate-700/50 pt-5">
-                <h4 className="text-sm font-semibold text-slate-200 mb-4 flex items-center gap-2">
+              <div className="border-t border-slate-200 pt-5">
+                <h4 className="text-sm font-semibold text-slate-900 mb-4 flex items-center gap-2">
                   <AlertCircle className="h-4 w-4 text-teal-400" />
                   Follow-up Actions
                 </h4>
                 <div className="space-y-4">
                   <div className="space-y-1.5">
-                    <Label className="text-xs text-slate-300">Status</Label>
+                    <Label className="text-xs text-slate-700">Status</Label>
                     <Select value={newStatus} onValueChange={setNewStatus}>
-                      <SelectTrigger className="h-9 bg-[#0a0f1a] border-slate-700/50 text-slate-200">
+                      <SelectTrigger className="h-9 bg-slate-50 border-slate-200 text-slate-900">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-[#0a0f1a] border-slate-700/50">
+                      <SelectContent className="bg-slate-50 border-slate-200">
                         {STATUS_OPTIONS.map((s) => (
-                          <SelectItem key={s.value} value={s.value} className="text-slate-200 focus:bg-slate-800 focus:text-white">
+                          <SelectItem key={s.value} value={s.value} className="text-slate-900 focus:bg-slate-800 focus:text-slate-900">
                             {s.label}
                           </SelectItem>
                         ))}
@@ -368,19 +368,19 @@ export default function ApplicationsPage() {
                     </Select>
                   </div>
                   <div className="space-y-1.5">
-                    <Label className="text-xs text-slate-300">Admin Notes</Label>
+                    <Label className="text-xs text-slate-700">Admin Notes</Label>
                     <Textarea
                       value={adminNotes}
                       onChange={(e) => setAdminNotes(e.target.value)}
                       placeholder="Add interview notes, feedback, or follow-up actions..."
                       rows={4}
-                      className="bg-[#0a0f1a] border-slate-700/50 text-white placeholder:text-slate-600"
+                      className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-600"
                     />
                   </div>
                   <Button
                     onClick={handleUpdateFollowup}
                     disabled={saving}
-                    className="w-full bg-teal-600 hover:bg-teal-500 text-white cursor-pointer"
+                    className="w-full bg-teal-600 hover:bg-teal-500 text-slate-900 cursor-pointer"
                   >
                     {saving ? 'Saving...' : 'Update Follow-up'}
                   </Button>

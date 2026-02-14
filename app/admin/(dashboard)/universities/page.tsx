@@ -189,19 +189,19 @@ export default function UniversitiesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <p className="text-sm text-slate-400">{total} universities total</p>
+          <p className="text-sm text-slate-600">{total} universities total</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="relative flex-1 sm:w-72">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
             <Input
               placeholder="Search universities..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 h-9 bg-[#111827] border-slate-700/50 text-slate-200 placeholder:text-slate-500 focus:border-teal-500"
+              className="pl-9 h-9 bg-white border-slate-200 text-slate-900 placeholder:text-slate-500 focus:border-teal-500"
             />
           </div>
-          <Button onClick={openCreate} className="bg-teal-600 hover:bg-teal-500 text-white h-9 cursor-pointer">
+          <Button onClick={openCreate} className="bg-teal-600 hover:bg-teal-700 text-white h-9 cursor-pointer">
             <Plus className="h-4 w-4 mr-1.5" />
             Add
           </Button>
@@ -212,22 +212,22 @@ export default function UniversitiesPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {loading
           ? Array.from({ length: 6 }).map((_, i) => (
-              <Card key={i} className="bg-[#111827] border-slate-800/50">
+              <Card key={i} className="bg-white border-slate-200">
                 <CardContent className="p-5">
-                  <Skeleton className="h-5 w-48 mb-3 bg-slate-700/50" />
-                  <Skeleton className="h-4 w-32 mb-2 bg-slate-700/50" />
-                  <Skeleton className="h-3 w-full mb-1 bg-slate-700/50" />
-                  <Skeleton className="h-3 w-3/4 bg-slate-700/50" />
+                  <Skeleton className="h-5 w-48 mb-3 bg-slate-100" />
+                  <Skeleton className="h-4 w-32 mb-2 bg-slate-100" />
+                  <Skeleton className="h-3 w-full mb-1 bg-slate-100" />
+                  <Skeleton className="h-3 w-3/4 bg-slate-100" />
                 </CardContent>
               </Card>
             ))
           : universities.map((uni) => (
-              <Card key={uni.id} className="bg-[#111827] border-slate-800/50 hover:border-slate-700/80 transition-colors group">
+              <Card key={uni.id} className="bg-white border-slate-200 hover:border-slate-300 transition-colors group">
                 <CardContent className="p-5">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-semibold text-white truncate">{uni.name}</h3>
-                      <div className="flex items-center gap-1.5 mt-1 text-xs text-slate-400">
+                      <h3 className="text-sm font-semibold text-slate-900 truncate">{uni.name}</h3>
+                      <div className="flex items-center gap-1.5 mt-1 text-xs text-slate-600">
                         <MapPin className="h-3 w-3 flex-shrink-0" />
                         <span className="truncate">{uni.city}, {uni.countries?.name}</span>
                       </div>
@@ -235,14 +235,14 @@ export default function UniversitiesPage() {
                     <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button
                         onClick={() => openEdit(uni)}
-                        className="p-1.5 rounded-md text-slate-400 hover:text-teal-400 hover:bg-teal-400/10 cursor-pointer"
+                        className="p-1.5 rounded-md text-slate-600 hover:text-teal-600 hover:bg-teal-50 cursor-pointer"
                         aria-label="Edit university"
                       >
                         <Pencil className="h-3.5 w-3.5" />
                       </button>
                       <button
                         onClick={() => { setDeleteId(uni.id); setDeleteOpen(true) }}
-                        className="p-1.5 rounded-md text-slate-400 hover:text-red-400 hover:bg-red-400/10 cursor-pointer"
+                        className="p-1.5 rounded-md text-slate-600 hover:text-red-600 hover:bg-red-50 cursor-pointer"
                         aria-label="Delete university"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -250,21 +250,21 @@ export default function UniversitiesPage() {
                     </div>
                   </div>
                   {uni.description && (
-                    <p className="text-xs text-slate-500 line-clamp-2 mb-3">{uni.description}</p>
+                    <p className="text-xs text-slate-600 line-clamp-2 mb-3">{uni.description}</p>
                   )}
                   <div className="flex items-center gap-2 flex-wrap">
                     {uni.ranking && (
-                      <Badge variant="outline" className="text-[10px] bg-blue-500/10 text-blue-400 border-blue-500/20">
+                      <Badge variant="outline" className="text-[10px] bg-blue-100 text-blue-800 border-blue-200">
                         {uni.ranking}
                       </Badge>
                     )}
                     {uni.established_year && (
-                      <Badge variant="outline" className="text-[10px] bg-slate-500/10 text-slate-400 border-slate-500/20">
+                      <Badge variant="outline" className="text-[10px] bg-slate-100 text-slate-800 border-slate-200">
                         Est. {uni.established_year}
                       </Badge>
                     )}
                     {uni.university_campuses?.length > 0 && (
-                      <Badge variant="outline" className="text-[10px] bg-teal-500/10 text-teal-400 border-teal-500/20">
+                      <Badge variant="outline" className="text-[10px] bg-teal-100 text-teal-800 border-teal-200">
                         {uni.university_campuses.length} campus{uni.university_campuses.length > 1 ? 'es' : ''}
                       </Badge>
                     )}
@@ -273,7 +273,7 @@ export default function UniversitiesPage() {
                         href={uni.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[10px] text-slate-500 hover:text-teal-400 flex items-center gap-0.5"
+                        className="text-[10px] text-slate-600 hover:text-teal-600 flex items-center gap-0.5"
                       >
                         <ExternalLink className="h-3 w-3" /> Website
                       </a>
@@ -287,7 +287,7 @@ export default function UniversitiesPage() {
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-between">
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-600">
             Page {page} of {totalPages}
           </p>
           <div className="flex gap-2">
@@ -296,7 +296,7 @@ export default function UniversitiesPage() {
               size="sm"
               disabled={page <= 1}
               onClick={() => setPage((p) => p - 1)}
-              className="h-8 bg-transparent border-slate-700/50 text-slate-300 hover:bg-slate-800 disabled:opacity-40 cursor-pointer"
+              className="h-8 bg-white border-slate-200 text-slate-700 hover:bg-slate-50 disabled:opacity-40 cursor-pointer"
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
@@ -305,7 +305,7 @@ export default function UniversitiesPage() {
               size="sm"
               disabled={page >= totalPages}
               onClick={() => setPage((p) => p + 1)}
-              className="h-8 bg-transparent border-slate-700/50 text-slate-300 hover:bg-slate-800 disabled:opacity-40 cursor-pointer"
+              className="h-8 bg-white border-slate-200 text-slate-700 hover:bg-slate-50 disabled:opacity-40 cursor-pointer"
             >
               <ChevronRight className="h-4 w-4" />
             </Button>
@@ -315,18 +315,18 @@ export default function UniversitiesPage() {
 
       {/* Create/Edit Dialog */}
       <Dialog open={formOpen} onOpenChange={setFormOpen}>
-        <DialogContent className="bg-[#111827] border-slate-700/50 text-white max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-white border-slate-200 text-slate-900 max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-white">{editingId ? 'Edit University' : 'Add University'}</DialogTitle>
+            <DialogTitle className="text-slate-900">{editingId ? 'Edit University' : 'Add University'}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5 col-span-2">
-                <Label className="text-xs text-slate-300">Name *</Label>
-                <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-9 bg-[#0a0f1a] border-slate-700/50 text-white" />
+                <Label className="text-xs text-slate-700">Name *</Label>
+                <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-9 bg-slate-50 border-slate-200 text-slate-900" />
               </div>
               <div className="space-y-1.5">
-                <Label className="text-xs text-slate-300">City *</Label>
+                <Label className="text-xs text-slate-700">City *</Label>
                 <Input value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} className="h-9 bg-[#0a0f1a] border-slate-700/50 text-white" />
               </div>
               <div className="space-y-1.5">
