@@ -65,6 +65,7 @@ export default function NewUniversityPage() {
     country_id: '',
     campus_type: '',
     description: '',
+    why_study_here: '',
     website_url: '',
     rank_world: '',
     founded_year: '',
@@ -74,6 +75,11 @@ export default function NewUniversityPage() {
     logo_url: '',
     cover_image_url: '',
   })
+
+  const [highlights, setHighlights] = useState<string[]>([])
+  const [newHighlight, setNewHighlight] = useState('')
+  const [requiredDocuments, setRequiredDocuments] = useState<string[]>([])
+  const [newDocument, setNewDocument] = useState('')
 
   const [logoFile, setLogoFile] = useState<File | null>(null)
   const [logoPreview, setLogoPreview] = useState<string>('')
@@ -213,6 +219,7 @@ export default function NewUniversityPage() {
         country_id: parseInt(form.country_id),
         campus_type: form.campus_type.trim() || null,
         description: form.description.trim() || null,
+        why_study_here: form.why_study_here.trim() || null,
         website_url: form.website_url.trim() || null,
         rank_world: form.rank_world.trim() || null,
         founded_year: form.founded_year ? parseInt(form.founded_year) : null,
@@ -221,6 +228,8 @@ export default function NewUniversityPage() {
         acceptance_rate: form.acceptance_rate ? parseInt(form.acceptance_rate) : null,
         logo_url: logoPath || null,
         cover_image_url: coverPath || null,
+        highlights: highlights.length > 0 ? JSON.stringify(highlights) : null,
+        required_documents: requiredDocuments.length > 0 ? JSON.stringify(requiredDocuments) : null,
       }
 
       const res = await fetch('/api/admin/universities', {
@@ -411,6 +420,18 @@ export default function NewUniversityPage() {
                 className="bg-white"
               />
             </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="why_study_here">Why Study Here</Label>
+              <Textarea
+                id="why_study_here"
+                value={form.why_study_here}
+                onChange={(e) => setForm({ ...form, why_study_here: e.target.value })}
+                rows={4}
+                placeholder="Explain why students should choose this university..."
+                className="bg-white"
+              />
+            </div>
           </CardContent>
         </Card>
 
@@ -571,6 +592,114 @@ export default function NewUniversityPage() {
                 </div>
               </div>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Highlights */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Highlights</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex gap-2">
+              <Input
+                value={newHighlight}
+                onChange={(e) => setNewHighlight(e.target.value)}
+                placeholder="Add a highlight (e.g., Top research university)"
+                className="bg-white"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && newHighlight.trim()) {
+                    setHighlights([...highlights, newHighlight.trim()])
+                    setNewHighlight('')
+                  }
+                }}
+              />
+              <Button
+                type="button"
+                onClick={() => {
+                  if (newHighlight.trim()) {
+                    setHighlights([...highlights, newHighlight.trim()])
+                    setNewHighlight('')
+                  }
+                }}
+                className="bg-teal-600 hover:bg-teal-700"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+            
+            {highlights.length > 0 && (
+              <div className="space-y-2">
+                {highlights.map((highlight, index) => (
+                  <div key={index} className="flex items-center gap-2 p-2 bg-slate-50 rounded border border-slate-200">
+                    <span className="flex-1 text-sm text-slate-900">{highlight}</span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setHighlights(highlights.filter((_, i) => i !== index))}
+                      className="h-6 w-6 p-0 text-slate-500 hover:text-red-600"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Required Documents */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Required Documents</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex gap-2">
+              <Input
+                value={newDocument}
+                onChange={(e) => setNewDocument(e.target.value)}
+                placeholder="Add a required document (e.g., Passport copy)"
+                className="bg-white"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && newDocument.trim()) {
+                    setRequiredDocuments([...requiredDocuments, newDocument.trim()])
+                    setNewDocument('')
+                  }
+                }}
+              />
+              <Button
+                type="button"
+                onClick={() => {
+                  if (newDocument.trim()) {
+                    setRequiredDocuments([...requiredDocuments, newDocument.trim()])
+                    setNewDocument('')
+                  }
+                }}
+                className="bg-teal-600 hover:bg-teal-700"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+            
+            {requiredDocuments.length > 0 && (
+              <div className="space-y-2">
+                {requiredDocuments.map((doc, index) => (
+                  <div key={index} className="flex items-center gap-2 p-2 bg-slate-50 rounded border border-slate-200">
+                    <span className="flex-1 text-sm text-slate-900">{doc}</span>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setRequiredDocuments(requiredDocuments.filter((_, i) => i !== index))}
+                      className="h-6 w-6 p-0 text-slate-500 hover:text-red-600"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
 
