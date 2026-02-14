@@ -42,14 +42,23 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const res = await fetch('/api/admin/session')
+        const token = localStorage.getItem('admin_token')
+        if (!token) {
+          router.push('/admin')
+          return
+        }
+        const res = await fetch('/api/admin/session', {
+          headers: { Authorization: `Bearer ${token}` },
+        })
         const data = await res.json()
         if (!data.authenticated) {
+          localStorage.removeItem('admin_token')
           router.push('/admin')
           return
         }
         setAdmin(data.admin)
       } catch {
+        localStorage.removeItem('admin_token')
         router.push('/admin')
       } finally {
         setLoading(false)
@@ -59,7 +68,7 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
   }, [router])
 
   const handleLogout = async () => {
-    await fetch('/api/admin/logout', { method: 'POST' })
+    localStorage.removeItem('admin_token')
     router.push('/admin')
   }
 

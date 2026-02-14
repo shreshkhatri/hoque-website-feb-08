@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { createClient } from '@supabase/supabase-js'
-import { createSession, getSessionCookieName } from '@/lib/admin-auth'
+import { createSession } from '@/lib/admin-auth'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -38,20 +38,11 @@ export async function POST(request: Request) {
       name: admin.name,
     })
 
-    const response = NextResponse.json({
+    return NextResponse.json({
       success: true,
+      token,
       admin: { id: admin.id, email: admin.email, name: admin.name },
     })
-
-    response.cookies.set(getSessionCookieName(), token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24, // 24 hours
-      path: '/',
-    })
-
-    return response
   } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }

@@ -1,11 +1,8 @@
 import { SignJWT, jwtVerify } from 'jose'
-import { cookies } from 'next/headers'
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.ADMIN_JWT_SECRET || 'hoque-admin-secret-key-change-in-production-2026'
 )
-
-const COOKIE_NAME = 'admin_session'
 
 export interface AdminSession {
   id: number
@@ -27,13 +24,9 @@ export async function createSession(admin: AdminSession): Promise<string> {
   return token
 }
 
-export async function verifySession(): Promise<AdminSession | null> {
+export async function verifyToken(token: string): Promise<AdminSession | null> {
   try {
-    const cookieStore = await cookies()
-    const token = cookieStore.get(COOKIE_NAME)?.value
-
     if (!token) return null
-
     const { payload } = await jwtVerify(token, JWT_SECRET)
     return {
       id: payload.id as number,
@@ -45,6 +38,10 @@ export async function verifySession(): Promise<AdminSession | null> {
   }
 }
 
-export function getSessionCookieName(): string {
-  return COOKIE_NAME
+export function extractBearerToken(request: Request): string | null {
+  const authHeader = request.headers.get('Authorization')
+  if (authHeader?.startsWith('Bearer ')) {
+    return authHeader.slice(7)
+  }
+  return null
 }

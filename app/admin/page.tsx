@@ -36,9 +36,9 @@ export default function AdminLoginPage() {
         return
       }
 
-      // Use window.location for full page navigation so the new cookie is sent with the request
-      window.location.href = '/admin/dashboard'
-      return
+      // Store the JWT token in localStorage (cookies don't work in iframe environments)
+      localStorage.setItem('admin_token', data.token)
+      router.push('/admin/dashboard')
     } catch {
       setError('An unexpected error occurred')
       setLoading(false)
