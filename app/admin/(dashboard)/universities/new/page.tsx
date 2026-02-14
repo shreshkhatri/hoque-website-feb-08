@@ -223,7 +223,6 @@ export default function NewUniversityPage() {
         address: form.address.trim() || null,
         ranking: form.ranking.trim() || null,
         established_year: form.established_year ? parseInt(form.established_year) : null,
-        accreditation: form.accreditation.trim() || null,
         student_population: form.student_population ? parseInt(form.student_population) : null,
         international_students_percentage: form.international_students_percentage ? parseFloat(form.international_students_percentage) : null,
         campus_size: form.campus_size.trim() || null,
