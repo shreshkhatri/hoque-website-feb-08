@@ -5,12 +5,12 @@ export async function GET() {
   try {
     const { data, error } = await supabase
       .from('countries')
-      .select('id, name')
+      .select('id, name, code')
       .order('name', { ascending: true })
 
     if (error) throw error
 
-    return NextResponse.json(data)
+    return NextResponse.json({ countries: data })
   } catch (error) {
     console.error('Error fetching countries:', error)
     return NextResponse.json(
