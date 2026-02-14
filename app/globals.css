@@ -1,6 +1,15 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+/* Font optimization - reduce CLS and improve LCP */
+@supports (font-variation-settings: normal) {
+  @font-face {
+    font-family: 'Geist';
+    font-display: swap;
+    font-weight: 100 900;
+  }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 html {
