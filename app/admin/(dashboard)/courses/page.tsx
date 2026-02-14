@@ -198,10 +198,10 @@ export default function CoursesPage() {
               placeholder="Search courses..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 h-9 bg-[#111827] border-slate-700/50 text-slate-200 placeholder:text-slate-500 focus:border-teal-500"
+              className="pl-9 h-9 bg-white border-slate-200 text-slate-900 placeholder:text-slate-500 focus:border-teal-500"
             />
           </div>
-          <Button onClick={openCreate} className="bg-teal-600 hover:bg-teal-500 text-white h-9 cursor-pointer">
+          <Button onClick={openCreate} className="bg-teal-600 hover:bg-teal-500 text-slate-900 h-9 cursor-pointer">
             <Plus className="h-4 w-4 mr-1.5" />
             Add
           </Button>
@@ -222,7 +222,7 @@ export default function CoursesPage() {
 
         {loading
           ? Array.from({ length: 6 }).map((_, i) => (
-              <Card key={i} className="bg-[#111827] border-slate-800/50">
+              <Card key={i} className="bg-white border-slate-200">
                 <CardContent className="p-5">
                   <Skeleton className="h-4 w-64 mb-2 bg-slate-700/50" />
                   <Skeleton className="h-3 w-40 bg-slate-700/50" />
@@ -230,11 +230,11 @@ export default function CoursesPage() {
               </Card>
             ))
           : courses.map((course) => (
-              <Card key={course.id} className="bg-[#111827] border-slate-800/50 hover:border-slate-700/80 transition-colors group">
+              <Card key={course.id} className="bg-white border-slate-200 hover:border-slate-700/80 transition-colors group">
                 <CardContent className="p-4 md:p-5">
                   <div className="md:grid md:grid-cols-12 md:gap-4 md:items-center space-y-2 md:space-y-0">
                     <div className="col-span-4 min-w-0">
-                      <p className="text-sm font-medium text-white truncate">{course.name}</p>
+                      <p className="text-sm font-medium text-slate-900 truncate">{course.name}</p>
                       {course.intake_months && (
                         <p className="text-[11px] text-slate-500 mt-0.5 truncate">Intakes: {course.intake_months}</p>
                       )}
@@ -289,10 +289,10 @@ export default function CoursesPage() {
         <div className="flex items-center justify-between">
           <p className="text-xs text-slate-500">Page {page} of {totalPages}</p>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)} className="h-8 bg-transparent border-slate-700/50 text-slate-300 hover:bg-slate-800 cursor-pointer">
+            <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)} className="h-8 bg-transparent border-slate-200 text-slate-700 hover:bg-slate-800 cursor-pointer">
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)} className="h-8 bg-transparent border-slate-700/50 text-slate-300 hover:bg-slate-800 cursor-pointer">
+            <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)} className="h-8 bg-transparent border-slate-200 text-slate-700 hover:bg-slate-800 cursor-pointer">
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
@@ -301,47 +301,47 @@ export default function CoursesPage() {
 
       {/* Create/Edit Dialog */}
       <Dialog open={formOpen} onOpenChange={setFormOpen}>
-        <DialogContent className="bg-[#111827] border-slate-700/50 text-white max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogContent className="bg-white border-slate-200 text-slate-900 max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-white">{editingId ? 'Edit Course' : 'Add Course'}</DialogTitle>
+            <DialogTitle className="text-slate-900">{editingId ? 'Edit Course' : 'Add Course'}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5 col-span-2">
-                <Label className="text-xs text-slate-300">Course Name *</Label>
-                <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-9 bg-[#0a0f1a] border-slate-700/50 text-white" />
+                <Label className="text-xs text-slate-700">Course Name *</Label>
+                <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="h-9 bg-slate-50 border-slate-200 text-slate-900" />
               </div>
               <div className="space-y-1.5">
-                <Label className="text-xs text-slate-300">University ID *</Label>
-                <Input type="number" value={form.university_id} onChange={(e) => setForm({ ...form, university_id: e.target.value })} className="h-9 bg-[#0a0f1a] border-slate-700/50 text-white" />
+                <Label className="text-xs text-slate-700">University ID *</Label>
+                <Input type="number" value={form.university_id} onChange={(e) => setForm({ ...form, university_id: e.target.value })} className="h-9 bg-slate-50 border-slate-200 text-slate-900" />
               </div>
               <div className="space-y-1.5">
-                <Label className="text-xs text-slate-300">Level *</Label>
-                <Input value={form.level} onChange={(e) => setForm({ ...form, level: e.target.value })} placeholder="e.g. Bachelor's" className="h-9 bg-[#0a0f1a] border-slate-700/50 text-white placeholder:text-slate-600" />
+                <Label className="text-xs text-slate-700">Level *</Label>
+                <Input value={form.level} onChange={(e) => setForm({ ...form, level: e.target.value })} placeholder="e.g. Bachelor's" className="h-9 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-600" />
               </div>
               <div className="space-y-1.5">
-                <Label className="text-xs text-slate-300">Duration</Label>
-                <Input value={form.duration} onChange={(e) => setForm({ ...form, duration: e.target.value })} placeholder="e.g. 3 Years" className="h-9 bg-[#0a0f1a] border-slate-700/50 text-white placeholder:text-slate-600" />
+                <Label className="text-xs text-slate-700">Duration</Label>
+                <Input value={form.duration} onChange={(e) => setForm({ ...form, duration: e.target.value })} placeholder="e.g. 3 Years" className="h-9 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-600" />
               </div>
               <div className="space-y-1.5">
-                <Label className="text-xs text-slate-300">Tuition Fee</Label>
-                <Input value={form.tuition_fee} onChange={(e) => setForm({ ...form, tuition_fee: e.target.value })} placeholder="e.g. 15,000 GBP" className="h-9 bg-[#0a0f1a] border-slate-700/50 text-white placeholder:text-slate-600" />
+                <Label className="text-xs text-slate-700">Tuition Fee</Label>
+                <Input value={form.tuition_fee} onChange={(e) => setForm({ ...form, tuition_fee: e.target.value })} placeholder="e.g. 15,000 GBP" className="h-9 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-600" />
               </div>
               <div className="space-y-1.5 col-span-2">
-                <Label className="text-xs text-slate-300">Intake Months</Label>
-                <Input value={form.intake_months} onChange={(e) => setForm({ ...form, intake_months: e.target.value })} placeholder="e.g. September,January,May" className="h-9 bg-[#0a0f1a] border-slate-700/50 text-white placeholder:text-slate-600" />
+                <Label className="text-xs text-slate-700">Intake Months</Label>
+                <Input value={form.intake_months} onChange={(e) => setForm({ ...form, intake_months: e.target.value })} placeholder="e.g. September,January,May" className="h-9 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-600" />
               </div>
               <div className="space-y-1.5 col-span-2">
-                <Label className="text-xs text-slate-300">Description</Label>
-                <Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={3} className="bg-[#0a0f1a] border-slate-700/50 text-white" />
+                <Label className="text-xs text-slate-700">Description</Label>
+                <Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={3} className="bg-slate-50 border-slate-200 text-slate-900" />
               </div>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setFormOpen(false)} className="border-slate-700/50 text-slate-300 hover:bg-slate-800 cursor-pointer">
+            <Button variant="outline" onClick={() => setFormOpen(false)} className="border-slate-200 text-slate-700 hover:bg-slate-800 cursor-pointer">
               Cancel
             </Button>
-            <Button onClick={handleSave} disabled={saving || !form.name || !form.university_id || !form.level} className="bg-teal-600 hover:bg-teal-500 text-white cursor-pointer">
+            <Button onClick={handleSave} disabled={saving || !form.name || !form.university_id || !form.level} className="bg-teal-600 hover:bg-teal-500 text-slate-900 cursor-pointer">
               {saving ? 'Saving...' : editingId ? 'Update' : 'Create'}
             </Button>
           </DialogFooter>
@@ -350,16 +350,16 @@ export default function CoursesPage() {
 
       {/* Delete Confirmation */}
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <AlertDialogContent className="bg-[#111827] border-slate-700/50">
+        <AlertDialogContent className="bg-white border-slate-200">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-white">Delete Course</AlertDialogTitle>
+            <AlertDialogTitle className="text-slate-900">Delete Course</AlertDialogTitle>
             <AlertDialogDescription className="text-slate-400">
               This will permanently delete this course. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="border-slate-700/50 text-slate-300 hover:bg-slate-800">Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-red-600 hover:bg-red-500 text-white">
+            <AlertDialogCancel className="border-slate-200 text-slate-700 hover:bg-slate-800">Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} className="bg-red-600 hover:bg-red-500 text-slate-900">
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>

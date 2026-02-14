@@ -80,12 +80,12 @@ function formatDate(date: string) {
 
 function statusColor(status: string) {
   const s = status?.toLowerCase()
-  if (s === 'new') return 'bg-teal-500/15 text-teal-400 border-teal-500/20'
-  if (s === 'reviewed' || s === 'contacted') return 'bg-blue-500/15 text-blue-400 border-blue-500/20'
-  if (s === 'resolved' || s === 'hired') return 'bg-green-500/15 text-green-400 border-green-500/20'
-  if (s === 'rejected') return 'bg-red-500/15 text-red-400 border-red-500/20'
-  if (s === 'shortlisted' || s === 'interviewed') return 'bg-amber-500/15 text-amber-400 border-amber-500/20'
-  return 'bg-slate-500/15 text-slate-400 border-slate-500/20'
+  if (s === 'new') return 'bg-teal-100 text-teal-800 border-teal-200'
+  if (s === 'reviewed' || s === 'contacted') return 'bg-blue-100 text-blue-800 border-blue-200'
+  if (s === 'resolved' || s === 'hired') return 'bg-green-100 text-green-800 border-green-200'
+  if (s === 'rejected') return 'bg-red-100 text-red-800 border-red-200'
+  if (s === 'shortlisted' || s === 'interviewed') return 'bg-amber-100 text-amber-800 border-amber-200'
+  return 'bg-slate-100 text-slate-800 border-slate-200'
 }
 
 export default function DashboardPage() {
@@ -154,26 +154,26 @@ export default function DashboardPage() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {loading
           ? Array.from({ length: 6 }).map((_, i) => (
-              <Card key={i} className="bg-[#111827] border-slate-800/50">
+              <Card key={i} className="bg-white border-slate-200">
                 <CardContent className="p-4">
-                  <Skeleton className="h-4 w-16 mb-3 bg-slate-700/50" />
-                  <Skeleton className="h-8 w-12 bg-slate-700/50" />
+                  <Skeleton className="h-4 w-16 mb-3 bg-slate-100" />
+                  <Skeleton className="h-8 w-12 bg-slate-100" />
                 </CardContent>
               </Card>
             ))
           : statCards.map((card) => (
-              <Card key={card.label} className="bg-[#111827] border-slate-800/50 hover:border-slate-700/80 transition-colors">
+              <Card key={card.label} className="bg-white border-slate-200 hover:border-slate-300 transition-colors">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-medium text-slate-400">{card.label}</span>
+                    <span className="text-xs font-medium text-slate-600">{card.label}</span>
                     <div className={`p-1.5 rounded-md ${card.bg}`}>
                       <card.icon className={`h-3.5 w-3.5 ${card.color}`} />
                     </div>
                   </div>
                   <div className="flex items-end gap-2">
-                    <span className="text-2xl font-bold text-white">{card.value}</span>
+                    <span className="text-2xl font-bold text-slate-900">{card.value}</span>
                     {card.badge && (
-                      <Badge variant="outline" className="text-[10px] px-1.5 py-0 bg-teal-500/10 text-teal-400 border-teal-500/20 mb-0.5">
+                      <Badge variant="outline" className="text-[10px] px-1.5 py-0 bg-teal-100 text-teal-700 border-teal-200 mb-0.5">
                         {card.badge}
                       </Badge>
                     )}
@@ -186,25 +186,25 @@ export default function DashboardPage() {
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Messages Over Time */}
-        <Card className="bg-[#111827] border-slate-800/50">
+        <Card className="bg-white border-slate-200">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-slate-300 flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-teal-400" />
+            <CardTitle className="text-sm font-medium text-slate-700 flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-teal-600" />
               Messages Trend
             </CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
-              <Skeleton className="h-[220px] bg-slate-700/30 rounded-lg" />
+              <Skeleton className="h-[220px] bg-slate-100 rounded-lg" />
             ) : messageChartData.length > 0 ? (
               <ResponsiveContainer width="100%" height={220}>
                 <BarChart data={messageChartData} barSize={32}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                  <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={{ stroke: '#1e293b' }} />
-                  <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={{ stroke: '#1e293b' }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={{ stroke: '#e2e8f0' }} />
+                  <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={{ stroke: '#e2e8f0' }} />
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#e2e8f0' }}
-                    labelStyle={{ color: '#94a3b8' }}
+                    contentStyle={{ backgroundColor: '#f1f5f9', border: '1px solid #cbd5e1', borderRadius: '8px', color: '#1e293b' }}
+                    labelStyle={{ color: '#475569' }}
                   />
                   <Bar dataKey="count" fill="#14b8a6" radius={[4, 4, 0, 0]} name="Messages" />
                 </BarChart>
@@ -218,16 +218,16 @@ export default function DashboardPage() {
         </Card>
 
         {/* Application Status Breakdown */}
-        <Card className="bg-[#111827] border-slate-800/50">
+        <Card className="bg-white border-slate-200">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-slate-300 flex items-center gap-2">
-              <Briefcase className="h-4 w-4 text-blue-400" />
+            <CardTitle className="text-sm font-medium text-slate-700 flex items-center gap-2">
+              <Briefcase className="h-4 w-4 text-blue-600" />
               Application Status Breakdown
             </CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
-              <Skeleton className="h-[220px] bg-slate-700/30 rounded-lg" />
+              <Skeleton className="h-[220px] bg-slate-100 rounded-lg" />
             ) : statusChartData.length > 0 ? (
               <ResponsiveContainer width="100%" height={220}>
                 <PieChart>
@@ -247,10 +247,10 @@ export default function DashboardPage() {
                     ))}
                   </Pie>
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px', color: '#e2e8f0' }}
+                    contentStyle={{ backgroundColor: '#f1f5f9', border: '1px solid #cbd5e1', borderRadius: '8px', color: '#1e293b' }}
                   />
                   <Legend
-                    wrapperStyle={{ fontSize: '11px', color: '#94a3b8' }}
+                    wrapperStyle={{ fontSize: '11px', color: '#64748b' }}
                   />
                 </PieChart>
               </ResponsiveContainer>
@@ -266,10 +266,10 @@ export default function DashboardPage() {
       {/* Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Recent Messages */}
-        <Card className="bg-[#111827] border-slate-800/50">
+        <Card className="bg-white border-slate-200">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-slate-300 flex items-center gap-2">
-              <Mail className="h-4 w-4 text-amber-400" />
+            <CardTitle className="text-sm font-medium text-slate-700 flex items-center gap-2">
+              <Mail className="h-4 w-4 text-amber-600" />
               Recent Messages
             </CardTitle>
           </CardHeader>
@@ -277,22 +277,22 @@ export default function DashboardPage() {
             {loading
               ? Array.from({ length: 3 }).map((_, i) => (
                   <div key={i} className="flex items-center gap-3">
-                    <Skeleton className="h-9 w-9 rounded-full bg-slate-700/50" />
+                    <Skeleton className="h-9 w-9 rounded-full bg-slate-200" />
                     <div className="flex-1">
-                      <Skeleton className="h-3.5 w-32 mb-1.5 bg-slate-700/50" />
-                      <Skeleton className="h-3 w-48 bg-slate-700/50" />
+                      <Skeleton className="h-3.5 w-32 mb-1.5 bg-slate-200" />
+                      <Skeleton className="h-3 w-48 bg-slate-200" />
                     </div>
                   </div>
                 ))
               : recentMessages.length > 0
                 ? recentMessages.map((msg) => (
-                    <div key={msg.id} className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-slate-800/40 transition-colors">
-                      <div className="h-9 w-9 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-400 text-xs font-bold flex-shrink-0">
+                    <div key={msg.id} className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-slate-50 transition-colors">
+                      <div className="h-9 w-9 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 text-xs font-bold flex-shrink-0">
                         {msg.first_name?.charAt(0)?.toUpperCase()}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-slate-200 truncate">{msg.first_name} {msg.last_name}</p>
-                        <p className="text-xs text-slate-500 truncate">{msg.subject || msg.email}</p>
+                        <p className="text-sm font-medium text-slate-900 truncate">{msg.first_name} {msg.last_name}</p>
+                        <p className="text-xs text-slate-600 truncate">{msg.subject || msg.email}</p>
                       </div>
                       <div className="flex flex-col items-end gap-1 flex-shrink-0">
                         <Badge variant="outline" className={`text-[10px] px-1.5 py-0 ${statusColor(msg.status)}`}>
@@ -309,10 +309,10 @@ export default function DashboardPage() {
         </Card>
 
         {/* Recent Applications */}
-        <Card className="bg-[#111827] border-slate-800/50">
+        <Card className="bg-white border-slate-200">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-slate-300 flex items-center gap-2">
-              <User className="h-4 w-4 text-rose-400" />
+            <CardTitle className="text-sm font-medium text-slate-700 flex items-center gap-2">
+              <User className="h-4 w-4 text-rose-600" />
               Recent Job Applications
             </CardTitle>
           </CardHeader>
@@ -320,10 +320,10 @@ export default function DashboardPage() {
             {loading
               ? Array.from({ length: 3 }).map((_, i) => (
                   <div key={i} className="flex items-center gap-3">
-                    <Skeleton className="h-9 w-9 rounded-full bg-slate-700/50" />
+                    <Skeleton className="h-9 w-9 rounded-full bg-slate-200" />
                     <div className="flex-1">
-                      <Skeleton className="h-3.5 w-32 mb-1.5 bg-slate-700/50" />
-                      <Skeleton className="h-3 w-48 bg-slate-700/50" />
+                      <Skeleton className="h-3.5 w-32 mb-1.5 bg-slate-200" />
+                      <Skeleton className="h-3 w-48 bg-slate-200" />
                     </div>
                   </div>
                 ))
