@@ -467,6 +467,8 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                       <button
                         key={index}
                         onClick={() => setCurrentFactIndex(index)}
+                        aria-label={`View fun fact ${index + 1}`}
+                        aria-current={index === currentFactIndex ? 'true' : 'false'}
                         className={`w-2 h-2 rounded-full transition-colors ${
                           index === currentFactIndex ? 'bg-primary' : 'bg-primary/30'
                         }`}

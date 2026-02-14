@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState, useRef, useEffect } from 'react'
 import { SearchBox } from './search-box'
 import { useHeroSearch } from './hero-search-context'
@@ -42,10 +43,15 @@ export function Hero() {
 
           {/* Right Column - Image */}
           <div className="flex justify-center lg:justify-end">
-            <img
+            <Image
               src="/graduates-hero.png"
               alt="Happy graduates celebrating"
+              width={525}
+              height={437}
+              priority
+              quality={85}
               className="w-full max-w-md rounded-3xl shadow-lg object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 525px"
             />
           </div>
         </div>

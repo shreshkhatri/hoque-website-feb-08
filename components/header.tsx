@@ -3,6 +3,7 @@
 import React from 'react'
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ChevronDown, ChevronRight, Search, X } from 'lucide-react'
 import { University, Course, Country, nameToSlug } from '@/lib/supabase'
 import { SearchBox } from './search-box'
@@ -182,7 +183,16 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-8">
           <Link href="/" onClick={() => closeMobileDrawer()} className="flex items-center space-x-2 flex-shrink-0">
-            <img src="/hoque-logo.png" alt="HOQUE" className="h-6 sm:h-8 md:h-10 w-auto" />
+            <Image 
+              src="/hoque-logo.png" 
+              alt="HOQUE" 
+              width={179} 
+              height={38}
+              priority
+              quality={90}
+              className="h-6 sm:h-8 md:h-10 w-auto" 
+              sizes="(max-width: 640px) 24px, (max-width: 768px) 32px, 40px"
+            />
           </Link>
 
           {/* Dynamic Search Box - appears when hero search scrolls out of view */}
