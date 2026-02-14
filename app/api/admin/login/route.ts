@@ -11,6 +11,7 @@ const supabase = createClient(
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json()
+    console.log('[v0] Login attempt:', { email, passwordLength: password?.length })
 
     if (!email || !password) {
       return NextResponse.json({ error: 'Email and password are required' }, { status: 400 })
@@ -22,14 +23,27 @@ export async function POST(request: Request) {
       .eq('email', email.toLowerCase().trim())
       .single()
 
+    console.log('[v0] DB query result:', { 
+      adminFound: !!admin, 
+      error: error?.message,
+      hashLength: admin?.password_hash?.length 
+    })
+
     if (error || !admin) {
+      console.log('[v0] Admin not found in DB')
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
     }
 
+    console.log('[v0] Comparing password with bcrypt...')
     const isValidPassword = await bcrypt.compare(password, admin.password_hash)
+    console.log('[v0] Password comparison result:', isValidPassword)
+
     if (!isValidPassword) {
+      console.log('[v0] Password does not match')
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
     }
+
+    console.log('[v0] Login successful for:', admin.email)
 
     const token = await createSession({
       id: admin.id,
