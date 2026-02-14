@@ -57,14 +57,27 @@ const tabs = [
   { id: 'faqs', label: 'FAQs', icon: ChevronDown },
 ]
 
-const highlights = [
-  { icon: Award, title: 'Top Ranked', description: 'Among the top universities in the UK for student satisfaction' },
-  { icon: Briefcase, title: 'Career Support', description: '95% of graduates employed within 6 months' },
-  { icon: Users, title: 'Diverse Community', description: 'Students from over 130 countries' },
-  { icon: Globe, title: 'Global Connections', description: 'Partnerships with 200+ universities worldwide' },
+// Icon mapping for highlights
+const iconMap: Record<string, any> = {
+  Award,
+  Briefcase,
+  Users,
+  Globe,
+  Star,
+  GraduationCap,
+  Building2,
+  BookOpen,
+}
+
+// Default fallback data
+const defaultHighlights = [
+  { icon: 'Award', title: 'Top Ranked', description: 'Among the top universities in the UK for student satisfaction' },
+  { icon: 'Briefcase', title: 'Career Support', description: '95% of graduates employed within 6 months' },
+  { icon: 'Users', title: 'Diverse Community', description: 'Students from over 130 countries' },
+  { icon: 'Globe', title: 'Global Connections', description: 'Partnerships with 200+ universities worldwide' },
 ]
 
-const requiredDocuments = [
+const defaultDocuments = [
   { name: 'Academic Transcripts', description: 'Official transcripts from all previously attended institutions' },
   { name: 'English Language Proficiency', description: 'IELTS 6.0 overall (min 5.5 in each band) or equivalent' },
   { name: 'Personal Statement', description: 'A statement explaining your motivation and goals' },
@@ -87,6 +100,19 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
   const [levelFilter, setLevelFilter] = useState('all')
   const [campusFilter, setCampusFilter] = useState('all')
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
+
+  // Parse database fields or use defaults
+  const highlights = Array.isArray(university.highlights) && university.highlights.length > 0 
+    ? university.highlights.map((h: any) => ({ ...h, icon: iconMap[h.icon] || Award }))
+    : defaultHighlights.map(h => ({ ...h, icon: iconMap[h.icon] || Award }))
+  
+  const requiredDocuments = Array.isArray(university.required_documents) && university.required_documents.length > 0
+    ? university.required_documents
+    : defaultDocuments
+  
+  const faqs = Array.isArray(university.faqs) && university.faqs.length > 0
+    ? university.faqs
+    : defaultFaqs
 
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.name.toLowerCase().includes(courseSearch.toLowerCase()) ||
@@ -675,7 +701,7 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
         {activeTab === 'faqs' && (
           <div className="space-y-4 max-w-3xl">
             <h2 className="text-xl font-semibold text-foreground mb-6">Frequently Asked Questions</h2>
-            {defaultFaqs.map((faq, index) => (
+            {faqs.map((faq, index) => (
               <Card key={index}>
                 <CardContent className="p-0">
                   <button
