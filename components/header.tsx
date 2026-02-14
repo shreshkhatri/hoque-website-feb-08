@@ -186,12 +186,12 @@ export function Header() {
             <Image 
               src="/hoque-logo.png" 
               alt="HOQUE" 
-              width={179} 
-              height={38}
+              width={358} 
+              height={76}
               priority
-              quality={90}
+              quality={100}
               className="h-6 sm:h-8 md:h-10 w-auto" 
-              sizes="(max-width: 640px) 24px, (max-width: 768px) 32px, 40px"
+              sizes="(max-width: 640px) 120px, (max-width: 768px) 160px, 200px"
             />
           </Link>
 
