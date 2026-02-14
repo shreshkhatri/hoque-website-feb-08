@@ -148,6 +148,7 @@ export function StudentTestimonials() {
             variant="outline"
             size="icon"
             onClick={prevSlide}
+            aria-label="Previous testimonial"
             className="absolute left-2 top-1/2 -translate-y-1/2 z-10 md:hidden bg-card border-border hover:bg-muted"
           >
             <ChevronLeft className="h-5 w-5" />
@@ -156,6 +157,7 @@ export function StudentTestimonials() {
             variant="outline"
             size="icon"
             onClick={nextSlide}
+            aria-label="Next testimonial"
             className="absolute right-2 top-1/2 -translate-y-1/2 z-10 md:hidden bg-card border-border hover:bg-muted"
           >
             <ChevronRight className="h-5 w-5" />
@@ -227,6 +229,8 @@ export function StudentTestimonials() {
             <button
               key={i}
               onClick={() => setCurrentIndex(i * visibleCount)}
+              aria-label={`Go to page ${i + 1}`}
+              aria-current={Math.floor(currentIndex / visibleCount) === i ? 'true' : 'false'}
               className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
                 Math.floor(currentIndex / visibleCount) === i
                   ? 'bg-primary w-6'
@@ -242,6 +246,8 @@ export function StudentTestimonials() {
             <button
               key={i}
               onClick={() => setCurrentIndex(i)}
+              aria-label={`Go to testimonial ${i + 1}`}
+              aria-current={currentIndex === i ? 'true' : 'false'}
               className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
                 currentIndex === i
                   ? 'bg-primary w-6'

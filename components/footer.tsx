@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Facebook, Linkedin, Youtube, Instagram, Phone, Mail, MapPin } from 'lucide-react'
 import { nameToSlug } from '@/lib/supabase'
 
@@ -119,7 +120,14 @@ export function Footer() {
           <div className="md:col-span-1 space-y-4 text-center md:text-left">
             <h3 className="font-semibold text-foreground text-base">Follow</h3>
             <div className="space-y-4 flex flex-col items-center md:items-start">
-              <img src="/hoque-logo.png" alt="HOQUE" className="h-8 w-auto mb-4" />
+                <Image 
+                  src="/hoque-logo.png" 
+                  alt="HOQUE" 
+                  width={179} 
+                  height={38}
+                  quality={90}
+                  className="h-8 w-auto mb-4" 
+                />
               {/* Social Media Links */}
               <div className="flex items-center justify-center md:justify-start space-x-4">
                 <a
