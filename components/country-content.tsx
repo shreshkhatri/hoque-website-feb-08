@@ -63,99 +63,30 @@ const tabs = [
   { id: 'faqs', label: 'FAQs', icon: ChevronDown },
 ]
 
-// Country-specific data (would normally come from database)
-const getCountryData = (countryName: string) => {
-  const countryDataMap: Record<string, any> = {
-    'United Kingdom': {
-      intlStudents: '758K',
-      happinessRank: 20,
-      employmentRate: 75,
-      currency: 'GBP',
-      minWage: '10-12',
-      maxWorkHours: 20,
-      intakes: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-      costOfLiving: {
-        accommodation: { min: 1000, max: 1500 },
-        food: { min: 200, max: 300 },
-        transport: { min: 60, max: 100 },
-        utilities: { min: 150, max: 200 },
-        healthInsurance: { min: 30, max: 50 },
-      },
-      studentVisa: {
-        eligibility: 'Enrolled in a course at an educational institution in the UK',
-        validity: 'Course duration + 4 months',
-      },
-      postStudyVisa: {
-        eligibility: 'Completion of a degree or other eligible qualification at a UK higher education provider',
-        validity: '2 years for graduates and 3 years for doctoral graduates',
-      },
-      employmentSectors: [
-        { sector: 'Information Technology', demand: 'High' },
-        { sector: 'Artificial Intelligence', demand: 'High' },
-        { sector: 'Healthcare', demand: 'High' },
-        { sector: 'Construction and Skilled Trades', demand: 'Medium' },
-        { sector: 'Retail and Hospitality', demand: 'Low to Medium' },
-      ],
-      funFacts: [
-        'Britishers drink about 100 million cups of tea every day',
-        'Stonehenge in the UK is a prehistoric monument thats older than the pyramids!',
-        'Cheese rolling is considered a sport in the United Kingdom.',
-        'The UK celebrates several "bank holidays," which means youll get extra days off.',
-        'The London Underground, or "the Tube," is the oldest metro system in the world, since 1863.',
-        'London alone has over 270 nationalities, making it one of the most diverse cities globally.',
-        'The UK has over 30 distinct language accents.',
-        'Many UK universities and cities have been featured in the Harry Potter movies.',
-      ],
-      faqs: [
-        { question: 'How much study gap is acceptable in the UK for a masters?', answer: 'For a postgraduate degree in the UK, usually, a 5-year gap is accepted, although some universities may accept longer gaps if you fulfil certain requirements they might have.' },
-        { question: 'How much money is required to study in the UK?', answer: 'For bachelors courses, tuition fees range from GBP 10,000 - GBP 38,000 per year. For postgraduate courses, its GBP 9,000 - GBP 30,000 per year. Including food and accommodation, you might spend around GBP 1,000 monthly.' },
-        { question: 'Can I get permanent residency in the UK after my studies?', answer: 'Typically, to apply for permanent residency, youll need to stay in the UK for 5 continuous years under an eligible visa. The best choice is to get a post-study work visa that allows you to stay and work in the UK.' },
-      ],
-    },
-    'default': {
-      intlStudents: '500K+',
-      happinessRank: 25,
-      employmentRate: 70,
-      currency: 'USD',
-      minWage: '12-15',
-      maxWorkHours: 20,
-      intakes: ['January', 'May', 'September'],
-      costOfLiving: {
-        accommodation: { min: 800, max: 1500 },
-        food: { min: 200, max: 400 },
-        transport: { min: 50, max: 150 },
-        utilities: { min: 100, max: 200 },
-        healthInsurance: { min: 50, max: 100 },
-      },
-      studentVisa: {
-        eligibility: 'Enrolled in an accredited educational institution',
-        validity: 'Duration of course + grace period',
-      },
-      postStudyVisa: {
-        eligibility: 'Completion of a degree at an accredited institution',
-        validity: '1-3 years depending on qualification',
-      },
-      employmentSectors: [
-        { sector: 'Technology', demand: 'High' },
-        { sector: 'Healthcare', demand: 'High' },
-        { sector: 'Finance', demand: 'Medium' },
-        { sector: 'Engineering', demand: 'Medium' },
-        { sector: 'Hospitality', demand: 'Medium' },
-      ],
-      funFacts: [
-        'International education contributes billions to the local economy',
-        'Students from over 150 countries study here annually',
-        'World-class research facilities available to students',
-        'Strong alumni networks span the globe',
-      ],
-      faqs: [
-        { question: 'What are the English language requirements?', answer: 'Most universities require IELTS 6.0-6.5 or equivalent TOEFL scores. Some institutions offer conditional admission with language preparation courses.' },
-        { question: 'Can I work while studying?', answer: 'International students can typically work 20 hours per week during term time and full-time during holidays with a valid student visa.' },
-        { question: 'How do I apply for a student visa?', answer: 'After receiving your admission offer, you can apply for a student visa through the countrys immigration portal with required documents including proof of enrollment, financial statements, and health insurance.' },
-      ],
-    },
-  }
-  return countryDataMap[countryName] || countryDataMap['default']
+// All country data now comes from the database. These are minimal placeholders
+// only used when a database field is completely empty.
+const defaultPlaceholders = {
+  intlStudents: 'N/A',
+  happinessRank: null,
+  employmentRate: null,
+  currency: 'USD',
+  minWage: 'N/A',
+  maxWorkHours: 20,
+  costOfLiving: {
+    accommodation: { min: 0, max: 0 },
+    food: { min: 0, max: 0 },
+    transport: { min: 0, max: 0 },
+    utilities: { min: 0, max: 0 },
+    healthInsurance: { min: 0, max: 0 },
+  },
+  studentVisa: {
+    eligibility: 'Please contact us for visa eligibility details.',
+    validity: 'Varies by programme',
+  },
+  postStudyVisa: {
+    eligibility: 'Please contact us for post-study visa eligibility details.',
+    validity: 'Varies by qualification',
+  },
 }
 
 export function CountryContent({ country, universities, courses, funFacts = [], faqs = [], employmentSectors = [] }: CountryContentProps) {
@@ -166,60 +97,58 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
   const [courseSearch, setCourseSearch] = useState('')
   const [levelFilter, setLevelFilter] = useState('all')
 
-  // Use database fields with fallbacks from getCountryData for backwards compatibility
-  const fallbackData = getCountryData(country.name)
-  
+  // All data comes from the database; minimal placeholders only when DB field is empty
   const countryData = {
-    intlStudents: country.international_students_count || fallbackData.intlStudents,
-    happinessRank: country.happiness_ranking || fallbackData.happinessRank,
-    employmentRate: country.employment_rate || fallbackData.employmentRate,
-    currency: country.currency || fallbackData.currency,
-    minWage: country.min_wage || fallbackData.minWage,
-    maxWorkHours: country.max_work_hours || fallbackData.maxWorkHours,
-    intakes: fallbackData.intakes, // Keep using fallback for intakes
+    intlStudents: country.international_students_count || defaultPlaceholders.intlStudents,
+    happinessRank: country.happiness_ranking ?? defaultPlaceholders.happinessRank,
+    employmentRate: country.employment_rate ?? defaultPlaceholders.employmentRate,
+    currency: country.currency || defaultPlaceholders.currency,
+    minWage: country.min_wage || defaultPlaceholders.minWage,
+    maxWorkHours: country.max_work_hours || defaultPlaceholders.maxWorkHours,
     costOfLiving: {
       accommodation: { 
-        min: country.cost_accommodation_min || fallbackData.costOfLiving.accommodation.min, 
-        max: country.cost_accommodation_max || fallbackData.costOfLiving.accommodation.max 
+        min: country.cost_accommodation_min ?? defaultPlaceholders.costOfLiving.accommodation.min, 
+        max: country.cost_accommodation_max ?? defaultPlaceholders.costOfLiving.accommodation.max 
       },
       food: { 
-        min: country.cost_food_min || fallbackData.costOfLiving.food.min, 
-        max: country.cost_food_max || fallbackData.costOfLiving.food.max 
+        min: country.cost_food_min ?? defaultPlaceholders.costOfLiving.food.min, 
+        max: country.cost_food_max ?? defaultPlaceholders.costOfLiving.food.max 
       },
       transport: { 
-        min: country.cost_transport_min || fallbackData.costOfLiving.transport.min, 
-        max: country.cost_transport_max || fallbackData.costOfLiving.transport.max 
+        min: country.cost_transport_min ?? defaultPlaceholders.costOfLiving.transport.min, 
+        max: country.cost_transport_max ?? defaultPlaceholders.costOfLiving.transport.max 
       },
       utilities: { 
-        min: country.cost_utilities_min || fallbackData.costOfLiving.utilities.min, 
-        max: country.cost_utilities_max || fallbackData.costOfLiving.utilities.max 
+        min: country.cost_utilities_min ?? defaultPlaceholders.costOfLiving.utilities.min, 
+        max: country.cost_utilities_max ?? defaultPlaceholders.costOfLiving.utilities.max 
       },
       healthInsurance: { 
-        min: country.cost_health_insurance_min || fallbackData.costOfLiving.healthInsurance.min, 
-        max: country.cost_health_insurance_max || fallbackData.costOfLiving.healthInsurance.max 
+        min: country.cost_health_insurance_min ?? defaultPlaceholders.costOfLiving.healthInsurance.min, 
+        max: country.cost_health_insurance_max ?? defaultPlaceholders.costOfLiving.healthInsurance.max 
       },
     },
     studentVisa: {
-      eligibility: country.student_visa_eligibility || fallbackData.studentVisa.eligibility,
-      validity: country.student_visa_validity || fallbackData.studentVisa.validity,
+      eligibility: country.student_visa_eligibility || defaultPlaceholders.studentVisa.eligibility,
+      validity: country.student_visa_validity || defaultPlaceholders.studentVisa.validity,
     },
     postStudyVisa: {
-      eligibility: country.post_study_visa_eligibility || fallbackData.postStudyVisa.eligibility,
-      validity: country.post_study_visa_validity || fallbackData.postStudyVisa.validity,
+      eligibility: country.post_study_visa_eligibility || defaultPlaceholders.postStudyVisa.eligibility,
+      validity: country.post_study_visa_validity || defaultPlaceholders.postStudyVisa.validity,
     },
     employmentSectors: employmentSectors.length > 0 
       ? employmentSectors.map(s => ({ sector: s.sector_name, demand: s.demand_level }))
-      : fallbackData.employmentSectors,
+      : [],
     funFacts: funFacts.length > 0 
       ? funFacts.map(f => f.fact)
-      : fallbackData.funFacts,
+      : [],
     faqs: faqs.length > 0 
       ? faqs.map(f => ({ question: f.question, answer: f.answer }))
-      : fallbackData.faqs,
+      : [],
   }
 
-  // Auto-rotate fun facts
+  // Auto-rotate fun facts (only when there are facts to show)
   useEffect(() => {
+    if (countryData.funFacts.length === 0) return
     const interval = setInterval(() => {
       setCurrentFactIndex((prev) => (prev + 1) % countryData.funFacts.length)
     }, 5000)
@@ -454,8 +383,9 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
               </section>
             )}
 
-            {/* Fun Facts Carousel */}
-            <section className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl p-8">
+              {/* Fun Facts Carousel */}
+              {countryData.funFacts.length > 0 && (
+              <section className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl p-8">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
                   <Sparkles className="w-6 h-6 text-primary" />
@@ -481,6 +411,7 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                 </div>
               </div>
             </section>
+              )}
           </div>
         )}
 
@@ -743,16 +674,18 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                       __html: country.opportunities || `${country.name} offers excellent career opportunities for international graduates across various sectors.`
                     }}
                   />
-                  <div className="space-y-3">
-                    {countryData.employmentSectors.map((sector: any, index: number) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-                        <span className="font-medium text-foreground">{sector.sector}</span>
-                        <Badge variant={sector.demand === 'High' ? 'default' : sector.demand === 'Medium' ? 'secondary' : 'outline'}>
-                          {sector.demand} Demand
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
+                  {countryData.employmentSectors.length > 0 && (
+                    <div className="space-y-3">
+                      {countryData.employmentSectors.map((sector: any, index: number) => (
+                        <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                          <span className="font-medium text-foreground">{sector.sector}</span>
+                          <Badge variant={sector.demand === 'High' ? 'default' : sector.demand === 'Medium' ? 'secondary' : 'outline'}>
+                            {sector.demand} Demand
+                          </Badge>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </section>
@@ -797,12 +730,35 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                     </div>
                     <div className="space-y-4">
                       <div>
-                        <p className="text-sm text-muted-foreground mb-1">Eligibility</p>
-                        <p className="text-foreground">{countryData.postStudyVisa.eligibility}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground mb-1">Validity</p>
-                        <p className="text-foreground font-semibold">{countryData.postStudyVisa.validity}</p>
+                  <p className="text-sm text-muted-foreground mb-1">Eligibility</p>
+                  <div className="prose prose-sm max-w-none text-foreground [&_p]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5" dangerouslySetInnerHTML={{ __html: countryData.studentVisa.eligibility }} />
+                  </div>
+                  <div>
+                  <p className="text-sm text-muted-foreground mb-1">Validity</p>
+                  <div className="prose prose-sm max-w-none text-foreground font-semibold [&_p]:mb-0" dangerouslySetInnerHTML={{ __html: countryData.studentVisa.validity }} />
+                  </div>
+                  </div>
+                  </CardContent>
+                  </Card>
+                  </section>
+
+                  <section>
+                  <Card>
+                  <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-green-100 text-green-600 rounded-lg">
+                  <Award className="h-5 w-5" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground">Post-Study Work Visa</h3>
+                  </div>
+                  <div className="space-y-4">
+                  <div>
+                  <p className="text-sm text-muted-foreground mb-1">Eligibility</p>
+                  <div className="prose prose-sm max-w-none text-foreground [&_p]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5" dangerouslySetInnerHTML={{ __html: countryData.postStudyVisa.eligibility }} />
+                  </div>
+                  <div>
+                  <p className="text-sm text-muted-foreground mb-1">Validity</p>
+                  <div className="prose prose-sm max-w-none text-foreground font-semibold [&_p]:mb-0" dangerouslySetInnerHTML={{ __html: countryData.postStudyVisa.validity }} />
                       </div>
                     </div>
                   </CardContent>
@@ -840,28 +796,36 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
         {activeTab === 'faqs' && (
           <div className="space-y-4 max-w-3xl">
             <h2 className="text-2xl font-bold text-foreground mb-6">Frequently Asked Questions</h2>
-            {countryData.faqs.map((faq: any, index: number) => (
-              <Card key={index}>
-                <CardContent className="p-0">
-                  <button
-                    onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
-                    className="w-full flex items-center justify-between p-4 text-left"
-                  >
-                    <span className="font-medium text-foreground pr-4">{faq.question}</span>
-                    <ChevronDown
-                      className={`w-5 h-5 text-muted-foreground transition-transform flex-shrink-0 ${
-                        expandedFaq === index ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </button>
-                  {expandedFaq === index && (
-                    <div className="px-4 pb-4 text-muted-foreground border-t border-border pt-4">
-                      {faq.answer}
-                    </div>
-                  )}
+            {countryData.faqs.length > 0 ? (
+              countryData.faqs.map((faq: any, index: number) => (
+                <Card key={index}>
+                  <CardContent className="p-0">
+                    <button
+                      onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
+                      className="w-full flex items-center justify-between p-4 text-left"
+                    >
+                      <span className="font-medium text-foreground pr-4">{faq.question}</span>
+                      <ChevronDown
+                        className={`w-5 h-5 text-muted-foreground transition-transform flex-shrink-0 ${
+                          expandedFaq === index ? 'rotate-180' : ''
+                        }`}
+                      />
+                    </button>
+                    {expandedFaq === index && (
+                      <div className="px-4 pb-4 text-muted-foreground border-t border-border pt-4">
+                        <div className="prose prose-sm max-w-none [&_p]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5" dangerouslySetInnerHTML={{ __html: faq.answer }} />
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              <Card>
+                <CardContent className="p-6 text-center text-muted-foreground">
+                  FAQs for {country.name} are coming soon. Please contact us for any queries.
                 </CardContent>
               </Card>
-            ))}
+            )}
           </div>
         )}
       </main>
