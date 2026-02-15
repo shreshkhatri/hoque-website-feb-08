@@ -18,8 +18,9 @@ export default function CountriesPage() {
   const fetchCountries = async () => {
     try {
       setLoading(true)
-      const response = await fetch('/api/countries')
-      const data = await response.json()
+      const response = await fetch('/api/countries?full=true')
+      const result = await response.json()
+      const data = Array.isArray(result.countries) ? result.countries : Array.isArray(result) ? result : []
       setCountries(data)
     } catch (error) {
       console.error('Error fetching countries:', error)
@@ -81,9 +82,10 @@ export default function CountriesPage() {
                     </div>
 
                     {/* Description */}
-                    <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
-                      {country.description}
-                    </p>
+                    <div
+                      className="text-muted-foreground text-sm mb-4 line-clamp-3 [&_p]:mb-0"
+                      dangerouslySetInnerHTML={{ __html: country.description || '' }}
+                    />
 
                     {/* Quick Stats */}
                     <div className="space-y-2 mb-6 text-sm">

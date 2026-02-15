@@ -345,9 +345,12 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
               </h2>
               <Card>
                 <CardContent className="p-6">
-                  <p className="text-muted-foreground leading-relaxed text-lg">
-                    {country.description || `${country.name} is a leading study destination with an excellent higher education system and a multicultural environment. The country is known for its world-renowned universities, providing students with excellent academic opportunities and career prospects. Apart from academics, the benefits of studying here include helping you land an awesome career and experience a great lifestyle.`}
-                  </p>
+                  <div
+                    className="prose prose-sm max-w-none text-muted-foreground leading-relaxed text-lg [&_h2]:text-foreground [&_h3]:text-foreground [&_a]:text-primary [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+                    dangerouslySetInnerHTML={{
+                      __html: country.description || `${country.name} is a leading study destination with an excellent higher education system and a multicultural environment. The country is known for its world-renowned universities, providing students with excellent academic opportunities and career prospects. Apart from academics, the benefits of studying here include helping you land an awesome career and experience a great lifestyle.`
+                    }}
+                  />
                   <div className="flex flex-wrap gap-3 mt-6">
                     {countryData.intakes.map((intake: string) => (
                       <Badge key={intake} variant="secondary" className="text-sm px-4 py-2">
@@ -653,9 +656,12 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
               <h2 className="text-2xl font-bold text-foreground mb-6">Student Life</h2>
               <Card>
                 <CardContent className="p-6">
-                  <p className="text-muted-foreground leading-relaxed mb-6">
-                    {country.study_life || `${country.name} offers a diverse student life and high academic standards. Additionally, the easy access to various accommodation options, part-time jobs, and post-study opportunities is a big plus.`}
-                  </p>
+                  <div
+                    className="prose prose-sm max-w-none text-muted-foreground leading-relaxed mb-6 [&_h2]:text-foreground [&_h3]:text-foreground [&_a]:text-primary [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+                    dangerouslySetInnerHTML={{
+                      __html: country.study_life || `${country.name} offers a diverse student life and high academic standards. Additionally, the easy access to various accommodation options, part-time jobs, and post-study opportunities is a big plus.`
+                    }}
+                  />
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="bg-muted/50 rounded-lg p-4">
                       <p className="text-sm text-muted-foreground mb-1">Min. wage per hour for part-time jobs</p>
@@ -731,9 +737,12 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
               <h2 className="text-2xl font-bold text-foreground mb-6">Employment Opportunities</h2>
               <Card>
                 <CardContent className="p-6">
-                  <p className="text-muted-foreground mb-6">
-                    {country.opportunities || `${country.name} offers excellent career opportunities for international graduates across various sectors.`}
-                  </p>
+                  <div
+                    className="prose prose-sm max-w-none text-muted-foreground mb-6 [&_h2]:text-foreground [&_h3]:text-foreground [&_a]:text-primary [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+                    dangerouslySetInnerHTML={{
+                      __html: country.opportunities || `${country.name} offers excellent career opportunities for international graduates across various sectors.`
+                    }}
+                  />
                   <div className="space-y-3">
                     {countryData.employmentSectors.map((sector: any, index: number) => (
                       <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
@@ -806,7 +815,10 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                 <Card>
                   <CardContent className="p-6">
                     <h3 className="text-xl font-semibold text-foreground mb-4">Visa Requirements</h3>
-                    <p className="text-muted-foreground">{country.student_permit_requirements}</p>
+                    <div
+                      className="prose prose-sm max-w-none text-muted-foreground [&_h2]:text-foreground [&_h3]:text-foreground [&_a]:text-primary [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+                      dangerouslySetInnerHTML={{ __html: country.student_permit_requirements }}
+                    />
                   </CardContent>
                 </Card>
               </section>

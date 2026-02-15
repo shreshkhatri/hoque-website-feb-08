@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { RichTextEditor } from '@/components/rich-text-editor'
 import Link from 'next/link'
 
 export default function NewCountryPage() {
@@ -187,12 +188,11 @@ export default function NewCountryPage() {
             </div>
             <div className="space-y-2">
               <Label>Short Description</Label>
-              <Textarea
+              <RichTextEditor
                 value={form.description}
-                onChange={(e) => updateForm('description', e.target.value)}
+                onChange={(val) => updateForm('description', val)}
                 placeholder="A brief summary of the country as a study destination (1-2 sentences)"
-                rows={2}
-                className="bg-white"
+                minHeight="80px"
               />
             </div>
             <div className="space-y-2">
@@ -215,32 +215,29 @@ export default function NewCountryPage() {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label>About the Country</Label>
-              <Textarea
+              <RichTextEditor
                 value={form.about}
-                onChange={(e) => updateForm('about', e.target.value)}
+                onChange={(val) => updateForm('about', val)}
                 placeholder="Detailed description about the country, its education system, culture, and why it's a great study destination"
-                rows={4}
-                className="bg-white"
+                minHeight="180px"
               />
             </div>
             <div className="space-y-2">
               <Label>Study Life</Label>
-              <Textarea
+              <RichTextEditor
                 value={form.study_life}
-                onChange={(e) => updateForm('study_life', e.target.value)}
+                onChange={(val) => updateForm('study_life', val)}
                 placeholder="Describe what student life is like in this country (campus culture, social life, accommodation, etc.)"
-                rows={4}
-                className="bg-white"
+                minHeight="180px"
               />
             </div>
             <div className="space-y-2">
               <Label>Opportunities</Label>
-              <Textarea
+              <RichTextEditor
                 value={form.opportunities}
-                onChange={(e) => updateForm('opportunities', e.target.value)}
+                onChange={(val) => updateForm('opportunities', val)}
                 placeholder="Describe career and internship opportunities available to international students"
-                rows={4}
-                className="bg-white"
+                minHeight="180px"
               />
             </div>
           </CardContent>
@@ -254,12 +251,11 @@ export default function NewCountryPage() {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label>Student Permit Requirements</Label>
-              <Textarea
+              <RichTextEditor
                 value={form.student_permit_requirements}
-                onChange={(e) => updateForm('student_permit_requirements', e.target.value)}
+                onChange={(val) => updateForm('student_permit_requirements', val)}
                 placeholder="List the requirements for obtaining a student visa/permit (e.g., CAS letter, financial proof, English test)"
-                rows={3}
-                className="bg-white"
+                minHeight="140px"
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -284,33 +280,30 @@ export default function NewCountryPage() {
             </div>
             <div className="space-y-2">
               <Label>Student Visa Eligibility</Label>
-              <Textarea
+              <RichTextEditor
                 value={form.student_visa_eligibility}
-                onChange={(e) => updateForm('student_visa_eligibility', e.target.value)}
+                onChange={(val) => updateForm('student_visa_eligibility', val)}
                 placeholder="Describe who is eligible for a student visa (e.g., accepted to an approved institution, proof of funds)"
-                rows={3}
-                className="bg-white"
+                minHeight="100px"
               />
             </div>
             <div className="space-y-2">
               <Label>Post-Study Work Visa</Label>
-              <Textarea
+              <RichTextEditor
                 value={form.post_study_work_visa}
-                onChange={(e) => updateForm('post_study_work_visa', e.target.value)}
+                onChange={(val) => updateForm('post_study_work_visa', val)}
                 placeholder="Describe the post-study work visa options (e.g., UK Graduate Route - 2 years)"
-                rows={2}
-                className="bg-white"
+                minHeight="100px"
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Post-Study Visa Eligibility</Label>
-                <Textarea
+                <RichTextEditor
                   value={form.post_study_visa_eligibility}
-                  onChange={(e) => updateForm('post_study_visa_eligibility', e.target.value)}
+                  onChange={(val) => updateForm('post_study_visa_eligibility', val)}
                   placeholder="Who is eligible for post-study work visa"
-                  rows={2}
-                  className="bg-white"
+                  minHeight="80px"
                 />
               </div>
               <div className="space-y-2">
