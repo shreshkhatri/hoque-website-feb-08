@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { RichTextEditor } from '@/components/rich-text-editor'
 import Link from 'next/link'
 
 export default function EditCountryPage() {
@@ -296,14 +297,12 @@ export default function EditCountryPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="description">Short Description</Label>
-              <Textarea
-                id="description"
+              <Label>Short Description</Label>
+              <RichTextEditor
                 value={form.description}
-                onChange={(e) => updateForm('description', e.target.value)}
+                onChange={(val) => updateForm('description', val)}
                 placeholder="Brief description shown in country cards"
-                rows={2}
-                className="bg-white"
+                minHeight="80px"
               />
             </div>
             <div className="space-y-2">
@@ -326,36 +325,30 @@ export default function EditCountryPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="about">About the Country</Label>
-              <Textarea
-                id="about"
+              <Label>About the Country</Label>
+              <RichTextEditor
                 value={form.about}
-                onChange={(e) => updateForm('about', e.target.value)}
+                onChange={(val) => updateForm('about', val)}
                 placeholder="General information about the country..."
-                rows={4}
-                className="bg-white"
+                minHeight="180px"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="study_life">Study Life</Label>
-              <Textarea
-                id="study_life"
+              <Label>Study Life</Label>
+              <RichTextEditor
                 value={form.study_life}
-                onChange={(e) => updateForm('study_life', e.target.value)}
+                onChange={(val) => updateForm('study_life', val)}
                 placeholder="Information about student life and studying experience..."
-                rows={4}
-                className="bg-white"
+                minHeight="180px"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="opportunities">Career Opportunities</Label>
-              <Textarea
-                id="opportunities"
+              <Label>Career Opportunities</Label>
+              <RichTextEditor
                 value={form.opportunities}
-                onChange={(e) => updateForm('opportunities', e.target.value)}
+                onChange={(val) => updateForm('opportunities', val)}
                 placeholder="Post-study career opportunities and prospects..."
-                rows={4}
-                className="bg-white"
+                minHeight="180px"
               />
             </div>
           </CardContent>
@@ -368,14 +361,12 @@ export default function EditCountryPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="student_permit_requirements">Student Permit Requirements</Label>
-              <Textarea
-                id="student_permit_requirements"
+              <Label>Student Permit Requirements</Label>
+              <RichTextEditor
                 value={form.student_permit_requirements}
-                onChange={(e) => updateForm('student_permit_requirements', e.target.value)}
+                onChange={(val) => updateForm('student_permit_requirements', val)}
                 placeholder="Requirements for obtaining a student permit..."
-                rows={3}
-                className="bg-white"
+                minHeight="140px"
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -401,25 +392,21 @@ export default function EditCountryPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="student_visa_eligibility">Student Visa Eligibility</Label>
-              <Textarea
-                id="student_visa_eligibility"
+              <Label>Student Visa Eligibility</Label>
+              <RichTextEditor
                 value={form.student_visa_eligibility}
-                onChange={(e) => updateForm('student_visa_eligibility', e.target.value)}
+                onChange={(val) => updateForm('student_visa_eligibility', val)}
                 placeholder="Who is eligible for a student visa..."
-                rows={2}
-                className="bg-white"
+                minHeight="100px"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="post_study_work_visa">Post-Study Work Visa</Label>
-              <Textarea
-                id="post_study_work_visa"
+              <Label>Post-Study Work Visa</Label>
+              <RichTextEditor
                 value={form.post_study_work_visa}
-                onChange={(e) => updateForm('post_study_work_visa', e.target.value)}
+                onChange={(val) => updateForm('post_study_work_visa', val)}
                 placeholder="Information about post-study work visa options..."
-                rows={3}
-                className="bg-white"
+                minHeight="140px"
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
