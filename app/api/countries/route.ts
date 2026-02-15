@@ -1,11 +1,14 @@
 import { supabase } from '@/lib/supabase'
 import { NextResponse } from 'next/server'
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url)
+    const full = searchParams.get('full') === 'true'
+
     const { data, error } = await supabase
       .from('countries')
-      .select('id, name, code')
+      .select(full ? '*' : 'id, name, code, flag_emoji')
       .order('name', { ascending: true })
 
     if (error) throw error
