@@ -972,10 +972,16 @@ export default function NewUniversityPage() {
           <DialogHeader>
             <DialogTitle>Add New Country</DialogTitle>
             <DialogDescription>
-              Create a new country to add to the list.
+              Countries have many fields (visa info, costs, etc.). You can quickly add one here or use the full form for complete details.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
+            <div className="p-3 bg-teal-50 border border-teal-200 rounded-lg">
+              <p className="text-sm text-teal-800 mb-2">Need to fill in all country details?</p>
+              <Link href="/admin/countries/new" className="text-sm font-medium text-teal-700 underline hover:text-teal-900">
+                Go to the full Add Country form &rarr;
+              </Link>
+            </div>
             <div className="space-y-2">
               <Label htmlFor="country-name">Country Name *</Label>
               <Input
@@ -996,6 +1002,7 @@ export default function NewUniversityPage() {
                 maxLength={2}
                 className="bg-white"
               />
+              <p className="text-xs text-slate-500">2-letter ISO code (auto-generated if blank)</p>
             </div>
           </div>
           <DialogFooter>
@@ -1015,7 +1022,7 @@ export default function NewUniversityPage() {
               disabled={creatingCountry || !newCountryName.trim()}
               className="bg-teal-600 hover:bg-teal-700"
             >
-              {creatingCountry ? 'Creating...' : 'Create'}
+              {creatingCountry ? 'Creating...' : 'Quick Create'}
             </Button>
           </DialogFooter>
         </DialogContent>

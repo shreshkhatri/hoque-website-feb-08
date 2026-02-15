@@ -10,6 +10,7 @@ import {
   BookOpen,
   MessageSquare,
   Briefcase,
+  Globe,
   LogOut,
   Menu,
   X,
@@ -26,6 +27,7 @@ interface AdminSession {
 
 const navItems = [
   { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin/countries', label: 'Countries', icon: Globe },
   { href: '/admin/universities', label: 'Universities', icon: GraduationCap },
   { href: '/admin/courses', label: 'Courses', icon: BookOpen },
   { href: '/admin/messages', label: 'Messages', icon: MessageSquare },
