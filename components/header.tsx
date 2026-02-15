@@ -73,7 +73,7 @@ export function Header() {
     try {
       const response = await fetch('/api/countries')
       const result = await response.json()
-      const data = result.countries || []
+      const data = Array.isArray(result.countries) ? result.countries : Array.isArray(result) ? result : []
 
       const desiredOrder = [
         'United Kingdom',
