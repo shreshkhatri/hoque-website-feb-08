@@ -72,8 +72,13 @@ export function Header() {
   const fetchCountries = async () => {
     try {
       const response = await fetch('/api/countries')
+      if (!response.ok) return
       const result = await response.json()
-      const data = Array.isArray(result.countries) ? result.countries : Array.isArray(result) ? result : []
+      console.log("[v0] countries API result type:", typeof result, "keys:", result ? Object.keys(result) : "null")
+      const countriesArr = result?.countries
+      const data: Country[] = Array.isArray(countriesArr) ? countriesArr : Array.isArray(result) ? result : []
+      console.log("[v0] countries data length:", data.length, "isArray:", Array.isArray(data))
+      if (data.length === 0) return
 
       const desiredOrder = [
         'United Kingdom',
