@@ -45,6 +45,14 @@ function nameToSlug(name: string, code?: string): string {
   return code ? `${base}-${code.toLowerCase()}` : base
 }
 
+interface WhatSetsApartItem {
+  id: number
+  title: string
+  description: string
+  icon: string
+  display_order: number
+}
+
 interface CountryContentProps {
   country: Country
   universities: University[]
@@ -52,6 +60,19 @@ interface CountryContentProps {
   funFacts?: CountryFunFact[]
   faqs?: CountryFaq[]
   employmentSectors?: CountryEmploymentSector[]
+  whatSetsApart?: WhatSetsApartItem[]
+}
+
+const iconMap: Record<string, any> = {
+  'graduation-cap': GraduationCap,
+  'briefcase': Briefcase,
+  'users': Users,
+  'trending-up': TrendingUp,
+  'award': Award,
+  'globe': Globe,
+  'book-open': BookOpen,
+  'heart': Heart,
+  'sparkles': Sparkles,
 }
 
 const tabs = [
@@ -89,7 +110,7 @@ const defaultPlaceholders = {
   },
 }
 
-export function CountryContent({ country, universities, courses, funFacts = [], faqs = [], employmentSectors = [] }: CountryContentProps) {
+export function CountryContent({ country, universities, courses, funFacts = [], faqs = [], employmentSectors = [], whatSetsApart = [] }: CountryContentProps) {
   const [activeTab, setActiveTab] = useState('overview')
   const [currentFactIndex, setCurrentFactIndex] = useState(0)
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
@@ -302,49 +323,29 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
             )}
 
             {/* What Sets Apart */}
-            <section>
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
-                What sets {country.name} apart
-              </h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <Card>
-                  <CardContent className="p-6 text-center">
-                    <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Award className="w-7 h-7 text-primary" />
-                    </div>
-                    <h3 className="font-semibold text-foreground mb-2">World-Class Education</h3>
-                    <p className="text-sm text-muted-foreground">Top-ranked universities with globally recognized degrees</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-6 text-center">
-                    <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Briefcase className="w-7 h-7 text-primary" />
-                    </div>
-                    <h3 className="font-semibold text-foreground mb-2">Post-Study Work</h3>
-                    <p className="text-sm text-muted-foreground">Stay and work after completing your degree</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-6 text-center">
-                    <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Globe className="w-7 h-7 text-primary" />
-                    </div>
-                    <h3 className="font-semibold text-foreground mb-2">Multicultural</h3>
-                    <p className="text-sm text-muted-foreground">Diverse community with students from around the world</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="p-6 text-center">
-                    <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <TrendingUp className="w-7 h-7 text-primary" />
-                    </div>
-                    <h3 className="font-semibold text-foreground mb-2">Career Growth</h3>
-                    <p className="text-sm text-muted-foreground">Strong industry connections and job opportunities</p>
-                  </CardContent>
-                </Card>
-              </div>
-            </section>
+            {whatSetsApart.length > 0 && (
+              <section>
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
+                  What sets {country.name} apart
+                </h2>
+                <div className={`grid md:grid-cols-2 ${whatSetsApart.length >= 4 ? 'lg:grid-cols-4' : whatSetsApart.length === 3 ? 'lg:grid-cols-3' : ''} gap-4`}>
+                  {whatSetsApart.map((item) => {
+                    const IconComp = iconMap[item.icon] || Award
+                    return (
+                      <Card key={item.id}>
+                        <CardContent className="p-6 text-center">
+                          <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <IconComp className="w-7 h-7 text-primary" />
+                          </div>
+                          <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
+                          <p className="text-sm text-muted-foreground">{item.description}</p>
+                        </CardContent>
+                      </Card>
+                    )
+                  })}
+                </div>
+              </section>
+            )}
 
             {/* Popular Universities Preview */}
             {universities.length > 0 && (

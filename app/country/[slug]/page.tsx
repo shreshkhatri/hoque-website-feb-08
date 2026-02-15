@@ -119,6 +119,13 @@ export default async function CountryPage({
     .eq('country_id', country.id)
     .order('display_order', { ascending: true })
 
+  // Fetch "What Sets Apart" highlights
+  const { data: whatSetsApart } = await supabase
+    .from('country_what_sets_apart')
+    .select('*')
+    .eq('country_id', country.id)
+    .order('display_order', { ascending: true })
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -129,6 +136,7 @@ export default async function CountryPage({
         funFacts={funFacts || []}
         faqs={faqs || []}
         employmentSectors={employmentSectors || []}
+        whatSetsApart={whatSetsApart || []}
       />
       <Footer />
     </div>

@@ -173,6 +173,16 @@ export type CountryEmploymentSector = {
   created_at: string
 }
 
+export type CountryWhatSetsApart = {
+  id: number
+  country_id: number
+  title: string
+  description: string
+  icon: string
+  display_order: number
+  created_at: string
+}
+
 export async function initializeDatabase() {
   try {
     // Check if universities table exists and has data

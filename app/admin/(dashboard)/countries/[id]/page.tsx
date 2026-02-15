@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import { ArrowLeft, Trash2 } from 'lucide-react'
+import { ArrowLeft, Trash2, Plus, GripVertical, ChevronDown, ChevronUp, X, Award, GraduationCap, Briefcase, Users, TrendingUp, Globe, BookOpen, Heart, Star, Lightbulb, Shield } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -20,6 +20,15 @@ export default function EditCountryPage() {
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [error, setError] = useState('')
+
+  // What Sets Apart
+  const [whatSetsApart, setWhatSetsApart] = useState<Array<{ id?: number; title: string; description: string; icon: string }>>([])
+  const [savingHighlights, setSavingHighlights] = useState(false)
+
+  // FAQs
+  const [faqs, setFaqs] = useState<Array<{ id?: number; question: string; answer: string }>>([])
+  const [savingFaqs, setSavingFaqs] = useState(false)
+  const [expandedFaqIndex, setExpandedFaqIndex] = useState<number | null>(null)
 
   const [form, setForm] = useState({
     name: '',
@@ -59,7 +68,31 @@ export default function EditCountryPage() {
 
   useEffect(() => {
     fetchCountry()
+    fetchWhatSetsApart()
+    fetchFaqs()
   }, [countryId])
+
+  const fetchWhatSetsApart = async () => {
+    try {
+      const res = await fetch(`/api/admin/countries/${countryId}/what-sets-apart`)
+      if (!res.ok) return
+      const data = await res.json()
+      setWhatSetsApart(data.items || [])
+    } catch (err) {
+      console.error('Failed to fetch highlights:', err)
+    }
+  }
+
+  const fetchFaqs = async () => {
+    try {
+      const res = await fetch(`/api/admin/countries/${countryId}/faqs`)
+      if (!res.ok) return
+      const data = await res.json()
+      setFaqs(data.items || [])
+    } catch (err) {
+      console.error('Failed to fetch FAQs:', err)
+    }
+  }
 
   const fetchCountry = async () => {
     try {
@@ -176,6 +209,112 @@ export default function EditCountryPage() {
       setError('Failed to save changes')
     } finally {
       setSaving(false)
+    }
+  }
+
+  // Icon options for What Sets Apart
+  const iconOptions = [
+    { value: 'graduation-cap', label: 'Education', Icon: GraduationCap },
+    { value: 'briefcase', label: 'Career', Icon: Briefcase },
+    { value: 'users', label: 'Community', Icon: Users },
+    { value: 'trending-up', label: 'Growth', Icon: TrendingUp },
+    { value: 'award', label: 'Award', Icon: Award },
+    { value: 'globe', label: 'Global', Icon: Globe },
+    { value: 'book-open', label: 'Learning', Icon: BookOpen },
+    { value: 'heart', label: 'Wellbeing', Icon: Heart },
+    { value: 'star', label: 'Excellence', Icon: Star },
+    { value: 'lightbulb', label: 'Innovation', Icon: Lightbulb },
+    { value: 'shield', label: 'Safety', Icon: Shield },
+  ]
+
+  const getIconComponent = (iconName: string) => {
+    const found = iconOptions.find(opt => opt.value === iconName)
+    return found ? found.Icon : Award
+  }
+
+  // What Sets Apart handlers
+  const addHighlight = () => {
+    setWhatSetsApart([...whatSetsApart, { title: '', description: '', icon: 'award' }])
+  }
+
+  const updateHighlight = (index: number, field: string, value: string) => {
+    const updated = [...whatSetsApart]
+    updated[index] = { ...updated[index], [field]: value }
+    setWhatSetsApart(updated)
+  }
+
+  const removeHighlight = (index: number) => {
+    setWhatSetsApart(whatSetsApart.filter((_, i) => i !== index))
+  }
+
+  const moveHighlight = (index: number, direction: 'up' | 'down') => {
+    const newIndex = direction === 'up' ? index - 1 : index + 1
+    if (newIndex < 0 || newIndex >= whatSetsApart.length) return
+    const updated = [...whatSetsApart]
+    ;[updated[index], updated[newIndex]] = [updated[newIndex], updated[index]]
+    setWhatSetsApart(updated)
+  }
+
+  const saveHighlights = async () => {
+    setSavingHighlights(true)
+    try {
+      const res = await fetch(`/api/admin/countries/${countryId}/what-sets-apart`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: whatSetsApart }),
+      })
+      if (!res.ok) throw new Error('Failed to save')
+      const data = await res.json()
+      setWhatSetsApart(data.items || [])
+    } catch (err) {
+      setError('Failed to save highlights')
+    } finally {
+      setSavingHighlights(false)
+    }
+  }
+
+  // FAQ handlers
+  const addFaq = () => {
+    const newIndex = faqs.length
+    setFaqs([...faqs, { question: '', answer: '' }])
+    setExpandedFaqIndex(newIndex)
+  }
+
+  const updateFaq = (index: number, field: string, value: string) => {
+    const updated = [...faqs]
+    updated[index] = { ...updated[index], [field]: value }
+    setFaqs(updated)
+  }
+
+  const removeFaq = (index: number) => {
+    setFaqs(faqs.filter((_, i) => i !== index))
+    setExpandedFaqIndex(null)
+  }
+
+  const moveFaq = (index: number, direction: 'up' | 'down') => {
+    const newIndex = direction === 'up' ? index - 1 : index + 1
+    if (newIndex < 0 || newIndex >= faqs.length) return
+    const updated = [...faqs]
+    ;[updated[index], updated[newIndex]] = [updated[newIndex], updated[index]]
+    setFaqs(updated)
+    setExpandedFaqIndex(newIndex)
+  }
+
+  const saveFaqs = async () => {
+    setSavingFaqs(true)
+    try {
+      const res = await fetch(`/api/admin/countries/${countryId}/faqs`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: faqs }),
+      })
+      if (!res.ok) throw new Error('Failed to save')
+      const data = await res.json()
+      setFaqs(data.items || [])
+    } catch (err) {
+      setError('Failed to save FAQs')
+    } finally {
+      setSavingFaqs(false)
     }
   }
 
@@ -660,6 +799,191 @@ export default function EditCountryPage() {
           </Button>
         </div>
       </form>
+
+      {/* What Sets Apart - managed independently */}
+      <Card className="border-2 border-dashed border-teal-200">
+        <CardHeader className="flex flex-row items-center justify-between pb-3">
+          <div>
+            <CardTitle className="flex items-center gap-2">
+              <Star className="h-5 w-5 text-teal-600" />
+              {`What Sets ${form.name || 'This Country'} Apart`}
+            </CardTitle>
+            <p className="text-sm text-slate-500 mt-1">Highlight cards shown on the country page overview tab</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button type="button" variant="outline" size="sm" onClick={addHighlight} className="gap-1.5">
+              <Plus className="h-4 w-4" />
+              Add Highlight
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              onClick={saveHighlights}
+              disabled={savingHighlights}
+              className="bg-teal-600 hover:bg-teal-700 gap-1.5"
+            >
+              {savingHighlights ? 'Saving...' : 'Save Highlights'}
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {whatSetsApart.length === 0 ? (
+            <div className="text-center py-8 text-slate-400 border border-dashed rounded-lg">
+              <Star className="h-8 w-8 mx-auto mb-2 opacity-40" />
+              <p className="text-sm">No highlights yet. Add one to showcase what makes this country special.</p>
+            </div>
+          ) : (
+            whatSetsApart.map((item, index) => {
+              const IconComp = getIconComponent(item.icon)
+              return (
+                <div key={index} className="border border-slate-200 rounded-lg p-4 bg-white space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="flex flex-col items-center gap-1 pt-1">
+                      <button type="button" onClick={() => moveHighlight(index, 'up')} disabled={index === 0} className="p-0.5 text-slate-400 hover:text-slate-600 disabled:opacity-30" aria-label="Move up">
+                        <ChevronUp className="h-4 w-4" />
+                      </button>
+                      <GripVertical className="h-4 w-4 text-slate-300" />
+                      <button type="button" onClick={() => moveHighlight(index, 'down')} disabled={index === whatSetsApart.length - 1} className="p-0.5 text-slate-400 hover:text-slate-600 disabled:opacity-30" aria-label="Move down">
+                        <ChevronDown className="h-4 w-4" />
+                      </button>
+                    </div>
+                    <div className="flex-1 space-y-3">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-teal-50 rounded-lg">
+                          <IconComp className="h-5 w-5 text-teal-600" />
+                        </div>
+                        <Input
+                          value={item.title}
+                          onChange={(e) => updateHighlight(index, 'title', e.target.value)}
+                          placeholder="Highlight title (e.g., World-Class Education)"
+                          className="bg-white font-medium"
+                        />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Label className="text-xs text-slate-500 shrink-0">Icon:</Label>
+                        <div className="flex flex-wrap gap-1">
+                          {iconOptions.map((opt) => (
+                            <button
+                              key={opt.value}
+                              type="button"
+                              onClick={() => updateHighlight(index, 'icon', opt.value)}
+                              className={`p-1.5 rounded-md transition-colors ${item.icon === opt.value ? 'bg-teal-100 text-teal-700 ring-1 ring-teal-300' : 'bg-slate-50 text-slate-400 hover:text-slate-600 hover:bg-slate-100'}`}
+                              title={opt.label}
+                            >
+                              <opt.Icon className="h-4 w-4" />
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                      <Textarea
+                        value={item.description}
+                        onChange={(e) => updateHighlight(index, 'description', e.target.value)}
+                        placeholder="Brief description of this highlight..."
+                        rows={2}
+                        className="bg-white text-sm"
+                      />
+                    </div>
+                    <button type="button" onClick={() => removeHighlight(index)} className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors" aria-label="Remove highlight">
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              )
+            })
+          )}
+        </CardContent>
+      </Card>
+
+      {/* FAQs - managed independently */}
+      <Card className="border-2 border-dashed border-blue-200">
+        <CardHeader className="flex flex-row items-center justify-between pb-3">
+          <div>
+            <CardTitle className="flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-blue-600" />
+              Frequently Asked Questions
+            </CardTitle>
+            <p className="text-sm text-slate-500 mt-1">FAQ accordion shown on the country page FAQs tab</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button type="button" variant="outline" size="sm" onClick={addFaq} className="gap-1.5">
+              <Plus className="h-4 w-4" />
+              Add FAQ
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              onClick={saveFaqs}
+              disabled={savingFaqs}
+              className="bg-blue-600 hover:bg-blue-700 gap-1.5"
+            >
+              {savingFaqs ? 'Saving...' : 'Save FAQs'}
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {faqs.length === 0 ? (
+            <div className="text-center py-8 text-slate-400 border border-dashed rounded-lg">
+              <Lightbulb className="h-8 w-8 mx-auto mb-2 opacity-40" />
+              <p className="text-sm">No FAQs yet. Add common questions prospective students might ask.</p>
+            </div>
+          ) : (
+            faqs.map((faq, index) => (
+              <div key={index} className="border border-slate-200 rounded-lg bg-white overflow-hidden">
+                <div className="flex items-center gap-2 p-3">
+                  <div className="flex flex-col items-center gap-0.5">
+                    <button type="button" onClick={() => moveFaq(index, 'up')} disabled={index === 0} className="p-0.5 text-slate-400 hover:text-slate-600 disabled:opacity-30" aria-label="Move up">
+                      <ChevronUp className="h-3.5 w-3.5" />
+                    </button>
+                    <button type="button" onClick={() => moveFaq(index, 'down')} disabled={index === faqs.length - 1} className="p-0.5 text-slate-400 hover:text-slate-600 disabled:opacity-30" aria-label="Move down">
+                      <ChevronDown className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                  <span className="text-xs font-medium text-slate-400 w-6 text-center">{`Q${index + 1}`}</span>
+                  <button
+                    type="button"
+                    onClick={() => setExpandedFaqIndex(expandedFaqIndex === index ? null : index)}
+                    className="flex-1 text-left font-medium text-sm text-slate-700 truncate hover:text-slate-900"
+                  >
+                    {faq.question || 'Click to expand and enter question...'}
+                  </button>
+                  <button type="button" onClick={() => removeFaq(index)} className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors shrink-0" aria-label="Remove FAQ">
+                    <X className="h-4 w-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setExpandedFaqIndex(expandedFaqIndex === index ? null : index)}
+                    className="p-1 text-slate-400 hover:text-slate-600"
+                  >
+                    <ChevronDown className={`h-4 w-4 transition-transform ${expandedFaqIndex === index ? 'rotate-180' : ''}`} />
+                  </button>
+                </div>
+                {expandedFaqIndex === index && (
+                  <div className="px-4 pb-4 pt-1 border-t border-slate-100 space-y-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-xs text-slate-500">Question</Label>
+                      <Input
+                        value={faq.question}
+                        onChange={(e) => updateFaq(index, 'question', e.target.value)}
+                        placeholder="e.g., How much study gap is acceptable?"
+                        className="bg-white"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-xs text-slate-500">Answer</Label>
+                      <RichTextEditor
+                        value={faq.answer}
+                        onChange={(val) => updateFaq(index, 'answer', val)}
+                        placeholder="Detailed answer to the question..."
+                        minHeight="100px"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))
+          )}
+        </CardContent>
+      </Card>
     </div>
   )
 }
