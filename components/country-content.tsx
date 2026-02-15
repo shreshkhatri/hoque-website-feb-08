@@ -8,7 +8,7 @@ import {
   Smile,
   Briefcase,
   GraduationCap,
-  Calendar,
+
   Clock,
   DollarSign,
   Home,
@@ -280,17 +280,26 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                       __html: country.description || `${country.name} is a leading study destination with an excellent higher education system and a multicultural environment. The country is known for its world-renowned universities, providing students with excellent academic opportunities and career prospects. Apart from academics, the benefits of studying here include helping you land an awesome career and experience a great lifestyle.`
                     }}
                   />
-                  <div className="flex flex-wrap gap-3 mt-6">
-                    {countryData.intakes.map((intake: string) => (
-                      <Badge key={intake} variant="secondary" className="text-sm px-4 py-2">
-                        <Calendar className="w-4 h-4 mr-2" />
-                        {intake}
-                      </Badge>
-                    ))}
-                  </div>
                 </CardContent>
               </Card>
             </section>
+
+            {/* About the Country */}
+            {country.about && (
+              <section>
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
+                  About {country.name}
+                </h2>
+                <Card>
+                  <CardContent className="p-6">
+                    <div
+                      className="prose prose-sm max-w-none text-muted-foreground leading-relaxed text-lg [&_h2]:text-foreground [&_h3]:text-foreground [&_a]:text-primary [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+                      dangerouslySetInnerHTML={{ __html: country.about }}
+                    />
+                  </CardContent>
+                </Card>
+              </section>
+            )}
 
             {/* What Sets Apart */}
             <section>
@@ -710,11 +719,11 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                     <div className="space-y-4">
                       <div>
                         <p className="text-sm text-muted-foreground mb-1">Eligibility</p>
-                        <p className="text-foreground">{countryData.studentVisa.eligibility}</p>
+                        <div className="prose prose-sm max-w-none text-foreground [&_p]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5" dangerouslySetInnerHTML={{ __html: countryData.studentVisa.eligibility }} />
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground mb-1">Validity</p>
-                        <p className="text-foreground font-semibold">{countryData.studentVisa.validity}</p>
+                        <div className="prose prose-sm max-w-none text-foreground font-semibold [&_p]:mb-0" dangerouslySetInnerHTML={{ __html: countryData.studentVisa.validity }} />
                       </div>
                     </div>
                   </CardContent>
@@ -723,42 +732,19 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                 <Card>
                   <CardContent className="p-6">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <Briefcase className="w-6 h-6 text-primary" />
+                      <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <Briefcase className="w-6 h-6 text-green-600" />
                       </div>
                       <h3 className="text-xl font-semibold text-foreground">Post-Study Work Visa</h3>
                     </div>
                     <div className="space-y-4">
                       <div>
-                  <p className="text-sm text-muted-foreground mb-1">Eligibility</p>
-                  <div className="prose prose-sm max-w-none text-foreground [&_p]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5" dangerouslySetInnerHTML={{ __html: countryData.studentVisa.eligibility }} />
-                  </div>
-                  <div>
-                  <p className="text-sm text-muted-foreground mb-1">Validity</p>
-                  <div className="prose prose-sm max-w-none text-foreground font-semibold [&_p]:mb-0" dangerouslySetInnerHTML={{ __html: countryData.studentVisa.validity }} />
-                  </div>
-                  </div>
-                  </CardContent>
-                  </Card>
-                  </section>
-
-                  <section>
-                  <Card>
-                  <CardContent className="p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-green-100 text-green-600 rounded-lg">
-                  <Award className="h-5 w-5" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-foreground">Post-Study Work Visa</h3>
-                  </div>
-                  <div className="space-y-4">
-                  <div>
-                  <p className="text-sm text-muted-foreground mb-1">Eligibility</p>
-                  <div className="prose prose-sm max-w-none text-foreground [&_p]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5" dangerouslySetInnerHTML={{ __html: countryData.postStudyVisa.eligibility }} />
-                  </div>
-                  <div>
-                  <p className="text-sm text-muted-foreground mb-1">Validity</p>
-                  <div className="prose prose-sm max-w-none text-foreground font-semibold [&_p]:mb-0" dangerouslySetInnerHTML={{ __html: countryData.postStudyVisa.validity }} />
+                        <p className="text-sm text-muted-foreground mb-1">Eligibility</p>
+                        <div className="prose prose-sm max-w-none text-foreground [&_p]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5" dangerouslySetInnerHTML={{ __html: countryData.postStudyVisa.eligibility }} />
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Validity</p>
+                        <div className="prose prose-sm max-w-none text-foreground font-semibold [&_p]:mb-0" dangerouslySetInnerHTML={{ __html: countryData.postStudyVisa.validity }} />
                       </div>
                     </div>
                   </CardContent>
