@@ -84,9 +84,10 @@ export default function CountriesPage() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((country) => (
-            <div
+            <Link
               key={country.id}
-              className="bg-white rounded-lg border border-slate-200 p-5 hover:shadow-md transition-shadow"
+              href={`/admin/countries/${country.id}`}
+              className="bg-white rounded-lg border border-slate-200 p-5 hover:shadow-md hover:border-teal-300 transition-all cursor-pointer"
             >
               <div className="flex items-center gap-3 mb-3">
                 <span className="text-2xl">{country.flag_emoji || '🏳️'}</span>
@@ -101,7 +102,7 @@ export default function CountriesPage() {
               {country.currency && (
                 <p className="text-xs text-slate-500 mt-2">Currency: {country.currency}</p>
               )}
-            </div>
+            </Link>
           ))}
         </div>
       )}
