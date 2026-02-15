@@ -26,7 +26,7 @@ export default function CountriesPage() {
 
   const fetchCountries = async () => {
     try {
-      const res = await fetch('/api/countries')
+      const res = await fetch('/api/countries?full=true')
       const data = await res.json()
       setCountries(data.countries || [])
     } catch (error) {
