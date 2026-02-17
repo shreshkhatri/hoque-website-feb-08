@@ -442,13 +442,13 @@ export function ContactPageClient() {
                     </div>
                   )}
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="relative w-9 h-9 rounded-full overflow-hidden border-2 border-border shadow-sm shrink-0">
+                    <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-border shadow-sm shrink-0">
                       <Image
                         src={office.flag}
                         alt={`${office.country} flag`}
                         fill
-                        className="object-cover"
-                        sizes="36px"
+                        className="object-cover scale-[1.3]"
+                        sizes="48px"
                       />
                     </div>
                     <h3 className="text-2xl font-bold text-foreground">
