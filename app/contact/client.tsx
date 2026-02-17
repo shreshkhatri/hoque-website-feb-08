@@ -1,10 +1,10 @@
 'use client'
 
 import React, { useState } from 'react'
+import Image from 'next/image'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import {
-  MapPin,
   Phone,
   Mail,
   Clock,
@@ -81,6 +81,7 @@ export function ContactPageClient() {
     {
       city: 'London',
       country: 'United Kingdom',
+      flag: '/country-office-flags/uk.jpg',
       address: 'Unit 102, 65 Whitechapel High Street,E1 1DU, England',
       phone: '+44 7878 944475',
       email: 'info@hoque.org.uk',
@@ -89,6 +90,7 @@ export function ContactPageClient() {
     {
       city: 'New York',
       country: 'USA',
+      flag: '/country-office-flags/usa.jpg',
       address: '1362 Ocean Ave, Brooklyn, HOQ1230, USA',
       phone: '+1 XXX XXX XXXX',
       email: 'newyork@hoque.org.uk',
@@ -97,6 +99,7 @@ export function ContactPageClient() {
     {
       city: 'Dhaka',
       country: 'Bangladesh',
+      flag: '/country-office-flags/bangladesh.jpg',
       address: 'Green Landmark Tower 129 Kolabagan Dhanmondi Dhaka 1205',
       phone: '+880 XXX XXX XXXX',
       email: 'bangladesh@hoque.org.uk',
@@ -105,6 +108,7 @@ export function ContactPageClient() {
     {
       city: 'Kerala',
       country: 'India',
+      flag: '/country-office-flags/india.jpg',
       address: 'Teepeyem Square, 3rd floor, Mahatma Gandhi Road. Ravipuram, Kochi, Kerala 682015',
       phone: '+91 XXX XXX XXXX',
       email: 'India@hoque.org.uk',
@@ -113,6 +117,7 @@ export function ContactPageClient() {
     {
       city: 'Kathmandu',
       country: 'Nepal',
+      flag: '/country-office-flags/nepal.jpg',
       address: 'Adwait Marga, Kathmandu - 28, Putalisadak 44600',
       phone: '+977 970-2691031',
       email: 'nepal@hoque.org.uk',
@@ -121,6 +126,7 @@ export function ContactPageClient() {
     {
       city: 'Dubai',
       country: 'United Arab Emirates',
+      flag: '/country-office-flags/uae.jpg',
       address: 'IFZA Business Park, DDP, Premises Number 74649-001 Dubai Silicon Oasis',
       phone: '+971 553592759',
       email: 'info@hoque.org.uk',
@@ -129,6 +135,7 @@ export function ContactPageClient() {
     {
       city: 'Colombo',
       country: 'Sri-Lanka',
+      flag: '/country-office-flags/sri-lanka.jpg',
       address: 'TBC',
       phone: '+94 XXX XXX XXXX',
       email: 'srilanka@hoque.org.uk',
@@ -137,6 +144,7 @@ export function ContactPageClient() {
     {
       city: 'Islamabad',
       country: 'Pakistan',
+      flag: '/country-office-flags/pakistan.jpg',
       address: 'TBC',
       phone: '+92 XXX XXX XXXX',
       email: 'pakistan@hoque.org.uk',
@@ -145,6 +153,7 @@ export function ContactPageClient() {
     {
       city: 'Auckland',
       country: 'New Zealand',
+      flag: '/country-office-flags/new-zealand.jpg',
       address: 'Updating Soon',
       phone: 'Updating Soon',
       email: 'newzealand@hoque.org.uk',
@@ -432,8 +441,16 @@ export function ContactPageClient() {
                       </span>
                     </div>
                   )}
-                  <div className="flex items-center gap-2 mb-2">
-                    <MapPin className="text-primary" size={24} />
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="relative w-9 h-9 rounded-full overflow-hidden border-2 border-border shadow-sm shrink-0">
+                      <Image
+                        src={office.flag}
+                        alt={`${office.country} flag`}
+                        fill
+                        className="object-cover"
+                        sizes="36px"
+                      />
+                    </div>
                     <h3 className="text-2xl font-bold text-foreground">
                       {office.city}
                     </h3>
