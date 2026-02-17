@@ -48,6 +48,7 @@ export async function POST(request: Request) {
       cost_utilities_max: body.cost_utilities_max ?? null,
       cost_health_insurance_min: body.cost_health_insurance_min ?? null,
       cost_health_insurance_max: body.cost_health_insurance_max ?? null,
+      faqs: body.faqs ?? [],
     }
 
     const { data, error } = await supabase
