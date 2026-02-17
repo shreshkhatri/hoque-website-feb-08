@@ -25,8 +25,8 @@ export default function EditCountryPage() {
   const [whatSetsApart, setWhatSetsApart] = useState<Array<{ id?: number; title: string; description: string; icon: string }>>([])
   const [savingHighlights, setSavingHighlights] = useState(false)
 
-  // FAQs
-  const [faqs, setFaqs] = useState<Array<{ id?: number; question: string; answer: string }>>([])
+  // FAQs (stored as JSONB in countries table)
+  const [faqs, setFaqs] = useState<Array<{ question: string; answer: string }>>([])
   const [savingFaqs, setSavingFaqs] = useState(false)
   const [expandedFaqIndex, setExpandedFaqIndex] = useState<number | null>(null)
 
@@ -69,7 +69,6 @@ export default function EditCountryPage() {
   useEffect(() => {
     fetchCountry()
     fetchWhatSetsApart()
-    fetchFaqs()
   }, [countryId])
 
   const fetchWhatSetsApart = async () => {
@@ -80,17 +79,6 @@ export default function EditCountryPage() {
       setWhatSetsApart(data.items || [])
     } catch (err) {
       console.error('Failed to fetch highlights:', err)
-    }
-  }
-
-  const fetchFaqs = async () => {
-    try {
-      const res = await fetch(`/api/admin/countries/${countryId}/faqs`)
-      if (!res.ok) return
-      const data = await res.json()
-      setFaqs(data.items || [])
-    } catch (err) {
-      console.error('Failed to fetch FAQs:', err)
     }
   }
 
@@ -136,6 +124,8 @@ export default function EditCountryPage() {
         cost_health_insurance_min: country.cost_health_insurance_min?.toString() || '',
         cost_health_insurance_max: country.cost_health_insurance_max?.toString() || '',
       })
+      // Load FAQs from country JSONB column
+      setFaqs(Array.isArray(country.faqs) ? country.faqs : [])
     } catch (error) {
       console.error('Failed to fetch country:', error)
       setError('Failed to load country details')
@@ -193,6 +183,7 @@ export default function EditCountryPage() {
         cost_utilities_max: form.cost_utilities_max ? parseInt(form.cost_utilities_max) : null,
         cost_health_insurance_min: form.cost_health_insurance_min ? parseInt(form.cost_health_insurance_min) : null,
         cost_health_insurance_max: form.cost_health_insurance_max ? parseInt(form.cost_health_insurance_max) : null,
+        faqs: faqs,
       }
 
       const res = await fetch(`/api/admin/countries/${countryId}`, {
@@ -303,14 +294,14 @@ export default function EditCountryPage() {
   const saveFaqs = async () => {
     setSavingFaqs(true)
     try {
-      const res = await fetch(`/api/admin/countries/${countryId}/faqs`, {
-        method: 'PUT',
+      const res = await fetch(`/api/admin/countries/${countryId}`, {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: faqs }),
+        body: JSON.stringify({ ...form, faqs }),
       })
       if (!res.ok) throw new Error('Failed to save')
       const data = await res.json()
-      setFaqs(data.items || [])
+      setFaqs(Array.isArray(data.country?.faqs) ? data.country.faqs : [])
     } catch (err) {
       setError('Failed to save FAQs')
     } finally {

@@ -29,7 +29,7 @@ import {
   Search,
   Filter,
 } from 'lucide-react'
-import { Country, University, Course, CountryFunFact, CountryFaq, CountryEmploymentSector } from '@/lib/supabase'
+import { Country, University, Course, CountryFunFact, CountryEmploymentSector } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -58,7 +58,6 @@ interface CountryContentProps {
   universities: University[]
   courses: (Course & { university_campuses?: { id: number; name: string; location: string | null; is_main_campus: boolean } | null })[]
   funFacts?: CountryFunFact[]
-  faqs?: CountryFaq[]
   employmentSectors?: CountryEmploymentSector[]
   whatSetsApart?: WhatSetsApartItem[]
 }
@@ -110,7 +109,7 @@ const defaultPlaceholders = {
   },
 }
 
-export function CountryContent({ country, universities, courses, funFacts = [], faqs = [], employmentSectors = [], whatSetsApart = [] }: CountryContentProps) {
+export function CountryContent({ country, universities, courses, funFacts = [], employmentSectors = [], whatSetsApart = [] }: CountryContentProps) {
   const [activeTab, setActiveTab] = useState('overview')
   const [currentFactIndex, setCurrentFactIndex] = useState(0)
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
@@ -162,9 +161,9 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
     funFacts: funFacts.length > 0 
       ? funFacts.map(f => f.fact)
       : [],
-    faqs: faqs.length > 0 
-      ? faqs.map(f => ({ question: f.question, answer: f.answer }))
-      : [],
+    faqs: Array.isArray(country.faqs) && country.faqs.length > 0
+    ? country.faqs
+    : [],
   }
 
   // Auto-rotate fun facts (only when there are facts to show)

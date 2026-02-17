@@ -133,6 +133,7 @@ export default function NewCountryPage() {
         cost_utilities_max: form.cost_utilities_max ? parseInt(form.cost_utilities_max) : null,
         cost_health_insurance_min: form.cost_health_insurance_min ? parseInt(form.cost_health_insurance_min) : null,
         cost_health_insurance_max: form.cost_health_insurance_max ? parseInt(form.cost_health_insurance_max) : null,
+        faqs: faqs,
       }
 
       const res = await fetch('/api/admin/countries', {
@@ -152,15 +153,6 @@ export default function NewCountryPage() {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ items: whatSetsApart }),
-        })
-      }
-
-      // Save FAQs if there are items
-      if (newCountryId && faqs.length > 0) {
-        await fetch(`/api/admin/countries/${newCountryId}/faqs`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ items: faqs }),
         })
       }
 

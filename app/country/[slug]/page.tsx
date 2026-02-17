@@ -105,13 +105,6 @@ export default async function CountryPage({
     .eq('country_id', country.id)
     .order('display_order', { ascending: true })
 
-  // Fetch country FAQs
-  const { data: faqs } = await supabase
-    .from('country_faqs')
-    .select('*')
-    .eq('country_id', country.id)
-    .order('display_order', { ascending: true })
-
   // Fetch country employment sectors
   const { data: employmentSectors } = await supabase
     .from('country_employment_sectors')
@@ -134,7 +127,6 @@ export default async function CountryPage({
         universities={universities || []}
         courses={courses || []}
         funFacts={funFacts || []}
-        faqs={faqs || []}
         employmentSectors={employmentSectors || []}
         whatSetsApart={whatSetsApart || []}
       />
