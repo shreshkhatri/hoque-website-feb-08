@@ -20,7 +20,7 @@ interface CourseWithUniversity extends Course {
     name: string
     city: string
     country_id: number
-    countries: { id: number; name: string }
+    countries: { id: number; name: string; currency: string | null }
   }
 }
 
@@ -744,7 +744,7 @@ export function CoursesPageClient() {
                           <div className="flex items-center space-x-2 text-sm">
                             <Zap size={16} className="text-orange-500" />
                             <span className="font-semibold">
-                              £{course.tuition_fees_international.toLocaleString()}/year
+                              {course.universities?.countries?.currency || ''} {course.tuition_fees_international.toLocaleString()}/year
                             </span>
                           </div>
                         )}
@@ -846,7 +846,7 @@ export function CoursesPageClient() {
                         <div className="flex items-center space-x-2 text-sm">
                           <Zap size={16} className="text-orange-500" />
                           <span className="font-semibold">
-                            £{course.tuition_fees_international.toLocaleString()}/year
+                            {course.universities?.countries?.currency || ''} {course.tuition_fees_international.toLocaleString()}/year
                           </span>
                         </div>
                       )}

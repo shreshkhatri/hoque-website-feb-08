@@ -23,7 +23,7 @@ function nameToSlug(name: string, code?: string): string {
 async function getCourseBySlug(slug: string) {
   const { data: courses } = await supabase
     .from('courses')
-    .select('*, universities(id, name, city, country_id), university_campuses(id, name, location, is_main_campus)')
+    .select('*, universities(id, name, city, country_id), university_campuses(id, name, location, is_main_campus), countries(currency)')
 
   if (!courses) return null
 
@@ -46,7 +46,7 @@ async function getSimilarCourses(courseId: number, fieldOfStudy: string | null) 
 
   const { data: similarCourses } = await supabase
     .from('courses')
-    .select('id, name, code, level, tuition_fees_international, duration_years, field_of_study, universities(id, name, city), countries(id, name, flag_emoji)')
+    .select('id, name, code, level, tuition_fees_international, duration_years, field_of_study, universities(id, name, city), countries(id, name, flag_emoji, currency)')
     .eq('field_of_study', fieldOfStudy)
     .neq('id', courseId)
     .limit(6)

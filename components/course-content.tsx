@@ -42,6 +42,7 @@ function nameToUniSlug(name: string): string {
 interface CourseWithUniversity extends Course {
   universities?: { id: number; name: string; city: string; country_id: number | null }
   university_campuses?: { id: number; name: string; location: string | null; is_main_campus: boolean } | null
+  countries?: { currency: string | null } | null
 }
 
 interface SimilarCourse {
@@ -53,7 +54,7 @@ interface SimilarCourse {
   duration_years: number | null
   field_of_study: string | null
   universities: { id: number; name: string; city: string } | null
-  countries: { id: number; name: string; flag_emoji: string } | null
+  countries: { id: number; name: string; flag_emoji: string; currency: string | null } | null
 }
 
 interface CourseContentProps {
@@ -103,6 +104,7 @@ function RichContent({ content, className = '' }: { content: string; className?:
 }
 
 export function CourseContent({ course, similarCourses = [] }: CourseContentProps) {
+  const currency = course.countries?.currency || ''
   const getLevelColor = (level: string) => {
     switch (level) {
       case 'Undergraduate':
@@ -207,7 +209,7 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
               <div>
                 <p className="text-xs text-muted-foreground uppercase tracking-wide">{"Tuition (Int'l)"}</p>
                 <p className="text-sm font-semibold text-foreground">
-                  {'\u00A3'}{course.tuition_fees_international.toLocaleString()}/yr
+                  {currency} {course.tuition_fees_international.toLocaleString()}/yr
                 </p>
               </div>
             </div>
@@ -360,7 +362,7 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
               <div className="bg-primary/5 rounded-lg p-6">
                 <div className="flex items-baseline gap-2">
                   <span className="text-3xl font-bold text-foreground">
-                    {'\u00A3'}{course.tuition_fees_international.toLocaleString()}
+                    {currency} {course.tuition_fees_international.toLocaleString()}
                   </span>
                   <span className="text-muted-foreground">per year (International students)</span>
                 </div>
@@ -513,7 +515,7 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
                 <div className="flex items-center justify-between text-xs text-muted-foreground pt-3 border-t border-border">
                   {sc.tuition_fees_international && (
                     <span className="font-medium">
-                      {'\u00A3'}{sc.tuition_fees_international.toLocaleString()}/yr
+                      {sc.countries?.currency || ''} {sc.tuition_fees_international.toLocaleString()}/yr
                     </span>
                   )}
                   {sc.duration_years && (

@@ -11,7 +11,7 @@ import Link from 'next/link'
 import { SearchableSelect } from '@/components/searchable-select'
 import { RichTextEditor } from '@/components/rich-text-editor'
 
-type University = { id: number; name: string; country_id: number | null }
+type University = { id: number; name: string; country_id: number | null; currency: string | null }
 type Campus = { id: number; name: string; location: string | null }
 
 const LEVEL_OPTIONS = [
@@ -58,7 +58,7 @@ export default function NewCoursePage() {
     fetch('/api/admin/universities?limit=500', { credentials: 'same-origin' })
       .then((r) => r.json())
       .then((uniData) => {
-        setUniversities((uniData.data || []).map((u: any) => ({ id: u.id, name: u.name, country_id: u.country_id })))
+        setUniversities((uniData.data || []).map((u: any) => ({ id: u.id, name: u.name, country_id: u.country_id, currency: u.countries?.currency || null })))
       })
       .catch(() => {})
   }, [])
@@ -238,7 +238,9 @@ export default function NewCoursePage() {
             </div>
 
             <div className="space-y-2">
-              <Label className="text-sm text-slate-700">Tuition Fee (International, GBP)</Label>
+              <Label className="text-sm text-slate-700">
+                Tuition Fee (International{(() => { const cur = universities.find(u => u.id.toString() === form.university_id)?.currency; return cur ? `, ${cur}` : ''; })()})
+              </Label>
               <Input
                 type="number"
                 value={form.tuition_fees_international}

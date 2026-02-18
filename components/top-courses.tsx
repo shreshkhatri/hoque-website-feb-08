@@ -6,7 +6,7 @@ import { ArrowRight, Clock, Zap, GraduationCap } from 'lucide-react'
 import { Course, nameToSlug } from '@/lib/supabase'
 
 interface CourseWithUniversity extends Course {
-  universities?: { id: number; name: string; city: string }
+  universities?: { id: number; name: string; city: string; country_id?: number | null; countries?: { currency: string | null } | null }
 }
 
 export function TopCourses() {
@@ -135,7 +135,7 @@ export function TopCourses() {
                     <div className="flex items-center space-x-2 text-sm">
                       <Zap size={16} className="text-orange-500" />
                       <span className="font-semibold">
-                        £{course.tuition_fees_international.toLocaleString()}/year
+                        {course.universities && typeof course.universities === 'object' && course.universities.countries?.currency ? course.universities.countries.currency : ''} {course.tuition_fees_international.toLocaleString()}/year
                       </span>
                     </div>
                   )}
