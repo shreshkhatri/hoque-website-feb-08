@@ -29,6 +29,8 @@ export async function GET(request: Request) {
     .order('name', { ascending: true })
     .range(offset, offset + limit - 1)
 
+  console.log('[v0] Universities GET - count:', count, 'data length:', data?.length, 'error:', error?.message, 'search:', search, 'SUPABASE_URL exists:', !!process.env.NEXT_PUBLIC_SUPABASE_URL, 'SERVICE_KEY exists:', !!process.env.SUPABASE_SERVICE_ROLE_KEY)
+
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
   return NextResponse.json({ data, total: count || 0, page, limit })
