@@ -41,18 +41,38 @@ export async function PUT(
 
   try {
     const body = await request.json()
+
+    // Only allow known university table columns
+    const allowedFields = [
+      'name', 'city', 'country_id', 'campus_type', 'description', 'why_study_here',
+      'website_url', 'rank_world', 'founded_year', 'student_population',
+      'international_students_percentage', 'acceptance_rate', 'logo_url', 'cover_image_url',
+      'highlights', 'required_documents', 'faqs', 'employment_rate', 'nationalities_count',
+      'partner_universities_count', 'intakes', 'campus_facilities', 'express_offer_available',
+      'slug'
+    ]
+    
+    const sanitizedBody: Record<string, any> = {}
+    for (const key of allowedFields) {
+      if (key in body) {
+        sanitizedBody[key] = body[key]
+      }
+    }
+
     const { data, error } = await supabase
       .from('universities')
-      .update(body)
-      .eq('id', id)
+      .update(sanitizedBody)
+      .eq('id', parseInt(id))
       .select()
       .single()
 
-    if (error) throw error
+    if (error) {
+      return NextResponse.json({ error: error.message || 'Failed to update university' }, { status: 500 })
+    }
 
     return NextResponse.json({ university: data })
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to update university' }, { status: 500 })
+  } catch (error: any) {
+    return NextResponse.json({ error: error?.message || 'Failed to update university' }, { status: 500 })
   }
 }
 

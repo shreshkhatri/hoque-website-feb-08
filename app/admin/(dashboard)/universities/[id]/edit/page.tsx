@@ -13,6 +13,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 import Link from 'next/link'
 
 type Country = { id: number; name: string; code: string }
+type ExistingCampus = { id: number; name: string; location: string; description: string; is_main_campus: boolean }
+type NewCampus = { name: string; location: string; description: string; is_main_campus: boolean }
 
 const highlightIconOptions = ['Award', 'Briefcase', 'Users', 'Globe', 'Star', 'GraduationCap', 'Building2', 'BookOpen']
 
@@ -56,13 +58,23 @@ export default function EditUniversityPage() {
   const [faqs, setFaqs] = useState<{question: string; answer: string}[]>([])
   const [newFaq, setNewFaq] = useState({ question: '', answer: '' })
 
+  // Campuses
+  const [existingCampuses, setExistingCampuses] = useState<ExistingCampus[]>([])
+  const [newCampuses, setNewCampuses] = useState<NewCampus[]>([])
+  const [campusesToDelete, setCampusesToDelete] = useState<number[]>([])
+  const [campusForm, setCampusForm] = useState<NewCampus>({ name: '', location: '', description: '', is_main_campus: false })
+
   useEffect(() => {
     Promise.all([
       fetch('/api/countries').then((r) => r.json()),
       fetch(`/api/admin/universities/${id}`).then((r) => r.json()),
+      fetch(`/api/admin/universities/${id}/campuses`).then((r) => r.json()).catch(() => ({ campuses: [] })),
     ])
-      .then(([countriesData, uniData]) => {
+      .then(([countriesData, uniData, campusesData]) => {
         setCountries(countriesData.countries || [])
+        if (Array.isArray(campusesData.campuses)) {
+          setExistingCampuses(campusesData.campuses)
+        }
         if (uniData.university) {
           const u = uniData.university
           setForm({
@@ -145,13 +157,33 @@ export default function EditUniversityPage() {
       })
 
       if (res.ok) {
+        // Also save campuses
+        if (campusesToDelete.length > 0) {
+          for (const campusId of campusesToDelete) {
+            await fetch(`/api/admin/campuses?id=${campusId}`, { method: 'DELETE', credentials: 'same-origin' })
+          }
+        }
+        for (const campus of newCampuses) {
+          await fetch('/api/admin/campuses', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              university_id: parseInt(id),
+              name: campus.name,
+              location: campus.location,
+              description: campus.description || null,
+              is_main_campus: campus.is_main_campus,
+            }),
+            credentials: 'same-origin',
+          })
+        }
         router.push('/admin/universities')
       } else {
-        const err = await res.json()
-        alert(err.error || 'Failed to update university')
+        const err = await res.json().catch(() => null)
+        alert(err?.error || 'Failed to update university')
       }
-    } catch {
-      alert('Failed to update university')
+    } catch (error: any) {
+      alert('Failed to update university: ' + (error?.message || 'Unknown error'))
     } finally {
       setSaving(false)
     }
@@ -728,6 +760,139 @@ export default function EditUniversityPage() {
                 ))}
               </div>
             )}
+          </CardContent>
+        </Card>
+
+        {/* Campuses */}
+        <Card className="bg-white border-slate-200">
+          <CardHeader>
+            <CardTitle className="text-lg text-slate-900">Campuses</CardTitle>
+            <p className="text-sm text-slate-500">Manage campus locations for this university.</p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Existing campuses */}
+            {existingCampuses.filter(c => !campusesToDelete.includes(c.id)).length > 0 && (
+              <div className="space-y-2">
+                <h4 className="text-sm font-medium text-slate-700">
+                  Existing Campuses ({existingCampuses.filter(c => !campusesToDelete.includes(c.id)).length})
+                </h4>
+                <div className="space-y-2">
+                  {existingCampuses.filter(c => !campusesToDelete.includes(c.id)).map((campus) => (
+                    <div key={campus.id} className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-slate-900 truncate">
+                          {campus.name}
+                          {campus.is_main_campus && (
+                            <span className="ml-2 text-xs text-teal-600 font-normal">(Main)</span>
+                          )}
+                        </p>
+                        {campus.location && <p className="text-sm text-slate-600 truncate">{campus.location}</p>}
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setCampusesToDelete([...campusesToDelete, campus.id])}
+                        className="h-8 w-8 p-0 text-red-500 hover:text-red-700 hover:bg-red-50 shrink-0 cursor-pointer"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* New campuses to add */}
+            {newCampuses.length > 0 && (
+              <div className="space-y-2">
+                <h4 className="text-sm font-medium text-slate-700">New Campuses ({newCampuses.length})</h4>
+                <div className="space-y-2">
+                  {newCampuses.map((campus, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 border border-teal-200 rounded-lg bg-teal-50">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-slate-900 truncate">
+                          {campus.name}
+                          {campus.is_main_campus && (
+                            <span className="ml-2 text-xs text-teal-600 font-normal">(Main)</span>
+                          )}
+                        </p>
+                        <p className="text-sm text-slate-600 truncate">{campus.location}</p>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setNewCampuses(newCampuses.filter((_, i) => i !== index))}
+                        className="h-8 w-8 p-0 text-red-500 hover:text-red-700 hover:bg-red-50 shrink-0 cursor-pointer"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Add campus form */}
+            <div className="space-y-4 p-4 border border-slate-200 rounded-lg bg-slate-50">
+              <h3 className="font-medium text-slate-900 text-sm">Add Campus</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-xs text-slate-600">Campus Name</Label>
+                  <Input
+                    value={campusForm.name}
+                    onChange={(e) => setCampusForm({ ...campusForm, name: e.target.value })}
+                    placeholder="e.g., Main Campus"
+                    className="bg-white"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs text-slate-600">Location</Label>
+                  <Input
+                    value={campusForm.location}
+                    onChange={(e) => setCampusForm({ ...campusForm, location: e.target.value })}
+                    placeholder="e.g., City Center"
+                    className="bg-white"
+                  />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                  <Label className="text-xs text-slate-600">Description</Label>
+                  <Textarea
+                    value={campusForm.description}
+                    onChange={(e) => setCampusForm({ ...campusForm, description: e.target.value })}
+                    rows={2}
+                    className="bg-white"
+                    placeholder="Brief description of this campus..."
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="campus_main"
+                    checked={campusForm.is_main_campus}
+                    onChange={(e) => setCampusForm({ ...campusForm, is_main_campus: e.target.checked })}
+                    className="h-4 w-4 rounded border-slate-300"
+                  />
+                  <Label htmlFor="campus_main" className="text-sm text-slate-700 cursor-pointer">Main Campus</Label>
+                </div>
+              </div>
+              <Button
+                type="button"
+                onClick={() => {
+                  if (campusForm.name.trim() && campusForm.location.trim()) {
+                    setNewCampuses([...newCampuses, { ...campusForm, name: campusForm.name.trim(), location: campusForm.location.trim(), description: campusForm.description.trim() }])
+                    setCampusForm({ name: '', location: '', description: '', is_main_campus: false })
+                  }
+                }}
+                disabled={!campusForm.name.trim() || !campusForm.location.trim()}
+                variant="outline"
+                className="w-full cursor-pointer"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Campus
+              </Button>
+            </div>
           </CardContent>
         </Card>
 
