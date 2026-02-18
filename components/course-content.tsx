@@ -61,24 +61,45 @@ interface CourseContentProps {
   similarCourses?: SimilarCourse[]
 }
 
-function renderMultilineText(text: string) {
-  return text.split('\n').map((line, i) => {
-    const trimmed = line.trim()
-    if (!trimmed) return null
-    if (trimmed.startsWith('- ')) {
-      return (
-        <li key={i} className="flex items-start gap-2.5 text-muted-foreground leading-relaxed">
-          <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary/60 flex-shrink-0" />
-          <span>{trimmed.slice(2)}</span>
-        </li>
-      )
-    }
+/**
+ * Checks if content looks like HTML (from WYSIWYG editor) vs plain text.
+ * Renders HTML content with dangerouslySetInnerHTML and proper styling,
+ * or falls back to plain text rendering for legacy content.
+ */
+function RichContent({ content, className = '' }: { content: string; className?: string }) {
+  const isHtml = /<[a-z][\s\S]*>/i.test(content)
+
+  if (isHtml) {
     return (
-      <p key={i} className="text-muted-foreground leading-relaxed">
-        {trimmed}
-      </p>
+      <div
+        className={`prose prose-sm max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-li:text-muted-foreground prose-a:text-primary prose-a:underline prose-strong:text-foreground prose-ul:list-disc prose-ol:list-decimal [&_h2]:text-lg [&_h2]:font-bold [&_h2]:mt-4 [&_h2]:mb-2 [&_h3]:text-base [&_h3]:font-semibold [&_h3]:mt-3 [&_h3]:mb-1.5 [&_ul]:pl-5 [&_ol]:pl-5 [&_li]:my-0.5 ${className}`}
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
     )
-  })
+  }
+
+  // Plain text fallback: render line by line, detecting bullet points
+  return (
+    <div className={className}>
+      {content.split('\n').map((line, i) => {
+        const trimmed = line.trim()
+        if (!trimmed) return null
+        if (trimmed.startsWith('- ')) {
+          return (
+            <div key={i} className="flex items-start gap-2.5 text-muted-foreground leading-relaxed my-0.5">
+              <span className="mt-2 h-1.5 w-1.5 rounded-full bg-primary/60 flex-shrink-0" />
+              <span>{trimmed.slice(2)}</span>
+            </div>
+          )
+        }
+        return (
+          <p key={i} className="text-muted-foreground leading-relaxed">
+            {trimmed}
+          </p>
+        )
+      })}
+    </div>
+  )
 }
 
 export function CourseContent({ course, similarCourses = [] }: CourseContentProps) {
@@ -184,7 +205,7 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
             <div className="flex items-center gap-3 px-5 py-4">
               <Zap size={20} className="text-accent flex-shrink-0" />
               <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Tuition (Int{"'"}l)</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-wide">{"Tuition (Int'l)"}</p>
                 <p className="text-sm font-semibold text-foreground">
                   {'\u00A3'}{course.tuition_fees_international.toLocaleString()}/yr
                 </p>
@@ -232,9 +253,7 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
                 <BookOpen size={22} className="text-primary" />
                 Course Overview
               </h2>
-              <p className="text-muted-foreground leading-relaxed">
-                {course.course_overview || course.description}
-              </p>
+              <RichContent content={course.course_overview || course.description || ''} />
             </section>
           )}
 
@@ -245,88 +264,80 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
                 <Star size={22} className="text-primary" />
                 Key Features
               </h2>
-              <div className="grid sm:grid-cols-2 gap-3">
-                {course.key_features.split('\n').filter(l => l.trim()).map((line, i) => {
-                  const text = line.trim().replace(/^-\s*/, '')
-                  if (!text) return null
-                  return (
-                    <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-primary/5 border border-primary/10">
-                      <CheckCircle size={16} className="text-primary mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-foreground leading-relaxed">{text}</span>
-                    </div>
-                  )
-                })}
-              </div>
+              <RichContent content={course.key_features} />
             </section>
           )}
 
           {/* Entry Requirements */}
-          <section className="bg-card border border-border rounded-xl p-8">
-            <h2 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2.5">
-              <CheckCircle size={22} className="text-primary" />
-              Requirements
-            </h2>
-            <div className="space-y-0 divide-y divide-border">
-              {/* Academic Requirements */}
-              {course.academic_requirements && (
-                <div className="pb-6">
-                  <div className="flex items-center gap-2.5 mb-3">
-                    <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <GraduationCap size={16} className="text-primary" />
-                    </div>
-                    <h3 className="text-base font-semibold text-foreground">Academic Requirements</h3>
-                  </div>
-                  <p className="text-muted-foreground leading-relaxed pl-[42px] text-sm">
-                    {course.academic_requirements}
-                  </p>
-                </div>
-              )}
-
-              {/* English Language Requirements */}
-              {course.english_language_requirements && (
-                <div className="py-6">
-                  <div className="flex items-center gap-2.5 mb-3">
-                    <div className="h-8 w-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                      <Globe size={16} className="text-accent" />
-                    </div>
-                    <h3 className="text-base font-semibold text-foreground">English Language Requirements</h3>
-                  </div>
-                  <div className="pl-[42px] space-y-1.5">
-                    {course.english_language_requirements.split(/\.\s+/).filter(s => s.trim()).map((sentence, i) => (
-                      <div key={i} className="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed">
-                        <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accent/60 flex-shrink-0" />
-                        <span>{sentence.trim().replace(/\.$/, '')}</span>
+          {(course.academic_requirements || course.english_language_requirements || course.other_requirements || course.entry_requirements) && (
+            <section className="bg-card border border-border rounded-xl p-8">
+              <h2 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2.5">
+                <CheckCircle size={22} className="text-primary" />
+                Requirements
+              </h2>
+              <div className="space-y-0 divide-y divide-border">
+                {/* General Entry Requirements */}
+                {course.entry_requirements && (
+                  <div className="pb-6">
+                    <div className="flex items-center gap-2.5 mb-3">
+                      <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <CheckCircle size={16} className="text-primary" />
                       </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Other Requirements */}
-              {course.other_requirements && (
-                <div className="pt-6">
-                  <div className="flex items-center gap-2.5 mb-3">
-                    <div className="h-8 w-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
-                      <FileText size={16} className="text-muted-foreground" />
+                      <h3 className="text-base font-semibold text-foreground">Entry Requirements</h3>
                     </div>
-                    <h3 className="text-base font-semibold text-foreground">Other Requirements</h3>
+                    <div className="pl-[42px]">
+                      <RichContent content={course.entry_requirements} className="text-sm" />
+                    </div>
                   </div>
-                  <p className="text-muted-foreground leading-relaxed pl-[42px] text-sm">
-                    {course.other_requirements}
-                  </p>
-                </div>
-              )}
+                )}
 
-              {/* Fallback to single entry_requirements field */}
-              {!course.academic_requirements && !course.english_language_requirements && course.entry_requirements && (
-                <div className="pb-2">
-                  <p className="text-muted-foreground leading-relaxed text-sm">
-                    {course.entry_requirements}
-                  </p>
-                </div>
-              )}
-            </div>
-          </section>
+                {/* Academic Requirements */}
+                {course.academic_requirements && (
+                  <div className="py-6">
+                    <div className="flex items-center gap-2.5 mb-3">
+                      <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <GraduationCap size={16} className="text-primary" />
+                      </div>
+                      <h3 className="text-base font-semibold text-foreground">Academic Requirements</h3>
+                    </div>
+                    <div className="pl-[42px]">
+                      <RichContent content={course.academic_requirements} className="text-sm" />
+                    </div>
+                  </div>
+                )}
+
+                {/* English Language Requirements */}
+                {course.english_language_requirements && (
+                  <div className="py-6">
+                    <div className="flex items-center gap-2.5 mb-3">
+                      <div className="h-8 w-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
+                        <Globe size={16} className="text-accent" />
+                      </div>
+                      <h3 className="text-base font-semibold text-foreground">English Language Requirements</h3>
+                    </div>
+                    <div className="pl-[42px]">
+                      <RichContent content={course.english_language_requirements} className="text-sm" />
+                    </div>
+                  </div>
+                )}
+
+                {/* Other Requirements */}
+                {course.other_requirements && (
+                  <div className="pt-6">
+                    <div className="flex items-center gap-2.5 mb-3">
+                      <div className="h-8 w-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                        <FileText size={16} className="text-muted-foreground" />
+                      </div>
+                      <h3 className="text-base font-semibold text-foreground">Other Requirements</h3>
+                    </div>
+                    <div className="pl-[42px]">
+                      <RichContent content={course.other_requirements} className="text-sm" />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
 
           {/* Document Requirements */}
           {course.document_requirements && (
@@ -335,18 +346,7 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
                 <FileText size={22} className="text-primary" />
                 Document Requirements
               </h2>
-              <div className="grid sm:grid-cols-2 gap-3">
-                {course.document_requirements.split('\n').filter(l => l.trim()).map((line, i) => {
-                  const text = line.trim().replace(/^-\s*/, '')
-                  if (!text) return null
-                  return (
-                    <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-muted/50 border border-border">
-                      <FileText size={14} className="text-muted-foreground mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-foreground leading-relaxed">{text}</span>
-                    </div>
-                  )
-                })}
-              </div>
+              <RichContent content={course.document_requirements} />
             </section>
           )}
 
@@ -378,9 +378,7 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
                 <Award size={22} className="text-primary" />
                 Scholarships
               </h2>
-              <ul className="space-y-2.5">
-                {renderMultilineText(course.scholarships)}
-              </ul>
+              <RichContent content={course.scholarships} />
             </section>
           )}
         </div>

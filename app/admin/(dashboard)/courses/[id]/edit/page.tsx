@@ -5,15 +5,25 @@ import { useRouter, useParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ArrowLeft, Save, Loader2 } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
+import { ArrowLeft, Save, Loader2 } from 'lucide-react'
 import Link from 'next/link'
+import { SearchableSelect } from '@/components/searchable-select'
+import { RichTextEditor } from '@/components/rich-text-editor'
 
 type University = { id: number; name: string }
 type Country = { id: number; name: string }
+type Campus = { id: number; name: string; location: string | null }
+
+const LEVEL_OPTIONS = [
+  { value: 'Foundation', label: 'Foundation' },
+  { value: "Bachelor's", label: "Bachelor's" },
+  { value: "Master's", label: "Master's" },
+  { value: 'PhD', label: 'PhD' },
+  { value: 'Diploma', label: 'Diploma' },
+  { value: 'Certificate', label: 'Certificate' },
+]
 
 export default function EditCoursePage() {
   const router = useRouter()
@@ -24,11 +34,13 @@ export default function EditCoursePage() {
   const [saving, setSaving] = useState(false)
   const [universities, setUniversities] = useState<University[]>([])
   const [countries, setCountries] = useState<Country[]>([])
+  const [campuses, setCampuses] = useState<Campus[]>([])
+  const [loadingCampuses, setLoadingCampuses] = useState(false)
+  const [initialUniId, setInitialUniId] = useState('')
 
   const [form, setForm] = useState({
     name: '',
     code: '',
-    slug: '',
     university_id: '',
     country_id: '',
     level: '',
@@ -36,18 +48,21 @@ export default function EditCoursePage() {
     tuition_fees_international: '',
     intake_months: '',
     field_of_study: '',
+    campus_id: '',
     description: '',
     course_overview: '',
+    key_features: '',
+    scholarships: '',
     entry_requirements: '',
     academic_requirements: '',
     english_language_requirements: '',
     other_requirements: '',
     document_requirements: '',
-    scholarships: '',
-    key_features: '',
-    campus_id: '',
   })
 
+  const setField = (key: string, val: string) => setForm((prev) => ({ ...prev, [key]: val }))
+
+  // Load course data + dropdowns on mount
   useEffect(() => {
     Promise.all([
       fetch(`/api/admin/courses/${id}`, { credentials: 'same-origin' }).then((r) => r.json()),
@@ -60,27 +75,28 @@ export default function EditCoursePage() {
 
         if (courseData.course) {
           const c = courseData.course
+          const uniId = c.university_id?.toString() || ''
+          setInitialUniId(uniId)
           setForm({
             name: c.name || '',
             code: c.code || '',
-            slug: c.slug || '',
-            university_id: c.university_id?.toString() || '',
+            university_id: uniId,
             country_id: c.country_id?.toString() || '',
             level: c.level || '',
             duration_years: c.duration_years?.toString() || '',
             tuition_fees_international: c.tuition_fees_international?.toString() || '',
             intake_months: c.intake_months || '',
             field_of_study: c.field_of_study || '',
+            campus_id: c.campus_id?.toString() || '',
             description: c.description || '',
             course_overview: c.course_overview || '',
+            key_features: c.key_features || '',
+            scholarships: c.scholarships || '',
             entry_requirements: c.entry_requirements || '',
             academic_requirements: c.academic_requirements || '',
             english_language_requirements: c.english_language_requirements || '',
             other_requirements: c.other_requirements || '',
             document_requirements: c.document_requirements || '',
-            scholarships: c.scholarships || '',
-            key_features: c.key_features || '',
-            campus_id: c.campus_id?.toString() || '',
           })
         }
       })
@@ -88,35 +104,62 @@ export default function EditCoursePage() {
       .finally(() => setLoading(false))
   }, [id])
 
+  // Load campuses when university changes
+  useEffect(() => {
+    if (!form.university_id) {
+      setCampuses([])
+      return
+    }
+    setLoadingCampuses(true)
+    fetch(`/api/admin/universities/${form.university_id}/campuses`, { credentials: 'same-origin' })
+      .then((r) => r.json())
+      .then((data) => {
+        setCampuses(data.campuses || [])
+        // Only reset campus if university actually changed (not on initial load)
+        if (form.university_id !== initialUniId) {
+          const valid = (data.campuses || []).some((c: Campus) => c.id.toString() === form.campus_id)
+          if (!valid) setField('campus_id', '')
+        }
+      })
+      .catch(() => setCampuses([]))
+      .finally(() => setLoadingCampuses(false))
+  }, [form.university_id])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!form.name.trim() || !form.university_id || !form.level.trim()) {
+    if (!form.name.trim() || !form.university_id || !form.level) {
       alert('Name, University, and Level are required.')
       return
     }
     setSaving(true)
     try {
+      const uniName = universities.find((u) => u.id.toString() === form.university_id)?.name || ''
+      const autoSlug = (form.name + (uniName ? '-' + uniName : ''))
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '')
+
       const payload: Record<string, any> = {
         name: form.name.trim(),
         code: form.code.trim() || null,
-        slug: form.slug.trim() || form.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+        slug: autoSlug,
         university_id: parseInt(form.university_id),
         country_id: form.country_id ? parseInt(form.country_id) : null,
-        level: form.level.trim(),
+        level: form.level,
         duration_years: form.duration_years ? parseInt(form.duration_years) : null,
         tuition_fees_international: form.tuition_fees_international ? parseInt(form.tuition_fees_international) : null,
         intake_months: form.intake_months.trim() || null,
         field_of_study: form.field_of_study.trim() || null,
-        description: form.description.trim() || null,
-        course_overview: form.course_overview.trim() || null,
-        entry_requirements: form.entry_requirements.trim() || null,
-        academic_requirements: form.academic_requirements.trim() || null,
-        english_language_requirements: form.english_language_requirements.trim() || null,
-        other_requirements: form.other_requirements.trim() || null,
-        document_requirements: form.document_requirements.trim() || null,
-        scholarships: form.scholarships.trim() || null,
-        key_features: form.key_features.trim() || null,
         campus_id: form.campus_id ? parseInt(form.campus_id) : null,
+        description: form.description.trim() || null,
+        course_overview: form.course_overview || null,
+        key_features: form.key_features || null,
+        scholarships: form.scholarships || null,
+        entry_requirements: form.entry_requirements || null,
+        academic_requirements: form.academic_requirements || null,
+        english_language_requirements: form.english_language_requirements || null,
+        other_requirements: form.other_requirements || null,
+        document_requirements: form.document_requirements || null,
       }
 
       const res = await fetch(`/api/admin/courses/${id}`, {
@@ -138,6 +181,13 @@ export default function EditCoursePage() {
       setSaving(false)
     }
   }
+
+  const universityOptions = universities.map((u) => ({ value: u.id.toString(), label: u.name }))
+  const countryOptions = countries.map((c) => ({ value: c.id.toString(), label: c.name }))
+  const campusOptions = campuses.map((c) => ({
+    value: c.id.toString(),
+    label: c.name + (c.location ? ` - ${c.location}` : ''),
+  }))
 
   if (loading) {
     return (
@@ -177,11 +227,7 @@ export default function EditCoursePage() {
             <p className="text-sm text-slate-500">ID: #{id}</p>
           </div>
         </div>
-        <Button
-          type="submit"
-          disabled={saving}
-          className="bg-teal-600 hover:bg-teal-700 text-white cursor-pointer"
-        >
+        <Button type="submit" disabled={saving} className="bg-teal-600 hover:bg-teal-700 text-white cursor-pointer">
           {saving ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
           {saving ? 'Saving...' : 'Save Changes'}
         </Button>
@@ -201,7 +247,7 @@ export default function EditCoursePage() {
               <Input
                 required
                 value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                onChange={(e) => setField('name', e.target.value)}
                 placeholder="e.g. BSc Computer Science"
                 className="bg-white border-slate-200 text-slate-900"
               />
@@ -211,18 +257,8 @@ export default function EditCoursePage() {
               <Label className="text-sm text-slate-700">Course Code</Label>
               <Input
                 value={form.code}
-                onChange={(e) => setForm({ ...form, code: e.target.value })}
+                onChange={(e) => setField('code', e.target.value)}
                 placeholder="e.g. CS101"
-                className="bg-white border-slate-200 text-slate-900"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label className="text-sm text-slate-700">Slug</Label>
-              <Input
-                value={form.slug}
-                onChange={(e) => setForm({ ...form, slug: e.target.value })}
-                placeholder="auto-generated-from-name"
                 className="bg-white border-slate-200 text-slate-900"
               />
             </div>
@@ -231,60 +267,41 @@ export default function EditCoursePage() {
               <Label className="text-sm text-slate-700">
                 University <span className="text-red-500">*</span>
               </Label>
-              <Select required value={form.university_id} onValueChange={(val) => setForm({ ...form, university_id: val })}>
-                <SelectTrigger className="bg-white border-slate-200 text-slate-900">
-                  <SelectValue placeholder="Select university" />
-                </SelectTrigger>
-                <SelectContent className="bg-white border-slate-200 max-h-60">
-                  {universities.map((u) => (
-                    <SelectItem key={u.id} value={u.id.toString()} className="text-slate-900">
-                      {u.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <SearchableSelect
+                value={form.university_id}
+                onValueChange={(val) => setField('university_id', val)}
+                options={universityOptions}
+                placeholder="Search university..."
+              />
             </div>
 
             <div className="space-y-2">
               <Label className="text-sm text-slate-700">Country</Label>
-              <Select value={form.country_id} onValueChange={(val) => setForm({ ...form, country_id: val })}>
-                <SelectTrigger className="bg-white border-slate-200 text-slate-900">
-                  <SelectValue placeholder="Select country" />
-                </SelectTrigger>
-                <SelectContent className="bg-white border-slate-200 max-h-60">
-                  {countries.map((c) => (
-                    <SelectItem key={c.id} value={c.id.toString()} className="text-slate-900">
-                      {c.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <SearchableSelect
+                value={form.country_id}
+                onValueChange={(val) => setField('country_id', val)}
+                options={countryOptions}
+                placeholder="Search country..."
+              />
             </div>
 
             <div className="space-y-2">
               <Label className="text-sm text-slate-700">
                 Level <span className="text-red-500">*</span>
               </Label>
-              <Select required value={form.level} onValueChange={(val) => setForm({ ...form, level: val })}>
-                <SelectTrigger className="bg-white border-slate-200 text-slate-900">
-                  <SelectValue placeholder="Select level" />
-                </SelectTrigger>
-                <SelectContent className="bg-white border-slate-200">
-                  <SelectItem value="Foundation" className="text-slate-900">Foundation</SelectItem>
-                  <SelectItem value="Bachelor's" className="text-slate-900">{"Bachelor's"}</SelectItem>
-                  <SelectItem value="Master's" className="text-slate-900">{"Master's"}</SelectItem>
-                  <SelectItem value="PhD" className="text-slate-900">PhD</SelectItem>
-                  <SelectItem value="Diploma" className="text-slate-900">Diploma</SelectItem>
-                  <SelectItem value="Certificate" className="text-slate-900">Certificate</SelectItem>
-                </SelectContent>
-              </Select>
+              <SearchableSelect
+                value={form.level}
+                onValueChange={(val) => setField('level', val)}
+                options={LEVEL_OPTIONS}
+                placeholder="Search level..."
+              />
             </div>
 
             <div className="space-y-2">
               <Label className="text-sm text-slate-700">Field of Study</Label>
               <Input
                 value={form.field_of_study}
-                onChange={(e) => setForm({ ...form, field_of_study: e.target.value })}
+                onChange={(e) => setField('field_of_study', e.target.value)}
                 placeholder="e.g. Computer Science, Engineering"
                 className="bg-white border-slate-200 text-slate-900"
               />
@@ -295,7 +312,7 @@ export default function EditCoursePage() {
               <Input
                 type="number"
                 value={form.duration_years}
-                onChange={(e) => setForm({ ...form, duration_years: e.target.value })}
+                onChange={(e) => setField('duration_years', e.target.value)}
                 placeholder="e.g. 3"
                 className="bg-white border-slate-200 text-slate-900"
               />
@@ -306,7 +323,7 @@ export default function EditCoursePage() {
               <Input
                 type="number"
                 value={form.tuition_fees_international}
-                onChange={(e) => setForm({ ...form, tuition_fees_international: e.target.value })}
+                onChange={(e) => setField('tuition_fees_international', e.target.value)}
                 placeholder="e.g. 15000"
                 className="bg-white border-slate-200 text-slate-900"
               />
@@ -316,31 +333,35 @@ export default function EditCoursePage() {
               <Label className="text-sm text-slate-700">Intake Months</Label>
               <Input
                 value={form.intake_months}
-                onChange={(e) => setForm({ ...form, intake_months: e.target.value })}
+                onChange={(e) => setField('intake_months', e.target.value)}
                 placeholder="e.g. September, January, May"
                 className="bg-white border-slate-200 text-slate-900"
               />
             </div>
 
             <div className="space-y-2">
-              <Label className="text-sm text-slate-700">Campus ID</Label>
-              <Input
-                type="number"
+              <Label className="text-sm text-slate-700">
+                Campus
+                {!form.university_id && (
+                  <span className="text-slate-400 ml-1 font-normal">(select university first)</span>
+                )}
+              </Label>
+              <SearchableSelect
                 value={form.campus_id}
-                onChange={(e) => setForm({ ...form, campus_id: e.target.value })}
-                placeholder="Optional campus ID"
-                className="bg-white border-slate-200 text-slate-900"
+                onValueChange={(val) => setField('campus_id', val)}
+                options={campusOptions}
+                placeholder={loadingCampuses ? 'Loading campuses...' : campuses.length === 0 && form.university_id ? 'No campuses available' : 'Search campus...'}
+                disabled={!form.university_id || loadingCampuses}
               />
             </div>
           </div>
 
           <div className="space-y-2">
             <Label className="text-sm text-slate-700">Short Description</Label>
-            <Textarea
+            <Input
               value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
-              placeholder="Brief description of the course..."
-              rows={3}
+              onChange={(e) => setField('description', e.target.value)}
+              placeholder="Brief one-line description of the course"
               className="bg-white border-slate-200 text-slate-900"
             />
           </div>
@@ -352,37 +373,31 @@ export default function EditCoursePage() {
         <CardHeader>
           <CardTitle className="text-lg text-slate-900">Course Details</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           <div className="space-y-2">
             <Label className="text-sm text-slate-700">Course Overview</Label>
-            <Textarea
+            <RichTextEditor
               value={form.course_overview}
-              onChange={(e) => setForm({ ...form, course_overview: e.target.value })}
+              onChange={(val) => setField('course_overview', val)}
               placeholder="Detailed overview of what the course covers..."
-              rows={5}
-              className="bg-white border-slate-200 text-slate-900"
             />
           </div>
 
           <div className="space-y-2">
             <Label className="text-sm text-slate-700">Key Features</Label>
-            <Textarea
+            <RichTextEditor
               value={form.key_features}
-              onChange={(e) => setForm({ ...form, key_features: e.target.value })}
+              onChange={(val) => setField('key_features', val)}
               placeholder="Key features and highlights of the course..."
-              rows={4}
-              className="bg-white border-slate-200 text-slate-900"
             />
           </div>
 
           <div className="space-y-2">
             <Label className="text-sm text-slate-700">Scholarships</Label>
-            <Textarea
+            <RichTextEditor
               value={form.scholarships}
-              onChange={(e) => setForm({ ...form, scholarships: e.target.value })}
+              onChange={(val) => setField('scholarships', val)}
               placeholder="Available scholarships and funding options..."
-              rows={4}
-              className="bg-white border-slate-200 text-slate-900"
             />
           </div>
         </CardContent>
@@ -393,59 +408,49 @@ export default function EditCoursePage() {
         <CardHeader>
           <CardTitle className="text-lg text-slate-900">Entry Requirements</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           <div className="space-y-2">
             <Label className="text-sm text-slate-700">Entry Requirements (General)</Label>
-            <Textarea
+            <RichTextEditor
               value={form.entry_requirements}
-              onChange={(e) => setForm({ ...form, entry_requirements: e.target.value })}
+              onChange={(val) => setField('entry_requirements', val)}
               placeholder="General entry requirements..."
-              rows={4}
-              className="bg-white border-slate-200 text-slate-900"
             />
           </div>
 
           <div className="space-y-2">
             <Label className="text-sm text-slate-700">Academic Requirements</Label>
-            <Textarea
+            <RichTextEditor
               value={form.academic_requirements}
-              onChange={(e) => setForm({ ...form, academic_requirements: e.target.value })}
+              onChange={(val) => setField('academic_requirements', val)}
               placeholder="Academic qualifications needed..."
-              rows={4}
-              className="bg-white border-slate-200 text-slate-900"
             />
           </div>
 
           <div className="space-y-2">
             <Label className="text-sm text-slate-700">English Language Requirements</Label>
-            <Textarea
+            <RichTextEditor
               value={form.english_language_requirements}
-              onChange={(e) => setForm({ ...form, english_language_requirements: e.target.value })}
-              placeholder="e.g. IELTS 6.5 overall, no less than 6.0 in each component..."
-              rows={4}
-              className="bg-white border-slate-200 text-slate-900"
+              onChange={(val) => setField('english_language_requirements', val)}
+              placeholder="e.g. IELTS 6.5 overall, no less than 6.0..."
             />
           </div>
 
           <div className="space-y-2">
             <Label className="text-sm text-slate-700">Other Requirements</Label>
-            <Textarea
+            <RichTextEditor
               value={form.other_requirements}
-              onChange={(e) => setForm({ ...form, other_requirements: e.target.value })}
+              onChange={(val) => setField('other_requirements', val)}
               placeholder="Any additional requirements..."
-              rows={3}
-              className="bg-white border-slate-200 text-slate-900"
             />
           </div>
 
           <div className="space-y-2">
             <Label className="text-sm text-slate-700">Document Requirements</Label>
-            <Textarea
+            <RichTextEditor
               value={form.document_requirements}
-              onChange={(e) => setForm({ ...form, document_requirements: e.target.value })}
+              onChange={(val) => setField('document_requirements', val)}
               placeholder="Required documents for application..."
-              rows={4}
-              className="bg-white border-slate-200 text-slate-900"
             />
           </div>
         </CardContent>
@@ -461,11 +466,7 @@ export default function EditCoursePage() {
         >
           Cancel
         </Button>
-        <Button
-          type="submit"
-          disabled={saving}
-          className="bg-teal-600 hover:bg-teal-700 text-white cursor-pointer"
-        >
+        <Button type="submit" disabled={saving} className="bg-teal-600 hover:bg-teal-700 text-white cursor-pointer">
           {saving ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
           {saving ? 'Saving...' : 'Save Changes'}
         </Button>
