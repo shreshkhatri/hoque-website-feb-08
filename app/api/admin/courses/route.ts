@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     .select('*, universities(name)', { count: 'exact' })
 
   if (search) {
-    query = query.or(`name.ilike.%${search}%,level.ilike.%${search}%`)
+    query = query.or(`name.ilike.%${search}%,code.ilike.%${search}%,level.ilike.%${search}%,field_of_study.ilike.%${search}%`)
   }
   if (universityId) {
     query = query.eq('university_id', parseInt(universityId))
