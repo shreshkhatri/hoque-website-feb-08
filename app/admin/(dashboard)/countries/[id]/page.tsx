@@ -293,13 +293,17 @@ export default function EditCountryPage() {
 
   const saveFaqs = async () => {
     setSavingFaqs(true)
+    setError('')
     try {
       const res = await fetch(`/api/admin/countries/${countryId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, faqs }),
+        body: JSON.stringify({ name: form.name, faqs }),
       })
-      if (!res.ok) throw new Error('Failed to save')
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}))
+        throw new Error(errData.error || 'Failed to save')
+      }
       const data = await res.json()
       setFaqs(Array.isArray(data.country?.faqs) ? data.country.faqs : [])
     } catch (err) {
