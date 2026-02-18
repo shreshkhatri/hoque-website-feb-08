@@ -42,6 +42,7 @@ interface Course {
   intake_months: string | null
   field_of_study: string | null
   universities: { name: string } | null
+  countries: { currency: string | null } | null
 }
 
 function levelColor(level: string) {
@@ -53,9 +54,9 @@ function levelColor(level: string) {
   return 'bg-slate-100 text-slate-700 border-slate-200'
 }
 
-function formatFee(fee: number | null) {
+function formatFee(fee: number | null, currency?: string | null) {
   if (!fee) return null
-  return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', maximumFractionDigits: 0 }).format(fee)
+  return `${currency || ''} ${fee.toLocaleString()}`.trim()
 }
 
 export default function CoursesPage() {
@@ -207,7 +208,7 @@ export default function CoursesPage() {
                     <div className="col-span-2">
                       <span className="text-sm text-slate-600 flex items-center gap-1">
                         <Banknote className="h-3.5 w-3.5 text-slate-400" />
-                        {formatFee(course.tuition_fees_international) || 'N/A'}
+                        {formatFee(course.tuition_fees_international, course.countries?.currency) || 'N/A'}
                       </span>
                     </div>
 
