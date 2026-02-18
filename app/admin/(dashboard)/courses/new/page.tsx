@@ -11,8 +11,7 @@ import Link from 'next/link'
 import { SearchableSelect } from '@/components/searchable-select'
 import { RichTextEditor } from '@/components/rich-text-editor'
 
-type University = { id: number; name: string }
-type Country = { id: number; name: string }
+type University = { id: number; name: string; country_id: number | null }
 type Campus = { id: number; name: string; location: string | null }
 
 const LEVEL_OPTIONS = [
@@ -28,7 +27,6 @@ export default function NewCoursePage() {
   const router = useRouter()
   const [saving, setSaving] = useState(false)
   const [universities, setUniversities] = useState<University[]>([])
-  const [countries, setCountries] = useState<Country[]>([])
   const [campuses, setCampuses] = useState<Campus[]>([])
   const [loadingCampuses, setLoadingCampuses] = useState(false)
 
@@ -36,7 +34,6 @@ export default function NewCoursePage() {
     name: '',
     code: '',
     university_id: '',
-    country_id: '',
     level: '',
     duration_years: '',
     tuition_fees_international: '',
@@ -56,15 +53,12 @@ export default function NewCoursePage() {
 
   const setField = (key: string, val: string) => setForm((prev) => ({ ...prev, [key]: val }))
 
-  // Load universities and countries on mount
+  // Load universities on mount
   useEffect(() => {
-    Promise.all([
-      fetch('/api/countries').then((r) => r.json()),
-      fetch('/api/admin/universities?limit=500', { credentials: 'same-origin' }).then((r) => r.json()),
-    ])
-      .then(([countriesData, uniData]) => {
-        setCountries(countriesData.countries || [])
-        setUniversities((uniData.data || []).map((u: any) => ({ id: u.id, name: u.name })))
+    fetch('/api/admin/universities?limit=500', { credentials: 'same-origin' })
+      .then((r) => r.json())
+      .then((uniData) => {
+        setUniversities((uniData.data || []).map((u: any) => ({ id: u.id, name: u.name, country_id: u.country_id })))
       })
       .catch(() => {})
   }, [])
@@ -105,12 +99,14 @@ export default function NewCoursePage() {
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/(^-|-$)/g, '')
 
+      const selectedUni = universities.find((u) => u.id.toString() === form.university_id)
+
       const payload: Record<string, any> = {
         name: form.name.trim(),
         code: form.code.trim() || null,
         slug: autoSlug,
         university_id: parseInt(form.university_id),
-        country_id: form.country_id ? parseInt(form.country_id) : null,
+        country_id: selectedUni?.country_id || null,
         level: form.level,
         duration_years: form.duration_years ? parseInt(form.duration_years) : null,
         tuition_fees_international: form.tuition_fees_international ? parseInt(form.tuition_fees_international) : null,
@@ -149,7 +145,6 @@ export default function NewCoursePage() {
   }
 
   const universityOptions = universities.map((u) => ({ value: u.id.toString(), label: u.name }))
-  const countryOptions = countries.map((c) => ({ value: c.id.toString(), label: c.name }))
   const campusOptions = campuses.map((c) => ({
     value: c.id.toString(),
     label: c.name + (c.location ? ` - ${c.location}` : ''),
@@ -213,16 +208,6 @@ export default function NewCoursePage() {
                 onValueChange={(val) => setField('university_id', val)}
                 options={universityOptions}
                 placeholder="Search university..."
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label className="text-sm text-slate-700">Country</Label>
-              <SearchableSelect
-                value={form.country_id}
-                onValueChange={(val) => setField('country_id', val)}
-                options={countryOptions}
-                placeholder="Search country..."
               />
             </div>
 
