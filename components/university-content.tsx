@@ -124,9 +124,9 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
 
   const uniqueLevels = [...new Set(courses.map(c => c.level))]
   
-  // Calculate stats based on existing fields
-  const acceptanceRate = 65
-  const intlStudentsPercent = university.student_population ? Math.min(45, Math.floor(university.student_population / 1000) + 15) : 25
+  // Use actual DB values, fall back to null (won't display if not set)
+  const acceptanceRate = university.acceptance_rate ?? null
+  const intlStudentsPercent = university.international_students_percentage ?? null
 
   return (
     <>
@@ -134,7 +134,7 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
       <section className="relative h-[300px] md:h-[400px] overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70" />
         <Image
-          src="/hero-bg.jpg"
+          src={university.cover_image_url || "/hero-bg.jpg"}
           alt={university.name}
           fill
           className="object-cover mix-blend-overlay"
@@ -213,17 +213,21 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-border">
             <div className="py-6 px-4 text-center">
-              <div className="text-2xl md:text-3xl font-bold text-primary">{acceptanceRate}%</div>
+              <div className="text-2xl md:text-3xl font-bold text-primary">
+                {acceptanceRate !== null ? `${acceptanceRate}%` : 'N/A'}
+              </div>
               <div className="text-sm text-muted-foreground">Acceptance Rate</div>
             </div>
             <div className="py-6 px-4 text-center">
               <div className="text-2xl md:text-3xl font-bold text-primary">
-                {university.student_population?.toLocaleString() || '15,000+'}
+                {university.student_population ? university.student_population.toLocaleString() : 'N/A'}
               </div>
               <div className="text-sm text-muted-foreground">Total Students</div>
             </div>
             <div className="py-6 px-4 text-center">
-              <div className="text-2xl md:text-3xl font-bold text-primary">{intlStudentsPercent}%</div>
+              <div className="text-2xl md:text-3xl font-bold text-primary">
+                {intlStudentsPercent !== null ? `${intlStudentsPercent}%` : 'N/A'}
+              </div>
               <div className="text-sm text-muted-foreground">International Students</div>
             </div>
             <div className="py-6 px-4 text-center">

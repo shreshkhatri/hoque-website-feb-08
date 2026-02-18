@@ -31,14 +31,13 @@ import {
 interface University {
   id: number
   name: string
-  slug: string
   city: string
   country_id: number
-  website: string | null
+  website_url: string | null
   logo_url: string | null
   description: string | null
-  ranking: string | null
-  established_year: number | null
+  rank_world: string | null
+  founded_year: number | null
   countries: { name: string } | null
   university_campuses: { id: number; name: string; city: string }[]
 }
@@ -168,14 +167,14 @@ export default function UniversitiesPage() {
                     <p className="text-xs text-slate-600 line-clamp-2 mb-3">{uni.description}</p>
                   )}
                   <div className="flex items-center gap-2 flex-wrap">
-                    {uni.ranking && (
+                    {uni.rank_world && (
                       <Badge variant="outline" className="text-[10px] bg-blue-100 text-blue-800 border-blue-200">
-                        {uni.ranking}
+                        Rank #{uni.rank_world}
                       </Badge>
                     )}
-                    {uni.established_year && (
+                    {uni.founded_year && (
                       <Badge variant="outline" className="text-[10px] bg-slate-100 text-slate-800 border-slate-200">
-                        Est. {uni.established_year}
+                        Est. {uni.founded_year}
                       </Badge>
                     )}
                     {uni.university_campuses?.length > 0 && (
@@ -183,9 +182,9 @@ export default function UniversitiesPage() {
                         {uni.university_campuses.length} campus{uni.university_campuses.length > 1 ? 'es' : ''}
                       </Badge>
                     )}
-                    {uni.website && (
+                    {uni.website_url && (
                       <a
-                        href={uni.website}
+                        href={uni.website_url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-[10px] text-slate-600 hover:text-teal-600 flex items-center gap-0.5"
