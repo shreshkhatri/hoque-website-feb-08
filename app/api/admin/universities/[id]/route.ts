@@ -41,18 +41,45 @@ export async function PUT(
 
   try {
     const body = await request.json()
+    console.log('[v0] PUT /api/admin/universities/' + id, 'payload keys:', Object.keys(body))
+
+    // Remove any fields that don't exist in the universities table
+    const allowedFields = [
+      'name', 'city', 'country_id', 'campus_type', 'description', 'why_study_here',
+      'website_url', 'rank_world', 'founded_year', 'student_population',
+      'international_students_percentage', 'acceptance_rate', 'logo_url', 'cover_image_url',
+      'highlights', 'required_documents', 'faqs', 'employment_rate', 'nationalities_count',
+      'partner_universities_count', 'intakes', 'campus_facilities', 'express_offer_available',
+      'accommodation_available', 'scholarship_available', 'english_requirements',
+      'application_deadline', 'campuses', 'slug'
+    ]
+    
+    const sanitizedBody: Record<string, any> = {}
+    for (const key of allowedFields) {
+      if (key in body) {
+        sanitizedBody[key] = body[key]
+      }
+    }
+
+    console.log('[v0] Sanitized payload keys:', Object.keys(sanitizedBody))
+
     const { data, error } = await supabase
       .from('universities')
-      .update(body)
+      .update(sanitizedBody)
       .eq('id', id)
       .select()
       .single()
 
-    if (error) throw error
+    if (error) {
+      console.error('[v0] Supabase update error:', error.message, error.details, error.hint, error.code)
+      return NextResponse.json({ error: error.message || 'Failed to update university' }, { status: 500 })
+    }
 
+    console.log('[v0] University updated successfully, id:', data?.id)
     return NextResponse.json({ university: data })
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to update university' }, { status: 500 })
+  } catch (error: any) {
+    console.error('[v0] PUT catch error:', error?.message || error)
+    return NextResponse.json({ error: error?.message || 'Failed to update university' }, { status: 500 })
   }
 }
 
