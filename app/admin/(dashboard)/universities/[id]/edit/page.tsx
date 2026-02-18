@@ -183,9 +183,14 @@ export default function EditUniversityPage() {
         }
         router.push('/admin/universities')
       } else {
-        const err = await res.json()
-        console.error('[v0] Update failed:', err)
-        alert(err.error || 'Failed to update university')
+        const text = await res.text()
+        console.error('[v0] Update failed, status:', res.status, 'body:', text)
+        try {
+          const err = JSON.parse(text)
+          alert(err.error || 'Failed to update university')
+        } catch {
+          alert('Failed to update university (status ' + res.status + ')')
+        }
       }
     } catch (error: any) {
       console.error('[v0] Submit error:', error)
