@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+// Select used for country dropdown
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ArrowLeft, Save, Loader2 } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -196,18 +197,13 @@ export default function EditUniversityPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-sm text-slate-700">Type</Label>
-                  <Select value={form.type} onValueChange={(val) => setForm({ ...form, type: val })}>
-                    <SelectTrigger className="bg-white border-slate-200 text-slate-900">
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border-slate-200">
-                      <SelectItem value="Public" className="text-slate-900">Public</SelectItem>
-                      <SelectItem value="Private" className="text-slate-900">Private</SelectItem>
-                      <SelectItem value="Research" className="text-slate-900">Research</SelectItem>
-                      <SelectItem value="Liberal Arts" className="text-slate-900">Liberal Arts</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label className="text-sm text-slate-700">Campus Type</Label>
+                  <Input
+                    value={form.campus_type}
+                    onChange={(e) => setForm({ ...form, campus_type: e.target.value })}
+                    placeholder="e.g. Urban, Suburban, Rural"
+                    className="bg-white border-slate-200 text-slate-900"
+                  />
                 </div>
               </div>
 
@@ -221,52 +217,32 @@ export default function EditUniversityPage() {
                   className="bg-white border-slate-200 text-slate-900"
                 />
               </div>
+
+              <div className="space-y-2">
+                <Label className="text-sm text-slate-700">Why Study Here</Label>
+                <Textarea
+                  value={form.why_study_here}
+                  onChange={(e) => setForm({ ...form, why_study_here: e.target.value })}
+                  placeholder="Explain why students should choose this university..."
+                  rows={4}
+                  className="bg-white border-slate-200 text-slate-900"
+                />
+              </div>
             </div>
 
-            {/* Contact Information */}
+            {/* Additional Information */}
             <div className="space-y-4">
               <h3 className="text-sm font-semibold text-slate-700 border-b border-slate-200 pb-2">
-                Contact Information
+                Additional Information
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-sm text-slate-700">Website</Label>
+                  <Label className="text-sm text-slate-700">Website URL</Label>
                   <Input
                     type="url"
-                    value={form.website}
-                    onChange={(e) => setForm({ ...form, website: e.target.value })}
+                    value={form.website_url}
+                    onChange={(e) => setForm({ ...form, website_url: e.target.value })}
                     placeholder="https://university.edu"
-                    className="bg-white border-slate-200 text-slate-900"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm text-slate-700">Email</Label>
-                  <Input
-                    type="email"
-                    value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    placeholder="info@university.edu"
-                    className="bg-white border-slate-200 text-slate-900"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm text-slate-700">Phone</Label>
-                  <Input
-                    value={form.phone}
-                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    placeholder="+44 1234 567890"
-                    className="bg-white border-slate-200 text-slate-900"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm text-slate-700">Address</Label>
-                  <Input
-                    value={form.address}
-                    onChange={(e) => setForm({ ...form, address: e.target.value })}
-                    placeholder="University address"
                     className="bg-white border-slate-200 text-slate-900"
                   />
                 </div>
@@ -280,22 +256,22 @@ export default function EditUniversityPage() {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-sm text-slate-700">Ranking</Label>
+                  <Label className="text-sm text-slate-700">World Ranking</Label>
                   <Input
-                    value={form.ranking}
-                    onChange={(e) => setForm({ ...form, ranking: e.target.value })}
-                    placeholder="e.g. QS World Ranking #10"
+                    value={form.rank_world}
+                    onChange={(e) => setForm({ ...form, rank_world: e.target.value })}
+                    placeholder="e.g. #101-150"
                     className="bg-white border-slate-200 text-slate-900"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-sm text-slate-700">Established Year</Label>
+                  <Label className="text-sm text-slate-700">Founded Year</Label>
                   <Input
                     type="number"
-                    value={form.established_year}
-                    onChange={(e) => setForm({ ...form, established_year: e.target.value })}
-                    placeholder="1900"
+                    value={form.founded_year}
+                    onChange={(e) => setForm({ ...form, founded_year: e.target.value })}
+                    placeholder="e.g. 1826"
                     className="bg-white border-slate-200 text-slate-900"
                   />
                 </div>
@@ -306,7 +282,7 @@ export default function EditUniversityPage() {
                     type="number"
                     value={form.student_population}
                     onChange={(e) => setForm({ ...form, student_population: e.target.value })}
-                    placeholder="20000"
+                    placeholder="e.g. 15000"
                     className="bg-white border-slate-200 text-slate-900"
                   />
                 </div>
@@ -318,17 +294,19 @@ export default function EditUniversityPage() {
                     step="0.1"
                     value={form.international_students_percentage}
                     onChange={(e) => setForm({ ...form, international_students_percentage: e.target.value })}
-                    placeholder="25.5"
+                    placeholder="e.g. 25"
                     className="bg-white border-slate-200 text-slate-900"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-sm text-slate-700">Campus Size</Label>
+                  <Label className="text-sm text-slate-700">Acceptance Rate %</Label>
                   <Input
-                    value={form.campus_size}
-                    onChange={(e) => setForm({ ...form, campus_size: e.target.value })}
-                    placeholder="e.g. 100 acres"
+                    type="number"
+                    step="0.1"
+                    value={form.acceptance_rate}
+                    onChange={(e) => setForm({ ...form, acceptance_rate: e.target.value })}
+                    placeholder="e.g. 15"
                     className="bg-white border-slate-200 text-slate-900"
                   />
                 </div>
@@ -338,15 +316,27 @@ export default function EditUniversityPage() {
             {/* Media */}
             <div className="space-y-4">
               <h3 className="text-sm font-semibold text-slate-700 border-b border-slate-200 pb-2">Media</h3>
-              <div className="space-y-2">
-                <Label className="text-sm text-slate-700">Logo URL</Label>
-                <Input
-                  type="url"
-                  value={form.logo_url}
-                  onChange={(e) => setForm({ ...form, logo_url: e.target.value })}
-                  placeholder="https://example.com/logo.png"
-                  className="bg-white border-slate-200 text-slate-900"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-sm text-slate-700">Logo URL</Label>
+                  <Input
+                    type="url"
+                    value={form.logo_url}
+                    onChange={(e) => setForm({ ...form, logo_url: e.target.value })}
+                    placeholder="https://example.com/logo.png"
+                    className="bg-white border-slate-200 text-slate-900"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm text-slate-700">Cover Image URL</Label>
+                  <Input
+                    type="url"
+                    value={form.cover_image_url}
+                    onChange={(e) => setForm({ ...form, cover_image_url: e.target.value })}
+                    placeholder="https://example.com/cover.jpg"
+                    className="bg-white border-slate-200 text-slate-900"
+                  />
+                </div>
               </div>
             </div>
 
