@@ -99,7 +99,10 @@ export default function EditCoursePage() {
       const payload: Record<string, any> = {
         name: form.name.trim(),
         code: form.code.trim() || null,
-        slug: form.slug.trim() || form.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+        slug: form.slug.trim() || (() => {
+          const uniName = universities.find(u => u.id.toString() === form.university_id)?.name || ''
+          return (form.name + (uniName ? '-' + uniName : '')).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+        })(),
         university_id: parseInt(form.university_id),
         country_id: form.country_id ? parseInt(form.country_id) : null,
         level: form.level.trim(),
