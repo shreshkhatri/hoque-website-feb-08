@@ -126,25 +126,25 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
     minWage: country.min_wage || defaultPlaceholders.minWage,
     maxWorkHours: country.max_work_hours || defaultPlaceholders.maxWorkHours,
     costOfLiving: {
-      accommodation: { 
-        min: country.cost_accommodation_min ?? defaultPlaceholders.costOfLiving.accommodation.min, 
-        max: country.cost_accommodation_max ?? defaultPlaceholders.costOfLiving.accommodation.max 
+      accommodation: {
+        min: country.cost_accommodation_min ?? defaultPlaceholders.costOfLiving.accommodation.min,
+        max: country.cost_accommodation_max ?? defaultPlaceholders.costOfLiving.accommodation.max
       },
-      food: { 
-        min: country.cost_food_min ?? defaultPlaceholders.costOfLiving.food.min, 
-        max: country.cost_food_max ?? defaultPlaceholders.costOfLiving.food.max 
+      food: {
+        min: country.cost_food_min ?? defaultPlaceholders.costOfLiving.food.min,
+        max: country.cost_food_max ?? defaultPlaceholders.costOfLiving.food.max
       },
-      transport: { 
-        min: country.cost_transport_min ?? defaultPlaceholders.costOfLiving.transport.min, 
-        max: country.cost_transport_max ?? defaultPlaceholders.costOfLiving.transport.max 
+      transport: {
+        min: country.cost_transport_min ?? defaultPlaceholders.costOfLiving.transport.min,
+        max: country.cost_transport_max ?? defaultPlaceholders.costOfLiving.transport.max
       },
-      utilities: { 
-        min: country.cost_utilities_min ?? defaultPlaceholders.costOfLiving.utilities.min, 
-        max: country.cost_utilities_max ?? defaultPlaceholders.costOfLiving.utilities.max 
+      utilities: {
+        min: country.cost_utilities_min ?? defaultPlaceholders.costOfLiving.utilities.min,
+        max: country.cost_utilities_max ?? defaultPlaceholders.costOfLiving.utilities.max
       },
-      healthInsurance: { 
-        min: country.cost_health_insurance_min ?? defaultPlaceholders.costOfLiving.healthInsurance.min, 
-        max: country.cost_health_insurance_max ?? defaultPlaceholders.costOfLiving.healthInsurance.max 
+      healthInsurance: {
+        min: country.cost_health_insurance_min ?? defaultPlaceholders.costOfLiving.healthInsurance.min,
+        max: country.cost_health_insurance_max ?? defaultPlaceholders.costOfLiving.healthInsurance.max
       },
     },
     studentVisa: {
@@ -155,16 +155,20 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
       eligibility: country.post_study_visa_eligibility || defaultPlaceholders.postStudyVisa.eligibility,
       validity: country.post_study_visa_validity || defaultPlaceholders.postStudyVisa.validity,
     },
-    employmentSectors: employmentSectors.length > 0 
+    employmentSectors: employmentSectors.length > 0
       ? employmentSectors.map(s => ({ sector: s.sector_name, demand: s.demand_level }))
       : [],
-    funFacts: funFacts.length > 0 
+    funFacts: funFacts.length > 0
       ? funFacts.map(f => f.fact)
       : [],
     faqs: Array.isArray(country.faqs) && country.faqs.length > 0
-    ? country.faqs
-    : [],
+      ? country.faqs
+      : [],
   }
+
+  useEffect(() => {
+    console.log(countryData.faqs)
+  });
 
   // Auto-rotate fun facts (only when there are facts to show)
   useEffect(() => {
@@ -182,7 +186,7 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
 
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.name.toLowerCase().includes(courseSearch.toLowerCase()) ||
-                         course.code.toLowerCase().includes(courseSearch.toLowerCase())
+      course.code.toLowerCase().includes(courseSearch.toLowerCase())
     const matchesLevel = levelFilter === 'all' || course.level === levelFilter
     return matchesSearch && matchesLevel
   })
@@ -267,11 +271,10 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-4 border-b-2 transition-colors whitespace-nowrap ${
-                    activeTab === tab.id
+                  className={`flex items-center gap-2 px-4 py-4 border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id
                       ? 'border-primary text-primary font-medium'
                       : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   {tab.label}
@@ -392,35 +395,34 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
               </section>
             )}
 
-              {/* Fun Facts Carousel */}
-              {countryData.funFacts.length > 0 && (
+            {/* Fun Facts Carousel */}
+            {countryData.funFacts.length > 0 && (
               <section className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl p-8">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Sparkles className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">Did you know?</h3>
-                  <p className="text-muted-foreground text-lg transition-opacity duration-500">
-                    {countryData.funFacts[currentFactIndex]}
-                  </p>
-                  <div className="flex gap-2 mt-4">
-                    {countryData.funFacts.map((_: any, index: number) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentFactIndex(index)}
-                        aria-label={`View fun fact ${index + 1}`}
-                        aria-current={index === currentFactIndex ? 'true' : 'false'}
-                        className={`w-2 h-2 rounded-full transition-colors ${
-                          index === currentFactIndex ? 'bg-primary' : 'bg-primary/30'
-                        }`}
-                      />
-                    ))}
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Sparkles className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-foreground mb-2">Did you know?</h3>
+                    <p className="text-muted-foreground text-lg transition-opacity duration-500">
+                      {countryData.funFacts[currentFactIndex]}
+                    </p>
+                    <div className="flex gap-2 mt-4">
+                      {countryData.funFacts.map((_: any, index: number) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentFactIndex(index)}
+                          aria-label={`View fun fact ${index + 1}`}
+                          aria-current={index === currentFactIndex ? 'true' : 'false'}
+                          className={`w-2 h-2 rounded-full transition-colors ${index === currentFactIndex ? 'bg-primary' : 'bg-primary/30'
+                            }`}
+                        />
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </section>
-              )}
+              </section>
+            )}
           </div>
         )}
 
@@ -792,9 +794,8 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                     >
                       <span className="font-medium text-foreground pr-4">{faq.question}</span>
                       <ChevronDown
-                        className={`w-5 h-5 text-muted-foreground transition-transform flex-shrink-0 ${
-                          expandedFaq === index ? 'rotate-180' : ''
-                        }`}
+                        className={`w-5 h-5 text-muted-foreground transition-transform flex-shrink-0 ${expandedFaq === index ? 'rotate-180' : ''
+                          }`}
                       />
                     </button>
                     {expandedFaq === index && (
