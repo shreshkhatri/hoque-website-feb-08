@@ -89,6 +89,17 @@ export default async function UniversityPage({
     notFound()
   }
 
+  // Fetch country currency
+  let currency: string | null = null
+  if (university.country_id) {
+    const { data: countryData } = await supabase
+      .from('countries')
+      .select('currency')
+      .eq('id', university.country_id)
+      .single()
+    currency = countryData?.currency || null
+  }
+
   // Fetch campuses for this university
   const { data: campuses } = await supabase
     .from('university_campuses')
@@ -105,7 +116,7 @@ export default async function UniversityPage({
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <UniversityContent university={university} courses={courses || []} campuses={campuses || []} />
+      <UniversityContent university={university} courses={courses || []} campuses={campuses || []} currency={currency} />
       <Footer />
     </div>
   )

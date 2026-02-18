@@ -46,6 +46,7 @@ interface UniversityContentProps {
   university: University
   courses: CourseWithCampus[]
   campuses?: UniversityCampus[]
+  currency?: string | null
 }
 
 const tabs = [
@@ -69,7 +70,7 @@ const iconMap: Record<string, any> = {
   BookOpen,
 }
 
-export function UniversityContent({ university, courses, campuses = [] }: UniversityContentProps) {
+export function UniversityContent({ university, courses, campuses = [], currency }: UniversityContentProps) {
   const [activeTab, setActiveTab] = useState('overview')
   const [courseSearch, setCourseSearch] = useState('')
   const [levelFilter, setLevelFilter] = useState('all')
@@ -475,7 +476,7 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
                           <div className="text-right">
                             <p className="text-sm text-muted-foreground">Tuition Fee</p>
                             <p className="text-lg font-semibold text-foreground">
-                              £{course.tuition_fees_international.toLocaleString()}/year
+                              {currency || ''} {course.tuition_fees_international.toLocaleString()}/year
                             </p>
                           </div>
                         )}
