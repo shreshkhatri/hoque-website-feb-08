@@ -57,6 +57,20 @@ export async function PUT(
       }
     }
 
+    // Check course code uniqueness if code changed
+    if (sanitizedBody.code && sanitizedBody.code.trim()) {
+      const { data: existing } = await supabase
+        .from('courses')
+        .select('id')
+        .eq('code', sanitizedBody.code.trim())
+        .neq('id', parseInt(id))
+        .limit(1)
+
+      if (existing && existing.length > 0) {
+        return NextResponse.json({ error: `A course with code "${sanitizedBody.code.trim()}" already exists. Please use a unique course code.` }, { status: 409 })
+      }
+    }
+
     const { data, error } = await supabase
       .from('courses')
       .update(sanitizedBody)

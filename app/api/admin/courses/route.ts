@@ -38,6 +38,20 @@ export async function POST(request: Request) {
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await request.json()
+
+  // Check course code uniqueness if code is provided
+  if (body.code && body.code.trim()) {
+    const { data: existing } = await supabase
+      .from('courses')
+      .select('id')
+      .eq('code', body.code.trim())
+      .limit(1)
+
+    if (existing && existing.length > 0) {
+      return NextResponse.json({ error: `A course with code "${body.code.trim()}" already exists. Please use a unique course code.` }, { status: 409 })
+    }
+  }
+
   const { data, error } = await supabase.from('courses').insert(body).select().single()
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
