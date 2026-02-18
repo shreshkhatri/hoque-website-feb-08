@@ -26,18 +26,17 @@ export default function EditUniversityPage() {
     name: '',
     city: '',
     country_id: '',
+    campus_type: '',
     description: '',
-    website: '',
-    ranking: '',
-    established_year: '',
-    address: '',
-    phone: '',
-    email: '',
-    type: '',
+    why_study_here: '',
+    website_url: '',
+    rank_world: '',
+    founded_year: '',
     student_population: '',
     international_students_percentage: '',
-    campus_size: '',
+    acceptance_rate: '',
     logo_url: '',
+    cover_image_url: '',
   })
 
   useEffect(() => {
@@ -53,18 +52,17 @@ export default function EditUniversityPage() {
             name: u.name || '',
             city: u.city || '',
             country_id: u.country_id?.toString() || '',
+            campus_type: u.campus_type || '',
             description: u.description || '',
-            website: u.website || '',
-            ranking: u.ranking || '',
-            established_year: u.established_year?.toString() || '',
-            address: u.address || '',
-            phone: u.phone || '',
-            email: u.email || '',
-            type: u.type || '',
+            why_study_here: u.why_study_here || '',
+            website_url: u.website_url || '',
+            rank_world: u.rank_world || '',
+            founded_year: u.founded_year?.toString() || '',
             student_population: u.student_population?.toString() || '',
             international_students_percentage: u.international_students_percentage?.toString() || '',
-            campus_size: u.campus_size || '',
+            acceptance_rate: u.acceptance_rate?.toString() || '',
             logo_url: u.logo_url || '',
+            cover_image_url: u.cover_image_url || '',
           })
         }
       })
@@ -81,21 +79,18 @@ export default function EditUniversityPage() {
         name: form.name.trim(),
         city: form.city.trim(),
         country_id: parseInt(form.country_id),
+        campus_type: form.campus_type.trim() || null,
+        description: form.description.trim() || null,
+        why_study_here: form.why_study_here.trim() || null,
+        website_url: form.website_url.trim() || null,
+        rank_world: form.rank_world.trim() || null,
+        founded_year: form.founded_year ? parseInt(form.founded_year) : null,
+        student_population: form.student_population ? parseInt(form.student_population) : null,
+        international_students_percentage: form.international_students_percentage ? parseFloat(form.international_students_percentage) : null,
+        acceptance_rate: form.acceptance_rate ? parseFloat(form.acceptance_rate) : null,
+        logo_url: form.logo_url.trim() || null,
+        cover_image_url: form.cover_image_url.trim() || null,
       }
-
-      if (form.description.trim()) payload.description = form.description.trim()
-      if (form.website.trim()) payload.website = form.website.trim()
-      if (form.ranking.trim()) payload.ranking = form.ranking.trim()
-      if (form.established_year.trim()) payload.established_year = parseInt(form.established_year)
-      if (form.address.trim()) payload.address = form.address.trim()
-      if (form.phone.trim()) payload.phone = form.phone.trim()
-      if (form.email.trim()) payload.email = form.email.trim()
-      if (form.type.trim()) payload.type = form.type.trim()
-      if (form.student_population.trim()) payload.student_population = parseInt(form.student_population)
-      if (form.international_students_percentage.trim())
-        payload.international_students_percentage = parseFloat(form.international_students_percentage)
-      if (form.campus_size.trim()) payload.campus_size = form.campus_size.trim()
-      if (form.logo_url.trim()) payload.logo_url = form.logo_url.trim()
 
       const res = await fetch(`/api/admin/universities/${id}`, {
         method: 'PUT',
