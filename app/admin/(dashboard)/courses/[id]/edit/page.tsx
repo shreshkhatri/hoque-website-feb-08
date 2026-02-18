@@ -127,18 +127,11 @@ export default function EditCoursePage() {
     }
     setSaving(true)
     try {
-      const uniName = universities.find((u) => u.id.toString() === form.university_id)?.name || ''
-      const autoSlug = (form.name + (uniName ? '-' + uniName : ''))
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)/g, '')
-
       const selectedUni = universities.find((u) => u.id.toString() === form.university_id)
 
       const payload: Record<string, any> = {
         name: form.name.trim(),
         code: form.code.trim() || null,
-        slug: autoSlug,
         university_id: parseInt(form.university_id),
         country_id: selectedUni?.country_id || null,
         level: form.level,

@@ -3,7 +3,7 @@ import { verifySession } from '@/lib/admin-auth'
 import { supabaseAdmin as supabase } from '@/lib/supabase'
 
 const ALLOWED_FIELDS = [
-  'name', 'code', 'slug', 'university_id', 'level', 'duration_years',
+  'name', 'code', 'university_id', 'level', 'duration_years',
   'description', 'tuition_fees_international', 'intake_months', 'entry_requirements',
   'country_id', 'course_overview', 'academic_requirements', 'english_language_requirements',
   'other_requirements', 'document_requirements', 'scholarships', 'key_features',
@@ -54,6 +54,20 @@ export async function PUT(
     for (const key of ALLOWED_FIELDS) {
       if (key in body) {
         sanitizedBody[key] = body[key]
+      }
+    }
+
+    // Check course code uniqueness if code changed
+    if (sanitizedBody.code && sanitizedBody.code.trim()) {
+      const { data: existing } = await supabase
+        .from('courses')
+        .select('id')
+        .eq('code', sanitizedBody.code.trim())
+        .neq('id', parseInt(id))
+        .limit(1)
+
+      if (existing && existing.length > 0) {
+        return NextResponse.json({ error: `A course with code "${sanitizedBody.code.trim()}" already exists. Please use a unique course code.` }, { status: 409 })
       }
     }
 
