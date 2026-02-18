@@ -248,7 +248,8 @@ export default function NewUniversityPage() {
       if (!res.ok) throw new Error(data.error || 'Failed to create university')
 
       // Create campuses if any
-      if (campuses.length > 0 && data.university?.id) {
+      const universityId = data.data?.id
+      if (campuses.length > 0 && universityId) {
         for (let i = 0; i < campuses.length; i++) {
           const campus = campuses[i]
           if (campus.image_file) {
@@ -260,7 +261,7 @@ export default function NewUniversityPage() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              university_id: data.university.id,
+              university_id: universityId,
               name: campus.name,
               location: campus.location,
               description: campus.description || null,
@@ -319,12 +320,12 @@ export default function NewUniversityPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="type">Type</Label>
+                <Label htmlFor="campus_type">Campus Type</Label>
                 <Input
-                  id="type"
-                  value={form.type}
-                  onChange={(e) => setForm({ ...form, type: e.target.value })}
-                  placeholder="e.g., Public, Private, Research"
+                  id="campus_type"
+                  value={form.campus_type}
+                  onChange={(e) => setForm({ ...form, campus_type: e.target.value })}
+                  placeholder="e.g., Urban, Suburban, Rural"
                   className="bg-white"
                 />
               </div>
