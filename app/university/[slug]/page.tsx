@@ -5,6 +5,9 @@ import { UniversityContent } from '@/components/university-content'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
+// Revalidate the page every 60 seconds (ISR - Incremental Static Regeneration)
+export const revalidate = 60
+
 // Helper to convert name to slug
 function nameToSlug(name: string): string {
   return name
