@@ -12,8 +12,7 @@ import Link from 'next/link'
 import { SearchableSelect } from '@/components/searchable-select'
 import { RichTextEditor } from '@/components/rich-text-editor'
 
-type University = { id: number; name: string }
-type Country = { id: number; name: string }
+type University = { id: number; name: string; country_id: number | null }
 type Campus = { id: number; name: string; location: string | null }
 
 const LEVEL_OPTIONS = [
@@ -33,7 +32,6 @@ export default function EditCoursePage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [universities, setUniversities] = useState<University[]>([])
-  const [countries, setCountries] = useState<Country[]>([])
   const [campuses, setCampuses] = useState<Campus[]>([])
   const [loadingCampuses, setLoadingCampuses] = useState(false)
   const [initialUniId, setInitialUniId] = useState('')
@@ -42,7 +40,6 @@ export default function EditCoursePage() {
     name: '',
     code: '',
     university_id: '',
-    country_id: '',
     level: '',
     duration_years: '',
     tuition_fees_international: '',
@@ -66,12 +63,10 @@ export default function EditCoursePage() {
   useEffect(() => {
     Promise.all([
       fetch(`/api/admin/courses/${id}`, { credentials: 'same-origin' }).then((r) => r.json()),
-      fetch('/api/countries').then((r) => r.json()),
       fetch('/api/admin/universities?limit=500', { credentials: 'same-origin' }).then((r) => r.json()),
     ])
-      .then(([courseData, countriesData, uniData]) => {
-        setCountries(countriesData.countries || [])
-        setUniversities((uniData.data || []).map((u: any) => ({ id: u.id, name: u.name })))
+      .then(([courseData, uniData]) => {
+        setUniversities((uniData.data || []).map((u: any) => ({ id: u.id, name: u.name, country_id: u.country_id })))
 
         if (courseData.course) {
           const c = courseData.course
@@ -81,7 +76,6 @@ export default function EditCoursePage() {
             name: c.name || '',
             code: c.code || '',
             university_id: uniId,
-            country_id: c.country_id?.toString() || '',
             level: c.level || '',
             duration_years: c.duration_years?.toString() || '',
             tuition_fees_international: c.tuition_fees_international?.toString() || '',
@@ -139,12 +133,14 @@ export default function EditCoursePage() {
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/(^-|-$)/g, '')
 
+      const selectedUni = universities.find((u) => u.id.toString() === form.university_id)
+
       const payload: Record<string, any> = {
         name: form.name.trim(),
         code: form.code.trim() || null,
         slug: autoSlug,
         university_id: parseInt(form.university_id),
-        country_id: form.country_id ? parseInt(form.country_id) : null,
+        country_id: selectedUni?.country_id || null,
         level: form.level,
         duration_years: form.duration_years ? parseInt(form.duration_years) : null,
         tuition_fees_international: form.tuition_fees_international ? parseInt(form.tuition_fees_international) : null,
@@ -183,7 +179,6 @@ export default function EditCoursePage() {
   }
 
   const universityOptions = universities.map((u) => ({ value: u.id.toString(), label: u.name }))
-  const countryOptions = countries.map((c) => ({ value: c.id.toString(), label: c.name }))
   const campusOptions = campuses.map((c) => ({
     value: c.id.toString(),
     label: c.name + (c.location ? ` - ${c.location}` : ''),
@@ -272,16 +267,6 @@ export default function EditCoursePage() {
                 onValueChange={(val) => setField('university_id', val)}
                 options={universityOptions}
                 placeholder="Search university..."
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label className="text-sm text-slate-700">Country</Label>
-              <SearchableSelect
-                value={form.country_id}
-                onValueChange={(val) => setField('country_id', val)}
-                options={countryOptions}
-                placeholder="Search country..."
               />
             </div>
 
