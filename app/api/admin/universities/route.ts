@@ -4,7 +4,6 @@ import { supabaseAdmin as supabase } from '@/lib/supabase'
 
 export async function GET(request: Request) {
   const session = await verifySession()
-  console.log('[v0] Universities GET - session:', !!session)
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { searchParams } = new URL(request.url)
@@ -15,7 +14,7 @@ export async function GET(request: Request) {
 
   let query = supabase
     .from('universities')
-    .select('*, countries(name), university_campuses(id, name, city)', { count: 'exact' })
+    .select('*, countries(name), university_campuses(id, name, location)', { count: 'exact' })
 
   if (search) {
     query = query.or(`name.ilike.%${search}%,city.ilike.%${search}%`)
@@ -24,8 +23,6 @@ export async function GET(request: Request) {
   const { data, count, error } = await query
     .order('name', { ascending: true })
     .range(offset, offset + limit - 1)
-
-  console.log('[v0] Universities GET - data count:', data?.length, 'total:', count, 'error:', error?.message)
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
