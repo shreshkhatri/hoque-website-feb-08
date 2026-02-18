@@ -163,16 +163,6 @@ export default function NewCoursePage() {
             </div>
 
             <div className="space-y-2">
-              <Label className="text-sm text-slate-700">Slug</Label>
-              <Input
-                value={form.slug}
-                onChange={(e) => setForm({ ...form, slug: e.target.value })}
-                placeholder="auto-generated-from-name"
-                className="bg-white border-slate-200 text-slate-900"
-              />
-            </div>
-
-            <div className="space-y-2">
               <Label className="text-sm text-slate-700">
                 University <span className="text-red-500">*</span>
               </Label>
