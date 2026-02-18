@@ -442,7 +442,7 @@ export default function NewUniversityPage() {
           </CardContent>
         </Card>
 
-        {/* Website & Type */}
+        {/* Website */}
         <Card>
           <CardHeader>
             <CardTitle>Additional Information</CardTitle>
@@ -457,17 +457,6 @@ export default function NewUniversityPage() {
                   value={form.website_url}
                   onChange={(e) => setForm({ ...form, website_url: e.target.value })}
                   placeholder="https://..."
-                  className="bg-white"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="campus_type">Campus Type</Label>
-                <Input
-                  id="campus_type"
-                  value={form.campus_type}
-                  onChange={(e) => setForm({ ...form, campus_type: e.target.value })}
-                  placeholder="e.g., Urban, Suburban, Rural"
                   className="bg-white"
                 />
               </div>
