@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useToast } from '@/components/toast-notification'
 import Link from 'next/link'
 import { ArrowLeft, Plus, X, Upload, Check, ChevronsUpDown, Image as ImageIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -51,6 +52,7 @@ interface Campus {
 
 export default function NewUniversityPage() {
   const router = useRouter()
+  const { showToast } = useToast()
   const [countries, setCountries] = useState<Country[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -285,11 +287,11 @@ export default function NewUniversityPage() {
         }
       }
 
-      alert('University created successfully! Note: Please manually upload the images to the public folder at the paths shown in the console.')
+        showToast('success', 'University created', 'The university has been created successfully.')
       router.push('/admin/universities')
     } catch (error) {
       console.error('Save error:', error)
-      alert('Failed to create university')
+      showToast('error', 'Creation Failed', 'Failed to create university. Please try again.')
     } finally {
       setSaving(false)
     }
