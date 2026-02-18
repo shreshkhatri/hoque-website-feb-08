@@ -39,7 +39,14 @@ export default function EditUniversityPage() {
     acceptance_rate: '',
     logo_url: '',
     cover_image_url: '',
+    employment_rate: '',
+    nationalities_count: '',
+    partner_universities_count: '',
+    intakes: '',
+    express_offer_available: false as boolean,
   })
+  const [campusFacilities, setCampusFacilities] = useState<string[]>([])
+  const [newFacility, setNewFacility] = useState('')
 
   // Highlights, Documents, FAQs
   const [highlights, setHighlights] = useState<{icon: string; title: string; description: string}[]>([])
@@ -73,7 +80,16 @@ export default function EditUniversityPage() {
             acceptance_rate: u.acceptance_rate?.toString() || '',
             logo_url: u.logo_url || '',
             cover_image_url: u.cover_image_url || '',
+            employment_rate: u.employment_rate || '',
+            nationalities_count: u.nationalities_count?.toString() || '',
+            partner_universities_count: u.partner_universities_count?.toString() || '',
+            intakes: u.intakes || '',
+            express_offer_available: u.express_offer_available || false,
           })
+          // Load existing campus facilities
+          if (Array.isArray(u.campus_facilities) && u.campus_facilities.length > 0) {
+            setCampusFacilities(u.campus_facilities)
+          }
           // Load existing highlights, documents, faqs
           if (Array.isArray(u.highlights) && u.highlights.length > 0) {
             setHighlights(u.highlights)
@@ -113,6 +129,12 @@ export default function EditUniversityPage() {
         highlights: highlights.length > 0 ? highlights : null,
         required_documents: requiredDocuments.length > 0 ? requiredDocuments : null,
         faqs: faqs.length > 0 ? faqs : null,
+        employment_rate: form.employment_rate.trim() || null,
+        nationalities_count: form.nationalities_count ? parseInt(form.nationalities_count) : null,
+        partner_universities_count: form.partner_universities_count ? parseInt(form.partner_universities_count) : null,
+        intakes: form.intakes.trim() || null,
+        campus_facilities: campusFacilities.length > 0 ? campusFacilities : null,
+        express_offer_available: form.express_offer_available,
       }
 
       const res = await fetch(`/api/admin/universities/${id}`, {
@@ -269,6 +291,56 @@ export default function EditUniversityPage() {
                   className="bg-white border-slate-200 text-slate-900"
                 />
               </div>
+              <div className="space-y-2">
+                <Label className="text-sm text-slate-700">Intakes</Label>
+                <Input
+                  value={form.intakes}
+                  onChange={(e) => setForm({ ...form, intakes: e.target.value })}
+                  placeholder="e.g. January, May, September"
+                  className="bg-white border-slate-200 text-slate-900"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm text-slate-700">Employment Rate</Label>
+                <Input
+                  value={form.employment_rate}
+                  onChange={(e) => setForm({ ...form, employment_rate: e.target.value })}
+                  placeholder="e.g. 95%"
+                  className="bg-white border-slate-200 text-slate-900"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm text-slate-700">Number of Nationalities</Label>
+                <Input
+                  type="number"
+                  value={form.nationalities_count}
+                  onChange={(e) => setForm({ ...form, nationalities_count: e.target.value })}
+                  placeholder="e.g. 130"
+                  className="bg-white border-slate-200 text-slate-900"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-sm text-slate-700">Partner Universities Count</Label>
+                <Input
+                  type="number"
+                  value={form.partner_universities_count}
+                  onChange={(e) => setForm({ ...form, partner_universities_count: e.target.value })}
+                  placeholder="e.g. 200"
+                  className="bg-white border-slate-200 text-slate-900"
+                />
+              </div>
+              <div className="flex items-center gap-3 pt-6">
+                <input
+                  type="checkbox"
+                  id="express_offer"
+                  checked={form.express_offer_available}
+                  onChange={(e) => setForm({ ...form, express_offer_available: e.target.checked })}
+                  className="h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500"
+                />
+                <Label htmlFor="express_offer" className="text-sm text-slate-700 cursor-pointer">
+                  Express Offer Available
+                </Label>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -377,6 +449,64 @@ export default function EditUniversityPage() {
                 )}
               </div>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Campus Facilities */}
+        <Card className="bg-white border-slate-200">
+          <CardHeader>
+            <CardTitle className="text-lg text-slate-900">Campus Facilities</CardTitle>
+            <p className="text-sm text-slate-500">List of facilities available at the campus (e.g. Modern Library, Sports Complex).</p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex gap-3 p-4 border border-slate-200 rounded-lg bg-slate-50">
+              <Input
+                value={newFacility}
+                onChange={(e) => setNewFacility(e.target.value)}
+                placeholder="e.g. Modern Library"
+                className="bg-white flex-1"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    if (newFacility.trim()) {
+                      setCampusFacilities([...campusFacilities, newFacility.trim()])
+                      setNewFacility('')
+                    }
+                  }
+                }}
+              />
+              <Button
+                type="button"
+                onClick={() => {
+                  if (newFacility.trim()) {
+                    setCampusFacilities([...campusFacilities, newFacility.trim()])
+                    setNewFacility('')
+                  }
+                }}
+                disabled={!newFacility.trim()}
+                variant="outline"
+                className="cursor-pointer"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add
+              </Button>
+            </div>
+            {campusFacilities.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {campusFacilities.map((facility, index) => (
+                  <span key={index} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 border border-slate-200 rounded-full text-sm text-slate-700">
+                    {facility}
+                    <button
+                      type="button"
+                      onClick={() => setCampusFacilities(campusFacilities.filter((_, i) => i !== index))}
+                      className="text-slate-400 hover:text-red-600"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
 

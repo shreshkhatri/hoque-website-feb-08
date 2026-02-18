@@ -91,6 +91,12 @@ export type University = {
   highlights: any[] | null
   required_documents: any[] | null
   faqs: any[] | null
+  employment_rate: string | null
+  nationalities_count: number | null
+  partner_universities_count: number | null
+  intakes: string | null
+  campus_facilities: string[] | null
+  express_offer_available: boolean
   created_at: string
 }
 
