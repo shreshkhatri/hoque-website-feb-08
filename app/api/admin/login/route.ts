@@ -1,12 +1,7 @@
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
-import { createClient } from '@supabase/supabase-js'
 import { createSession, getSessionCookieConfig } from '@/lib/admin-auth'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+import { supabaseAdmin as supabase } from '@/lib/supabase'
 
 export async function POST(request: Request) {
   try {

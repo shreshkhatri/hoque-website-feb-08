@@ -1,11 +1,6 @@
 import { NextResponse } from 'next/server'
 import { verifySession } from '@/lib/admin-auth'
-import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+import { supabaseAdmin as supabase } from '@/lib/supabase'
 
 export async function GET(request: Request) {
   const session = await verifySession()
@@ -28,8 +23,6 @@ export async function GET(request: Request) {
   const { data, count, error } = await query
     .order('name', { ascending: true })
     .range(offset, offset + limit - 1)
-
-  console.log('[v0] Universities GET - count:', count, 'data length:', data?.length, 'error:', error?.message, 'search:', search, 'SUPABASE_URL exists:', !!process.env.NEXT_PUBLIC_SUPABASE_URL, 'SERVICE_KEY exists:', !!process.env.SUPABASE_SERVICE_ROLE_KEY)
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 

@@ -65,7 +65,6 @@ export default function UniversitiesPage() {
       const params = new URLSearchParams({ page: String(page), limit: String(limit), search: debouncedSearch })
       const res = await fetch(`/api/admin/universities?${params}`)
       const data = await res.json()
-      console.log('[v0] Universities fetch response:', JSON.stringify(data).substring(0, 500), 'status:', res.status)
       setUniversities(data.data || [])
       setTotal(data.total || 0)
     } catch {
