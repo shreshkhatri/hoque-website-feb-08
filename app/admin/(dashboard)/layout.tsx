@@ -18,6 +18,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { ToastProvider } from '@/components/toast-notification'
 
 interface AdminSession {
   id: number
@@ -81,6 +82,7 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
   const currentPage = navItems.find((item) => pathname.startsWith(item.href))
 
   return (
+    <ToastProvider>
     <div className="flex h-screen bg-slate-50 overflow-hidden">
       {/* Mobile Overlay */}
       {sidebarOpen && (
@@ -189,5 +191,6 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
         </div>
       </main>
     </div>
+    </ToastProvider>
   )
 }

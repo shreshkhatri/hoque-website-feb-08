@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ArrowLeft, Save, Loader2, Plus, X } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import Link from 'next/link'
+import { useToast } from '@/components/toast-notification'
 
 type Country = { id: number; name: string; code: string }
 type ExistingCampus = { id: number; name: string; location: string; description: string; is_main_campus: boolean }
@@ -22,7 +23,8 @@ export default function EditUniversityPage() {
   const router = useRouter()
   const params = useParams()
   const id = params.id as string
-
+  const { showToast } = useToast()
+  
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [countries, setCountries] = useState<Country[]>([])
@@ -114,7 +116,7 @@ export default function EditUniversityPage() {
           }
         }
       })
-      .catch(() => alert('Failed to load university'))
+      .catch(() => showToast('error', 'Load Failed', 'Failed to load university data.'))
       .finally(() => setLoading(false))
   }, [id])
 
@@ -180,10 +182,10 @@ export default function EditUniversityPage() {
         router.push('/admin/universities')
       } else {
         const err = await res.json().catch(() => null)
-        alert(err?.error || 'Failed to update university')
+        showToast('error', 'Update Failed', err?.error || 'Failed to update university.')
       }
     } catch (error: any) {
-      alert('Failed to update university: ' + (error?.message || 'Unknown error'))
+      showToast('error', 'Update Failed', error?.message || 'An unexpected error occurred.')
     } finally {
       setSaving(false)
     }

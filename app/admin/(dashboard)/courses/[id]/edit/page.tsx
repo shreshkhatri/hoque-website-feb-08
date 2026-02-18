@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import { useToast } from '@/components/toast-notification'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -28,6 +29,7 @@ export default function EditCoursePage() {
   const router = useRouter()
   const params = useParams()
   const id = params.id as string
+  const { showToast } = useToast()
 
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -94,7 +96,7 @@ export default function EditCoursePage() {
           })
         }
       })
-      .catch(() => alert('Failed to load course'))
+      .catch(() => showToast('error', 'Load failed', 'Failed to load course data.'))
       .finally(() => setLoading(false))
   }, [id])
 
@@ -122,7 +124,7 @@ export default function EditCoursePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!form.name.trim() || !form.university_id || !form.level) {
-      alert('Name, University, and Level are required.')
+      showToast('warning', 'Missing required fields', 'Name, University, and Level are required.')
       return
     }
     setSaving(true)
@@ -162,10 +164,10 @@ export default function EditCoursePage() {
         router.push('/admin/courses')
       } else {
         const err = await res.json().catch(() => null)
-        alert(err?.error || 'Failed to update course')
+        showToast('error', 'Failed to update course', err?.error || 'An unexpected error occurred.')
       }
     } catch (error: any) {
-      alert('Failed to update course: ' + (error?.message || 'Unknown error'))
+      showToast('error', 'Failed to update course', error?.message || 'Unknown error')
     } finally {
       setSaving(false)
     }

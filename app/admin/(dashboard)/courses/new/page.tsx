@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useToast } from '@/components/toast-notification'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -25,6 +26,7 @@ const LEVEL_OPTIONS = [
 
 export default function NewCoursePage() {
   const router = useRouter()
+  const { showToast } = useToast()
   const [saving, setSaving] = useState(false)
   const [universities, setUniversities] = useState<University[]>([])
   const [campuses, setCampuses] = useState<Campus[]>([])
@@ -88,7 +90,7 @@ export default function NewCoursePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!form.name.trim() || !form.university_id || !form.level) {
-      alert('Name, University, and Level are required.')
+      showToast('warning', 'Missing required fields', 'Name, University, and Level are required.')
       return
     }
     setSaving(true)
@@ -128,10 +130,10 @@ export default function NewCoursePage() {
         router.push('/admin/courses')
       } else {
         const err = await res.json().catch(() => null)
-        alert(err?.error || 'Failed to create course')
+        showToast('error', 'Failed to create course', err?.error || 'An unexpected error occurred.')
       }
     } catch (error: any) {
-      alert('Failed to create course: ' + (error?.message || 'Unknown error'))
+      showToast('error', 'Failed to create course', error?.message || 'Unknown error')
     } finally {
       setSaving(false)
     }
