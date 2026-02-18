@@ -24,8 +24,7 @@ export async function GET(
     if (error) throw error
 
     return NextResponse.json({ campuses: data || [] })
-  } catch (error: any) {
-    console.error('[v0] Error fetching campuses:', error?.message)
+  } catch {
     return NextResponse.json({ campuses: [] })
   }
 }

@@ -41,7 +41,6 @@ export async function PUT(
 
   try {
     const body = await request.json()
-    console.log('[v0] PUT /api/admin/universities/' + id, 'payload keys:', Object.keys(body))
 
     // Only allow known university table columns
     const allowedFields = [
@@ -60,8 +59,6 @@ export async function PUT(
       }
     }
 
-    console.log('[v0] Sanitized payload keys:', Object.keys(sanitizedBody), 'values:', JSON.stringify(sanitizedBody).slice(0, 500))
-
     const { data, error } = await supabase
       .from('universities')
       .update(sanitizedBody)
@@ -70,14 +67,11 @@ export async function PUT(
       .single()
 
     if (error) {
-      console.error('[v0] Supabase update error:', error.message, error.details, error.hint, error.code)
       return NextResponse.json({ error: error.message || 'Failed to update university' }, { status: 500 })
     }
 
-    console.log('[v0] University updated successfully, id:', data?.id)
     return NextResponse.json({ university: data })
   } catch (error: any) {
-    console.error('[v0] PUT catch error:', error?.message || error)
     return NextResponse.json({ error: error?.message || 'Failed to update university' }, { status: 500 })
   }
 }

@@ -13,6 +13,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 import Link from 'next/link'
 
 type Country = { id: number; name: string; code: string }
+type ExistingCampus = { id: number; name: string; location: string; description: string; is_main_campus: boolean }
+type NewCampus = { name: string; location: string; description: string; is_main_campus: boolean }
 
 const highlightIconOptions = ['Award', 'Briefcase', 'Users', 'Globe', 'Star', 'GraduationCap', 'Building2', 'BookOpen']
 
@@ -57,8 +59,6 @@ export default function EditUniversityPage() {
   const [newFaq, setNewFaq] = useState({ question: '', answer: '' })
 
   // Campuses
-  type ExistingCampus = { id: number; name: string; location: string; description: string; is_main_campus: boolean }
-  type NewCampus = { name: string; location: string; description: string; is_main_campus: boolean }
   const [existingCampuses, setExistingCampuses] = useState<ExistingCampus[]>([])
   const [newCampuses, setNewCampuses] = useState<NewCampus[]>([])
   const [campusesToDelete, setCampusesToDelete] = useState<number[]>([])
@@ -149,16 +149,12 @@ export default function EditUniversityPage() {
         express_offer_available: form.express_offer_available,
       }
 
-      console.log('[v0] Submitting university update, payload keys:', Object.keys(payload))
-      
       const res = await fetch(`/api/admin/universities/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
         credentials: 'same-origin',
       })
-
-      console.log('[v0] PUT response status:', res.status)
 
       if (res.ok) {
         // Also save campuses
@@ -183,17 +179,10 @@ export default function EditUniversityPage() {
         }
         router.push('/admin/universities')
       } else {
-        const text = await res.text()
-        console.error('[v0] Update failed, status:', res.status, 'body:', text)
-        try {
-          const err = JSON.parse(text)
-          alert(err.error || 'Failed to update university')
-        } catch {
-          alert('Failed to update university (status ' + res.status + ')')
-        }
+        const err = await res.json().catch(() => null)
+        alert(err?.error || 'Failed to update university')
       }
     } catch (error: any) {
-      console.error('[v0] Submit error:', error)
       alert('Failed to update university: ' + (error?.message || 'Unknown error'))
     } finally {
       setSaving(false)
