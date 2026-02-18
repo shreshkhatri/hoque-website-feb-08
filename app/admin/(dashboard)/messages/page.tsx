@@ -250,7 +250,7 @@ export default function MessagesPage() {
 
       {/* Detail Sheet */}
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-        <SheetContent className="bg-white border-slate-200 text-slate-900 w-full sm:max-w-lg overflow-y-auto">
+        <SheetContent className="bg-white border-slate-200 text-slate-900 w-full sm:max-w-lg overflow-y-auto px-6 py-8">
           <SheetHeader>
             <SheetTitle className="text-slate-900">Message Detail</SheetTitle>
           </SheetHeader>
