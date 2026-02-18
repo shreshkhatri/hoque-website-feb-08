@@ -34,41 +34,50 @@ export async function PATCH(
       return NextResponse.json({ error: 'Country name is required' }, { status: 400 })
     }
 
-    const updateData: Record<string, any> = {
-      name: body.name,
-      code: body.code || body.name.substring(0, 2).toUpperCase(),
-      flag_emoji: body.flag_emoji || null,
-      description: body.description || null,
-      about: body.about || null,
-      study_life: body.study_life || null,
-      opportunities: body.opportunities || null,
-      cover_image_url: body.cover_image_url || null,
-      student_permit_requirements: body.student_permit_requirements || null,
-      visa_processing_time: body.visa_processing_time || null,
-      student_visa_eligibility: body.student_visa_eligibility || null,
-      student_visa_validity: body.student_visa_validity || null,
-      post_study_work_visa: body.post_study_work_visa || null,
-      post_study_visa_eligibility: body.post_study_visa_eligibility || null,
-      post_study_visa_validity: body.post_study_visa_validity || null,
-      work_study_hours: body.work_study_hours || null,
-      max_work_hours: body.max_work_hours ?? 20,
-      min_wage: body.min_wage || null,
-      currency: body.currency || 'USD',
-      cost_of_living_monthly: body.cost_of_living_monthly || null,
-      international_students_count: body.international_students_count || null,
-      happiness_ranking: body.happiness_ranking ?? null,
-      employment_rate: body.employment_rate ?? null,
-      cost_accommodation_min: body.cost_accommodation_min ?? null,
-      cost_accommodation_max: body.cost_accommodation_max ?? null,
-      cost_food_min: body.cost_food_min ?? null,
-      cost_food_max: body.cost_food_max ?? null,
-      cost_transport_min: body.cost_transport_min ?? null,
-      cost_transport_max: body.cost_transport_max ?? null,
-      cost_utilities_min: body.cost_utilities_min ?? null,
-      cost_utilities_max: body.cost_utilities_max ?? null,
-      cost_health_insurance_min: body.cost_health_insurance_min ?? null,
-      cost_health_insurance_max: body.cost_health_insurance_max ?? null,
-      faqs: body.faqs ?? [],
+    // Build update data only from fields present in the request body
+    const updateData: Record<string, any> = { name: body.name }
+
+    // Only set fields that were explicitly included in the request
+    const fieldMap: Record<string, (val: any) => any> = {
+      code: (v) => v || body.name.substring(0, 2).toUpperCase(),
+      flag_emoji: (v) => v || null,
+      description: (v) => v || null,
+      about: (v) => v || null,
+      study_life: (v) => v || null,
+      opportunities: (v) => v || null,
+      cover_image_url: (v) => v || null,
+      student_permit_requirements: (v) => v || null,
+      visa_processing_time: (v) => v || null,
+      student_visa_eligibility: (v) => v || null,
+      student_visa_validity: (v) => v || null,
+      post_study_work_visa: (v) => v || null,
+      post_study_visa_eligibility: (v) => v || null,
+      post_study_visa_validity: (v) => v || null,
+      work_study_hours: (v) => v || null,
+      max_work_hours: (v) => v ?? 20,
+      min_wage: (v) => v || null,
+      currency: (v) => v || 'USD',
+      cost_of_living_monthly: (v) => v || null,
+      international_students_count: (v) => v || null,
+      happiness_ranking: (v) => v ?? null,
+      employment_rate: (v) => v ?? null,
+      cost_accommodation_min: (v) => v ?? null,
+      cost_accommodation_max: (v) => v ?? null,
+      cost_food_min: (v) => v ?? null,
+      cost_food_max: (v) => v ?? null,
+      cost_transport_min: (v) => v ?? null,
+      cost_transport_max: (v) => v ?? null,
+      cost_utilities_min: (v) => v ?? null,
+      cost_utilities_max: (v) => v ?? null,
+      cost_health_insurance_min: (v) => v ?? null,
+      cost_health_insurance_max: (v) => v ?? null,
+      faqs: (v) => v ?? [],
+    }
+
+    for (const [key, transform] of Object.entries(fieldMap)) {
+      if (key in body) {
+        updateData[key] = transform(body[key])
+      }
     }
 
     const { data, error } = await supabase
