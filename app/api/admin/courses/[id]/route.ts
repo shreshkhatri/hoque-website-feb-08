@@ -3,7 +3,7 @@ import { verifySession } from '@/lib/admin-auth'
 import { supabaseAdmin as supabase } from '@/lib/supabase'
 
 const ALLOWED_FIELDS = [
-  'name', 'code', 'slug', 'university_id', 'level', 'duration_years',
+  'name', 'code', 'university_id', 'level', 'duration_years',
   'description', 'tuition_fees_international', 'intake_months', 'entry_requirements',
   'country_id', 'course_overview', 'academic_requirements', 'english_language_requirements',
   'other_requirements', 'document_requirements', 'scholarships', 'key_features',
