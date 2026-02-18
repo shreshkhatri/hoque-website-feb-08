@@ -39,7 +39,7 @@ interface University {
   rank_world: string | null
   founded_year: number | null
   countries: { name: string } | null
-  university_campuses: { id: number; name: string; city: string }[]
+  university_campuses: { id: number; name: string; location: string }[]
 }
 
 export default function UniversitiesPage() {
@@ -65,7 +65,6 @@ export default function UniversitiesPage() {
       const params = new URLSearchParams({ page: String(page), limit: String(limit), search: debouncedSearch })
       const res = await fetch(`/api/admin/universities?${params}`)
       const data = await res.json()
-      console.log('[v0] Admin universities page - status:', res.status, 'response:', JSON.stringify(data).substring(0, 300))
       setUniversities(data.data || [])
       setTotal(data.total || 0)
     } catch {
