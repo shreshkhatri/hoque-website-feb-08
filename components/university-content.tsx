@@ -69,31 +69,6 @@ const iconMap: Record<string, any> = {
   BookOpen,
 }
 
-// Default fallback data
-const defaultHighlights = [
-  { icon: 'Award', title: 'Top Ranked', description: 'Among the top universities in the UK for student satisfaction' },
-  { icon: 'Briefcase', title: 'Career Support', description: '95% of graduates employed within 6 months' },
-  { icon: 'Users', title: 'Diverse Community', description: 'Students from over 130 countries' },
-  { icon: 'Globe', title: 'Global Connections', description: 'Partnerships with 200+ universities worldwide' },
-]
-
-const defaultDocuments = [
-  { name: 'Academic Transcripts', description: 'Official transcripts from all previously attended institutions' },
-  { name: 'English Language Proficiency', description: 'IELTS 6.0 overall (min 5.5 in each band) or equivalent' },
-  { name: 'Personal Statement', description: 'A statement explaining your motivation and goals' },
-  { name: 'Passport Copy', description: 'Valid passport with at least 6 months validity' },
-  { name: 'Reference Letters', description: 'Two academic or professional references' },
-  { name: 'CV/Resume', description: 'Updated curriculum vitae highlighting relevant experience' },
-]
-
-const defaultFaqs = [
-  { question: 'What are the entry requirements?', answer: 'Entry requirements vary by program. Generally, you need relevant academic qualifications and English language proficiency (IELTS 6.0 or equivalent).' },
-  { question: 'When are the application deadlines?', answer: 'Most programs have multiple intakes throughout the year. We recommend applying at least 3-4 months before your intended start date.' },
-  { question: 'Is there scholarship available?', answer: 'Yes, the university offers various scholarships for international students based on academic merit and financial need.' },
-  { question: 'What is the average processing time?', answer: 'Application processing typically takes 2-4 weeks. Visa processing time varies by country.' },
-  { question: 'Can I work while studying?', answer: 'International students can work up to 20 hours per week during term time and full-time during holidays.' },
-]
-
 export function UniversityContent({ university, courses, campuses = [] }: UniversityContentProps) {
   const [activeTab, setActiveTab] = useState('overview')
   const [courseSearch, setCourseSearch] = useState('')
@@ -101,18 +76,22 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
   const [campusFilter, setCampusFilter] = useState('all')
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
 
-  // Parse database fields or use defaults
+  // Use DB data only - no hardcoded defaults
   const highlights = Array.isArray(university.highlights) && university.highlights.length > 0 
     ? university.highlights.map((h: any) => ({ ...h, icon: iconMap[h.icon] || Award }))
-    : defaultHighlights.map(h => ({ ...h, icon: iconMap[h.icon] || Award }))
+    : []
   
   const requiredDocuments = Array.isArray(university.required_documents) && university.required_documents.length > 0
     ? university.required_documents
-    : defaultDocuments
+    : []
   
   const faqs = Array.isArray(university.faqs) && university.faqs.length > 0
     ? university.faqs
-    : defaultFaqs
+    : []
+
+  const campusFacilities = Array.isArray(university.campus_facilities) && university.campus_facilities.length > 0
+    ? university.campus_facilities
+    : []
 
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.name.toLowerCase().includes(courseSearch.toLowerCase()) ||
@@ -124,9 +103,17 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
 
   const uniqueLevels = [...new Set(courses.map(c => c.level))]
   
-  // Use actual DB values, fall back to null (won't display if not set)
+  // Use actual DB values
   const acceptanceRate = university.acceptance_rate ?? null
   const intlStudentsPercent = university.international_students_percentage ?? null
+
+  // Filter visible tabs based on available data
+  const visibleTabs = tabs.filter(tab => {
+    if (tab.id === 'highlights' && highlights.length === 0) return false
+    if (tab.id === 'documents' && requiredDocuments.length === 0) return false
+    if (tab.id === 'faqs' && faqs.length === 0) return false
+    return true
+  })
 
   return (
     <>
@@ -162,9 +149,11 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
             {/* University Info */}
             <div className="flex-1 text-white">
               <div className="flex flex-wrap gap-2 mb-2">
-                <Badge className="bg-green-500 text-white hover:bg-green-600">
-                  Express Offer Available
-                </Badge>
+                {university.express_offer_available && (
+                  <Badge className="bg-green-500 text-white hover:bg-green-600">
+                    Express Offer Available
+                  </Badge>
+                )}
                 {university.rank_world && (
                   <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
                     World Rank: #{university.rank_world}
@@ -242,7 +231,7 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
       <section className="sticky top-0 z-40 bg-background border-b border-border shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex overflow-x-auto scrollbar-hide">
-            {tabs.map((tab) => {
+            {visibleTabs.map((tab) => {
               const Icon = tab.icon
               return (
                 <button
@@ -269,70 +258,76 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
         {activeTab === 'overview' && (
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
-              <Card>
-                <CardContent className="p-6">
-                  <h2 className="text-xl font-semibold text-foreground mb-4">About {university.name}</h2>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {university.description || `${university.name} is a prestigious institution located in ${university.city}, ${university.country}. The university offers a wide range of undergraduate and postgraduate programs, providing students with excellent academic opportunities and career prospects. With a strong focus on research and innovation, the university has established itself as a leader in higher education.`}
-                  </p>
-                </CardContent>
-              </Card>
+              {university.description && (
+                <Card>
+                  <CardContent className="p-6">
+                    <h2 className="text-xl font-semibold text-foreground mb-4">About {university.name}</h2>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {university.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
 
-              <Card>
-                <CardContent className="p-6">
-                  <h2 className="text-xl font-semibold text-foreground mb-4">Why Study Here?</h2>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    {highlights.map((highlight, index) => {
-                      const Icon = highlight.icon
-                      return (
-                        <div key={index} className="flex gap-3 p-4 bg-muted/50 rounded-lg">
-                          <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <Icon className="w-5 h-5 text-primary" />
+              {highlights.length > 0 && (
+                <Card>
+                  <CardContent className="p-6">
+                    <h2 className="text-xl font-semibold text-foreground mb-4">Why Study Here?</h2>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      {highlights.map((highlight, index) => {
+                        const Icon = highlight.icon
+                        return (
+                          <div key={index} className="flex gap-3 p-4 bg-muted/50 rounded-lg">
+                            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                              <Icon className="w-5 h-5 text-primary" />
+                            </div>
+                            <div>
+                              <h3 className="font-medium text-foreground">{highlight.title}</h3>
+                              <p className="text-sm text-muted-foreground">{highlight.description}</p>
+                            </div>
                           </div>
+                        )
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {courses.length > 0 && (
+                <Card>
+                  <CardContent className="p-6">
+                    <h2 className="text-xl font-semibold text-foreground mb-4">Popular Courses</h2>
+                    <div className="space-y-3">
+                      {courses.slice(0, 5).map((course) => (
+                        <Link
+                          key={course.id}
+                          href={`/course/${nameToSlug(course.name, course.code)}`}
+                          className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors group"
+                        >
                           <div>
-                            <h3 className="font-medium text-foreground">{highlight.title}</h3>
-                            <p className="text-sm text-muted-foreground">{highlight.description}</p>
+                            <h3 className="font-medium text-foreground group-hover:text-primary transition-colors">
+                              {course.name}
+                            </h3>
+                            <p className="text-sm text-muted-foreground">
+                              {course.level} {course.duration_years && `• ${course.duration_years} ${course.duration_years === 1 ? 'year' : 'years'}`}
+                            </p>
                           </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="p-6">
-                  <h2 className="text-xl font-semibold text-foreground mb-4">Popular Courses</h2>
-                  <div className="space-y-3">
-                    {courses.slice(0, 5).map((course) => (
-                      <Link
-                        key={course.id}
-                        href={`/course/${nameToSlug(course.name, course.code)}`}
-                        className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors group"
+                          <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                        </Link>
+                      ))}
+                    </div>
+                    {courses.length > 5 && (
+                      <Button 
+                        variant="outline" 
+                        className="w-full mt-4"
+                        onClick={() => setActiveTab('courses')}
                       >
-                        <div>
-                          <h3 className="font-medium text-foreground group-hover:text-primary transition-colors">
-                            {course.name}
-                          </h3>
-                          <p className="text-sm text-muted-foreground">
-                            {course.level} {course.duration_years && `• ${course.duration_years} ${course.duration_years === 1 ? 'year' : 'years'}`}
-                          </p>
-                        </div>
-                        <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                      </Link>
-                    ))}
-                  </div>
-                  {courses.length > 5 && (
-                    <Button 
-                      variant="outline" 
-                      className="w-full mt-4"
-                      onClick={() => setActiveTab('courses')}
-                    >
-                      View All {courses.length} Courses
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
+                        View All {courses.length} Courses
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
             </div>
 
             {/* Sidebar */}
@@ -350,24 +345,28 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
                         <p className="font-medium text-foreground">{university.city}, {university.country}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <Users className="w-5 h-5 text-primary" />
+                    {university.student_population && (
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                          <Users className="w-5 h-5 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">Student Population</p>
+                          <p className="font-medium text-foreground">{university.student_population.toLocaleString()}</p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Student Population</p>
-                        <p className="font-medium text-foreground">{university.student_population?.toLocaleString() || '15,000+'}</p>
+                    )}
+                    {university.intakes && (
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                          <Clock className="w-5 h-5 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground">Intakes</p>
+                          <p className="font-medium text-foreground">{university.intakes}</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                        <Clock className="w-5 h-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">Intakes</p>
-                        <p className="font-medium text-foreground">January, May, September</p>
-                      </div>
-                    </div>
+                    )}
                   </div>
 
                   <div className="mt-6 pt-6 border-t border-border space-y-3">
@@ -503,7 +502,7 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
         )}
 
         {/* Highlights Tab */}
-        {activeTab === 'highlights' && (
+        {activeTab === 'highlights' && highlights.length > 0 && (
           <div className="grid md:grid-cols-2 gap-6">
             {highlights.map((highlight, index) => {
               const Icon = highlight.icon
@@ -522,29 +521,40 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
               )
             })}
             
-            <Card className="md:col-span-2">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-foreground mb-4">Key Statistics</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                  <div className="text-center p-4 bg-muted/50 rounded-lg">
-                    <div className="text-3xl font-bold text-primary">{acceptanceRate}%</div>
-                    <div className="text-sm text-muted-foreground mt-1">Acceptance Rate</div>
+            {/* Key Statistics - only show items that have real data */}
+            {(acceptanceRate !== null || university.employment_rate || university.nationalities_count || university.partner_universities_count) && (
+              <Card className="md:col-span-2">
+                <CardContent className="p-6">
+                  <h3 className="text-lg font-semibold text-foreground mb-4">Key Statistics</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    {acceptanceRate !== null && (
+                      <div className="text-center p-4 bg-muted/50 rounded-lg">
+                        <div className="text-3xl font-bold text-primary">{acceptanceRate}%</div>
+                        <div className="text-sm text-muted-foreground mt-1">Acceptance Rate</div>
+                      </div>
+                    )}
+                    {university.employment_rate && (
+                      <div className="text-center p-4 bg-muted/50 rounded-lg">
+                        <div className="text-3xl font-bold text-primary">{university.employment_rate}</div>
+                        <div className="text-sm text-muted-foreground mt-1">Employment Rate</div>
+                      </div>
+                    )}
+                    {university.nationalities_count && (
+                      <div className="text-center p-4 bg-muted/50 rounded-lg">
+                        <div className="text-3xl font-bold text-primary">{university.nationalities_count}+</div>
+                        <div className="text-sm text-muted-foreground mt-1">Nationalities</div>
+                      </div>
+                    )}
+                    {university.partner_universities_count && (
+                      <div className="text-center p-4 bg-muted/50 rounded-lg">
+                        <div className="text-3xl font-bold text-primary">{university.partner_universities_count}+</div>
+                        <div className="text-sm text-muted-foreground mt-1">Partner Universities</div>
+                      </div>
+                    )}
                   </div>
-                  <div className="text-center p-4 bg-muted/50 rounded-lg">
-                    <div className="text-3xl font-bold text-primary">95%</div>
-                    <div className="text-sm text-muted-foreground mt-1">Employment Rate</div>
-                  </div>
-                  <div className="text-center p-4 bg-muted/50 rounded-lg">
-                    <div className="text-3xl font-bold text-primary">130+</div>
-                    <div className="text-sm text-muted-foreground mt-1">Nationalities</div>
-                  </div>
-                  <div className="text-center p-4 bg-muted/50 rounded-lg">
-                    <div className="text-3xl font-bold text-primary">200+</div>
-                    <div className="text-sm text-muted-foreground mt-1">Partner Universities</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            )}
           </div>
         )}
 
@@ -574,14 +584,6 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
                           <h3 className="text-xl font-semibold text-foreground mb-2">{campus.name}</h3>
                           {campus.description && (
                             <p className="text-muted-foreground mb-4">{campus.description}</p>
-                          )}
-                          {!campus.description && (
-                            <p className="text-muted-foreground mb-4">
-                              {campus.is_main_campus
-                                ? `The main campus is located in ${campus.location || university.city}, offering state-of-the-art facilities, modern lecture halls, extensive library resources, and vibrant student life.`
-                                : `The ${campus.name} offers specialised programmes and facilities in ${campus.location || 'a convenient location'}.`
-                              }
-                            </p>
                           )}
                           <div className="flex flex-wrap gap-4 text-sm">
                             {campus.location && (
@@ -631,19 +633,17 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
                     <div className="flex-1">
                       <Badge className="mb-2">Main Campus</Badge>
                       <h3 className="text-xl font-semibold text-foreground mb-2">{university.city} Campus</h3>
-                      <p className="text-muted-foreground mb-4">
-                        The main campus is located in the heart of {university.city}, offering state-of-the-art facilities,
-                        modern lecture halls, extensive library resources, and vibrant student life.
-                      </p>
                       <div className="flex flex-wrap gap-4 text-sm">
                         <span className="flex items-center gap-1 text-muted-foreground">
                           <MapPin className="w-4 h-4" />
                           {university.city}, {university.country}
                         </span>
-                        <span className="flex items-center gap-1 text-muted-foreground">
-                          <Building2 className="w-4 h-4" />
-                          Urban Campus
-                        </span>
+                        {university.campus_type && (
+                          <span className="flex items-center gap-1 text-muted-foreground">
+                            <Building2 className="w-4 h-4" />
+                            {university.campus_type}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -651,24 +651,26 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
               </Card>
             )}
 
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-foreground mb-4">Campus Facilities</h3>
-                <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  {['Modern Library', 'Sports Complex', 'Student Union', 'Research Labs', 'Cafeterias', 'IT Centers'].map((facility, index) => (
-                    <div key={index} className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
-                      <CheckCircle className="w-5 h-5 text-amber-500" />
-                      <span className="text-foreground">{facility}</span>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            {campusFacilities.length > 0 && (
+              <Card>
+                <CardContent className="p-6">
+                  <h3 className="text-lg font-semibold text-foreground mb-4">Campus Facilities</h3>
+                  <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    {campusFacilities.map((facility, index) => (
+                      <div key={index} className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+                        <CheckCircle className="w-5 h-5 text-amber-500" />
+                        <span className="text-foreground">{facility}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
         )}
 
         {/* Required Documents Tab */}
-        {activeTab === 'documents' && (
+        {activeTab === 'documents' && requiredDocuments.length > 0 && (
           <div className="space-y-6">
             <Card>
               <CardContent className="p-6">
@@ -702,7 +704,7 @@ export function UniversityContent({ university, courses, campuses = [] }: Univer
         )}
 
         {/* FAQs Tab */}
-        {activeTab === 'faqs' && (
+        {activeTab === 'faqs' && faqs.length > 0 && (
           <div className="space-y-4 max-w-3xl">
             <h2 className="text-xl font-semibold text-foreground mb-6">Frequently Asked Questions</h2>
             {faqs.map((faq, index) => (
