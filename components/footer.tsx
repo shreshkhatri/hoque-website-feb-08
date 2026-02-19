@@ -14,8 +14,8 @@ export function Footer() {
       try {
         const response = await fetch('/api/countries')
         const data = await response.json()
-        if (Array.isArray(data)) {
-          setCountries(data)
+        if (data.countries && Array.isArray(data.countries)) {
+          setCountries(data.countries)
         }
       } catch (error) {
         console.error('Error fetching countries for footer:', error)
