@@ -202,7 +202,7 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
           src={`/landmarks/${nameToSlug(country.name)}-landmark.jpg`}
           alt={`Study in ${country.name}`}
           fill
-          className="object-cover mix-blend-overlay"
+          className="object-cover"
           priority
           onError={(e) => {
             e.currentTarget.src = '/hero-bg.jpg'
@@ -212,7 +212,7 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-end pb-12">
           <div className="text-white">
-            <p className="text-lg md:text-xl mb-2 opacity-90">Transform your life in the hub of global education</p>
+            <p className="text-lg md:text-3xl mb-2 opacity-90">Transform your life in the hub of global education</p>
             <div className="flex items-center gap-4 mb-4">
               <span className="text-5xl md:text-6xl">{country.flag_emoji}</span>
               <h1 className="text-3xl md:text-5xl font-bold">Study in {country.name}</h1>
