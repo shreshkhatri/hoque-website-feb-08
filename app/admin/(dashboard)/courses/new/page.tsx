@@ -46,6 +46,8 @@ export default function NewCoursePage() {
     course_overview: '',
     key_features: '',
     scholarships: '',
+    scholarship_amount: '',
+    scholarship_type: 'amount' as 'amount' | 'percentage',
     entry_requirements: '',
     academic_requirements: '',
     english_language_requirements: '',
@@ -112,6 +114,8 @@ export default function NewCoursePage() {
         course_overview: form.course_overview || null,
         key_features: form.key_features || null,
         scholarships: form.scholarships || null,
+        scholarship_amount: form.scholarship_amount ? parseFloat(form.scholarship_amount) : null,
+        scholarship_type: form.scholarship_amount ? form.scholarship_type : null,
         entry_requirements: form.entry_requirements || null,
         academic_requirements: form.academic_requirements || null,
         english_language_requirements: form.english_language_requirements || null,
@@ -277,6 +281,31 @@ export default function NewCoursePage() {
                 disabled={!form.university_id || loadingCampuses}
               />
             </div>
+
+            <div className="space-y-2">
+              <Label className="text-sm text-slate-700">Scholarship Amount</Label>
+              <div className="flex gap-2">
+                <Input
+                  type="number"
+                  step="0.01"
+                  value={form.scholarship_amount}
+                  onChange={(e) => setField('scholarship_amount', e.target.value)}
+                  placeholder={form.scholarship_type === 'percentage' ? 'e.g. 10' : 'e.g. 5000'}
+                  className="bg-white border-slate-200 text-slate-900 flex-1"
+                />
+                <SearchableSelect
+                  value={form.scholarship_type}
+                  onValueChange={(val) => setForm(prev => ({ ...prev, scholarship_type: val as 'amount' | 'percentage' }))}
+                  options={[
+                    { value: 'amount', label: 'Amount' },
+                    { value: 'percentage', label: 'Percentage' },
+                  ]}
+                  placeholder="Type"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2 md:col-span-2" />
           </div>
 
           <div className="space-y-2">
