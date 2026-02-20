@@ -39,7 +39,7 @@ async function addLandmarkImageUrlColumn() {
     }
 
     console.log('[v0] Successfully added landmark_image_url column')
-  } catch (err: any) {
+  } catch (err) {
     console.error('[v0] Error:', err.message)
   }
 }

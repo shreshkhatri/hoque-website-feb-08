@@ -168,7 +168,7 @@ export default function EditCountryPage() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to upload landmark image')
 
-      return data.path
+      return data.url
     } catch (err: any) {
       console.error('Error uploading landmark:', err)
       setError(err.message || 'Failed to upload landmark image')
@@ -190,9 +190,11 @@ export default function EditCountryPage() {
 
     try {
       // Upload landmark image first if provided
+      let landmarkImageUrl = null
       if (landmarkFile) {
-        await uploadLandmarkImage()
+        landmarkImageUrl = await uploadLandmarkImage()
       }
+
       const payload: Record<string, any> = {
         name: form.name.trim(),
         code: form.code.trim() || form.name.substring(0, 2).toUpperCase(),
@@ -226,6 +228,7 @@ export default function EditCountryPage() {
         cost_utilities_max: form.cost_utilities_max ? parseInt(form.cost_utilities_max) : null,
         cost_health_insurance_min: form.cost_health_insurance_min ? parseInt(form.cost_health_insurance_min) : null,
         cost_health_insurance_max: form.cost_health_insurance_max ? parseInt(form.cost_health_insurance_max) : null,
+        landmark_image_url: landmarkImageUrl,
         faqs: faqs,
       }
 
