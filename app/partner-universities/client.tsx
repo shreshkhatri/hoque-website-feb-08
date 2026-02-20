@@ -30,7 +30,7 @@ const ALL_PARTNERS = [
   { name: 'University of Portsmouth', logo: '/logos/portsmouth-university.png' },
   { name: 'University of Wales Trinity Saint David', logo: '/logos/wales-trinity-st-david-university.png' },
   { name: 'University for the Creative Arts', logo: '/logos/uca-university.png' },
-  { name: 'Northumbria University Newcastle', logo: '/logos/northumbria-newcastle-university.png' },
+  
   { name: "Queen's University Belfast", logo: '/logos/queen-belfast-university.png' },
   { name: 'University of East Anglia', logo: '/logos/uea-university.png' },
   { name: 'Wrexham University', logo: '/logos/wrexham-university.png' },
