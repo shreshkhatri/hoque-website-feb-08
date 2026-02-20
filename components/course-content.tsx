@@ -181,7 +181,7 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
                   <span className="text-muted-foreground">|</span>
                   <MapPin size={14} className="text-muted-foreground" />
                   <span className="text-muted-foreground text-sm">
-                    {course.university_campuses.location || course.university_campuses.name}
+                    {course.university_campuses.location || course.university_campuses.name} Campus
                   </span>
                 </>
               )}
