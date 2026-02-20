@@ -41,6 +41,7 @@ export async function PATCH(
     const fieldMap: Record<string, (val: any) => any> = {
       code: (v) => v || body.name.substring(0, 2).toUpperCase(),
       flag_emoji: (v) => v || null,
+      flag_image_url: (v) => v || null,
       description: (v) => v || null,
       about: (v) => v || null,
       study_life: (v) => v || null,

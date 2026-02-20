@@ -212,7 +212,11 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
           <div className="text-white">
             <p className="text-lg md:text-3xl mb-2 opacity-90">Transform your life in the hub of global education</p>
             <div className="flex items-center gap-4 mb-4">
-              <span className="text-5xl md:text-6xl">{country.flag_emoji}</span>
+              {country.flag_image_url ? (
+                <img src={country.flag_image_url} alt={`${country.name} flag`} className="w-14 h-10 md:w-18 md:h-12 object-cover rounded" />
+              ) : (
+                <span className="text-5xl md:text-6xl">{country.flag_emoji}</span>
+              )}
               <h1 className="text-3xl md:text-5xl font-bold">Study in {country.name}</h1>
             </div>
             <Button size="lg" className="mt-4">

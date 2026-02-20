@@ -54,7 +54,7 @@ interface SimilarCourse {
   duration_years: number | null
   field_of_study: string | null
   universities: { id: number; name: string; city: string } | null
-  countries: { id: number; name: string; flag_emoji: string; currency: string | null } | null
+  countries: { id: number; name: string; flag_emoji: string; flag_image_url: string | null; currency: string | null } | null
 }
 
 interface CourseContentProps {
@@ -514,9 +514,11 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
                   >
                     {sc.level}
                   </span>
-                  {sc.countries?.flag_emoji && (
+                  {sc.countries?.flag_image_url ? (
+                    <img src={sc.countries.flag_image_url} alt={sc.countries.name} className="w-5 h-3.5 object-cover rounded-sm" title={sc.countries.name} />
+                  ) : sc.countries?.flag_emoji ? (
                     <span className="text-sm" title={sc.countries.name}>{sc.countries.flag_emoji}</span>
-                  )}
+                  ) : null}
                 </div>
                 <h3 className="text-sm font-semibold text-foreground mb-2 group-hover:text-primary transition-colors text-balance leading-snug">
                   {sc.name}

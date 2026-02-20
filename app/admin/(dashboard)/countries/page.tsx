@@ -90,7 +90,11 @@ export default function CountriesPage() {
               className="bg-white rounded-lg border border-slate-200 p-5 hover:shadow-md hover:border-teal-300 transition-all cursor-pointer"
             >
               <div className="flex items-center gap-3 mb-3">
-                <span className="text-2xl">{country.flag_emoji || '🏳️'}</span>
+                {country.flag_image_url ? (
+                  <img src={country.flag_image_url} alt={`${country.name} flag`} className="w-8 h-6 object-cover rounded-sm" />
+                ) : (
+                  <span className="text-2xl">{country.flag_emoji || '🏳️'}</span>
+                )}
                 <div>
                   <h3 className="font-semibold text-slate-900">{country.name}</h3>
                   <p className="text-xs text-slate-500 uppercase">{country.code}</p>

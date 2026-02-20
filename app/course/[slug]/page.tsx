@@ -46,7 +46,7 @@ async function getSimilarCourses(courseId: number, fieldOfStudy: string | null) 
 
   const { data: similarCourses } = await supabase
     .from('courses')
-    .select('id, name, code, level, tuition_fees_international, duration_years, field_of_study, scholarship_amount, scholarship_type, universities(id, name, city), countries(id, name, flag_emoji, currency)')
+    .select('id, name, code, level, tuition_fees_international, duration_years, field_of_study, scholarship_amount, scholarship_type, universities(id, name, city), countries(id, name, flag_emoji, flag_image_url, currency)')
     .eq('field_of_study', fieldOfStudy)
     .neq('id', courseId)
     .limit(6)

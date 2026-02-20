@@ -23,6 +23,8 @@ export default function EditCountryPage() {
   const [landmarkFile, setLandmarkFile] = useState<File | null>(null)
   const [landmarkPreview, setLandmarkPreview] = useState<string | null>(null)
   const [uploadingLandmark, setUploadingLandmark] = useState(false)
+  const [flagFile, setFlagFile] = useState<File | null>(null)
+  const [flagPreview, setFlagPreview] = useState<string | null>(null)
 
   // What Sets Apart
   const [whatSetsApart, setWhatSetsApart] = useState<Array<{ id?: number; title: string; description: string; icon: string }>>([])
@@ -151,6 +153,36 @@ export default function EditCountryPage() {
     }
   }
 
+  const handleFlagFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setFlagFile(file)
+      const reader = new FileReader()
+      reader.onloadend = () => setFlagPreview(reader.result as string)
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const uploadFlagImage = async (): Promise<string | null> => {
+    if (!flagFile || !form.name) return null
+    try {
+      const formData = new FormData()
+      formData.append('file', flagFile)
+      formData.append('countryName', form.name)
+      const res = await fetch('/api/admin/countries/upload-flag', {
+        method: 'POST',
+        body: formData,
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed to upload flag image')
+      return data.url
+    } catch (err: any) {
+      console.error('Error uploading flag:', err)
+      setError(err.message || 'Failed to upload flag image')
+      return null
+    }
+  }
+
   const uploadLandmarkImage = async (): Promise<string | null> => {
     if (!landmarkFile || !form.name) return null
 
@@ -189,16 +221,21 @@ export default function EditCountryPage() {
     setError('')
 
     try {
-      // Upload landmark image first if provided
+      // Upload images first if provided
       let landmarkImageUrl = null
+      let flagImageUrl = null
       if (landmarkFile) {
         landmarkImageUrl = await uploadLandmarkImage()
+      }
+      if (flagFile) {
+        flagImageUrl = await uploadFlagImage()
       }
 
       const payload: Record<string, any> = {
         name: form.name.trim(),
         code: form.code.trim() || form.name.substring(0, 2).toUpperCase(),
         flag_emoji: form.flag_emoji.trim() || null,
+        flag_image_url: flagImageUrl,
         description: form.description.trim() || null,
         about: form.about.trim() || null,
         study_life: form.study_life.trim() || null,
@@ -464,6 +501,7 @@ export default function EditCountryPage() {
                   maxLength={4}
                   className="bg-white"
                 />
+                <p className="text-xs text-slate-500">Fallback if no flag image is uploaded</p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="currency">Currency Code</Label>
@@ -474,6 +512,29 @@ export default function EditCountryPage() {
                   placeholder="e.g., GBP, USD, EUR"
                   className="bg-white"
                 />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label>Flag Image</Label>
+              <div className="space-y-2">
+                <Input
+                  type="file"
+                  accept="image/jpeg,image/jpg,image/png,image/webp,image/svg+xml"
+                  onChange={handleFlagFileChange}
+                  className="bg-white cursor-pointer"
+                />
+                <p className="text-xs text-slate-500">
+                  Upload a flag image. This will be used everywhere instead of the emoji flag.
+                </p>
+                {flagPreview && (
+                  <div className="relative w-20 h-14 rounded overflow-hidden border border-slate-200">
+                    <img
+                      src={flagPreview}
+                      alt="Flag preview"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
               </div>
             </div>
             <div className="space-y-2">

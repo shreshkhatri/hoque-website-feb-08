@@ -74,7 +74,11 @@ export default function CountriesPage() {
                     {/* Flag and Title */}
                     <div className="flex items-start justify-between mb-4">
                       <div>
-                        <div className="text-5xl mb-3">{country.flag_emoji}</div>
+                        {country.flag_image_url ? (
+                          <img src={country.flag_image_url} alt={`${country.name} flag`} className="w-12 h-8 object-cover rounded mb-3" />
+                        ) : (
+                          <div className="text-5xl mb-3">{country.flag_emoji}</div>
+                        )}
                         <h3 className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
                           {country.name}
                         </h3>
