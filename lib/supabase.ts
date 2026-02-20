@@ -150,6 +150,7 @@ export type Country = {
   name: string
   code: string
   flag_emoji: string
+  flag_image_url: string | null
   description: string | null
   about: string | null
   study_life: string | null
