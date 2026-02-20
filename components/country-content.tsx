@@ -198,14 +198,15 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
       {/* Hero Section */}
       <section className="relative h-[350px] md:h-[450px] overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70" />
-        <Image
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
           src={country.landmark_image_url || '/hero-bg.jpg'}
           alt={`Study in ${country.name}`}
-          fill
-          className="object-cover"
-          priority
+          className="absolute inset-0 w-full h-full object-cover"
           onError={(e) => {
-            e.currentTarget.src = '/hero-bg.jpg'
+            if (e.currentTarget.src !== '/hero-bg.jpg') {
+              e.currentTarget.src = '/hero-bg.jpg'
+            }
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
