@@ -6,8 +6,8 @@ const ALLOWED_FIELDS = [
   'name', 'code', 'university_id', 'level', 'duration_years',
   'description', 'tuition_fees_international', 'intake_months', 'entry_requirements',
   'country_id', 'course_overview', 'academic_requirements', 'english_language_requirements',
-  'other_requirements', 'document_requirements', 'scholarships', 'key_features',
-  'field_of_study', 'campus_id',
+  'other_requirements', 'document_requirements', 'scholarships', 'scholarship_amount',
+  'scholarship_type', 'key_features', 'field_of_study', 'campus_id',
 ]
 
 export async function GET(
