@@ -41,7 +41,6 @@ export default function EditCountryPage() {
     about: '',
     study_life: '',
     opportunities: '',
-    cover_image_url: '',
     student_permit_requirements: '',
     visa_processing_time: '',
     student_visa_eligibility: '',
@@ -100,7 +99,6 @@ export default function EditCountryPage() {
         about: country.about || '',
         study_life: country.study_life || '',
         opportunities: country.opportunities || '',
-        cover_image_url: country.cover_image_url || '',
         student_permit_requirements: country.student_permit_requirements || '',
         visa_processing_time: country.visa_processing_time || '',
         student_visa_eligibility: country.student_visa_eligibility || '',
@@ -203,7 +201,6 @@ export default function EditCountryPage() {
         about: form.about.trim() || null,
         study_life: form.study_life.trim() || null,
         opportunities: form.opportunities.trim() || null,
-        cover_image_url: form.cover_image_url.trim() || null,
         student_permit_requirements: form.student_permit_requirements.trim() || null,
         visa_processing_time: form.visa_processing_time.trim() || null,
         student_visa_eligibility: form.student_visa_eligibility.trim() || null,
@@ -483,16 +480,6 @@ export default function EditCountryPage() {
                 onChange={(val) => updateForm('description', val)}
                 placeholder="Brief description shown in country cards"
                 minHeight="80px"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="cover_image_url">Cover Image URL</Label>
-              <Input
-                id="cover_image_url"
-                value={form.cover_image_url}
-                onChange={(e) => updateForm('cover_image_url', e.target.value)}
-                placeholder="https://..."
-                className="bg-white"
               />
             </div>
             <div className="space-y-2">

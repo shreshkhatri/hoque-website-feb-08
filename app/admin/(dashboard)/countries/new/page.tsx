@@ -55,7 +55,6 @@ export default function NewCountryPage() {
     about: '',
     study_life: '',
     opportunities: '',
-    cover_image_url: '',
     // Visa & Permits
     student_permit_requirements: '',
     visa_processing_time: '',
@@ -154,7 +153,6 @@ export default function NewCountryPage() {
         about: form.about.trim() || null,
         study_life: form.study_life.trim() || null,
         opportunities: form.opportunities.trim() || null,
-        cover_image_url: form.cover_image_url.trim() || null,
         student_permit_requirements: form.student_permit_requirements.trim() || null,
         visa_processing_time: form.visa_processing_time.trim() || null,
         student_visa_eligibility: form.student_visa_eligibility.trim() || null,
@@ -279,15 +277,6 @@ export default function NewCountryPage() {
                 onChange={(val) => updateForm('description', val)}
                 placeholder="A brief summary of the country as a study destination (1-2 sentences)"
                 minHeight="80px"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Cover Image URL</Label>
-              <Input
-                value={form.cover_image_url}
-                onChange={(e) => updateForm('cover_image_url', e.target.value)}
-                placeholder="https://example.com/country-cover.jpg"
-                className="bg-white"
               />
             </div>
             <div className="space-y-2">
