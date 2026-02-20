@@ -8,7 +8,7 @@ export async function GET(request: Request) {
 
     const { data, error } = await supabase
       .from('countries')
-      .select(full ? '*' : 'id, name, code, flag_emoji')
+      .select(full ? '*' : 'id, name, code, flag_emoji, flag_image_url')
       .order('name', { ascending: true })
 
     if (error) throw error
