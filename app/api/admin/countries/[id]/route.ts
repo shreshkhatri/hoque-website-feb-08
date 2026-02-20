@@ -46,6 +46,7 @@ export async function PATCH(
       study_life: (v) => v || null,
       opportunities: (v) => v || null,
       cover_image_url: (v) => v || null,
+      landmark_image_url: (v) => v || null,
       student_permit_requirements: (v) => v || null,
       visa_processing_time: (v) => v || null,
       student_visa_eligibility: (v) => v || null,

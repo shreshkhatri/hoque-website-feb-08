@@ -167,22 +167,7 @@ export type Country = {
   min_wage: string | null
   max_work_hours: number | null
   cover_image_url: string | null
-  // Cost breakdown fields
-  cost_accommodation_min: number | null
-  cost_accommodation_max: number | null
-  cost_food_min: number | null
-  cost_food_max: number | null
-  cost_transport_min: number | null
-  cost_transport_max: number | null
-  cost_utilities_min: number | null
-  cost_utilities_max: number | null
-  cost_health_insurance_min: number | null
-  cost_health_insurance_max: number | null
-  // Visa information
-  student_visa_eligibility: string | null
-  student_visa_validity: string | null
-  post_study_visa_eligibility: string | null
-  post_study_visa_validity: string | null
+  landmark_image_url: string | null
   created_at: string
 }
 

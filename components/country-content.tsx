@@ -199,7 +199,7 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
       <section className="relative h-[350px] md:h-[450px] overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70" />
         <Image
-          src={`/landmarks/${nameToSlug(country.name)}-landmark.jpg`}
+          src={country.landmark_image_url || '/hero-bg.jpg'}
           alt={`Study in ${country.name}`}
           fill
           className="object-cover"

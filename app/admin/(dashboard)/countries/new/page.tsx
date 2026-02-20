@@ -120,7 +120,8 @@ export default function NewCountryPage() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to upload landmark image')
 
-      return data.path
+      // Return the Blob URL
+      return data.url
     } catch (err: any) {
       console.error('Error uploading landmark:', err)
       setError(err.message || 'Failed to upload landmark image')
@@ -142,9 +143,11 @@ export default function NewCountryPage() {
 
     try {
       // Upload landmark image first if provided
+      let landmarkImageUrl = null
       if (landmarkFile) {
-        await uploadLandmarkImage()
+        landmarkImageUrl = await uploadLandmarkImage()
       }
+
       const payload: Record<string, any> = {
         name: form.name.trim(),
         code: form.code.trim() || form.name.substring(0, 2).toUpperCase(),
@@ -167,6 +170,7 @@ export default function NewCountryPage() {
         cost_of_living_monthly: form.cost_of_living_monthly.trim() || null,
         international_students_count: form.international_students_count.trim() || null,
         happiness_ranking: form.happiness_ranking ? parseInt(form.happiness_ranking) : null,
+        landmark_image_url: landmarkImageUrl,
         employment_rate: form.employment_rate ? parseInt(form.employment_rate) : null,
         cost_accommodation_min: form.cost_accommodation_min ? parseInt(form.cost_accommodation_min) : null,
         cost_accommodation_max: form.cost_accommodation_max ? parseInt(form.cost_accommodation_max) : null,
