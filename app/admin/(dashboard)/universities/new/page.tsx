@@ -206,25 +206,37 @@ export default function NewUniversityPage() {
     }
   }
 
+  const uploadToBlob = async (file: File, endpoint: string, universityName: string, campusName?: string): Promise<string | null> => {
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('universityName', universityName)
+      if (campusName) formData.append('campusName', campusName)
+      const res = await fetch(endpoint, { method: 'POST', body: formData })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Upload failed')
+      return data.url
+    } catch (err: any) {
+      console.error('Upload error:', err)
+      return null
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSaving(true)
 
     try {
-      // Note: In production, you would upload files to storage service
-      // For now, we'll generate paths based on naming convention
-      let logoPath = form.logo_url
+      // Upload logo and cover to Blob
+      let logoUrl = form.logo_url
+      let coverUrl = form.cover_image_url
       if (logoFile) {
-        const logoFilename = `${form.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.${logoFile.name.split('.').pop()}`
-        logoPath = `/logos/${logoFilename}`
-        console.log('[v0] Logo should be saved to public/logos/', logoFilename)
+        const url = await uploadToBlob(logoFile, '/api/admin/universities/upload-logo', form.name)
+        if (url) logoUrl = url
       }
-
-      let coverPath = form.cover_image_url
       if (heroFile) {
-        const heroFilename = `${form.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-cover.${heroFile.name.split('.').pop()}`
-        coverPath = `/universities/${heroFilename}`
-        console.log('[v0] Cover image should be saved to public/universities/', heroFilename)
+        const url = await uploadToBlob(heroFile, '/api/admin/universities/upload-cover', form.name)
+        if (url) coverUrl = url
       }
 
       const payload: any = {
@@ -240,8 +252,8 @@ export default function NewUniversityPage() {
         student_population: form.student_population ? parseInt(form.student_population) : null,
         international_students_percentage: form.international_students_percentage ? parseInt(form.international_students_percentage) : null,
         acceptance_rate: form.acceptance_rate ? parseInt(form.acceptance_rate) : null,
-        logo_url: logoPath || null,
-        cover_image_url: coverPath || null,
+        logo_url: logoUrl || null,
+        cover_image_url: coverUrl || null,
         highlights: highlights.length > 0 ? highlights : null,
         required_documents: requiredDocuments.length > 0 ? requiredDocuments : null,
         faqs: faqs.length > 0 ? faqs : null,
@@ -268,9 +280,9 @@ export default function NewUniversityPage() {
       if (campuses.length > 0 && universityId) {
         for (let i = 0; i < campuses.length; i++) {
           const campus = campuses[i]
+          let campusCoverUrl: string | null = null
           if (campus.image_file) {
-            const campusFilename = `${form.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${campus.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.${campus.image_file.name.split('.').pop()}`
-            console.log('[v0] Campus image should be saved to public/universities/campuses/', campusFilename)
+            campusCoverUrl = await uploadToBlob(campus.image_file, '/api/admin/universities/upload-campus-image', form.name, campus.name)
           }
 
           await fetch('/api/admin/campuses', {
@@ -282,6 +294,7 @@ export default function NewUniversityPage() {
               location: campus.location,
               description: campus.description || null,
               is_main_campus: campus.is_main_campus,
+              cover_image_url: campusCoverUrl,
             }),
           })
         }
@@ -626,7 +639,7 @@ export default function NewUniversityPage() {
                       <div className="flex flex-col items-center gap-2 py-8">
                         <Upload className="h-8 w-8 text-slate-400" />
                         <p className="text-sm text-slate-600">Click to upload logo</p>
-                        <p className="text-xs text-slate-500">Saved to: /logos/</p>
+                        <p className="text-xs text-slate-500">PNG, JPG, WEBP, SVG accepted</p>
                       </div>
                     )}
                   </label>
@@ -650,7 +663,7 @@ export default function NewUniversityPage() {
                       <div className="flex flex-col items-center gap-2 py-8">
                         <ImageIcon className="h-8 w-8 text-slate-400" />
                         <p className="text-sm text-slate-600">Click to upload cover image</p>
-                        <p className="text-xs text-slate-500">Saved to: /universities/</p>
+                        <p className="text-xs text-slate-500">PNG, JPG, WEBP accepted</p>
                       </div>
                     )}
                   </label>
@@ -998,7 +1011,7 @@ export default function NewUniversityPage() {
                         </div>
                       )}
                     </label>
-                    <p className="text-xs text-slate-500 mt-1">Saved to: /universities/campuses/</p>
+                    <p className="text-xs text-slate-500 mt-1">Upload a cover image for this campus</p>
                   </div>
                 </div>
 

@@ -8,14 +8,14 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ArrowLeft, Save, Loader2, Plus, X } from 'lucide-react'
+import { ArrowLeft, Save, Loader2, Plus, X, Upload, Image as ImageIcon } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import Link from 'next/link'
 import { useToast } from '@/components/toast-notification'
 
 type Country = { id: number; name: string; code: string }
 type ExistingCampus = { id: number; name: string; location: string; description: string; is_main_campus: boolean }
-type NewCampus = { name: string; location: string; description: string; is_main_campus: boolean }
+type NewCampus = { name: string; location: string; description: string; is_main_campus: boolean; image_file?: File | null; image_preview?: string }
 
 const highlightIconOptions = ['Award', 'Briefcase', 'Users', 'Globe', 'Star', 'GraduationCap', 'Building2', 'BookOpen']
 
@@ -64,7 +64,13 @@ export default function EditUniversityPage() {
   const [existingCampuses, setExistingCampuses] = useState<ExistingCampus[]>([])
   const [newCampuses, setNewCampuses] = useState<NewCampus[]>([])
   const [campusesToDelete, setCampusesToDelete] = useState<number[]>([])
-  const [campusForm, setCampusForm] = useState<NewCampus>({ name: '', location: '', description: '', is_main_campus: false })
+  const [campusForm, setCampusForm] = useState<NewCampus>({ name: '', location: '', description: '', is_main_campus: false, image_file: null, image_preview: '' })
+
+  // File upload state
+  const [logoFile, setLogoFile] = useState<File | null>(null)
+  const [logoPreview, setLogoPreview] = useState<string>('')
+  const [heroFile, setHeroFile] = useState<File | null>(null)
+  const [heroPreview, setHeroPreview] = useState<string>('')
 
   useEffect(() => {
     Promise.all([
@@ -120,11 +126,70 @@ export default function EditUniversityPage() {
       .finally(() => setLoading(false))
   }, [id])
 
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setLogoFile(file)
+      const reader = new FileReader()
+      reader.onloadend = () => setLogoPreview(reader.result as string)
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const handleHeroChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setHeroFile(file)
+      const reader = new FileReader()
+      reader.onloadend = () => setHeroPreview(reader.result as string)
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const handleCampusImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setCampusForm({ ...campusForm, image_file: file, image_preview: reader.result as string })
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const uploadToBlob = async (file: File, endpoint: string, universityName: string, campusName?: string): Promise<string | null> => {
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('universityName', universityName)
+      if (campusName) formData.append('campusName', campusName)
+      const res = await fetch(endpoint, { method: 'POST', body: formData })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Upload failed')
+      return data.url
+    } catch (err: any) {
+      console.error('Upload error:', err)
+      return null
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setSaving(true)
 
     try {
+      // Upload images to Blob if new files selected
+      let logoUrl = form.logo_url
+      let coverUrl = form.cover_image_url
+      if (logoFile) {
+        const url = await uploadToBlob(logoFile, '/api/admin/universities/upload-logo', form.name)
+        if (url) logoUrl = url
+      }
+      if (heroFile) {
+        const url = await uploadToBlob(heroFile, '/api/admin/universities/upload-cover', form.name)
+        if (url) coverUrl = url
+      }
+
       const payload: any = {
         name: form.name.trim(),
         city: form.city.trim(),
@@ -138,8 +203,8 @@ export default function EditUniversityPage() {
         student_population: form.student_population ? parseInt(form.student_population) : null,
         international_students_percentage: form.international_students_percentage ? parseFloat(form.international_students_percentage) : null,
         acceptance_rate: form.acceptance_rate ? parseFloat(form.acceptance_rate) : null,
-        logo_url: form.logo_url.trim() || null,
-        cover_image_url: form.cover_image_url.trim() || null,
+        logo_url: logoUrl || null,
+        cover_image_url: coverUrl || null,
         highlights: highlights.length > 0 ? highlights : null,
         required_documents: requiredDocuments.length > 0 ? requiredDocuments : null,
         faqs: faqs.length > 0 ? faqs : null,
@@ -166,6 +231,10 @@ export default function EditUniversityPage() {
           }
         }
         for (const campus of newCampuses) {
+          let campusCoverUrl: string | null = null
+          if (campus.image_file) {
+            campusCoverUrl = await uploadToBlob(campus.image_file, '/api/admin/universities/upload-campus-image', form.name, campus.name)
+          }
           await fetch('/api/admin/campuses', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -175,6 +244,7 @@ export default function EditUniversityPage() {
               location: campus.location,
               description: campus.description || null,
               is_main_campus: campus.is_main_campus,
+              cover_image_url: campusCoverUrl,
             }),
             credentials: 'same-origin',
           })
@@ -453,33 +523,55 @@ export default function EditUniversityPage() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label className="text-sm text-slate-700">Logo URL</Label>
-                <Input
-                  type="url"
-                  value={form.logo_url}
-                  onChange={(e) => setForm({ ...form, logo_url: e.target.value })}
-                  placeholder="https://example.com/logo.png"
-                  className="bg-white border-slate-200 text-slate-900"
-                />
-                {form.logo_url && (
-                  <div className="mt-2 p-2 border border-slate-200 rounded-lg bg-slate-50">
-                    <img src={form.logo_url} alt="Logo preview" className="h-16 object-contain mx-auto" />
-                  </div>
+                <Label className="text-sm text-slate-700">University Logo</Label>
+                <div className="border-2 border-dashed border-slate-200 rounded-lg p-4 text-center hover:border-teal-500 transition-colors bg-white">
+                  <input
+                    type="file"
+                    id="logo-upload"
+                    accept="image/*"
+                    onChange={handleLogoChange}
+                    className="hidden"
+                  />
+                  <label htmlFor="logo-upload" className="cursor-pointer">
+                    {logoPreview || form.logo_url ? (
+                      <img src={logoPreview || form.logo_url} alt="Logo preview" className="w-full h-32 object-contain mb-2" />
+                    ) : (
+                      <div className="flex flex-col items-center gap-2 py-8">
+                        <Upload className="h-8 w-8 text-slate-400" />
+                        <p className="text-sm text-slate-600">Click to upload logo</p>
+                        <p className="text-xs text-slate-500">PNG, JPG, WEBP, SVG accepted</p>
+                      </div>
+                    )}
+                  </label>
+                </div>
+                {(logoPreview || form.logo_url) && (
+                  <p className="text-xs text-slate-500">{logoFile ? 'New file selected - will upload on save' : 'Current logo'}</p>
                 )}
               </div>
               <div className="space-y-2">
-                <Label className="text-sm text-slate-700">Cover Image URL</Label>
-                <Input
-                  type="url"
-                  value={form.cover_image_url}
-                  onChange={(e) => setForm({ ...form, cover_image_url: e.target.value })}
-                  placeholder="https://example.com/cover.jpg"
-                  className="bg-white border-slate-200 text-slate-900"
-                />
-                {form.cover_image_url && (
-                  <div className="mt-2 p-2 border border-slate-200 rounded-lg bg-slate-50">
-                    <img src={form.cover_image_url} alt="Cover preview" className="h-24 w-full object-cover rounded" />
-                  </div>
+                <Label className="text-sm text-slate-700">Cover Image (Hero Background)</Label>
+                <div className="border-2 border-dashed border-slate-200 rounded-lg p-4 text-center hover:border-teal-500 transition-colors bg-white">
+                  <input
+                    type="file"
+                    id="hero-upload"
+                    accept="image/*"
+                    onChange={handleHeroChange}
+                    className="hidden"
+                  />
+                  <label htmlFor="hero-upload" className="cursor-pointer">
+                    {heroPreview || form.cover_image_url ? (
+                      <img src={heroPreview || form.cover_image_url} alt="Cover preview" className="w-full h-32 object-cover mb-2 rounded" />
+                    ) : (
+                      <div className="flex flex-col items-center gap-2 py-8">
+                        <ImageIcon className="h-8 w-8 text-slate-400" />
+                        <p className="text-sm text-slate-600">Click to upload cover image</p>
+                        <p className="text-xs text-slate-500">PNG, JPG, WEBP accepted</p>
+                      </div>
+                    )}
+                  </label>
+                </div>
+                {(heroPreview || form.cover_image_url) && (
+                  <p className="text-xs text-slate-500">{heroFile ? 'New file selected - will upload on save' : 'Current cover image'}</p>
                 )}
               </div>
             </div>
@@ -812,7 +904,11 @@ export default function EditUniversityPage() {
                 <div className="space-y-2">
                   {newCampuses.map((campus, index) => (
                     <div key={index} className="flex items-center justify-between p-3 border border-teal-200 rounded-lg bg-teal-50">
-                      <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        {campus.image_preview && (
+                          <img src={campus.image_preview} alt={campus.name} className="w-12 h-12 object-cover rounded shrink-0" />
+                        )}
+                        <div className="flex-1 min-w-0">
                         <p className="font-medium text-slate-900 truncate">
                           {campus.name}
                           {campus.is_main_campus && (
@@ -820,6 +916,7 @@ export default function EditUniversityPage() {
                           )}
                         </p>
                         <p className="text-sm text-slate-600 truncate">{campus.location}</p>
+                      </div>
                       </div>
                       <Button
                         type="button"
@@ -868,6 +965,29 @@ export default function EditUniversityPage() {
                     placeholder="Brief description of this campus..."
                   />
                 </div>
+                <div className="space-y-2">
+                  <Label className="text-xs text-slate-600">Campus Image</Label>
+                  <div className="border border-slate-200 rounded-lg p-2 bg-white">
+                    <input
+                      type="file"
+                      id="campus-upload-edit"
+                      accept="image/*"
+                      onChange={handleCampusImageChange}
+                      className="hidden"
+                    />
+                    <label htmlFor="campus-upload-edit" className="cursor-pointer block">
+                      {campusForm.image_preview ? (
+                        <img src={campusForm.image_preview} alt="Campus preview" className="w-full h-20 object-cover rounded" />
+                      ) : (
+                        <div className="flex items-center justify-center gap-2 py-4 text-slate-500">
+                          <Upload className="h-4 w-4" />
+                          <span className="text-sm">Upload image</span>
+                        </div>
+                      )}
+                    </label>
+                    <p className="text-xs text-slate-500 mt-1">Upload a cover image for this campus</p>
+                  </div>
+                </div>
                 <div className="flex items-center gap-2">
                   <input
                     type="checkbox"
@@ -884,7 +1004,7 @@ export default function EditUniversityPage() {
                 onClick={() => {
                   if (campusForm.name.trim() && campusForm.location.trim()) {
                     setNewCampuses([...newCampuses, { ...campusForm, name: campusForm.name.trim(), location: campusForm.location.trim(), description: campusForm.description.trim() }])
-                    setCampusForm({ name: '', location: '', description: '', is_main_campus: false })
+                    setCampusForm({ name: '', location: '', description: '', is_main_campus: false, image_file: null, image_preview: '' })
                   }
                 }}
                 disabled={!campusForm.name.trim() || !campusForm.location.trim()}
