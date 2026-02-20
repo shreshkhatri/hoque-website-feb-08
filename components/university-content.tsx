@@ -133,13 +133,13 @@ export function UniversityContent({ university, courses, campuses = [], currency
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-end pb-8">
           <div className="flex flex-col md:flex-row items-start md:items-end gap-6 w-full">
             {/* University Logo */}
-            <div className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-xl shadow-xl p-3 flex items-center justify-center">
-              {university.logo_url ? (
-                <Image
-                  src={university.logo_url || "/placeholder.svg"}
-                  alt={`${university.name} logo`}
-                  width={100}
-                  height={100}
+  <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-xl shadow-xl p-4 flex items-center justify-center">
+    {university.logo_url ? (
+      <Image
+        src={university.logo_url || "/placeholder.svg"}
+        alt={`${university.name} logo`}
+        width={120}
+        height={120}
                   className="object-contain"
                 />
               ) : (
