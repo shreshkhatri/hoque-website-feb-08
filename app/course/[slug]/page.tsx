@@ -46,7 +46,7 @@ async function getSimilarCourses(courseId: number, fieldOfStudy: string | null) 
 
   const { data: similarCourses } = await supabase
     .from('courses')
-    .select('id, name, code, level, tuition_fees_international, duration_years, field_of_study, universities(id, name, city), countries(id, name, flag_emoji, currency)')
+    .select('id, name, code, level, tuition_fees_international, duration_years, field_of_study, scholarship_amount, scholarship_type, universities(id, name, city), countries(id, name, flag_emoji, currency)')
     .eq('field_of_study', fieldOfStudy)
     .neq('id', courseId)
     .limit(6)
@@ -117,6 +117,13 @@ export default async function CoursePage({
   if (!course) {
     notFound()
   }
+
+  console.log('[v0] Course data for scholarship debug:', {
+    id: course.id,
+    code: course.code,
+    scholarship_amount: course.scholarship_amount,
+    scholarship_type: course.scholarship_type,
+  })
 
   // Fetch similar courses based on field_of_study
   const similarCourses = await getSimilarCourses(course.id, course.field_of_study)

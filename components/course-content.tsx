@@ -104,6 +104,12 @@ function RichContent({ content, className = '' }: { content: string; className?:
 }
 
 export function CourseContent({ course, similarCourses = [] }: CourseContentProps) {
+  console.log('[v0] CourseContent scholarship data:', {
+    scholarship_amount: course.scholarship_amount,
+    scholarship_type: course.scholarship_type,
+    hasScholarship: course.scholarship_amount && course.scholarship_amount > 0,
+  })
+
   const currency = course.countries?.currency || ''
   const getLevelColor = (level: string) => {
     switch (level) {
