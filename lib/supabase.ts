@@ -139,6 +139,7 @@ export type Course = {
   document_requirements: string | null
   scholarships: string | null
   scholarship_amount: number | null
+  scholarship_type: 'amount' | 'percentage' | null
   key_features: string | null
   field_of_study: string | null
   created_at: string
