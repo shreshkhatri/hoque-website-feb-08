@@ -49,7 +49,7 @@ export function Header() {
     // Hardcoded universities list (7 total)
     const hardcodedUniversities: University[] = [
       { id: 75, name: "Queen's University Belfast", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
-      { id: 76, name: "Northumbria University", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
+    
       { id: 77, name: "University of Greenwich", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
       { id: 97, name: "University of Greater Manchester", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
       { id: 79, name: "London South Bank University", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
@@ -62,7 +62,6 @@ export function Header() {
     const hardcodedCourses: Course[] = [
       { id: 1, name: 'MBA Global', code: '', university_id: 77, level: 'Master', duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
       { id: 2, name: 'MSc Data Science and Artificial Intelligence', code: '', university_id: 75, level: 'Master', duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
-      { id: 3, name: 'MSc Business with International Business', code: '', university_id: 76, level: 'Master', duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
       { id: 4, name: 'MSc Project Management', code: '', university_id: 79, level: 'Master', duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
       { id: 5, name: 'MSc Cyber Security', code: '', university_id: 75, level: 'Master', duration_years: 1, description: '', tuition_fees_international: 0, intake_months: '', entry_requirements: '', country_id: 1, field_of_study: '' },
     ]
