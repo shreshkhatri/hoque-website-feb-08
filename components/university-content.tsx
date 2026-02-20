@@ -78,14 +78,14 @@ export function UniversityContent({ university, courses, campuses = [], currency
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
 
   // Use DB data only - no hardcoded defaults
-  const highlights = Array.isArray(university.highlights) && university.highlights.length > 0 
+  const highlights = Array.isArray(university.highlights) && university.highlights.length > 0
     ? university.highlights.map((h: any) => ({ ...h, icon: iconMap[h.icon] || Award }))
     : []
-  
+
   const requiredDocuments = Array.isArray(university.required_documents) && university.required_documents.length > 0
     ? university.required_documents
     : []
-  
+
   const faqs = Array.isArray(university.faqs) && university.faqs.length > 0
     ? university.faqs
     : []
@@ -96,14 +96,14 @@ export function UniversityContent({ university, courses, campuses = [], currency
 
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.name.toLowerCase().includes(courseSearch.toLowerCase()) ||
-                         course.code.toLowerCase().includes(courseSearch.toLowerCase())
+      course.code.toLowerCase().includes(courseSearch.toLowerCase())
     const matchesLevel = levelFilter === 'all' || course.level === levelFilter
     const matchesCampus = campusFilter === 'all' || String(course.campus_id) === campusFilter
     return matchesSearch && matchesLevel && matchesCampus
   })
 
   const uniqueLevels = [...new Set(courses.map(c => c.level))]
-  
+
   // Use actual DB values
   const acceptanceRate = university.acceptance_rate ?? null
   const intlStudentsPercent = university.international_students_percentage ?? null
@@ -125,28 +125,28 @@ export function UniversityContent({ university, courses, campuses = [], currency
           src={university.cover_image_url || "/hero-bg.jpg"}
           alt={university.name}
           fill
-          className="object-cover mix-blend-overlay"
+          className="object-cover object-center scale-110"
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-        
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-end pb-8">
           <div className="flex flex-col md:flex-row items-start md:items-end gap-6 w-full">
             {/* University Logo */}
-            <div className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-xl shadow-xl p-3 flex items-center justify-center">
+            <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-xl shadow-xl p-4 flex items-center justify-center">
               {university.logo_url ? (
                 <Image
                   src={university.logo_url || "/placeholder.svg"}
                   alt={`${university.name} logo`}
-                  width={100}
-                  height={100}
+                  width={120}
+                  height={120}
                   className="object-contain"
                 />
               ) : (
                 <GraduationCap className="w-16 h-16 text-primary" />
               )}
             </div>
-            
+
             {/* University Info */}
             <div className="flex-1 text-white">
               <div className="flex flex-wrap gap-2 mb-2">
@@ -174,7 +174,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
                   </span>
                 )}
                 {university.website_url && (
-                  <a 
+                  <a
                     href={university.website_url}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -186,7 +186,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
                 )}
               </div>
             </div>
-            
+
             {/* CTA Button */}
             <div className="md:self-center">
               <Button size="lg">
@@ -238,11 +238,10 @@ export function UniversityContent({ university, courses, campuses = [], currency
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-4 border-b-2 transition-colors whitespace-nowrap ${
-                    activeTab === tab.id
+                  className={`flex items-center gap-2 px-4 py-4 border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id
                       ? 'border-primary text-primary font-medium'
                       : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   {tab.label}
@@ -318,8 +317,8 @@ export function UniversityContent({ university, courses, campuses = [], currency
                       ))}
                     </div>
                     {courses.length > 5 && (
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         className="w-full mt-4"
                         onClick={() => setActiveTab('courses')}
                       >
@@ -450,7 +449,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
                             </Badge>
                           )}
                         </div>
-                        <Link 
+                        <Link
                           href={`/course/${nameToSlug(course.name, course.code)}`}
                           className="text-lg font-semibold text-foreground hover:text-primary transition-colors"
                         >
@@ -521,7 +520,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
                 </Card>
               )
             })}
-            
+
             {/* Key Statistics - only show items that have real data */}
             {(acceptanceRate !== null || university.employment_rate || university.nationalities_count || university.partner_universities_count) && (
               <Card className="md:col-span-2">
@@ -716,10 +715,9 @@ export function UniversityContent({ university, courses, campuses = [], currency
                     className="w-full flex items-center justify-between p-4 text-left"
                   >
                     <span className="font-medium text-foreground pr-4">{faq.question}</span>
-                    <ChevronDown 
-                      className={`w-5 h-5 text-muted-foreground transition-transform flex-shrink-0 ${
-                        expandedFaq === index ? 'rotate-180' : ''
-                      }`} 
+                    <ChevronDown
+                      className={`w-5 h-5 text-muted-foreground transition-transform flex-shrink-0 ${expandedFaq === index ? 'rotate-180' : ''
+                        }`}
                     />
                   </button>
                   {expandedFaq === index && (
