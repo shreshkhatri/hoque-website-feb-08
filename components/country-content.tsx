@@ -166,9 +166,6 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
       : [],
   }
 
-  useEffect(() => {
-    console.log(countryData.faqs)
-  });
 
   // Auto-rotate fun facts (only when there are facts to show)
   useEffect(() => {
