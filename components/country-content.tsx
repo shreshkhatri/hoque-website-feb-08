@@ -199,7 +199,7 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
         <img
           src={country.landmark_image_url || '/hero-bg.jpg'}
           alt={`Study in ${country.name}`}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-center scale-110"
           onError={(e) => {
             if (e.currentTarget.src !== '/hero-bg.jpg') {
               e.currentTarget.src = '/hero-bg.jpg'

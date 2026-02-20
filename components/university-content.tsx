@@ -125,7 +125,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
           src={university.cover_image_url || "/hero-bg.jpg"}
           alt={university.name}
           fill
-          className="object-cover mix-blend-overlay"
+          className="object-cover object-center scale-110 mix-blend-overlay"
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
