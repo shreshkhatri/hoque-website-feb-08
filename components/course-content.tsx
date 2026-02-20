@@ -216,8 +216,9 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
                 <p className="text-xs text-muted-foreground uppercase tracking-wide">{"Tuition (Int'l)"}</p>
                 <p className="text-sm font-semibold text-foreground">
                   {currency} {course.tuition_fees_international.toLocaleString()}/yr 
-                  {course.scholarship_amount && course.scholarship_amount > 0 && (
-  <span>
+                </p>
+                {course.scholarship_amount && course.scholarship_amount > 0 && (
+  <span className="block mt-1">
     (Scholarship Up To:{" "}
     {course.scholarship_type === "percentage"
       ? `${course.scholarship_amount}%`
@@ -225,7 +226,6 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
     )
   </span>
 )}
-                </p>
                 
               </div>
             </div>
