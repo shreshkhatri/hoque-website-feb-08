@@ -218,10 +218,10 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
                   {currency} {course.tuition_fees_international.toLocaleString()}/yr 
                   {course.scholarship_amount && course.scholarship_amount > 0 && (
                  
-                         ( Scholarship Up To: {course.scholarship_type === 'percentage' 
+                         Scholarship Up To: {course.scholarship_type === 'percentage' 
                           ? `${course.scholarship_amount}% ` 
                           : `${currency} ${course.scholarship_amount.toLocaleString()}`
-                        } )
+                        } 
                 )}
                 </p>
                 
