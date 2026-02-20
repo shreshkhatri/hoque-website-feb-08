@@ -20,6 +20,9 @@ export default function EditCountryPage() {
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [error, setError] = useState('')
+  const [landmarkFile, setLandmarkFile] = useState<File | null>(null)
+  const [landmarkPreview, setLandmarkPreview] = useState<string | null>(null)
+  const [uploadingLandmark, setUploadingLandmark] = useState(false)
 
   // What Sets Apart
   const [whatSetsApart, setWhatSetsApart] = useState<Array<{ id?: number; title: string; description: string; icon: string }>>([])
@@ -138,6 +141,45 @@ export default function EditCountryPage() {
     setForm({ ...form, [field]: value })
   }
 
+  const handleLandmarkFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setLandmarkFile(file)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setLandmarkPreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const uploadLandmarkImage = async (): Promise<string | null> => {
+    if (!landmarkFile || !form.name) return null
+
+    setUploadingLandmark(true)
+    try {
+      const formData = new FormData()
+      formData.append('file', landmarkFile)
+      formData.append('countryName', form.name)
+
+      const res = await fetch('/api/admin/countries/upload-landmark', {
+        method: 'POST',
+        body: formData,
+      })
+
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed to upload landmark image')
+
+      return data.path
+    } catch (err: any) {
+      console.error('Error uploading landmark:', err)
+      setError(err.message || 'Failed to upload landmark image')
+      return null
+    } finally {
+      setUploadingLandmark(false)
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!form.name.trim()) {
@@ -149,6 +191,10 @@ export default function EditCountryPage() {
     setError('')
 
     try {
+      // Upload landmark image first if provided
+      if (landmarkFile) {
+        await uploadLandmarkImage()
+      }
       const payload: Record<string, any> = {
         name: form.name.trim(),
         code: form.code.trim() || form.name.substring(0, 2).toUpperCase(),
@@ -448,6 +494,29 @@ export default function EditCountryPage() {
                 placeholder="https://..."
                 className="bg-white"
               />
+            </div>
+            <div className="space-y-2">
+              <Label>Landmark Image</Label>
+              <div className="space-y-2">
+                <Input
+                  type="file"
+                  accept="image/jpeg,image/jpg,image/png,image/webp"
+                  onChange={handleLandmarkFileChange}
+                  className="bg-white cursor-pointer"
+                />
+                <p className="text-xs text-slate-500">
+                  Upload a landmark image for this country. It will be saved as {form.name ? `${form.name.toLowerCase().replace(/\s+/g, '-')}-landmark.jpg` : 'country-name-landmark.jpg'}
+                </p>
+                {landmarkPreview && (
+                  <div className="relative w-full h-48 rounded-lg overflow-hidden border border-slate-200">
+                    <img
+                      src={landmarkPreview}
+                      alt="Landmark preview"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </CardContent>
         </Card>
