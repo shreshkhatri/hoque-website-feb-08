@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile, mkdir } from 'fs/promises'
-import { join } from 'path'
-import { existsSync } from 'fs'
+import { put } from '@vercel/blob'
 
 // Helper function to convert country name to slug
 function nameToSlug(name: string): string {
@@ -15,7 +13,7 @@ function nameToSlug(name: string): string {
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('[v0] Starting landmark upload...')
+    console.log('[v0] Starting landmark upload with Vercel Blob...')
     const formData = await request.formData()
     const file = formData.get('file') as File
     const countryName = formData.get('countryName') as string
@@ -39,38 +37,29 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    console.log('[v0] File validation passed, converting to buffer...')
-    // Convert file to buffer
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
-    console.log('[v0] Buffer created, size:', buffer.length)
-
+    console.log('[v0] File validation passed, preparing for Blob upload...')
+    
     // Generate filename based on country name
     const slug = nameToSlug(countryName)
-    const extension = file.name.split('.').pop() || 'jpg'
-    const filename = `${slug}-landmark.${extension}`
+    const extension = file.type === 'image/jpeg' || file.type === 'image/jpg' ? 'jpg' : file.type.split('/')[1]
+    const filename = `landmarks/${slug}-landmark.${extension}`
 
     console.log('[v0] Generated filename:', filename)
 
-    // Ensure the landmarks directory exists
-    const landmarksDir = join(process.cwd(), 'public', 'landmarks')
-    console.log('[v0] Landmarks directory path:', landmarksDir)
-    
-    if (!existsSync(landmarksDir)) {
-      console.log('[v0] Directory does not exist, creating...')
-      await mkdir(landmarksDir, { recursive: true })
-    }
+    // Upload to Vercel Blob
+    console.log('[v0] Uploading to Vercel Blob...')
+    const blob = await put(filename, file, {
+      access: 'public',
+      contentType: file.type,
+    })
 
-    // Write file
-    const filepath = join(landmarksDir, filename)
-    console.log('[v0] Writing file to:', filepath)
-    await writeFile(filepath, buffer)
-    console.log('[v0] File written successfully')
+    console.log('[v0] File uploaded successfully to Blob:', blob.url)
 
     return NextResponse.json({
       success: true,
-      filename,
-      path: `/landmarks/${filename}`,
+      filename: blob.filename,
+      url: blob.url,
+      pathname: blob.pathname,
     })
   } catch (error: any) {
     console.error('[v0] Error uploading landmark image:', error)
