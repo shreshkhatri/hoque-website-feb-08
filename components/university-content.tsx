@@ -187,13 +187,15 @@ export function UniversityContent({ university, courses, campuses = [], currency
               </div>
             </div>
 
-            {/* CTA Button */}
-            <div className="md:self-center">
-              <Button size="lg">
-                Apply Now
-                <ChevronRight className="ml-1 w-4 h-4" />
-              </Button>
-            </div>
+  {/* CTA Button */}
+  <div className="md:self-center">
+  <Button asChild size="lg">
+    <Link href="/application-form">
+      Apply Now
+      <ChevronRight className="ml-1 w-4 h-4" />
+    </Link>
+  </Button>
+  </div>
           </div>
         </div>
       </section>
@@ -385,12 +387,18 @@ export function UniversityContent({ university, courses, campuses = [], currency
                     )}
                   </div>
 
-                  <div className="mt-6 pt-6 border-t border-border space-y-3">
-                    <Button className="w-full" size="lg">
-                      Apply Now
-                    </Button>
-                    <Button variant="outline" className="w-full" size="lg">
-                      Book a Consultation
+  <div className="mt-6 pt-6 border-t border-border space-y-3">
+  <Button asChild className="w-full" size="lg">
+    <Link href="/application-form">
+      Apply Now
+    </Link>
+  </Button>
+  <Button asChild variant="outline" className="w-full" size="lg">
+    <Link href="/contact">
+      Book a Consultation
+    </Link>
+  </Button>
+  </div>
                     </Button>
                   </div>
                 </CardContent>
