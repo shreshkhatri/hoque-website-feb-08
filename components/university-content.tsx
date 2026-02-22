@@ -398,8 +398,6 @@ export function UniversityContent({ university, courses, campuses = [], currency
       Book a Consultation
     </Link>
   </Button>
-  </div>
-                    </Button>
                   </div>
                 </CardContent>
               </Card>
