@@ -410,13 +410,13 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
               <p className="text-sm text-muted-foreground mb-5">
                 Our expert consultants can help you prepare a strong application and secure admission to {course.name}.
               </p>
-              <div className="flex flex-col gap-3">
-                <Button asChild size="lg" className="w-full">
-                  <Link href="/contact">
-                    Apply Now
-                    <ChevronRight size={16} className="ml-1" />
-                  </Link>
-                </Button>
+  <div className="flex flex-col gap-3">
+  <Button asChild size="lg" className="w-full">
+  <Link href="/application-form">
+  Apply Now
+  <ChevronRight size={16} className="ml-1" />
+  </Link>
+  </Button>
                 <Button asChild variant="outline" size="lg" className="w-full">
                   <Link href="/contact">
                     <MessageCircle size={16} className="mr-2" />
