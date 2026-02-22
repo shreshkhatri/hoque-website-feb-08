@@ -107,6 +107,7 @@ export type UniversityCampus = {
   location: string | null
   description: string | null
   is_main_campus: boolean
+  cover_image_url: string | null
   created_at: string
 }
 
