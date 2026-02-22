@@ -587,14 +587,14 @@ export function UniversityContent({ university, courses, campuses = [], currency
                   <Card key={campus.id}>
                     <CardContent className="p-6">
                       <div className="flex flex-col md:flex-row gap-6">
-                        <div className="w-full md:w-1/3 h-48 bg-muted rounded-lg overflow-hidden relative">
-                          <Image
-                            src="/hero-bg.jpg"
-                            alt={`${campus.name} Campus`}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
+                <div className="w-full md:w-1/3 h-48 bg-muted rounded-lg overflow-hidden relative">
+                  <Image
+                    src={campus.cover_image_url || '/hero-bg.jpg'}
+                    alt={`${campus.name} Campus`}
+                    fill
+                    className="object-cover object-center scale-110"
+                  />
+                </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
                             {campus.is_main_campus && <Badge>Main Campus</Badge>}
