@@ -33,6 +33,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
+import { RichTextEditor } from '@/components/rich-text-editor'
 
 interface Country {
   id: number
@@ -446,25 +447,22 @@ export default function NewUniversityPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
+              <Label>Description</Label>
+              <RichTextEditor
                 value={form.description}
-                onChange={(e) => setForm({ ...form, description: e.target.value })}
-                rows={4}
-                className="bg-white"
+                onChange={(val) => setForm({ ...form, description: val })}
+                placeholder="Describe the university..."
+                minHeight="160px"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="why_study_here">Why Study Here</Label>
-              <Textarea
-                id="why_study_here"
+              <Label>Why Study Here</Label>
+              <RichTextEditor
                 value={form.why_study_here}
-                onChange={(e) => setForm({ ...form, why_study_here: e.target.value })}
-                rows={4}
+                onChange={(val) => setForm({ ...form, why_study_here: val })}
                 placeholder="Explain why students should choose this university..."
-                className="bg-white"
+                minHeight="160px"
               />
             </div>
           </CardContent>
@@ -761,15 +759,15 @@ export default function NewUniversityPage() {
                     className="bg-white"
                   />
                 </div>
-                <div className="space-y-1">
-                  <Label className="text-xs text-slate-600">Description</Label>
-                  <Input
-                    value={newHighlight.description}
-                    onChange={(e) => setNewHighlight({ ...newHighlight, description: e.target.value })}
-                    placeholder="e.g., 95% employed within 6 months"
-                    className="bg-white"
-                  />
-                </div>
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs text-slate-600">Description</Label>
+                <RichTextEditor
+                  value={newHighlight.description}
+                  onChange={(val) => setNewHighlight({ ...newHighlight, description: val })}
+                  placeholder="e.g., 95% employed within 6 months"
+                  minHeight="80px"
+                />
               </div>
               <Button
                 type="button"
@@ -831,15 +829,15 @@ export default function NewUniversityPage() {
                     className="bg-white"
                   />
                 </div>
-                <div className="space-y-1">
-                  <Label className="text-xs text-slate-600">Description (e.g. "Official transcripts from all institutions")</Label>
-                  <Input
-                    value={newDocument.description}
-                    onChange={(e) => setNewDocument({ ...newDocument, description: e.target.value })}
-                    placeholder="e.g., Valid passport with at least 6 months validity"
-                    className="bg-white"
-                  />
-                </div>
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs text-slate-600">Description (e.g. "Official transcripts from all institutions")</Label>
+                <RichTextEditor
+                  value={newDocument.description}
+                  onChange={(val) => setNewDocument({ ...newDocument, description: val })}
+                  placeholder="e.g., Valid passport with at least 6 months validity"
+                  minHeight="80px"
+                />
               </div>
               <Button
                 type="button"
@@ -902,12 +900,11 @@ export default function NewUniversityPage() {
                 </div>
                 <div className="space-y-1">
                   <Label className="text-xs text-slate-600">Answer (provide a detailed, helpful response)</Label>
-                  <Textarea
+                  <RichTextEditor
                     value={newFaq.answer}
-                    onChange={(e) => setNewFaq({ ...newFaq, answer: e.target.value })}
+                    onChange={(val) => setNewFaq({ ...newFaq, answer: val })}
                     placeholder="e.g., Yes, the university offers various scholarships for international students based on academic merit and financial need."
-                    rows={3}
-                    className="bg-white"
+                    minHeight="100px"
                   />
                 </div>
               </div>

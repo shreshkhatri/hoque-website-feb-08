@@ -262,9 +262,22 @@ export function UniversityContent({ university, courses, campuses = [], currency
                 <Card>
                   <CardContent className="p-6">
                     <h2 className="text-xl font-semibold text-foreground mb-4">About {university.name}</h2>
-                    <p className="text-muted-foreground leading-relaxed">
-                      {university.description}
-                    </p>
+                    <div
+                      className="prose prose-sm max-w-none text-muted-foreground leading-relaxed [&_h2]:text-foreground [&_h2]:text-lg [&_h2]:font-semibold [&_h3]:text-foreground [&_h3]:text-base [&_h3]:font-semibold [&_a]:text-primary [&_a]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1"
+                      dangerouslySetInnerHTML={{ __html: university.description }}
+                    />
+                  </CardContent>
+                </Card>
+              )}
+
+              {university.why_study_here && (
+                <Card>
+                  <CardContent className="p-6">
+                    <h2 className="text-xl font-semibold text-foreground mb-4">Why Study at {university.name}?</h2>
+                    <div
+                      className="prose prose-sm max-w-none text-muted-foreground leading-relaxed [&_h2]:text-foreground [&_h2]:text-lg [&_h2]:font-semibold [&_h3]:text-foreground [&_h3]:text-base [&_h3]:font-semibold [&_a]:text-primary [&_a]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1"
+                      dangerouslySetInnerHTML={{ __html: university.why_study_here }}
+                    />
                   </CardContent>
                 </Card>
               )}
@@ -272,7 +285,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
               {highlights.length > 0 && (
                 <Card>
                   <CardContent className="p-6">
-                    <h2 className="text-xl font-semibold text-foreground mb-4">Why Study Here?</h2>
+                    <h2 className="text-xl font-semibold text-foreground mb-4">Key Highlights</h2>
                     <div className="grid sm:grid-cols-2 gap-4">
                       {highlights.map((highlight, index) => {
                         const Icon = highlight.icon
@@ -283,7 +296,10 @@ export function UniversityContent({ university, courses, campuses = [], currency
                             </div>
                             <div>
                               <h3 className="font-medium text-foreground">{highlight.title}</h3>
-                              <p className="text-sm text-muted-foreground">{highlight.description}</p>
+                              <div
+                                className="text-sm text-muted-foreground prose prose-sm max-w-none [&_a]:text-primary [&_a]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-0.5"
+                                dangerouslySetInnerHTML={{ __html: highlight.description }}
+                              />
                             </div>
                           </div>
                         )
@@ -514,7 +530,10 @@ export function UniversityContent({ university, courses, campuses = [], currency
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-foreground mb-2">{highlight.title}</h3>
-                      <p className="text-muted-foreground">{highlight.description}</p>
+                      <div
+                        className="text-muted-foreground prose prose-sm max-w-none [&_a]:text-primary [&_a]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-0.5"
+                        dangerouslySetInnerHTML={{ __html: highlight.description }}
+                      />
                     </div>
                   </CardContent>
                 </Card>
@@ -683,7 +702,10 @@ export function UniversityContent({ university, courses, campuses = [], currency
                       </div>
                       <div>
                         <h3 className="font-medium text-foreground">{doc.name}</h3>
-                        <p className="text-sm text-muted-foreground">{doc.description}</p>
+                        <div
+                          className="text-sm text-muted-foreground prose prose-sm max-w-none [&_a]:text-primary [&_a]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-0.5"
+                          dangerouslySetInnerHTML={{ __html: doc.description }}
+                        />
                       </div>
                     </div>
                   ))}
@@ -721,9 +743,10 @@ export function UniversityContent({ university, courses, campuses = [], currency
                     />
                   </button>
                   {expandedFaq === index && (
-                    <div className="px-4 pb-4 text-muted-foreground border-t border-border pt-4">
-                      {faq.answer}
-                    </div>
+                    <div
+                      className="px-4 pb-4 text-muted-foreground border-t border-border pt-4 prose prose-sm max-w-none [&_h2]:text-foreground [&_h2]:text-lg [&_h2]:font-semibold [&_h3]:text-foreground [&_h3]:text-base [&_h3]:font-semibold [&_a]:text-primary [&_a]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li]:my-1"
+                      dangerouslySetInnerHTML={{ __html: faq.answer }}
+                    />
                   )}
                 </CardContent>
               </Card>

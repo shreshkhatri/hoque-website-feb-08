@@ -12,6 +12,7 @@ import { ArrowLeft, Save, Loader2, Plus, X, Upload, Image as ImageIcon } from 'l
 import { Skeleton } from '@/components/ui/skeleton'
 import Link from 'next/link'
 import { useToast } from '@/components/toast-notification'
+import { RichTextEditor } from '@/components/rich-text-editor'
 
 type Country = { id: number; name: string; code: string }
 type ExistingCampus = { id: number; name: string; location: string; description: string; is_main_campus: boolean }
@@ -356,23 +357,21 @@ export default function EditUniversityPage() {
 
             <div className="space-y-2">
               <Label className="text-sm text-slate-700">Description</Label>
-              <Textarea
+              <RichTextEditor
                 value={form.description}
-                onChange={(e) => setForm({ ...form, description: e.target.value })}
-                placeholder="Brief description of the university..."
-                rows={4}
-                className="bg-white border-slate-200 text-slate-900"
+                onChange={(val) => setForm({ ...form, description: val })}
+                placeholder="Describe the university..."
+                minHeight="160px"
               />
             </div>
 
             <div className="space-y-2">
               <Label className="text-sm text-slate-700">Why Study Here</Label>
-              <Textarea
+              <RichTextEditor
                 value={form.why_study_here}
-                onChange={(e) => setForm({ ...form, why_study_here: e.target.value })}
+                onChange={(val) => setForm({ ...form, why_study_here: val })}
                 placeholder="Explain why students should choose this university..."
-                rows={4}
-                className="bg-white border-slate-200 text-slate-900"
+                minHeight="160px"
               />
             </div>
           </CardContent>
@@ -666,15 +665,15 @@ export default function EditUniversityPage() {
                     className="bg-white"
                   />
                 </div>
-                <div className="space-y-1">
-                  <Label className="text-xs text-slate-600">Description</Label>
-                  <Input
-                    value={newHighlight.description}
-                    onChange={(e) => setNewHighlight({ ...newHighlight, description: e.target.value })}
-                    placeholder="e.g., 95% employed within 6 months"
-                    className="bg-white"
-                  />
-                </div>
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs text-slate-600">Description</Label>
+                <RichTextEditor
+                  value={newHighlight.description}
+                  onChange={(val) => setNewHighlight({ ...newHighlight, description: val })}
+                  placeholder="e.g., 95% employed within 6 months"
+                  minHeight="80px"
+                />
               </div>
               <Button
                 type="button"
@@ -736,15 +735,15 @@ export default function EditUniversityPage() {
                     className="bg-white"
                   />
                 </div>
-                <div className="space-y-1">
-                  <Label className="text-xs text-slate-600">Description</Label>
-                  <Input
-                    value={newDocument.description}
-                    onChange={(e) => setNewDocument({ ...newDocument, description: e.target.value })}
-                    placeholder="e.g., Valid passport with at least 6 months validity"
-                    className="bg-white"
-                  />
-                </div>
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs text-slate-600">Description</Label>
+                <RichTextEditor
+                  value={newDocument.description}
+                  onChange={(val) => setNewDocument({ ...newDocument, description: val })}
+                  placeholder="e.g., Valid passport with at least 6 months validity"
+                  minHeight="80px"
+                />
               </div>
               <Button
                 type="button"
@@ -807,12 +806,11 @@ export default function EditUniversityPage() {
                 </div>
                 <div className="space-y-1">
                   <Label className="text-xs text-slate-600">Answer</Label>
-                  <Textarea
+                  <RichTextEditor
                     value={newFaq.answer}
-                    onChange={(e) => setNewFaq({ ...newFaq, answer: e.target.value })}
+                    onChange={(val) => setNewFaq({ ...newFaq, answer: val })}
                     placeholder="e.g., Entry requirements vary by program..."
-                    rows={3}
-                    className="bg-white"
+                    minHeight="100px"
                   />
                 </div>
               </div>
