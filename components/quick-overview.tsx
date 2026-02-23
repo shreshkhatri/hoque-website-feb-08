@@ -22,7 +22,6 @@ const COURSES = [
   { name: 'MSc Data Science and Artificial Intelligence', university: "Queen's University Belfast", level: 'Master', duration: '1', code: '' },
   { name: 'MSc Project Management', university: 'London South Bank University', level: 'Master', duration: '1', code: '' },
   { name: 'MSc Cyber Security', university: "Queen's University Belfast", level: 'Master', duration: '1', code: '' },
-  { name: 'MBA with Digital Marketing', university: 'University of Greenwich', level: 'Master', duration: '1.5', code: '' },
 ]
 
 const EVENTS = [
@@ -30,8 +29,6 @@ const EVENTS = [
   { id: '3df751e3-f97a-48b6-b7f1-fbc84908ace6', title: 'International Student Panel Discussion', date: '2026-01-28', location: 'Sydney Conference Hall', event_type: 'panel_discussion', country: 'Australia' },
   { id: 'afb28300-5754-4209-b97f-ef01afc7a5c4', title: 'IELTS Success Stories', date: '2026-01-15', location: 'Dublin Education Centre', event_type: 'seminar', country: 'Ireland' },
   { id: 'f5908378-85dd-450e-ad69-d6f44e5392e7', title: 'University Application Workshop', date: '2026-03-15', location: 'Toronto International Centre', event_type: 'workshop', country: 'Canada' },
-  { id: '71d80f22-3a86-4ee3-b774-bd2d838b7a56', title: 'IELTS Preparation Workshop', date: '2026-02-20', location: 'Auckland Central Hub', event_type: 'workshop', country: 'New Zealand' },
-  { id: '6dff8f83-33cb-4c0f-a483-1188191a0173', title: 'Oxford & Cambridge Selection Event', date: '2026-03-05', location: 'Dubai Business Plaza', event_type: 'selection_event', country: 'Dubai' },
 ]
 
 function formatDate(dateString: string) {
