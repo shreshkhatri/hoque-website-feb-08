@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { Calendar, Award, Bell, AlertCircle, ExternalLink, Clock } from 'lucide-react'
+import { Calendar, Award, Bell, AlertCircle, ExternalLink, Clock, ArrowLeft, MapPin } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -27,11 +27,36 @@ interface Announcement {
 export default function AnnouncementsClient() {
   const searchParams = useSearchParams()
   const typeFromUrl = searchParams.get('type')
+  const slugFromUrl = searchParams.get('slug')
   const [announcements, setAnnouncements] = useState<Announcement[]>([])
+  const [singleAnnouncement, setSingleAnnouncement] = useState<Announcement | null>(null)
   const [loading, setLoading] = useState(true)
   const [filterType, setFilterType] = useState<string>(typeFromUrl || 'all')
 
+  // If a slug is present, fetch the single announcement
   useEffect(() => {
+    if (!slugFromUrl) {
+      setSingleAnnouncement(null)
+      return
+    }
+    const fetchSingle = async () => {
+      setLoading(true)
+      try {
+        const res = await fetch(`/api/announcements?slug=${encodeURIComponent(slugFromUrl)}`)
+        const data = await res.json()
+        setSingleAnnouncement(data.data || null)
+      } catch {
+        setSingleAnnouncement(null)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchSingle()
+  }, [slugFromUrl])
+
+  // Fetch the list when no slug is present
+  useEffect(() => {
+    if (slugFromUrl) return
     const fetchAnnouncements = async () => {
       setLoading(true)
       try {
@@ -49,7 +74,7 @@ export default function AnnouncementsClient() {
       }
     }
     fetchAnnouncements()
-  }, [filterType])
+  }, [filterType, slugFromUrl])
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -91,6 +116,188 @@ export default function AnnouncementsClient() {
     { label: 'Events', value: 'event' },
     { label: 'General', value: 'general' },
   ]
+
+  // Single announcement detail view
+  if (slugFromUrl) {
+    if (loading) {
+      return <div className="text-center py-12 text-slate-600">Loading announcement...</div>
+    }
+    if (!singleAnnouncement) {
+      return (
+        <div className="space-y-6">
+          <Card className="border-slate-200">
+            <CardContent className="p-12 text-center">
+              <AlertCircle className="h-12 w-12 mx-auto mb-4 text-slate-300" />
+              <h3 className="text-lg font-medium text-slate-900 mb-2">Announcement not found</h3>
+              <p className="text-slate-600 mb-6">
+                The scholarship or announcement you are looking for does not exist or has been removed.
+              </p>
+              <Button asChild className="bg-teal-600 hover:bg-teal-700 text-white">
+                <Link href="/announcements">Browse All Announcements</Link>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      )
+    }
+
+    const a = singleAnnouncement
+    const daysRemaining = a.end_date ? getDaysRemaining(a.end_date) : null
+
+    return (
+      <div className="space-y-6">
+        {/* Back link */}
+        <Link
+          href={`/announcements${typeFromUrl ? `?type=${typeFromUrl}` : ''}`}
+          className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium text-sm"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to All Announcements
+        </Link>
+
+        <Card className="border-slate-200 overflow-hidden">
+          <CardContent className="p-0">
+            {/* Header band */}
+            <div className="bg-gradient-to-r from-slate-900 to-slate-700 text-white px-8 py-8">
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                <Badge className={`${getTypeColor(a.announcement_type)} text-xs border`}>
+                  {getTypeIcon(a.announcement_type)}
+                  <span className="ml-1.5 capitalize">{a.announcement_type}</span>
+                </Badge>
+                {daysRemaining !== null && (
+                  <Badge
+                    variant="secondary"
+                    className={`text-xs ${
+                      daysRemaining <= 0
+                        ? 'bg-red-100 text-red-700'
+                        : daysRemaining <= 7
+                          ? 'bg-red-100 text-red-700'
+                          : daysRemaining <= 30
+                            ? 'bg-yellow-100 text-yellow-700'
+                            : 'bg-green-100 text-green-700'
+                    }`}
+                  >
+                    <Clock className="h-3 w-3 mr-1" />
+                    {daysRemaining <= 0 ? 'Closed' : `${daysRemaining} days remaining`}
+                  </Badge>
+                )}
+              </div>
+              <h1 className="text-2xl md:text-3xl font-bold mb-2">{a.title}</h1>
+              {a.universities && (
+                <Link
+                  href={`/university/${a.universities.slug}`}
+                  className="text-teal-300 hover:text-teal-200 hover:underline text-sm"
+                >
+                  {a.universities.name}
+                </Link>
+              )}
+            </div>
+
+            {/* Body */}
+            <div className="p-8 space-y-6">
+              {/* Scholarship amount */}
+              {a.scholarship_amount && (
+                <div className="bg-teal-50 border border-teal-200 rounded-xl p-6 flex items-center gap-4">
+                  <Award className="h-8 w-8 text-teal-600 shrink-0" />
+                  <div>
+                    <p className="text-3xl font-bold text-teal-700">
+                      {'£'}{a.scholarship_amount.toLocaleString()}
+                      {a.scholarship_type === 'percentage' && '%'}
+                    </p>
+                    <p className="text-sm text-teal-600 mt-1">
+                      {a.scholarship_type === 'full'
+                        ? 'Full Tuition Scholarship'
+                        : a.scholarship_type === 'partial'
+                          ? 'Partial Tuition Scholarship'
+                          : 'Scholarship Value'}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Description */}
+              {a.description && (
+                <div>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2">Description</h3>
+                  <p className="text-slate-600 leading-relaxed whitespace-pre-line">{a.description}</p>
+                </div>
+              )}
+
+              {/* Details grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {a.end_date && (
+                  <div className="flex items-center gap-3 bg-slate-50 rounded-lg p-4">
+                    <Calendar className="h-5 w-5 text-slate-500 shrink-0" />
+                    <div>
+                      <p className="text-xs text-slate-500 uppercase tracking-wide">Deadline</p>
+                      <p className="text-sm font-semibold text-slate-900">
+                        {new Date(a.end_date).toLocaleDateString('en-GB', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric',
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                )}
+                {a.countries && (
+                  <div className="flex items-center gap-3 bg-slate-50 rounded-lg p-4">
+                    <MapPin className="h-5 w-5 text-slate-500 shrink-0" />
+                    <div>
+                      <p className="text-xs text-slate-500 uppercase tracking-wide">Country</p>
+                      <p className="text-sm font-semibold text-slate-900">{a.countries.name}</p>
+                    </div>
+                  </div>
+                )}
+                <div className="flex items-center gap-3 bg-slate-50 rounded-lg p-4">
+                  <Clock className="h-5 w-5 text-slate-500 shrink-0" />
+                  <div>
+                    <p className="text-xs text-slate-500 uppercase tracking-wide">Published</p>
+                    <p className="text-sm font-semibold text-slate-900">
+                      {new Date(a.published_at).toLocaleDateString('en-GB', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                      })}
+                    </p>
+                  </div>
+                </div>
+                {a.scholarship_type && (
+                  <div className="flex items-center gap-3 bg-slate-50 rounded-lg p-4">
+                    <Award className="h-5 w-5 text-slate-500 shrink-0" />
+                    <div>
+                      <p className="text-xs text-slate-500 uppercase tracking-wide">Type</p>
+                      <p className="text-sm font-semibold text-slate-900 capitalize">{a.scholarship_type} Scholarship</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Action buttons */}
+              <div className="flex flex-wrap gap-4 pt-4">
+                {a.application_link && (
+                  <Button asChild className="bg-teal-600 hover:bg-teal-700 text-white cursor-pointer">
+                    <Link href={a.application_link} target="_blank" rel="noopener noreferrer">
+                      Apply Now
+                      <ExternalLink className="h-4 w-4 ml-2" />
+                    </Link>
+                  </Button>
+                )}
+                {a.external_link && (
+                  <Button asChild variant="outline" className="cursor-pointer">
+                    <Link href={a.external_link} target="_blank" rel="noopener noreferrer">
+                      Learn More
+                      <ExternalLink className="h-4 w-4 ml-2" />
+                    </Link>
+                  </Button>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">

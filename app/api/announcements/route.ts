@@ -5,8 +5,24 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const universityId = searchParams.get('university_id')
   const announcementType = searchParams.get('announcement_type')
+  const slug = searchParams.get('slug')
   const limit = parseInt(searchParams.get('limit') || '20')
   const showBannerOnly = searchParams.get('banner_only') === 'true'
+
+  // If a slug is provided, fetch that single announcement
+  if (slug) {
+    const { data, error } = await supabase
+      .from('announcements')
+      .select('*, universities(name, slug), courses(name, slug), countries(name)')
+      .eq('slug', slug)
+      .eq('is_active', true)
+      .single()
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 404 })
+    }
+    return NextResponse.json({ data })
+  }
 
   let query = supabase
     .from('announcements')

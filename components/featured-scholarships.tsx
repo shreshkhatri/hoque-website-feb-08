@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 
 interface Scholarship {
   id: number
+  slug: string
   title: string
   university: string
   country: string
@@ -22,6 +23,7 @@ interface Scholarship {
 const scholarships: Scholarship[] = [
   {
     id: 1,
+    slug: 'chevening-scholarship-2026-27',
     title: 'Chevening Scholarship 2026/27',
     university: 'UK Government Funded',
     country: 'United Kingdom',
@@ -36,6 +38,7 @@ const scholarships: Scholarship[] = [
   },
   {
     id: 2,
+    slug: 'commonwealth-shared-scholarship',
     title: 'Commonwealth Shared Scholarship',
     university: 'Multiple UK Universities',
     country: 'United Kingdom',
@@ -50,6 +53,7 @@ const scholarships: Scholarship[] = [
   },
   {
     id: 3,
+    slug: 'gates-cambridge-scholarship',
     title: 'Gates Cambridge Scholarship',
     university: 'University of Cambridge',
     country: 'United Kingdom',
@@ -64,6 +68,7 @@ const scholarships: Scholarship[] = [
   },
   {
     id: 4,
+    slug: 'super-early-bird-pg-scholarship-uh',
     title: 'Super Early Bird PG Scholarship',
     university: 'University of Hertfordshire',
     country: 'United Kingdom',
@@ -101,7 +106,7 @@ export function FeaturedScholarships() {
           {scholarships.map((scholarship) => (
             <Link
               key={scholarship.id}
-              href={`/announcements?type=scholarship`}
+              href={`/announcements?type=scholarship&slug=${scholarship.slug}`}
               className="group bg-card border border-border rounded-2xl overflow-hidden hover:shadow-xl hover:border-accent/50 transition-all duration-300 flex flex-col cursor-pointer"
             >
               {/* Image Container */}
