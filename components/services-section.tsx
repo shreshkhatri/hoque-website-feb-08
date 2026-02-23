@@ -70,7 +70,7 @@ export function ServicesSection() {
             const Icon = service.icon
             return (
               <Link key={index} href={service.href}>
-                <div className={`group relative ${service.bgColor} border border-border/40 rounded-xl p-6 hover:shadow-lg transition-all duration-300 h-full cursor-pointer`}>
+                <div className={`group relative overflow-hidden ${service.bgColor} border border-border/40 rounded-xl p-6 hover:shadow-lg transition-all duration-300 h-full cursor-pointer`}>
                   {/* Decorative accent circle */}
                   <div className={`absolute top-0 right-0 w-32 h-32 ${service.accentColor} rounded-full -mr-16 -mt-16 opacity-30 transition-all duration-300`} />
 
