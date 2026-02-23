@@ -28,7 +28,6 @@ export async function GET(request: Request) {
   const { data, error } = await query
 
   if (error) {
-    console.log("[v0] Announcements API error:", error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 

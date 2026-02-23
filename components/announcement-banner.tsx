@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { X, Award, Calendar, Bell, AlertCircle, ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -16,22 +17,31 @@ interface Announcement {
 }
 
 export function AnnouncementBanner() {
+  const pathname = usePathname()
   const [announcements, setAnnouncements] = useState<Announcement[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [dismissed, setDismissed] = useState<number[]>([])
+  const [dismissedAll, setDismissedAll] = useState(false)
   const [loading, setLoading] = useState(true)
 
+  // Don't show on admin pages
+  const isAdminPage = pathname?.startsWith('/admin')
+
   useEffect(() => {
+    if (isAdminPage) {
+      setLoading(false)
+      return
+    }
+
     const fetchBannerAnnouncements = async () => {
       try {
         const res = await fetch('/api/announcements?limit=5')
+        if (!res.ok) {
+          setLoading(false)
+          return
+        }
         const data = await res.json()
         const banners = data.data || []
-        
-        // Filter out dismissed announcements
-        const dismissedIds = JSON.parse(localStorage.getItem('dismissed_announcements') || '[]')
-        setDismissed(dismissedIds)
-        setAnnouncements(banners.filter((a: Announcement) => !dismissedIds.includes(a.id)))
+        setAnnouncements(banners)
       } catch {
         /* empty */
       } finally {
@@ -39,7 +49,7 @@ export function AnnouncementBanner() {
       }
     }
     fetchBannerAnnouncements()
-  }, [])
+  }, [isAdminPage])
 
   useEffect(() => {
     if (announcements.length <= 1) return
@@ -51,20 +61,11 @@ export function AnnouncementBanner() {
     return () => clearInterval(interval)
   }, [announcements.length])
 
-  const handleDismiss = (id: number) => {
-    const newDismissed = [...dismissed, id]
-    setDismissed(newDismissed)
-    localStorage.setItem('dismissed_announcements', JSON.stringify(newDismissed))
-    
-    const remaining = announcements.filter((a) => a.id !== id)
-    setAnnouncements(remaining)
-    
-    if (currentIndex >= remaining.length) {
-      setCurrentIndex(0)
-    }
+  const handleDismiss = () => {
+    setDismissedAll(true)
   }
 
-  if (loading || announcements.length === 0) {
+  if (isAdminPage || loading || announcements.length === 0 || dismissedAll) {
     return null
   }
 
@@ -146,7 +147,7 @@ export function AnnouncementBanner() {
             )}
 
             <button
-              onClick={() => handleDismiss(current.id)}
+              onClick={handleDismiss}
               className="p-1 hover:bg-white/20 rounded transition-colors"
               aria-label="Dismiss announcement"
             >
