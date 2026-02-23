@@ -7,7 +7,7 @@ const ALLOWED_FIELDS = [
   'description', 'tuition_fees_international', 'intake_months', 'entry_requirements',
   'country_id', 'course_overview', 'academic_requirements', 'english_language_requirements',
   'other_requirements', 'document_requirements', 'scholarships', 'scholarship_amount',
-  'scholarship_type', 'key_features', 'field_of_study', 'campus_id',
+  'scholarship_type', 'key_features', 'field_of_study', 'campus_id', 'category_id',
 ]
 
 export async function GET(
@@ -24,7 +24,7 @@ export async function GET(
   try {
     const { data, error } = await supabase
       .from('courses')
-      .select('*, universities(id, name), countries(id, name)')
+      .select('*, universities(id, name), countries(id, name), course_categories(id, name)')
       .eq('id', id)
       .single()
 

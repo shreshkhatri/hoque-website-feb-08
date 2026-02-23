@@ -67,6 +67,7 @@ interface Course {
   field_of_study: string | null
   universities: { name: string } | null
   countries: { currency: string | null } | null
+  course_categories: { id: number; name: string } | null
 }
 
 interface University {
@@ -347,8 +348,10 @@ export default function CoursesPage() {
                         <GraduationCap className="h-3.5 w-3.5 flex-shrink-0 text-slate-400" />
                         {course.universities?.name || 'N/A'}
                       </p>
-                      {course.field_of_study && (
-                        <p className="text-xs text-slate-400 mt-0.5 truncate">{course.field_of_study}</p>
+                      {course.course_categories && (
+                        <Badge variant="secondary" className="text-xs mt-1 bg-teal-50 text-teal-700 border-teal-200">
+                          {course.course_categories.name}
+                        </Badge>
                       )}
                     </div>
 
