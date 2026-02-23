@@ -79,7 +79,7 @@ export default function CoursesPage() {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
-  const [selectedUniversity, setSelectedUniversity] = useState<string>('')
+  const [selectedUniversity, setSelectedUniversity] = useState<string>('all')
   const [loading, setLoading] = useState(true)
   const [loadingUniversities, setLoadingUniversities] = useState(true)
   const [deleteOpen, setDeleteOpen] = useState(false)
@@ -112,7 +112,7 @@ export default function CoursesPage() {
     setLoading(true)
     try {
       const params = new URLSearchParams({ page: String(page), limit: String(limit), search: debouncedSearch })
-      if (selectedUniversity) {
+      if (selectedUniversity && selectedUniversity !== 'all') {
         params.append('university_id', selectedUniversity)
       }
       const res = await fetch(`/api/admin/courses?${params}`, { credentials: 'same-origin' })
@@ -180,7 +180,7 @@ export default function CoursesPage() {
                 <SelectValue placeholder={loadingUniversities ? 'Loading universities...' : 'Filter by university'} />
               </SelectTrigger>
               <SelectContent className="bg-white border-slate-200">
-                <SelectItem value="">All Universities</SelectItem>
+                <SelectItem value="all">All Universities</SelectItem>
                 {universities.map((uni) => (
                   <SelectItem key={uni.id} value={String(uni.id)}>
                     {uni.name}
@@ -188,9 +188,9 @@ export default function CoursesPage() {
                 ))}
               </SelectContent>
             </Select>
-            {selectedUniversity && (
+            {selectedUniversity && selectedUniversity !== 'all' && (
               <button
-                onClick={() => setSelectedUniversity('')}
+                onClick={() => setSelectedUniversity('all')}
                 className="p-1.5 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
                 aria-label="Clear university filter"
                 title="Clear filter"
