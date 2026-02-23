@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import { verifySession } from '@/lib/session'
-import { supabase } from '@/lib/supabase'
+import { verifySession } from '@/lib/admin-auth'
+import { supabaseAdmin as supabase } from '@/lib/supabase'
 
 function generateSlug(name: string): string {
   return name
