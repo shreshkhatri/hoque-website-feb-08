@@ -24,7 +24,7 @@ export function AnnouncementBanner() {
   useEffect(() => {
     const fetchBannerAnnouncements = async () => {
       try {
-        const res = await fetch('/api/announcements?banner_only=true&limit=5')
+        const res = await fetch('/api/announcements?limit=5')
         const data = await res.json()
         const banners = data.data || []
         
