@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
+import Image from 'next/image'
 import { Calendar, Award, Bell, AlertCircle, ExternalLink, Clock, ArrowLeft, MapPin } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -16,10 +17,12 @@ interface Announcement {
   priority: string
   scholarship_amount: number | null
   scholarship_type: string | null
+  eligibility_criteria: string | null
   end_date: string | null
   published_at: string
   external_link: string | null
   application_link: string | null
+  cover_image_url: string | null
   universities: { name: string; slug: string } | null
   countries: { name: string } | null
 }
@@ -157,6 +160,18 @@ export default function AnnouncementsClient() {
 
         <Card className="border-slate-200 overflow-hidden">
           <CardContent className="p-0">
+            {/* Cover image */}
+            {a.cover_image_url && (
+              <div className="relative w-full aspect-[16/6] bg-slate-100">
+                <Image
+                  src={a.cover_image_url}
+                  alt={a.title}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            )}
+
             {/* Header band */}
             <div className="bg-gradient-to-r from-slate-900 to-slate-700 text-white px-8 py-8">
               <div className="flex flex-wrap items-center gap-3 mb-4">
@@ -220,6 +235,14 @@ export default function AnnouncementsClient() {
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900 mb-2">Description</h3>
                   <p className="text-slate-600 leading-relaxed whitespace-pre-line">{a.description}</p>
+                </div>
+              )}
+
+              {/* Eligibility Criteria */}
+              {a.eligibility_criteria && (
+                <div>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2">Eligibility Criteria</h3>
+                  <p className="text-slate-600 leading-relaxed whitespace-pre-line">{a.eligibility_criteria}</p>
                 </div>
               )}
 
@@ -337,8 +360,19 @@ export default function AnnouncementsClient() {
             return (
               <Card
                 key={announcement.id}
-                className="border-slate-200 hover:border-teal-300 hover:shadow-lg transition-all"
+                className="border-slate-200 hover:border-teal-300 hover:shadow-lg transition-all overflow-hidden"
               >
+                {/* Cover Image */}
+                {announcement.cover_image_url && (
+                  <div className="relative w-full h-40 bg-slate-100">
+                    <Image
+                      src={announcement.cover_image_url}
+                      alt={announcement.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                )}
                 <CardContent className="p-6">
                   {/* Header */}
                   <div className="flex items-start justify-between mb-4">

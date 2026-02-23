@@ -58,6 +58,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
       'is_active',
       'show_as_banner',
       'external_link',
+      'cover_image_url',
     ]
 
     allowedFields.forEach((field) => {
