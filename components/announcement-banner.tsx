@@ -87,7 +87,7 @@ export function AnnouncementBanner() {
   const getBgColor = (priority: string) => {
     switch (priority) {
       case 'high':
-        return 'bg-red-600'
+        return 'bg-gradient-to-r from-primary to-accent'
       case 'medium':
         return 'bg-teal-600'
       case 'low':
