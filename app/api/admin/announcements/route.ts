@@ -76,6 +76,7 @@ export async function POST(request: Request) {
       is_active,
       show_as_banner,
       external_link,
+      cover_image_url,
     } = body
 
     if (!title) {
@@ -105,6 +106,7 @@ export async function POST(request: Request) {
         is_active: is_active !== undefined ? is_active : true,
         show_as_banner: show_as_banner || false,
         external_link: external_link || null,
+        cover_image_url: cover_image_url || null,
         slug,
       })
       .select()
