@@ -12,6 +12,9 @@ import {
   Clock,
   Banknote,
   X,
+  Check,
+  ChevronsUpDown,
+  ArrowUpDown,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -35,6 +38,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
 import Link from 'next/link'
 
 interface Course {
@@ -80,6 +96,9 @@ export default function CoursesPage() {
   const [search, setSearch] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [selectedUniversity, setSelectedUniversity] = useState<string>('all')
+  const [open, setOpen] = useState(false)
+  const [sortBy, setSortBy] = useState<'name' | 'created_at'>('name')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const [loading, setLoading] = useState(true)
   const [loadingUniversities, setLoadingUniversities] = useState(true)
   const [deleteOpen, setDeleteOpen] = useState(false)
@@ -111,7 +130,13 @@ export default function CoursesPage() {
   const fetchCourses = useCallback(async () => {
     setLoading(true)
     try {
-      const params = new URLSearchParams({ page: String(page), limit: String(limit), search: debouncedSearch })
+      const params = new URLSearchParams({ 
+        page: String(page), 
+        limit: String(limit), 
+        search: debouncedSearch,
+        sort_by: sortBy,
+        sort_order: sortOrder
+      })
       if (selectedUniversity && selectedUniversity !== 'all') {
         params.append('university_id', selectedUniversity)
       }
@@ -124,7 +149,7 @@ export default function CoursesPage() {
     } finally {
       setLoading(false)
     }
-  }, [page, debouncedSearch, selectedUniversity])
+  }, [page, debouncedSearch, selectedUniversity, sortBy, sortOrder])
 
   useEffect(() => {
     fetchCourses()
@@ -132,7 +157,7 @@ export default function CoursesPage() {
 
   useEffect(() => {
     setPage(1)
-  }, [debouncedSearch, selectedUniversity])
+  }, [debouncedSearch, selectedUniversity, sortBy, sortOrder])
 
   const handleDelete = async () => {
     if (!deleteId) return
@@ -174,24 +199,96 @@ export default function CoursesPage() {
             />
           </div>
 
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <Select value={selectedUniversity} onValueChange={setSelectedUniversity} disabled={loadingUniversities}>
-              <SelectTrigger className="h-9 bg-white border-slate-200 text-slate-900 w-full sm:w-56 disabled:opacity-50">
-                <SelectValue placeholder={loadingUniversities ? 'Loading universities...' : 'Filter by university'} />
+          <div className="flex items-center gap-2 w-full sm:w-auto flex-wrap">
+            {/* Searchable University Filter */}
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  className="h-9 w-full sm:w-56 justify-between bg-white border-slate-200 text-slate-900 hover:bg-slate-50"
+                  disabled={loadingUniversities}
+                >
+                  {selectedUniversity && selectedUniversity !== 'all'
+                    ? universities.find((uni) => String(uni.id) === selectedUniversity)?.name
+                    : loadingUniversities ? 'Loading...' : 'Filter by university'}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[280px] p-0 bg-white border-slate-200">
+                <Command className="bg-white">
+                  <CommandInput placeholder="Search university..." className="h-9" />
+                  <CommandList>
+                    <CommandEmpty>No university found.</CommandEmpty>
+                    <CommandGroup>
+                      <CommandItem
+                        value="all-universities"
+                        onSelect={() => {
+                          setSelectedUniversity('all')
+                          setOpen(false)
+                        }}
+                        className="cursor-pointer"
+                      >
+                        <Check
+                          className={`mr-2 h-4 w-4 ${
+                            selectedUniversity === 'all' ? 'opacity-100' : 'opacity-0'
+                          }`}
+                        />
+                        All Universities
+                      </CommandItem>
+                      {universities.map((uni) => (
+                        <CommandItem
+                          key={uni.id}
+                          value={uni.name}
+                          onSelect={() => {
+                            setSelectedUniversity(String(uni.id))
+                            setOpen(false)
+                          }}
+                          className="cursor-pointer"
+                        >
+                          <Check
+                            className={`mr-2 h-4 w-4 ${
+                              selectedUniversity === String(uni.id) ? 'opacity-100' : 'opacity-0'
+                            }`}
+                          />
+                          {uni.name}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+
+            {/* Sort By */}
+            <Select value={sortBy} onValueChange={(value: 'name' | 'created_at') => setSortBy(value)}>
+              <SelectTrigger className="h-9 bg-white border-slate-200 text-slate-900 w-full sm:w-40">
+                <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent className="bg-white border-slate-200">
-                <SelectItem value="all">All Universities</SelectItem>
-                {universities.map((uni) => (
-                  <SelectItem key={uni.id} value={String(uni.id)}>
-                    {uni.name}
-                  </SelectItem>
-                ))}
+                <SelectItem value="name">Name</SelectItem>
+                <SelectItem value="created_at">Date Added</SelectItem>
               </SelectContent>
             </Select>
+
+            {/* Sort Order */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+              className="h-9 px-3 bg-white border-slate-200 hover:bg-slate-50"
+              title={sortOrder === 'asc' ? 'Ascending' : 'Descending'}
+            >
+              <ArrowUpDown className="h-4 w-4" />
+              <span className="ml-1.5 text-xs">{sortOrder === 'asc' ? 'A-Z' : 'Z-A'}</span>
+            </Button>
+
+            {/* Clear Filter Button */}
             {selectedUniversity && selectedUniversity !== 'all' && (
               <button
                 onClick={() => setSelectedUniversity('all')}
-                className="p-1.5 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+                className="p-2 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
                 aria-label="Clear university filter"
                 title="Clear filter"
               >

@@ -11,6 +11,7 @@ import {
   ChevronRight,
   MapPin,
   ExternalLink,
+  ArrowUpDown,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -27,6 +28,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 interface University {
   id: number
@@ -49,6 +57,8 @@ export default function UniversitiesPage() {
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
+  const [sortBy, setSortBy] = useState<'name' | 'created_at'>('name')
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const [loading, setLoading] = useState(true)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [deleteId, setDeleteId] = useState<number | null>(null)
@@ -62,7 +72,13 @@ export default function UniversitiesPage() {
   const fetchUniversities = useCallback(async () => {
     setLoading(true)
     try {
-      const params = new URLSearchParams({ page: String(page), limit: String(limit), search: debouncedSearch })
+      const params = new URLSearchParams({ 
+        page: String(page), 
+        limit: String(limit), 
+        search: debouncedSearch,
+        sort_by: sortBy,
+        sort_order: sortOrder
+      })
       const res = await fetch(`/api/admin/universities?${params}`)
       const data = await res.json()
       setUniversities(data.data || [])
@@ -72,7 +88,7 @@ export default function UniversitiesPage() {
     } finally {
       setLoading(false)
     }
-  }, [page, debouncedSearch])
+  }, [page, debouncedSearch, sortBy, sortOrder])
 
   useEffect(() => {
     fetchUniversities()
@@ -80,7 +96,7 @@ export default function UniversitiesPage() {
 
   useEffect(() => {
     setPage(1)
-  }, [debouncedSearch])
+  }, [debouncedSearch, sortBy, sortOrder])
 
 
 
@@ -101,11 +117,19 @@ export default function UniversitiesPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <p className="text-sm text-slate-600">{total} universities total</p>
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <p className="text-sm text-slate-600">{total} universities total</p>
+          </div>
+          <Button onClick={() => router.push('/admin/universities/new')} className="bg-teal-600 hover:bg-teal-700 text-white h-9 cursor-pointer w-fit">
+            <Plus className="h-4 w-4 mr-1.5" />
+            Add University
+          </Button>
         </div>
-        <div className="flex items-center gap-3">
+
+        {/* Filters */}
+        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
           <div className="relative flex-1 sm:w-72">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
             <Input
@@ -115,10 +139,31 @@ export default function UniversitiesPage() {
               className="pl-9 h-9 bg-white border-slate-200 text-slate-900 placeholder:text-slate-500 focus:border-teal-500"
             />
           </div>
-          <Button onClick={() => router.push('/admin/universities/new')} className="bg-teal-600 hover:bg-teal-700 text-white h-9 cursor-pointer">
-            <Plus className="h-4 w-4 mr-1.5" />
-            Add
-          </Button>
+
+          <div className="flex items-center gap-2 w-full sm:w-auto flex-wrap">
+            {/* Sort By */}
+            <Select value={sortBy} onValueChange={(value: 'name' | 'created_at') => setSortBy(value)}>
+              <SelectTrigger className="h-9 bg-white border-slate-200 text-slate-900 w-full sm:w-40">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent className="bg-white border-slate-200">
+                <SelectItem value="name">Name</SelectItem>
+                <SelectItem value="created_at">Date Added</SelectItem>
+              </SelectContent>
+            </Select>
+
+            {/* Sort Order */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+              className="h-9 px-3 bg-white border-slate-200 hover:bg-slate-50"
+              title={sortOrder === 'asc' ? 'Ascending' : 'Descending'}
+            >
+              <ArrowUpDown className="h-4 w-4" />
+              <span className="ml-1.5 text-xs">{sortOrder === 'asc' ? 'A-Z' : 'Z-A'}</span>
+            </Button>
+          </div>
         </div>
       </div>
 
