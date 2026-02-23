@@ -15,6 +15,7 @@ interface Announcement {
   announcement_type: string
   scholarship_amount: number | null
   scholarship_type: string | null
+  program_level: string | null
   end_date: string | null
   published_at: string
   cover_image_url: string | null
@@ -141,12 +142,14 @@ export function FeaturedScholarships() {
                           {getScholarshipLabel(scholarship.scholarship_type)}
                         </Badge>
                       </div>
-                      <div className="absolute top-3 right-3">
-                        <Badge className="bg-card/90 text-foreground text-xs font-medium backdrop-blur-sm border-0 shadow-md">
-                          <GraduationCap className="h-3 w-3 mr-1" />
-                          {scholarship.scholarship_type === 'full' ? "Master's / PhD" : 'Postgraduate'}
-                        </Badge>
-                      </div>
+                      {scholarship.program_level && (
+                        <div className="absolute top-3 right-3">
+                          <Badge className="bg-card/90 text-foreground text-xs font-medium backdrop-blur-sm border-0 shadow-md">
+                            <GraduationCap className="h-3 w-3 mr-1" />
+                            {scholarship.program_level}
+                          </Badge>
+                        </div>
+                      )}
 
                       {/* Amount overlay at bottom of image */}
                       <div className="absolute bottom-3 left-3 right-3">
@@ -173,7 +176,7 @@ export function FeaturedScholarships() {
 
                       {/* Description */}
                       <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-3 flex-grow">
-                        {scholarship.description}
+                        {scholarship.description?.replace(/<[^>]*>/g, '') || ''}
                       </p>
 
                       {/* Deadline */}

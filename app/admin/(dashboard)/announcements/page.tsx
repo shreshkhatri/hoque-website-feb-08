@@ -240,7 +240,9 @@ export default function AnnouncementsPage() {
                 <h3 className="font-medium text-slate-900 mb-2 line-clamp-2">{announcement.title}</h3>
 
                 {announcement.description && (
-                  <p className="text-sm text-slate-600 mb-3 line-clamp-2">{announcement.description}</p>
+                  <p className="text-sm text-slate-600 mb-3 line-clamp-2">
+                    {announcement.description.replace(/<[^>]*>/g, '')}
+                  </p>
                 )}
 
                 <div className="space-y-2 text-xs text-slate-500 mb-3">
