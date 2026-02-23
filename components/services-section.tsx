@@ -65,31 +65,31 @@ export function ServicesSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-6">
           {services.map((service, index) => {
             const Icon = service.icon
             return (
               <Link key={index} href={service.href}>
-                <div className={`group relative ${service.bgColor} border border-border/40 rounded-2xl p-8 hover:shadow-lg transition-all duration-300 h-full cursor-pointer`}>
+                <div className={`group relative ${service.bgColor} border border-border/40 rounded-xl p-6 hover:shadow-lg transition-all duration-300 h-full cursor-pointer`}>
                   {/* Decorative accent circle */}
-                  <div className={`absolute top-0 right-0 w-40 h-40 ${service.accentColor} rounded-full -mr-20 -mt-20 opacity-30 transition-all duration-300`} />
+                  <div className={`absolute top-0 right-0 w-32 h-32 ${service.accentColor} rounded-full -mr-16 -mt-16 opacity-30 transition-all duration-300`} />
 
                   <div className="relative z-10">
-                    <div className={`w-16 h-16 ${service.iconBg} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                      <Icon className={`w-8 h-8 ${service.iconColor}`} />
+                    <div className={`w-12 h-12 ${service.iconBg} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                      <Icon className={`w-6 h-6 ${service.iconColor}`} />
                     </div>
 
-                    <h3 className="text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
+                    <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
                       {service.title}
                     </h3>
 
-                    <p className="text-muted-foreground mb-6 leading-relaxed">
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                       {service.description}
                     </p>
 
-                    <div className="flex items-center text-primary font-semibold group-hover:gap-3 gap-2 transition-all">
+                    <div className="flex items-center text-primary text-sm font-semibold group-hover:gap-3 gap-2 transition-all">
                       <span>Learn More</span>
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
                 </div>
