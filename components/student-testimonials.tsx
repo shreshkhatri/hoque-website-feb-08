@@ -130,7 +130,7 @@ export function StudentTestimonials() {
             variant="outline"
             size="icon"
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 hidden md:flex bg-card border-border hover:bg-muted"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 hidden md:flex bg-card border-border hover:bg-muted"
           >
             <ChevronLeft className="h-5 w-5" />
           </Button>
@@ -138,7 +138,7 @@ export function StudentTestimonials() {
             variant="outline"
             size="icon"
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 hidden md:flex bg-card border-border hover:bg-muted"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 hidden md:flex bg-card border-border hover:bg-muted"
           >
             <ChevronRight className="h-5 w-5" />
           </Button>
