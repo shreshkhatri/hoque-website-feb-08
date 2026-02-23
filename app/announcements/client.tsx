@@ -231,7 +231,10 @@ export default function AnnouncementsClient() {
               {a.description && (
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900 mb-2">Description</h3>
-                  <p className="text-slate-600 leading-relaxed whitespace-pre-line">{a.description}</p>
+                  <div 
+                    className="text-slate-600 leading-relaxed prose prose-sm max-w-none"
+                    dangerouslySetInnerHTML={{ __html: a.description }}
+                  />
                 </div>
               )}
 
@@ -239,7 +242,10 @@ export default function AnnouncementsClient() {
               {a.eligibility_criteria && (
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900 mb-2">Eligibility Criteria</h3>
-                  <p className="text-slate-600 leading-relaxed whitespace-pre-line">{a.eligibility_criteria}</p>
+                  <div 
+                    className="text-slate-600 leading-relaxed prose prose-sm max-w-none"
+                    dangerouslySetInnerHTML={{ __html: a.eligibility_criteria }}
+                  />
                 </div>
               )}
 

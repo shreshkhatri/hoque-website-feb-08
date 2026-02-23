@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { RichTextEditor } from '@/components/rich-text-editor'
 import { Card, CardContent } from '@/components/ui/card'
 import {
   Select,
@@ -344,12 +345,11 @@ export default function EditAnnouncementPage({ params }: { params: Promise<{ id:
 
                 <div className="space-y-2">
                   <Label className="text-sm text-slate-700">Description</Label>
-                  <Textarea
+                  <RichTextEditor
                     value={form.description}
-                    onChange={(e) => setField('description', e.target.value)}
+                    onChange={(html) => setField('description', html)}
                     placeholder="Provide details about the announcement..."
-                    rows={4}
-                    className="bg-white border-slate-200 text-slate-900"
+                    minHeight="200px"
                   />
                 </div>
 
@@ -461,12 +461,11 @@ export default function EditAnnouncementPage({ params }: { params: Promise<{ id:
 
                   <div className="space-y-2">
                     <Label className="text-sm text-slate-700">Eligibility Criteria</Label>
-                    <Textarea
+                    <RichTextEditor
                       value={form.eligibility_criteria}
-                      onChange={(e) => setField('eligibility_criteria', e.target.value)}
+                      onChange={(html) => setField('eligibility_criteria', html)}
                       placeholder="Who can apply for this scholarship?"
-                      rows={3}
-                      className="bg-white border-slate-200 text-slate-900"
+                      minHeight="150px"
                     />
                   </div>
 
