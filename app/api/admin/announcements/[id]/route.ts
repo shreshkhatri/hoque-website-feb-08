@@ -9,11 +9,12 @@ function generateSlug(title: string): string {
     .replace(/^-+|-+$/g, '')
 }
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await verifySession()
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const id = parseInt(params.id)
+  const { id: idStr } = await params
+  const id = parseInt(idStr)
   if (isNaN(id)) return NextResponse.json({ error: 'Invalid ID' }, { status: 400 })
 
   const { data, error } = await supabase
@@ -28,11 +29,12 @@ export async function GET(request: Request, { params }: { params: { id: string }
   return NextResponse.json({ data })
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await verifySession()
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const id = parseInt(params.id)
+  const { id: idStr2 } = await params
+  const id = parseInt(idStr2)
   if (isNaN(id)) return NextResponse.json({ error: 'Invalid ID' }, { status: 400 })
 
   try {
@@ -88,11 +90,12 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await verifySession()
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const id = parseInt(params.id)
+  const { id: idStr3 } = await params
+  const id = parseInt(idStr3)
   if (isNaN(id)) return NextResponse.json({ error: 'Invalid ID' }, { status: 400 })
 
   const { error } = await supabase.from('announcements').delete().eq('id', id)

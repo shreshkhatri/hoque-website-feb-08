@@ -9,6 +9,7 @@ import Link from 'next/link'
 interface Announcement {
   id: number
   title: string
+  slug: string
   announcement_type: string
   priority: string
   end_date: string | null
@@ -87,11 +88,11 @@ export function AnnouncementBanner() {
   const getBgColor = (priority: string) => {
     switch (priority) {
       case 'high':
-        return 'bg-red-600'
+        return 'bg-gradient-to-r from-teal-600 to-cyan-600'
       case 'medium':
-        return 'bg-teal-600'
+        return 'bg-gradient-to-r from-blue-600 to-indigo-600'
       case 'low':
-        return 'bg-blue-600'
+        return 'bg-gradient-to-r from-slate-700 to-slate-600'
       default:
         return 'bg-slate-600'
     }
@@ -116,22 +117,24 @@ export function AnnouncementBanner() {
           </div>
 
           <div className="flex items-center gap-2 flex-shrink-0">
-            {(current.application_link || current.external_link) && (
-              <Link
-                href={current.application_link || current.external_link || '#'}
-                target="_blank"
-                rel="noopener noreferrer"
+            <Link
+              href={
+                current.application_link || current.external_link
+                  ? current.application_link || current.external_link || '#'
+                  : `/announcements?type=${current.announcement_type}&slug=${current.slug}`
+              }
+              target={current.application_link || current.external_link ? '_blank' : '_self'}
+              rel={current.application_link || current.external_link ? 'noopener noreferrer' : undefined}
+            >
+              <Button
+                size="sm"
+                variant="ghost"
+                className="text-white hover:bg-white/20 h-8 text-xs"
               >
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="text-white hover:bg-white/20 h-8 text-xs"
-                >
-                  Learn More
-                  <ExternalLink className="h-3 w-3 ml-1" />
-                </Button>
-              </Link>
-            )}
+                Learn More
+                <ExternalLink className="h-3 w-3 ml-1" />
+              </Button>
+            </Link>
 
             {announcements.length > 1 && (
               <div className="hidden sm:flex items-center gap-1 text-xs opacity-75">

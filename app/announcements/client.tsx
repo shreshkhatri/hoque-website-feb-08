@@ -23,7 +23,7 @@ interface Announcement {
   external_link: string | null
   application_link: string | null
   cover_image_url: string | null
-  universities: { name: string; slug: string } | null
+  universities: { id: number; name: string } | null
   countries: { name: string } | null
 }
 
@@ -173,7 +173,7 @@ export default function AnnouncementsClient() {
             )}
 
             {/* Header band */}
-            <div className="bg-gradient-to-r from-slate-900 to-slate-700 text-white px-8 py-8">
+            <div className="bg-gradient-to-br from-primary to-primary/90 text-primary-foreground px-8 py-8">
               <div className="flex flex-wrap items-center gap-3 mb-4">
                 <Badge className={`${getTypeColor(a.announcement_type)} text-xs border`}>
                   {getTypeIcon(a.announcement_type)}
@@ -199,12 +199,9 @@ export default function AnnouncementsClient() {
               </div>
               <h1 className="text-2xl md:text-3xl font-bold mb-2">{a.title}</h1>
               {a.universities && (
-                <Link
-                  href={`/university/${a.universities.slug}`}
-                  className="text-teal-300 hover:text-teal-200 hover:underline text-sm"
-                >
+                <p className="text-teal-300 text-sm">
                   {a.universities.name}
-                </Link>
+                </p>
               )}
             </div>
 
@@ -406,12 +403,9 @@ export default function AnnouncementsClient() {
                   {/* University */}
                   {announcement.universities && (
                     <div className="mb-4 pb-4 border-b border-slate-100">
-                      <Link
-                        href={`/university/${announcement.universities.slug}`}
-                        className="text-sm text-teal-600 hover:text-teal-700 hover:underline"
-                      >
+                      <p className="text-sm text-teal-600">
                         {announcement.universities.name}
-                      </Link>
+                      </p>
                     </div>
                   )}
 

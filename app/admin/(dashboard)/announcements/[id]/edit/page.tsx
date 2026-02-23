@@ -30,7 +30,7 @@ interface Country {
   name: string
 }
 
-export default function EditAnnouncementPage({ params }: { params: { id: string } }) {
+export default function EditAnnouncementPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [universities, setUniversities] = useState<University[]>([])
@@ -40,6 +40,7 @@ export default function EditAnnouncementPage({ params }: { params: { id: string 
   const [uploading, setUploading] = useState(false)
   const [coverPreview, setCoverPreview] = useState<string | null>(null)
   const [coverFile, setCoverFile] = useState<File | null>(null)
+  const [announcementId, setAnnouncementId] = useState<string | null>(null)
   const [form, setForm] = useState({
     title: '',
     description: '',
@@ -63,6 +64,10 @@ export default function EditAnnouncementPage({ params }: { params: { id: string 
 
   useEffect(() => {
     const fetchData = async () => {
+      const resolvedParams = await params
+      const id = resolvedParams.id
+      setAnnouncementId(id)
+
       fetch('/api/admin/universities?limit=999')
         .then((res) => res.json())
         .then((data) => setUniversities(data.data || []))
@@ -74,7 +79,7 @@ export default function EditAnnouncementPage({ params }: { params: { id: string 
         .catch(() => console.error('Failed to fetch countries'))
 
       try {
-        const announcementRes = await fetch(`/api/admin/announcements/${params.id}`, { credentials: 'same-origin' })
+        const announcementRes = await fetch(`/api/admin/announcements/${id}`, { credentials: 'same-origin' })
         const announcementData = await announcementRes.json()
 
         if (announcementData.data) {
@@ -110,7 +115,7 @@ export default function EditAnnouncementPage({ params }: { params: { id: string 
       }
     }
     fetchData()
-  }, [params.id])
+  }, [params])
 
   const setField = (key: string, value: any) => {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -211,7 +216,7 @@ export default function EditAnnouncementPage({ params }: { params: { id: string 
         cover_image_url: coverUrl || null,
       }
 
-      const res = await fetch(`/api/admin/announcements/${params.id}`, {
+      const res = await fetch(`/api/admin/announcements/${announcementId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
