@@ -46,7 +46,7 @@ export function getSessionCookieConfig() {
   return {
     name: COOKIE_NAME,
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax' as const,
     maxAge: MAX_AGE,
     path: '/',
