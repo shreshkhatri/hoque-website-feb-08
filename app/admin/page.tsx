@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { Eye, EyeOff, Lock, Mail, ArrowRight } from 'lucide-react'
@@ -15,6 +15,26 @@ export default function AdminLoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [checkingSession, setCheckingSession] = useState(true)
+
+  // Check if already logged in -- redirect to dashboard if so
+  useEffect(() => {
+    const checkExistingSession = async () => {
+      try {
+        const res = await fetch('/api/admin/session', { credentials: 'same-origin' })
+        const data = await res.json()
+        if (data.authenticated) {
+          window.location.href = '/admin/dashboard'
+          return
+        }
+      } catch {
+        // Not logged in, show login form
+      } finally {
+        setCheckingSession(false)
+      }
+    }
+    checkExistingSession()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -44,6 +64,17 @@ export default function AdminLoginPage() {
       setError('An unexpected error occurred')
       setLoading(false)
     }
+  }
+
+  if (checkingSession) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-white">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-10 w-10 animate-spin rounded-full border-3 border-slate-200 border-t-teal-500" />
+          <p className="text-sm text-slate-600">Checking session...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
