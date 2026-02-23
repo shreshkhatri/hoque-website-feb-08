@@ -54,20 +54,26 @@ export default function NewAnnouncementPage() {
   })
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUniversities = async () => {
       try {
-        const [uniRes, countryRes] = await Promise.all([
-          fetch('/api/admin/universities?limit=999'),
-          fetch('/api/admin/countries?limit=999'),
-        ])
-        const [uniData, countryData] = await Promise.all([uniRes.json(), countryRes.json()])
-        setUniversities(uniData.data || [])
-        setCountries(countryData.data || [])
+        const res = await fetch('/api/admin/universities?limit=999')
+        const data = await res.json()
+        setUniversities(data.data || [])
       } catch {
-        /* empty */
+        console.error('Failed to fetch universities')
       }
     }
-    fetchData()
+    const fetchCountries = async () => {
+      try {
+        const res = await fetch('/api/admin/countries?limit=999')
+        const data = await res.json()
+        setCountries(data.data || [])
+      } catch {
+        console.error('Failed to fetch countries')
+      }
+    }
+    fetchUniversities()
+    fetchCountries()
   }, [])
 
   const setField = (key: string, value: any) => {
