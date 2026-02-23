@@ -57,20 +57,20 @@ export default function EditAnnouncementPage({ params }: { params: { id: string 
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const [announcementRes, uniRes, countryRes] = await Promise.all([
-          fetch(`/api/admin/announcements/${params.id}`, { credentials: 'same-origin' }),
-          fetch('/api/admin/universities?limit=999'),
-          fetch('/api/admin/countries?limit=999'),
-        ])
-        const [announcementData, uniData, countryData] = await Promise.all([
-          announcementRes.json(),
-          uniRes.json(),
-          countryRes.json(),
-        ])
+      // Fetch universities and countries independently so one failure doesn't block the other
+      fetch('/api/admin/universities?limit=999')
+        .then((res) => res.json())
+        .then((data) => setUniversities(data.data || []))
+        .catch(() => console.error('Failed to fetch universities'))
 
-        setUniversities(uniData.data || [])
-        setCountries(countryData.data || [])
+      fetch('/api/admin/countries?limit=999')
+        .then((res) => res.json())
+        .then((data) => setCountries(data.data || []))
+        .catch(() => console.error('Failed to fetch countries'))
+
+      try {
+        const announcementRes = await fetch(`/api/admin/announcements/${params.id}`, { credentials: 'same-origin' })
+        const announcementData = await announcementRes.json()
 
         if (announcementData.data) {
           const a = announcementData.data
