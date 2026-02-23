@@ -48,6 +48,7 @@ export default function NewAnnouncementPage() {
     country_id: '',
     scholarship_amount: '',
     scholarship_type: 'amount',
+    program_level: '',
     eligibility_criteria: '',
     application_link: '',
     start_date: '',
@@ -404,6 +405,21 @@ export default function NewAnnouncementPage() {
                           <SelectItem value="percentage">Percentage</SelectItem>
                           <SelectItem value="full">Full Tuition</SelectItem>
                           <SelectItem value="partial">Partial Tuition</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-sm text-slate-700">Program Level</Label>
+                      <Select value={form.program_level} onValueChange={(val) => setField('program_level', val)}>
+                        <SelectTrigger className="bg-white border-slate-200">
+                          <SelectValue placeholder="Select program level" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border-slate-200">
+                          <SelectItem value="Undergraduate">Undergraduate</SelectItem>
+                          <SelectItem value="Postgraduate">Postgraduate</SelectItem>
+                          <SelectItem value="PhD">PhD</SelectItem>
+                          <SelectItem value="All Levels">All Levels</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>

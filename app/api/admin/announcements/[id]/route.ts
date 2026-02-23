@@ -61,6 +61,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       'show_as_banner',
       'external_link',
       'cover_image_url',
+      'program_level',
     ]
 
     allowedFields.forEach((field) => {

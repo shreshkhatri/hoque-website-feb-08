@@ -51,6 +51,7 @@ export default function EditAnnouncementPage({ params }: { params: Promise<{ id:
     country_id: '',
     scholarship_amount: '',
     scholarship_type: 'amount',
+    program_level: '',
     eligibility_criteria: '',
     application_link: '',
     start_date: '',
@@ -94,6 +95,7 @@ export default function EditAnnouncementPage({ params }: { params: Promise<{ id:
             country_id: a.country_id ? String(a.country_id) : '',
             scholarship_amount: a.scholarship_amount ? String(a.scholarship_amount) : '',
             scholarship_type: a.scholarship_type || 'amount',
+            program_level: a.program_level || '',
             eligibility_criteria: a.eligibility_criteria || '',
             application_link: a.application_link || '',
             start_date: a.start_date || '',
@@ -205,6 +207,7 @@ export default function EditAnnouncementPage({ params }: { params: Promise<{ id:
         country_id: form.country_id ? parseInt(form.country_id) : null,
         scholarship_amount: form.scholarship_amount ? parseInt(form.scholarship_amount) : null,
         scholarship_type: form.announcement_type === 'scholarship' ? form.scholarship_type || null : null,
+        program_level: form.announcement_type === 'scholarship' ? form.program_level || null : null,
         eligibility_criteria: form.announcement_type === 'scholarship' ? form.eligibility_criteria.trim() || null : null,
         application_link: form.application_link.trim() || null,
         start_date: form.start_date || null,
@@ -454,6 +457,21 @@ export default function EditAnnouncementPage({ params }: { params: Promise<{ id:
                           <SelectItem value="percentage">Percentage</SelectItem>
                           <SelectItem value="full">Full Tuition</SelectItem>
                           <SelectItem value="partial">Partial Tuition</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-sm text-slate-700">Program Level</Label>
+                      <Select value={form.program_level} onValueChange={(val) => setField('program_level', val)}>
+                        <SelectTrigger className="bg-white border-slate-200">
+                          <SelectValue placeholder="Select program level" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white border-slate-200">
+                          <SelectItem value="Undergraduate">Undergraduate</SelectItem>
+                          <SelectItem value="Postgraduate">Postgraduate</SelectItem>
+                          <SelectItem value="PhD">PhD</SelectItem>
+                          <SelectItem value="All Levels">All Levels</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
