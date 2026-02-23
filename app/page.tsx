@@ -10,7 +10,6 @@ import { ApplicationProcess } from '@/components/application-process'
 import { QuickOverview } from '@/components/quick-overview'
 // import { TopUniversities } from '@/components/top-universities'
 // import { UpcomingEvents } from '@/components/upcoming-events'
-import { FeaturedScholarship } from '@/components/featured-scholarship'
 import { StudentTestimonials } from '@/components/student-testimonials'
 import { UniversityPartners } from '@/components/university-partners'
 import { Footer } from '@/components/footer'
@@ -21,7 +20,6 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       <Header />
       <Hero />
-      <FeaturedScholarship />
       <AboutSection />
       <ExploreDestinations />
       <SearchFilter />
