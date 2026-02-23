@@ -68,7 +68,7 @@ export function FeaturedScholarship() {
               </div>
 
               {/* CTA */}
-              <div className="flex flex-col sm:flex-row flex-wrap gap-3">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <Button
                   asChild
                   size="lg"
@@ -87,17 +87,6 @@ export function FeaturedScholarship() {
                 >
                   <Link href="/university/university-of-hertfordshire">
                     View University
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  size="lg"
-                  className="border-white/20 text-white hover:bg-white/10 hover:text-white rounded-full px-8 py-6 text-base"
-                >
-                  <Link href="/announcements">
-                    View More Scholarships
-                    <ArrowRight className="h-4 w-4 ml-2" />
                   </Link>
                 </Button>
               </div>
