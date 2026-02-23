@@ -99,9 +99,10 @@ export function FeaturedScholarships() {
         {/* Scholarship Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {scholarships.map((scholarship) => (
-            <article
+            <Link
               key={scholarship.id}
-              className="group bg-card border border-border rounded-2xl overflow-hidden hover:shadow-xl hover:border-accent/50 transition-all duration-300 flex flex-col"
+              href={`/announcements?type=scholarship`}
+              className="group bg-card border border-border rounded-2xl overflow-hidden hover:shadow-xl hover:border-accent/50 transition-all duration-300 flex flex-col cursor-pointer"
             >
               {/* Image Container */}
               <div className="relative h-48 overflow-hidden">
@@ -174,14 +175,14 @@ export function FeaturedScholarships() {
                   </div>
                 </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
 
         {/* View More Link */}
         <div className="text-center mt-12">
           <Link
-            href="/announcements"
+            href="/announcements?type=scholarship"
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-all duration-200 group"
           >
             View More Scholarships

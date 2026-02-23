@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { Calendar, Award, Bell, AlertCircle, ExternalLink, Clock } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -24,9 +25,11 @@ interface Announcement {
 }
 
 export default function AnnouncementsClient() {
+  const searchParams = useSearchParams()
+  const typeFromUrl = searchParams.get('type')
   const [announcements, setAnnouncements] = useState<Announcement[]>([])
   const [loading, setLoading] = useState(true)
-  const [filterType, setFilterType] = useState<string>('all')
+  const [filterType, setFilterType] = useState<string>(typeFromUrl || 'all')
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
