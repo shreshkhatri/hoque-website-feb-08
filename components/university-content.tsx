@@ -42,11 +42,24 @@ interface CourseWithCampus extends Course {
   university_campuses?: { id: number; name: string; location: string | null; is_main_campus: boolean } | null
 }
 
+interface Announcement {
+  id: number
+  title: string
+  description: string
+  announcement_type: string
+  scholarship_amount: number | null
+  scholarship_type: string | null
+  end_date: string | null
+  application_link: string | null
+  external_link: string | null
+}
+
 interface UniversityContentProps {
   university: University
   courses: CourseWithCampus[]
   campuses?: UniversityCampus[]
   currency?: string | null
+  announcements?: Announcement[]
 }
 
 const tabs = [
@@ -70,7 +83,7 @@ const iconMap: Record<string, any> = {
   BookOpen,
 }
 
-export function UniversityContent({ university, courses, campuses = [], currency }: UniversityContentProps) {
+export function UniversityContent({ university, courses, campuses = [], currency, announcements = [] }: UniversityContentProps) {
   const [activeTab, setActiveTab] = useState('overview')
   const [courseSearch, setCourseSearch] = useState('')
   const [levelFilter, setLevelFilter] = useState('all')
@@ -280,6 +293,67 @@ export function UniversityContent({ university, courses, campuses = [], currency
                       className="prose prose-sm max-w-none text-muted-foreground leading-relaxed [&_p]:my-3 [&_p]:leading-relaxed [&_h2]:text-foreground [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:mt-6 [&_h2]:mb-3 [&_h3]:text-foreground [&_h3]:text-base [&_h3]:font-semibold [&_h3]:mt-4 [&_h3]:mb-2 [&_a]:text-primary [&_a]:underline [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:my-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:my-3 [&_li]:my-1"
                       dangerouslySetInnerHTML={{ __html: university.why_study_here }}
                     />
+                  </CardContent>
+                </Card>
+              )}
+
+              {announcements.length > 0 && (
+                <Card className="border-teal-200 bg-teal-50/50">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <h2 className="text-xl font-semibold text-foreground flex items-center gap-2">
+                        <Award className="h-5 w-5 text-teal-600" />
+                        Latest Scholarships & Announcements
+                      </h2>
+                      <Link href="/announcements" className="text-sm text-teal-600 hover:text-teal-700 hover:underline">
+                        View All
+                      </Link>
+                    </div>
+                    <div className="space-y-3">
+                      {announcements.map((announcement) => (
+                        <div key={announcement.id} className="bg-white rounded-lg p-4 border border-slate-200 hover:border-teal-300 transition-colors">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Badge className={announcement.announcement_type === 'scholarship' ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-700'}>
+                                  {announcement.announcement_type === 'scholarship' && <Award className="h-3 w-3 mr-1" />}
+                                  {announcement.announcement_type}
+                                </Badge>
+                                {announcement.end_date && (
+                                  <span className="text-xs text-red-600 flex items-center gap-1">
+                                    <Calendar className="h-3 w-3" />
+                                    Ends {new Date(announcement.end_date).toLocaleDateString()}
+                                  </span>
+                                )}
+                              </div>
+                              <h3 className="font-medium text-slate-900 mb-1 line-clamp-2">{announcement.title}</h3>
+                              {announcement.description && (
+                                <p className="text-sm text-slate-600 line-clamp-2 mb-2">{announcement.description}</p>
+                              )}
+                              {announcement.scholarship_amount && (
+                                <p className="text-lg font-bold text-teal-600">
+                                  ${announcement.scholarship_amount.toLocaleString()}
+                                  {announcement.scholarship_type === 'percentage' && '%'}
+                                </p>
+                              )}
+                            </div>
+                            {(announcement.application_link || announcement.external_link) && (
+                              <Link
+                                href={announcement.application_link || announcement.external_link || '#'}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-shrink-0"
+                              >
+                                <Button size="sm" className="bg-teal-600 hover:bg-teal-700 text-white">
+                                  {announcement.announcement_type === 'scholarship' ? 'Apply' : 'Learn More'}
+                                  <ChevronRight className="h-4 w-4 ml-1" />
+                                </Button>
+                              </Link>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </CardContent>
                 </Card>
               )}

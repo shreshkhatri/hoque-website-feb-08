@@ -113,10 +113,27 @@ export default async function UniversityPage({
     .select('*, university_campuses(id, name, location, is_main_campus)')
     .eq('university_id', university.id)
 
+  // Fetch active announcements for this university
+  const now = new Date().toISOString()
+  const { data: announcements } = await supabase
+    .from('announcements')
+    .select('*')
+    .eq('university_id', university.id)
+    .eq('is_active', true)
+    .or(`expires_at.is.null,expires_at.gt.${now}`)
+    .order('published_at', { ascending: false })
+    .limit(5)
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <UniversityContent university={university} courses={courses || []} campuses={campuses || []} currency={currency} />
+      <UniversityContent 
+        university={university} 
+        courses={courses || []} 
+        campuses={campuses || []} 
+        currency={currency}
+        announcements={announcements || []}
+      />
       <Footer />
     </div>
   )

@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/next'
 import { ChatWidget } from '@/components/chat-widget'
 import { MobileSearch } from '@/components/mobile-search'
 import { HeroSearchProvider } from '@/components/hero-search-context'
+import { AnnouncementBanner } from '@/components/announcement-banner'
 import { getStructuredData } from '@/lib/seo-config'
 import './globals.css'
 
@@ -81,13 +82,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
       <body className={`font-sans antialiased overflow-x-hidden`}>
+        <AnnouncementBanner />
         <HeroSearchProvider>
           {children}
         </HeroSearchProvider>
