@@ -173,7 +173,7 @@ export default function AnnouncementsClient() {
             )}
 
             {/* Header band */}
-            <div className="bg-gradient-to-r from-slate-900 to-slate-700 text-white px-8 py-8">
+            <div className="bg-gradient-to-br from-primary to-primary/90 text-primary-foreground px-8 py-8">
               <div className="flex flex-wrap items-center gap-3 mb-4">
                 <Badge className={`${getTypeColor(a.announcement_type)} text-xs border`}>
                   {getTypeIcon(a.announcement_type)}
