@@ -11,6 +11,7 @@ import { ArrowLeft, Save, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { SearchableSelect } from '@/components/searchable-select'
 import { RichTextEditor } from '@/components/rich-text-editor'
+import { CategorySelect } from '@/components/category-select'
 
 type University = { id: number; name: string; country_id: number | null; currency: string | null }
 type Campus = { id: number; name: string; location: string | null }
@@ -36,6 +37,7 @@ export default function NewCoursePage() {
     name: '',
     code: '',
     university_id: '',
+    category_id: null as number | null,
     level: '',
     duration_years: '',
     tuition_fees_international: '',
@@ -104,6 +106,7 @@ export default function NewCoursePage() {
         code: form.code.trim() || null,
         university_id: parseInt(form.university_id),
         country_id: selectedUni?.country_id || null,
+        category_id: form.category_id,
         level: form.level,
         duration_years: form.duration_years ? parseInt(form.duration_years) : null,
         tuition_fees_international: form.tuition_fees_international ? parseInt(form.tuition_fees_international) : null,
@@ -219,6 +222,16 @@ export default function NewCoursePage() {
                 onValueChange={(val) => setField('level', val)}
                 options={LEVEL_OPTIONS}
                 placeholder="Search level..."
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-sm text-slate-700">
+                Category <span className="text-red-500">*</span>
+              </Label>
+              <CategorySelect
+                value={form.category_id}
+                onValueChange={(val) => setForm((prev) => ({ ...prev, category_id: val }))}
               />
             </div>
 

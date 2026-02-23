@@ -17,7 +17,7 @@ export async function GET(request: Request) {
 
   let query = supabase
     .from('courses')
-    .select('*, universities(name), countries(currency)', { count: 'exact' })
+    .select('*, universities(name), countries(currency), course_categories(id, name)', { count: 'exact' })
 
   if (search) {
     query = query.or(`name.ilike.%${search}%,code.ilike.%${search}%,level.ilike.%${search}%,field_of_study.ilike.%${search}%`)
