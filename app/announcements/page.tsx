@@ -4,6 +4,10 @@ import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { Skeleton } from '@/components/ui/skeleton'
 
+
+// Revalidate the page every 60 seconds (ISR - Incremental Static Regeneration)
+export const revalidate = 60
+
 export const metadata = {
   title: 'Scholarships & Announcements | HOQUE',
   description: 'Browse the latest university scholarships, deadline updates, and important announcements for international students',

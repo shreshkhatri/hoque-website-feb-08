@@ -13,10 +13,6 @@ export async function GET(request: Request) {
     .select('*, universities(name, slug), courses(name, slug), countries(name)')
     .eq('is_active', true)
 
-  // Only show announcements that haven't expired or have no expiry date
-  const now = new Date().toISOString()
-  query = query.or(`expires_at.is.null,expires_at.gt.${now}`)
-
   if (universityId) {
     query = query.eq('university_id', parseInt(universityId))
   }
@@ -31,7 +27,16 @@ export async function GET(request: Request) {
 
   const { data, error } = await query
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
 
-  return NextResponse.json({ data: data || [] })
+  // Filter out expired announcements in JS to avoid Supabase .or() syntax issues
+  const now = new Date()
+  const filtered = (data || []).filter((a: { expires_at: string | null }) => {
+    if (!a.expires_at) return true
+    return new Date(a.expires_at) > now
+  })
+
+  return NextResponse.json({ data: filtered })
 }
