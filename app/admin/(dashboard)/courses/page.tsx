@@ -11,6 +11,7 @@ import {
   GraduationCap,
   Clock,
   Banknote,
+  X,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -27,6 +28,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import Link from 'next/link'
 
 interface Course {
@@ -45,6 +53,11 @@ interface Course {
   countries: { currency: string | null } | null
 }
 
+interface University {
+  id: number
+  name: string
+}
+
 function levelColor(level: string) {
   const l = level?.toLowerCase()
   if (l?.includes('bachelor')) return 'bg-blue-100 text-blue-700 border-blue-200'
@@ -61,11 +74,14 @@ function formatFee(fee: number | null, currency?: string | null) {
 
 export default function CoursesPage() {
   const [courses, setCourses] = useState<Course[]>([])
+  const [universities, setUniversities] = useState<University[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
+  const [selectedUniversity, setSelectedUniversity] = useState<string>('')
   const [loading, setLoading] = useState(true)
+  const [loadingUniversities, setLoadingUniversities] = useState(true)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [deleteId, setDeleteId] = useState<number | null>(null)
   const limit = 12
@@ -75,10 +91,30 @@ export default function CoursesPage() {
     return () => clearTimeout(t)
   }, [search])
 
+  // Fetch universities for filter dropdown
+  useEffect(() => {
+    const fetchUniversities = async () => {
+      setLoadingUniversities(true)
+      try {
+        const res = await fetch(`/api/admin/universities?limit=999`, { credentials: 'same-origin' })
+        const data = await res.json()
+        setUniversities(data.data || [])
+      } catch {
+        /* empty */
+      } finally {
+        setLoadingUniversities(false)
+      }
+    }
+    fetchUniversities()
+  }, [])
+
   const fetchCourses = useCallback(async () => {
     setLoading(true)
     try {
       const params = new URLSearchParams({ page: String(page), limit: String(limit), search: debouncedSearch })
+      if (selectedUniversity) {
+        params.append('university_id', selectedUniversity)
+      }
       const res = await fetch(`/api/admin/courses?${params}`, { credentials: 'same-origin' })
       const data = await res.json()
       setCourses(data.data || [])
@@ -88,7 +124,7 @@ export default function CoursesPage() {
     } finally {
       setLoading(false)
     }
-  }, [page, debouncedSearch])
+  }, [page, debouncedSearch, selectedUniversity])
 
   useEffect(() => {
     fetchCourses()
@@ -96,7 +132,7 @@ export default function CoursesPage() {
 
   useEffect(() => {
     setPage(1)
-  }, [debouncedSearch])
+  }, [debouncedSearch, selectedUniversity])
 
   const handleDelete = async () => {
     if (!deleteId) return
@@ -115,9 +151,19 @@ export default function CoursesPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <p className="text-sm text-slate-500">{total} courses total</p>
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <p className="text-sm text-slate-500">{total} courses total</p>
+          <Button asChild className="bg-teal-600 hover:bg-teal-700 text-white h-9 cursor-pointer w-fit">
+            <Link href="/admin/courses/new">
+              <Plus className="h-4 w-4 mr-1.5" />
+              Add Course
+            </Link>
+          </Button>
+        </div>
+
+        {/* Filters */}
+        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
           <div className="relative flex-1 sm:w-72">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
             <Input
@@ -127,12 +173,32 @@ export default function CoursesPage() {
               className="pl-9 h-9 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-teal-500"
             />
           </div>
-          <Button asChild className="bg-teal-600 hover:bg-teal-700 text-white h-9 cursor-pointer">
-            <Link href="/admin/courses/new">
-              <Plus className="h-4 w-4 mr-1.5" />
-              Add Course
-            </Link>
-          </Button>
+
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <Select value={selectedUniversity} onValueChange={setSelectedUniversity} disabled={loadingUniversities}>
+              <SelectTrigger className="h-9 bg-white border-slate-200 text-slate-900 w-full sm:w-56 disabled:opacity-50">
+                <SelectValue placeholder={loadingUniversities ? 'Loading universities...' : 'Filter by university'} />
+              </SelectTrigger>
+              <SelectContent className="bg-white border-slate-200">
+                <SelectItem value="">All Universities</SelectItem>
+                {universities.map((uni) => (
+                  <SelectItem key={uni.id} value={String(uni.id)}>
+                    {uni.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {selectedUniversity && (
+              <button
+                onClick={() => setSelectedUniversity('')}
+                className="p-1.5 rounded-md text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+                aria-label="Clear university filter"
+                title="Clear filter"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
