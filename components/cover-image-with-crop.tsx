@@ -138,7 +138,7 @@ export function CoverImageWithCrop({
   }
 
   const handleZoomOut = () => {
-    setEditCrop(prev => ({ ...prev, zoom: Math.max(1, (prev.zoom || 1) - 0.1) }))
+    setEditCrop(prev => ({ ...prev, zoom: Math.max(0.3, (prev.zoom || 1) - 0.1) }))
   }
 
   const handleZoomSlider = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -184,7 +184,7 @@ export function CoverImageWithCrop({
   }
 
   return (
-    <div className={`${containerClassName} group/cover`}>
+    <div className={`${containerClassName} group/cover`} style={{ backgroundColor: '#1a1a1a' }}>
       {/* The actual image */}
       {useNextImage ? (
         <Image
@@ -254,7 +254,7 @@ export function CoverImageWithCrop({
             </button>
             <input
               type="range"
-              min="1"
+              min="0.3"
               max="3"
               step="0.05"
               value={editCrop.zoom || 1}
