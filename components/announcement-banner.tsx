@@ -96,21 +96,8 @@ export function AnnouncementBanner() {
     }
   }
 
-  const getBgColor = (priority: string) => {
-    switch (priority) {
-      case 'high':
-        return 'bg-gradient-to-r from-teal-600 to-cyan-600'
-      case 'medium':
-        return 'bg-gradient-to-r from-blue-600 to-indigo-600'
-      case 'low':
-        return 'bg-gradient-to-r from-slate-700 to-slate-600'
-      default:
-        return 'bg-slate-600'
-    }
-  }
-
   return (
-    <div ref={setBannerRef} className={`${getBgColor(current.priority)} text-white sticky top-0 z-[60]`}>
+    <div ref={setBannerRef} className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white sticky top-0 z-[60]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4 py-3">
           <div className="flex items-center gap-3 flex-1 min-w-0">
