@@ -1,14 +1,15 @@
 'use client'
 
 import React from "react"
-
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { Button } from '@/components/ui/button'
-import { Check, Upload, AlertCircle } from 'lucide-react'
+import { Check, Upload, AlertCircle, Loader2 } from 'lucide-react'
 
 export function ApplicationFormClient() {
+  const searchParams = useSearchParams()
   const [currentStep, setCurrentStep] = useState(1)
   const [countrySearch, setCountrySearch] = useState('')
   const [showCountryDropdown, setShowCountryDropdown] = useState(false)
@@ -38,7 +39,25 @@ export function ApplicationFormClient() {
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const [agreeToPrivacy, setAgreeToPrivacy] = useState(false)
+
+  // Pre-fill from URL params (course page -> application form)
+  useEffect(() => {
+    const course = searchParams.get('course')
+    const university = searchParams.get('university')
+    const level = searchParams.get('level')
+    const intake = searchParams.get('intake')
+
+    setFormData((prev) => ({
+      ...prev,
+      preferredCourseName: course || prev.preferredCourseName,
+      universityName: university || prev.universityName,
+      applyingFor: level || prev.applyingFor,
+      preferredIntake: intake ? intake.split(',')[0].trim() : prev.preferredIntake,
+    }))
+  }, [searchParams])
 
   const countries = [
     'Afghanistan', 'Albania', 'Algeria', 'Andorra', 'Angola', 'Antigua and Barbuda', 'Argentina', 'Armenia', 'Australia', 'Austria',
@@ -65,48 +84,34 @@ export function ApplicationFormClient() {
   const qualifications = ['12th/Diploma or WAEC/NECO', 'Graduate', 'Postgraduate']
   const applyingForOptions = ['Foundation', 'Graduate', 'Postgraduate', 'PhD', 'Pre Masters']
   const subjectAreas = [
-    'Business and Management',
-    'Engineering and Technology',
-    'Computer Science and IT',
-    'Law',
-    'Medicine and Healthcare',
-    'Social Sciences',
-    'Humanities',
-    'Natural Sciences',
-    'Arts and Design',
-    'Education',
-    'Psychology',
-    'Environmental Sciences',
-    'Media and Communication',
-    'Architecture and Construction',
-    'Hospitality and Tourism',
-    'Biotechnology and Pharmacy',
-    'Other',
+    'Business and Management', 'Engineering and Technology', 'Computer Science and IT', 'Law',
+    'Medicine and Healthcare', 'Social Sciences', 'Humanities', 'Natural Sciences',
+    'Arts and Design', 'Education', 'Psychology', 'Environmental Sciences',
+    'Media and Communication', 'Architecture and Construction', 'Hospitality and Tourism',
+    'Biotechnology and Pharmacy', 'Other',
   ]
   const intakes = ['September', 'January', 'May', 'Other']
   const universities = [
-    'University of Greenwich',
-    'Middlesex University London',
-    'Northumbria University London',
-    'Northumbria University Newcastle',
-    'Ulster University',
-    'University of Bedfordshire',
-    'University of Creative Arts',
-    'Queens University of Belfast',
-    'Glyndwr University',
-    'University of Bolton',
-    'De Montfort University',
-    'Keele University',
-    'University of South Wales',
-    'Bangor University',
-    'University of Dundee',
-    'University of Bradford',
-    'University of Roehampton',
-    'Ravensbourne University London',
-    'London Metropolitan University',
-    'Solent University',
+    'University of Greenwich', 'Middlesex University London', 'Northumbria University London',
+    'Northumbria University Newcastle', 'Ulster University', 'University of Bedfordshire',
+    'University of Creative Arts', 'Queens University of Belfast', 'Glyndwr University',
+    'University of Bolton', 'De Montfort University', 'Keele University',
+    'University of South Wales', 'Bangor University', 'University of Dundee',
+    'University of Bradford', 'University of Roehampton', 'Ravensbourne University London',
+    'London Metropolitan University', 'Solent University',
   ]
   const studentTypes = ['British Citizen', 'International / Foreign Student', 'UK Visa', 'International Student transferring within the UK']
+
+  const docFieldMap: Record<string, string> = {
+    upload10th: 'doc_10th_url',
+    upload12th: 'doc_12th_url',
+    degreeCertificate: 'doc_degree_url',
+    mastersCertificate: 'doc_masters_url',
+    transcript: 'doc_transcript_url',
+    consolidatedMarkSheet: 'doc_marksheet_url',
+    passport: 'doc_passport_url',
+    cv: 'doc_cv_url',
+  }
 
   const validateField = (name: string, value: string): string => {
     if (!value.trim()) return `${name} is required`
@@ -161,13 +166,13 @@ export function ApplicationFormClient() {
       1: ['fullName', 'email', 'phone', 'country'],
       2: ['highestQualification', 'applyingFor', 'subjectArea'],
       3: ['preferredCourseName', 'preferredIntake', 'universityName', 'studentType'],
-      4: [Object.keys(files).some((k) => files[k]) ? 'documents' : ''].filter(Boolean),
+      4: [] as string[],
     }
 
     const fieldsToCheck = requiredFields[step as keyof typeof requiredFields] || []
     fieldsToCheck.forEach((field) => {
       if (field && !formData[field as keyof typeof formData]) {
-        newErrors[field] = `This field is required`
+        newErrors[field] = 'This field is required'
       }
     })
 
@@ -175,15 +180,68 @@ export function ApplicationFormClient() {
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const uploadFile = async (file: File, docType: string): Promise<string | null> => {
+    const fd = new FormData()
+    fd.append('file', file)
+    fd.append('docType', docType)
+    fd.append('applicantEmail', formData.email)
+    const res = await fetch('/api/applications/upload-doc', { method: 'POST', body: fd })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.error || 'Upload failed')
+    return data.url
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!agreeToPrivacy) {
       setErrors((prev) => ({ ...prev, privacy: 'You must agree to the privacy notice' }))
       return
     }
-    if (validateStep(4)) {
+    if (!validateStep(4)) return
+
+    setSubmitting(true)
+    setSubmitError('')
+
+    try {
+      // Upload documents first
+      const docUrls: Record<string, string | null> = {}
+      for (const [key, file] of Object.entries(files)) {
+        if (file) {
+          docUrls[docFieldMap[key]] = await uploadFile(file, key)
+        }
+      }
+
+      // Submit application
+      const payload = {
+        full_name: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        country: formData.country,
+        highest_qualification: formData.highestQualification,
+        applying_for: formData.applyingFor,
+        subject_area: formData.subjectArea,
+        preferred_course_name: formData.preferredCourseName,
+        preferred_intake: formData.preferredIntake,
+        university_name: formData.universityName,
+        student_type: formData.studentType,
+        additional_info: formData.additionalInfo,
+        ...docUrls,
+      }
+
+      const res = await fetch('/api/student-applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Submission failed')
+
       setSubmitted(true)
-      console.log('Form submitted:', { formData, files })
+    } catch (err: any) {
+      setSubmitError(err.message || 'Something went wrong. Please try again.')
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -225,6 +283,14 @@ export function ApplicationFormClient() {
           <div className="mb-12">
             <h1 className="text-4xl font-bold text-foreground mb-2">Student Application Form</h1>
             <p className="text-foreground/60">Complete your application to HOQUE</p>
+            {searchParams.get('course') && (
+              <div className="mt-4 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                <p className="text-sm text-primary font-medium">
+                  Applying for: {searchParams.get('course')}
+                  {searchParams.get('university') && ` at ${searchParams.get('university')}`}
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Step Indicator */}
@@ -412,9 +478,7 @@ export function ApplicationFormClient() {
                     >
                       <option value="">Select qualification</option>
                       {qualifications.map((q) => (
-                        <option key={q} value={q}>
-                          {q}
-                        </option>
+                        <option key={q} value={q}>{q}</option>
                       ))}
                     </select>
                     {errors.highestQualification && (
@@ -437,9 +501,7 @@ export function ApplicationFormClient() {
                     >
                       <option value="">Select program level</option>
                       {applyingForOptions.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
+                        <option key={opt} value={opt}>{opt}</option>
                       ))}
                     </select>
                     {errors.applyingFor && (
@@ -462,9 +524,7 @@ export function ApplicationFormClient() {
                     >
                       <option value="">Select subject area</option>
                       {subjectAreas.map((s) => (
-                        <option key={s} value={s}>
-                          {s}
-                        </option>
+                        <option key={s} value={s}>{s}</option>
                       ))}
                     </select>
                     {errors.subjectArea && (
@@ -514,9 +574,7 @@ export function ApplicationFormClient() {
                     >
                       <option value="">Select intake</option>
                       {intakes.map((i) => (
-                        <option key={i} value={i}>
-                          {i}
-                        </option>
+                        <option key={i} value={i}>{i}</option>
                       ))}
                     </select>
                     {errors.preferredIntake && (
@@ -539,10 +597,11 @@ export function ApplicationFormClient() {
                     >
                       <option value="">Select university</option>
                       {universities.map((u) => (
-                        <option key={u} value={u}>
-                          {u}
-                        </option>
+                        <option key={u} value={u}>{u}</option>
                       ))}
+                      {formData.universityName && !universities.includes(formData.universityName) && (
+                        <option value={formData.universityName}>{formData.universityName}</option>
+                      )}
                     </select>
                     {errors.universityName && (
                       <div className="flex items-center gap-2 mt-2 text-red-500 text-sm">
@@ -564,9 +623,7 @@ export function ApplicationFormClient() {
                     >
                       <option value="">Select student type</option>
                       {studentTypes.map((st) => (
-                        <option key={st} value={st}>
-                          {st}
-                        </option>
+                        <option key={st} value={st}>{st}</option>
                       ))}
                     </select>
                     {errors.studentType && (
@@ -662,6 +719,13 @@ export function ApplicationFormClient() {
                       {errors.privacy}
                     </div>
                   )}
+
+                  {submitError && (
+                    <div className="flex items-center gap-2 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                      <AlertCircle size={16} />
+                      {submitError}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -672,7 +736,7 @@ export function ApplicationFormClient() {
                 type="button"
                 variant="outline"
                 onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
-                disabled={currentStep === 1}
+                disabled={currentStep === 1 || submitting}
                 className="px-8"
               >
                 Previous
@@ -686,8 +750,15 @@ export function ApplicationFormClient() {
                   Next
                 </Button>
               ) : (
-                <Button type="submit" className="px-8">
-                  Submit Application
+                <Button type="submit" className="px-8" disabled={submitting}>
+                  {submitting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    'Submit Application'
+                  )}
                 </Button>
               )}
             </div>
