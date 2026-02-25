@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
+import { CoverImageWithCrop } from './cover-image-with-crop'
 import Link from 'next/link'
 import { University, Course, UniversityCampus } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
@@ -132,15 +133,18 @@ export function UniversityContent({ university, courses, campuses = [], currency
   return (
     <>
       {/* Hero Section with Cover Image */}
-      <section className="relative h-[300px] md:h-[400px] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70" />
-        <Image
-          src={university.cover_image_url || "/hero-bg.jpg"}
-          alt={university.name}
-          fill
-          className="object-cover object-center"
-          priority
-        />
+      <CoverImageWithCrop
+        src={university.cover_image_url || "/hero-bg.jpg"}
+        alt={university.name}
+        fallbackSrc="/hero-bg.jpg"
+        entityType="universities"
+        entityId={university.id}
+        crop={university.cover_image_crop}
+        containerClassName="relative h-[300px] md:h-[400px] overflow-hidden"
+        imageClassName="object-cover"
+        useNextImage={true}
+        priority={true}
+      >
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-end pb-8">
@@ -200,18 +204,18 @@ export function UniversityContent({ university, courses, campuses = [], currency
               </div>
             </div>
 
-  {/* CTA Button */}
-  <div className="md:self-center">
-  <Button asChild size="lg">
-    <Link href="/application-form">
-      Apply Now
-      <ChevronRight className="ml-1 w-4 h-4" />
-    </Link>
-  </Button>
-  </div>
+            {/* CTA Button */}
+            <div className="md:self-center">
+              <Button asChild size="lg">
+                <Link href="/application-form">
+                  Apply Now
+                  <ChevronRight className="ml-1 w-4 h-4" />
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
-      </section>
+      </CoverImageWithCrop>
 
       {/* Stats Bar */}
       <section className="bg-card border-b border-border">
@@ -667,14 +671,17 @@ export function UniversityContent({ university, courses, campuses = [], currency
                   <Card key={campus.id}>
                     <CardContent className="p-6">
                       <div className="flex flex-col md:flex-row gap-6">
-                <div className="w-full md:w-1/3 h-48 bg-muted rounded-lg overflow-hidden relative">
-                  <Image
-                    src={campus.cover_image_url || '/hero-bg.jpg'}
-                    alt={`${campus.name} Campus`}
-                    fill
-                    className="object-cover object-center scale-110"
-                  />
-                </div>
+                <CoverImageWithCrop
+                  src={campus.cover_image_url || '/hero-bg.jpg'}
+                  alt={`${campus.name} Campus`}
+                  fallbackSrc="/hero-bg.jpg"
+                  entityType="university_campuses"
+                  entityId={campus.id}
+                  crop={campus.cover_image_crop}
+                  containerClassName="w-full md:w-1/3 h-48 bg-muted rounded-lg overflow-hidden relative"
+                  imageClassName="object-cover"
+                  useNextImage={true}
+                />
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
                             {campus.is_main_campus && <Badge>Main Campus</Badge>}
