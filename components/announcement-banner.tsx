@@ -97,7 +97,7 @@ export function AnnouncementBanner() {
   }
 
   return (
-    <div ref={setBannerRef} className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white sticky top-0 z-[60]">
+    <div ref={setBannerRef} className="text-white sticky top-0 z-[60]" style={{ background: 'linear-gradient(to right, #10b981, #14b8a6)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4 py-3">
           <div className="flex items-center gap-3 flex-1 min-w-0">
