@@ -2,12 +2,13 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
-import { Move, Check, RotateCcw, X } from 'lucide-react'
+import { Move, Check, RotateCcw, X, ZoomIn, ZoomOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 interface CoverImageCrop {
-  x: number // 0-100 percentage
-  y: number // 0-100 percentage
+  x: number
+  y: number
+  zoom?: number
 }
 
 interface CoverImageWithCropProps {
@@ -17,10 +18,8 @@ interface CoverImageWithCropProps {
   entityType: 'countries' | 'universities' | 'university_campuses' | 'announcements'
   entityId: number
   crop?: CoverImageCrop | null
-  // Pass-through classes for the container
   containerClassName?: string
   imageClassName?: string
-  // Whether to use next/image fill or regular img
   useNextImage?: boolean
   priority?: boolean
   children?: React.ReactNode
@@ -41,10 +40,13 @@ export function CoverImageWithCrop({
 }: CoverImageWithCropProps) {
   const [isAdmin, setIsAdmin] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
-  const [currentCrop, setCurrentCrop] = useState<CoverImageCrop>(crop || { x: 50, y: 50 })
-  const [editCrop, setEditCrop] = useState<CoverImageCrop>(crop || { x: 50, y: 50 })
   const [saving, setSaving] = useState(false)
   const [imgSrc, setImgSrc] = useState(src || fallbackSrc)
+
+  // Crop state -- fetched fresh from DB to bypass static cache
+  const [liveCrop, setLiveCrop] = useState<CoverImageCrop>(crop || { x: 50, y: 50, zoom: 1 })
+  const [editCrop, setEditCrop] = useState<CoverImageCrop>(crop || { x: 50, y: 50, zoom: 1 })
+  const [hasFetchedLive, setHasFetchedLive] = useState(false)
 
   // Drag state
   const isDragging = useRef(false)
@@ -52,6 +54,7 @@ export function CoverImageWithCrop({
   const dragStartCrop = useRef({ x: 50, y: 50 })
   const editorRef = useRef<HTMLDivElement>(null)
 
+  // Check admin session
   useEffect(() => {
     const checkAdmin = async () => {
       try {
@@ -65,53 +68,82 @@ export function CoverImageWithCrop({
     checkAdmin()
   }, [])
 
+  // Fetch live crop from DB to bypass static page cache
   useEffect(() => {
-    if (crop) {
-      setCurrentCrop(crop)
-      setEditCrop(crop)
+    const fetchLiveCrop = async () => {
+      try {
+        const res = await fetch(`/api/admin/cover-image-crop?entityType=${entityType}&entityId=${entityId}`)
+        if (res.ok) {
+          const data = await res.json()
+          if (data.crop) {
+            const fetched = { x: data.crop.x ?? 50, y: data.crop.y ?? 50, zoom: data.crop.zoom ?? 1 }
+            setLiveCrop(fetched)
+            setEditCrop(fetched)
+          }
+        }
+      } catch {
+        // Fall back to prop
+      } finally {
+        setHasFetchedLive(true)
+      }
     }
-  }, [crop])
+    fetchLiveCrop()
+  }, [entityType, entityId])
 
+  // Drag handlers
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
     isDragging.current = true
     dragStartPos.current = { x: e.clientX, y: e.clientY }
-    dragStartCrop.current = { ...editCrop }
+    dragStartCrop.current = { x: editCrop.x, y: editCrop.y }
   }, [editCrop])
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     const touch = e.touches[0]
     isDragging.current = true
     dragStartPos.current = { x: touch.clientX, y: touch.clientY }
-    dragStartCrop.current = { ...editCrop }
+    dragStartCrop.current = { x: editCrop.x, y: editCrop.y }
   }, [editCrop])
 
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+  const handleMove = useCallback((clientX: number, clientY: number) => {
     if (!isDragging.current || !editorRef.current) return
     const rect = editorRef.current.getBoundingClientRect()
-    const dx = ((e.clientX - dragStartPos.current.x) / rect.width) * -100
-    const dy = ((e.clientY - dragStartPos.current.y) / rect.height) * -100
-    setEditCrop({
+    const zoom = editCrop.zoom || 1
+    // More zoom = more image overflow = smaller % change per pixel
+    const sensitivity = zoom > 1 ? 100 / zoom : 100
+    const dx = ((clientX - dragStartPos.current.x) / rect.width) * -sensitivity
+    const dy = ((clientY - dragStartPos.current.y) / rect.height) * -sensitivity
+    setEditCrop(prev => ({
+      ...prev,
       x: Math.max(0, Math.min(100, dragStartCrop.current.x + dx)),
       y: Math.max(0, Math.min(100, dragStartCrop.current.y + dy)),
-    })
-  }, [])
+    }))
+  }, [editCrop.zoom])
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    handleMove(e.clientX, e.clientY)
+  }, [handleMove])
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!isDragging.current || !editorRef.current) return
-    const touch = e.touches[0]
-    const rect = editorRef.current.getBoundingClientRect()
-    const dx = ((touch.clientX - dragStartPos.current.x) / rect.width) * -100
-    const dy = ((touch.clientY - dragStartPos.current.y) / rect.height) * -100
-    setEditCrop({
-      x: Math.max(0, Math.min(100, dragStartCrop.current.x + dx)),
-      y: Math.max(0, Math.min(100, dragStartCrop.current.y + dy)),
-    })
-  }, [])
+    handleMove(e.touches[0].clientX, e.touches[0].clientY)
+  }, [handleMove])
 
-  const handleMouseUp = useCallback(() => {
+  const handleEnd = useCallback(() => {
     isDragging.current = false
   }, [])
+
+  // Zoom handlers
+  const handleZoomIn = () => {
+    setEditCrop(prev => ({ ...prev, zoom: Math.min(3, (prev.zoom || 1) + 0.1) }))
+  }
+
+  const handleZoomOut = () => {
+    setEditCrop(prev => ({ ...prev, zoom: Math.max(1, (prev.zoom || 1) - 0.1) }))
+  }
+
+  const handleZoomSlider = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditCrop(prev => ({ ...prev, zoom: parseFloat(e.target.value) }))
+  }
 
   const handleSave = async () => {
     setSaving(true)
@@ -120,34 +152,36 @@ export function CoverImageWithCrop({
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'same-origin',
-        body: JSON.stringify({
-          entityType,
-          entityId,
-          crop: editCrop,
-        }),
+        body: JSON.stringify({ entityType, entityId, crop: editCrop }),
       })
       if (res.ok) {
-        setCurrentCrop(editCrop)
+        setLiveCrop(editCrop)
         setIsEditing(false)
       }
     } catch {
-      // Failed to save
+      // Failed
     } finally {
       setSaving(false)
     }
   }
 
   const handleReset = () => {
-    setEditCrop({ x: 50, y: 50 })
+    setEditCrop({ x: 50, y: 50, zoom: 1 })
   }
 
   const handleCancel = () => {
-    setEditCrop(currentCrop)
+    setEditCrop(liveCrop)
     setIsEditing(false)
   }
 
-  const objectPosition = `${currentCrop.x}% ${currentCrop.y}%`
-  const editObjectPosition = `${editCrop.x}% ${editCrop.y}%`
+  const displayCrop = isEditing ? editCrop : liveCrop
+  const objectPosition = `${displayCrop.x}% ${displayCrop.y}%`
+  const zoom = displayCrop.zoom || 1
+  const imageStyle: React.CSSProperties = {
+    objectPosition,
+    transform: zoom !== 1 ? `scale(${zoom})` : undefined,
+    transformOrigin: `${displayCrop.x}% ${displayCrop.y}%`,
+  }
 
   return (
     <div className={`${containerClassName} group/cover`}>
@@ -158,7 +192,7 @@ export function CoverImageWithCrop({
           alt={alt}
           fill
           className={imageClassName || 'object-cover'}
-          style={{ objectPosition: isEditing ? editObjectPosition : objectPosition }}
+          style={imageStyle}
           priority={priority}
           onError={() => {
             if (imgSrc !== fallbackSrc) setImgSrc(fallbackSrc)
@@ -170,7 +204,7 @@ export function CoverImageWithCrop({
           src={imgSrc}
           alt={alt}
           className={imageClassName || 'absolute inset-0 w-full h-full object-cover'}
-          style={{ objectPosition: isEditing ? editObjectPosition : objectPosition }}
+          style={imageStyle}
           onError={() => {
             if (imgSrc !== fallbackSrc) setImgSrc(fallbackSrc)
           }}
@@ -180,7 +214,10 @@ export function CoverImageWithCrop({
       {/* Admin edit button */}
       {isAdmin && !isEditing && (
         <button
-          onClick={() => setIsEditing(true)}
+          onClick={() => {
+            setEditCrop(liveCrop)
+            setIsEditing(true)
+          }}
           className="absolute top-3 right-3 z-20 bg-black/60 hover:bg-black/80 text-white rounded-lg px-3 py-2 flex items-center gap-2 text-xs font-medium opacity-0 group-hover/cover:opacity-100 transition-opacity cursor-pointer"
         >
           <Move className="h-3.5 w-3.5" />
@@ -195,19 +232,41 @@ export function CoverImageWithCrop({
           className="absolute inset-0 z-30 cursor-move select-none"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
+          onMouseUp={handleEnd}
+          onMouseLeave={handleEnd}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
-          onTouchEnd={handleMouseUp}
+          onTouchEnd={handleEnd}
         >
-          {/* Semi-transparent border to indicate editing mode */}
+          {/* Dashed border */}
           <div className="absolute inset-0 border-4 border-dashed border-white/60 pointer-events-none" />
 
           {/* Instruction text */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/70 text-white px-4 py-2 rounded-lg text-sm font-medium pointer-events-none flex items-center gap-2">
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-lg text-sm font-medium pointer-events-none flex items-center gap-2">
             <Move className="h-4 w-4" />
             Drag to reposition
+          </div>
+
+          {/* Zoom controls */}
+          <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-3 z-40 pointer-events-auto bg-black/70 rounded-lg px-4 py-2">
+            <button onClick={handleZoomOut} className="text-white hover:text-teal-300 transition-colors">
+              <ZoomOut className="h-5 w-5" />
+            </button>
+            <input
+              type="range"
+              min="1"
+              max="3"
+              step="0.05"
+              value={editCrop.zoom || 1}
+              onChange={handleZoomSlider}
+              className="w-32 accent-teal-500 cursor-pointer"
+            />
+            <button onClick={handleZoomIn} className="text-white hover:text-teal-300 transition-colors">
+              <ZoomIn className="h-5 w-5" />
+            </button>
+            <span className="text-white text-xs font-mono ml-1 min-w-[36px]">
+              {((editCrop.zoom || 1) * 100).toFixed(0)}%
+            </span>
           </div>
 
           {/* Controls toolbar */}
@@ -243,7 +302,7 @@ export function CoverImageWithCrop({
         </div>
       )}
 
-      {/* Pass-through children (overlays, gradients, text, etc.) */}
+      {/* Pass-through children */}
       {!isEditing && children}
     </div>
   )
