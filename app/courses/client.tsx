@@ -283,7 +283,10 @@ export function CoursesPageClient() {
 
   const selectedCountryName = countries.find((c) => c.id === selectedCountry)?.name
 
+  const defaultCountryId = countries.find((c) => c.name === 'Australia')?.id ?? countries[0]?.id
+
   const isFiltered =
+    (selectedCountry !== null && selectedCountry !== defaultCountryId) ||
     selectedUniversity !== null ||
     selectedCampus !== null ||
     selectedLevel !== 'All' ||
@@ -333,15 +336,18 @@ export function CoursesPageClient() {
             <div className="sticky top-24 bg-card border border-border rounded-xl p-6 space-y-6">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-bold text-foreground">Filters</h2>
-                {isFiltered && (
-                  <button
-                    onClick={resetFilters}
-                    className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-destructive transition-colors"
-                  >
-                    <X className="h-3 w-3" />
-                    Reset
-                  </button>
-                )}
+                <button
+                  onClick={resetFilters}
+                  disabled={!isFiltered}
+                  className={`flex items-center gap-1 text-xs font-medium rounded-md px-2 py-1 transition-all ${
+                    isFiltered
+                      ? 'bg-destructive/10 text-destructive hover:bg-destructive/20 cursor-pointer'
+                      : 'text-muted-foreground/40 cursor-not-allowed'
+                  }`}
+                >
+                  <X className="h-3 w-3" />
+                  Reset
+                </button>
               </div>
 
               {/* Country Dropdown */}
