@@ -7,6 +7,35 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
+const allowedTables = ['countries', 'universities', 'university_campuses', 'announcements']
+
+// Public GET -- fetches live crop data (bypasses static page cache)
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url)
+  const entityType = searchParams.get('entityType')
+  const entityId = searchParams.get('entityId')
+
+  if (!entityType || !entityId || !allowedTables.includes(entityType)) {
+    return NextResponse.json({ crop: null })
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from(entityType)
+      .select('cover_image_crop')
+      .eq('id', parseInt(entityId))
+      .single()
+
+    if (error || !data) {
+      return NextResponse.json({ crop: null })
+    }
+
+    return NextResponse.json({ crop: data.cover_image_crop })
+  } catch {
+    return NextResponse.json({ crop: null })
+  }
+}
+
 export async function PUT(request: NextRequest) {
   const token = getTokenFromRequest(request)
   if (!token) {
@@ -20,7 +49,6 @@ export async function PUT(request: NextRequest) {
   try {
     const { entityType, entityId, crop } = await request.json()
 
-    const allowedTables = ['countries', 'universities', 'university_campuses', 'announcements']
     if (!allowedTables.includes(entityType)) {
       return NextResponse.json({ error: 'Invalid entity type' }, { status: 400 })
     }
@@ -31,7 +59,7 @@ export async function PUT(request: NextRequest) {
 
     const { error } = await supabase
       .from(entityType)
-      .update({ cover_image_crop: { x: crop.x, y: crop.y } })
+      .update({ cover_image_crop: { x: crop.x, y: crop.y, zoom: crop.zoom || 1 } })
       .eq('id', entityId)
 
     if (error) {
