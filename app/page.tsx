@@ -18,7 +18,7 @@ import { initializeDatabase } from '@/lib/supabase'
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div className="min-h-screen bg-background">
       <Header />
       <Hero />
       <AboutSection />

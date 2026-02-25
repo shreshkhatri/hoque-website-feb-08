@@ -8,6 +8,7 @@ import { ChevronDown, ChevronRight, Search, X } from 'lucide-react'
 import { University, Course, Country, nameToSlug } from '@/lib/supabase'
 import { SearchBox } from './search-box'
 import { useHeroSearch } from './hero-search-context'
+import { useBanner } from './banner-context'
 
 export function Header() {
   const [showUniDropdown, setShowUniDropdown] = useState(false)
@@ -24,6 +25,7 @@ export function Header() {
   const [mobileDrawerMounted, setMobileDrawerMounted] = useState(false)
   const [mobileDrawerVisible, setMobileDrawerVisible] = useState(false)
   const { heroSearchVisible, isHomePage } = useHeroSearch()
+  const { bannerHeight } = useBanner()
   const showHeaderSearch = !heroSearchVisible || !isHomePage
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
   const [mobileUniExpanded, setMobileUniExpanded] = useState(false)
@@ -182,7 +184,7 @@ export function Header() {
 
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-border overflow-visible">
+    <header className="sticky z-50 bg-white border-b border-border overflow-visible" style={{ top: `${bannerHeight}px` }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-8">
           <Link href="/" onClick={() => closeMobileDrawer()} className="flex items-center space-x-2 flex-shrink-0">

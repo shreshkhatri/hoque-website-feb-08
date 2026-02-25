@@ -6,6 +6,7 @@ import { ChatWidget } from '@/components/chat-widget'
 import { MobileSearch } from '@/components/mobile-search'
 import { HeroSearchProvider } from '@/components/hero-search-context'
 import { AnnouncementBanner } from '@/components/announcement-banner'
+import { BannerProvider } from '@/components/banner-context'
 import { getStructuredData } from '@/lib/seo-config'
 import './globals.css'
 
@@ -87,13 +88,15 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body className={`font-sans antialiased overflow-x-hidden`}>
-        <AnnouncementBanner />
-        <HeroSearchProvider>
-          {children}
-        </HeroSearchProvider>
-        <MobileSearch />
-        <ChatWidget />
+        <body className="font-sans antialiased" style={{ overflowX: 'clip' }}>
+        <BannerProvider>
+          <AnnouncementBanner />
+          <HeroSearchProvider>
+            {children}
+          </HeroSearchProvider>
+          <MobileSearch />
+          <ChatWidget />
+        </BannerProvider>
         <Analytics />
       </body>
     </html>

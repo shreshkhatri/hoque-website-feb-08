@@ -282,7 +282,28 @@ export function CoursesPageClient() {
   }
 
   const selectedCountryName = countries.find((c) => c.id === selectedCountry)?.name
-  
+
+  const defaultCountryId = countries.find((c) => c.name === 'Australia')?.id ?? countries[0]?.id
+
+  const isFiltered =
+    (selectedCountry !== null && selectedCountry !== defaultCountryId) ||
+    selectedUniversity !== null ||
+    selectedCampus !== null ||
+    selectedLevel !== 'All' ||
+    selectedIntakeMonths.length > 0 ||
+    searchQuery !== ''
+
+  const resetFilters = () => {
+    const defaultCountry = countries.find((c) => c.name === 'Australia') ?? countries[0]
+    setSelectedCountry(defaultCountry ? defaultCountry.id : null)
+    setSelectedUniversity(null)
+    setSelectedCampus(null)
+    setSelectedLevel('All')
+    setSelectedIntakeMonths([])
+    setSearchQuery('')
+    setDebouncedSearch('')
+  }
+
   const handleIntakeToggle = (month: string) => {
     setSelectedIntakeMonths((prev) =>
       prev.includes(month) ? prev.filter((m) => m !== month) : [...prev, month]
@@ -313,8 +334,20 @@ export function CoursesPageClient() {
           {/* Left Sidebar - Filters */}
           <aside className="lg:w-80 shrink-0">
             <div className="sticky top-24 bg-card border border-border rounded-xl p-6 space-y-6">
-              <div>
-                <h2 className="text-lg font-bold text-foreground mb-4">Filters</h2>
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-bold text-foreground">Filters</h2>
+                <button
+                  onClick={resetFilters}
+                  disabled={!isFiltered}
+                  className={`flex items-center gap-1 text-xs font-medium rounded-md px-2 py-1 transition-all ${
+                    isFiltered
+                      ? 'bg-destructive/10 text-destructive hover:bg-destructive/20 cursor-pointer'
+                      : 'text-muted-foreground/40 cursor-not-allowed'
+                  }`}
+                >
+                  <X className="h-3 w-3" />
+                  Reset
+                </button>
               </div>
 
               {/* Country Dropdown */}
