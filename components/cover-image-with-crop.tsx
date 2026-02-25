@@ -38,8 +38,9 @@ export function CoverImageWithCrop({
   const [isEditing, setIsEditing] = useState(false)
   const [saving, setSaving] = useState(false)
   const [imgSrc, setImgSrc] = useState(src || fallbackSrc)
+  const [imgFailed, setImgFailed] = useState(false)
 
-  // Crop state -- fetched fresh from DB to bypass static cache
+  // Crop state
   const [liveCrop, setLiveCrop] = useState<CoverImageCrop>(crop || { x: 50, y: 50, zoom: 1 })
   const [editCrop, setEditCrop] = useState<CoverImageCrop>(crop || { x: 50, y: 50, zoom: 1 })
   const [isLargeScreen, setIsLargeScreen] = useState(true)
@@ -92,13 +93,14 @@ export function CoverImageWithCrop({
     fetchLiveCrop()
   }, [entityType, entityId])
 
-  // Handle broken image
+  // Keep imgSrc in sync with src prop
   useEffect(() => {
-    const img = new window.Image()
-    img.crossOrigin = 'anonymous'
-    img.onload = () => setImgSrc(src || fallbackSrc)
-    img.onerror = () => setImgSrc(fallbackSrc)
-    img.src = src || fallbackSrc
+    if (src) {
+      setImgSrc(src)
+      setImgFailed(false)
+    } else {
+      setImgSrc(fallbackSrc)
+    }
   }, [src, fallbackSrc])
 
   // Drag handlers
@@ -184,39 +186,40 @@ export function CoverImageWithCrop({
     setIsEditing(false)
   }
 
-  // On small screens, show default centered image with no crop/zoom
+  // On small screens, show default image with object-fit:cover, no crop/zoom
   const defaultCrop: CoverImageCrop = { x: 50, y: 50, zoom: 1 }
   const displayCrop = isEditing ? editCrop : (isLargeScreen ? liveCrop : defaultCrop)
   const zoom = displayCrop.zoom || 1
 
-  // Use background-image for rendering. This allows zoom-out (< 100%) to show more
-  // of the image within the container without shrinking the container itself.
-  // background-size controls how big the image is relative to the container:
-  //   zoom=1 (100%) => "cover" equivalent
-  //   zoom=2 (200%) => zoomed in, image is 2x bigger
-  //   zoom=0.5 (50%) => zoomed out, more of the image is visible
-  const bgStyle: React.CSSProperties = {
-    backgroundImage: `url(${imgSrc})`,
-    backgroundPosition: `${displayCrop.x}% ${displayCrop.y}%`,
-    backgroundRepeat: 'no-repeat',
-    // At zoom=1 we want "cover" behavior. For zoom > 1 we scale up.
-    // For zoom < 1 we show more of the image.
-    backgroundSize: zoom >= 1 ? `${zoom * 100}%` : `auto ${zoom * 100}%`,
+  const currentImgSrc = imgFailed ? fallbackSrc : imgSrc
+
+  // For large screens, use background-image for crop/zoom control
+  // For small screens, use a simple <img> with object-fit:cover (no crop/zoom)
+  if (!isLargeScreen && !isEditing) {
+    return (
+      <div className={`${containerClassName}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={currentImgSrc}
+          alt={alt}
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          onError={() => {
+            if (!imgFailed) {
+              setImgFailed(true)
+            }
+          }}
+        />
+        {children}
+      </div>
+    )
   }
 
-  // For zoom < 1, use a special calculation that prevents whitespace:
-  // We need to ensure the image still fills at least one dimension.
-  // "cover" at 100% means the smaller dimension is 100%. 
-  // For zoom < 1, we use "auto X%" only if it won't leave gaps.
-  // The safest approach: always use "cover" at zoom=1, and for other values
-  // compute a size that keeps the image proportionally controlled.
-  if (zoom >= 1) {
-    bgStyle.backgroundSize = `${zoom * 100}%`
-  } else {
-    // When zooming out, show more of the image. 
-    // We set the size smaller than "cover" so more of the image is visible.
-    // Using a percentage below 100% will naturally show more of the image.
-    bgStyle.backgroundSize = `${zoom * 100}%`
+  // Large screen: use background-image for full crop/zoom control
+  const bgStyle: React.CSSProperties = {
+    backgroundImage: `url(${currentImgSrc})`,
+    backgroundPosition: `${displayCrop.x}% ${displayCrop.y}%`,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: `${zoom * 100}%`,
   }
 
   return (
@@ -229,8 +232,21 @@ export function CoverImageWithCrop({
         aria-label={alt}
       />
 
+      {/* Hidden img to detect load errors and trigger fallback */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={imgSrc}
+        alt=""
+        className="hidden"
+        onError={() => {
+          if (!imgFailed) {
+            setImgFailed(true)
+          }
+        }}
+      />
+
       {/* Admin edit button -- only on larger screens */}
-      {isAdmin && !isEditing && isLargeScreen && (
+      {isAdmin && !isEditing && (
         <button
           onClick={() => {
             setEditCrop(liveCrop)
