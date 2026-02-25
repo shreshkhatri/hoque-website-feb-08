@@ -57,10 +57,19 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid crop data' }, { status: 400 })
     }
 
+    // Clamp values to safe ranges
+    const safeX = Math.max(0, Math.min(100, crop.x))
+    const safeY = Math.max(0, Math.min(100, crop.y))
+    const safeZoom = Math.max(0.3, Math.min(3, crop.zoom || 1))
+    const safeId = parseInt(entityId)
+    if (isNaN(safeId) || safeId <= 0) {
+      return NextResponse.json({ error: 'Invalid entity ID' }, { status: 400 })
+    }
+
     const { error } = await supabase
       .from(entityType)
-      .update({ cover_image_crop: { x: crop.x, y: crop.y, zoom: crop.zoom || 1 } })
-      .eq('id', entityId)
+      .update({ cover_image_crop: { x: safeX, y: safeY, zoom: safeZoom } })
+      .eq('id', safeId)
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })
