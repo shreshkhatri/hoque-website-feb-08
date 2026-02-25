@@ -8,6 +8,7 @@ import { ChevronDown, ChevronRight, Search, X } from 'lucide-react'
 import { University, Course, Country, nameToSlug } from '@/lib/supabase'
 import { SearchBox } from './search-box'
 import { useHeroSearch } from './hero-search-context'
+import { useBanner } from './banner-context'
 
 export function Header() {
   const [showUniDropdown, setShowUniDropdown] = useState(false)
@@ -24,6 +25,7 @@ export function Header() {
   const [mobileDrawerMounted, setMobileDrawerMounted] = useState(false)
   const [mobileDrawerVisible, setMobileDrawerVisible] = useState(false)
   const { heroSearchVisible, isHomePage } = useHeroSearch()
+  const { bannerHeight } = useBanner()
   const showHeaderSearch = !heroSearchVisible || !isHomePage
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
   const [mobileUniExpanded, setMobileUniExpanded] = useState(false)

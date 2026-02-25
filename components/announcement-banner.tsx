@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 import { X, Award, Calendar, Bell, AlertCircle, ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { useBanner } from '@/components/banner-context'
 
 interface Announcement {
   id: number
@@ -19,6 +20,8 @@ interface Announcement {
 
 export function AnnouncementBanner() {
   const pathname = usePathname()
+  const { setBannerRef, dismissBanner } = useBanner()
+  const bannerElRef = useRef<HTMLDivElement>(null)
   const [announcements, setAnnouncements] = useState<Announcement[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [dismissedAll, setDismissedAll] = useState(false)
@@ -64,7 +67,15 @@ export function AnnouncementBanner() {
 
   const handleDismiss = () => {
     setDismissedAll(true)
+    dismissBanner()
   }
+
+  // Register/unregister the banner ref with context
+  useEffect(() => {
+    if (isAdminPage || loading || announcements.length === 0 || dismissedAll) {
+      setBannerRef(null)
+    }
+  }, [isAdminPage, loading, announcements.length, dismissedAll, setBannerRef])
 
   if (isAdminPage || loading || announcements.length === 0 || dismissedAll) {
     return null
@@ -99,7 +110,7 @@ export function AnnouncementBanner() {
   }
 
   return (
-    <div className={`${getBgColor(current.priority)} text-white sticky top-0 z-[60]`}>
+    <div ref={setBannerRef} className={`${getBgColor(current.priority)} text-white sticky top-0 z-[60]`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4 py-3">
           <div className="flex items-center gap-3 flex-1 min-w-0">
