@@ -42,12 +42,21 @@ export function CoverImageWithCrop({
   // Crop state -- fetched fresh from DB to bypass static cache
   const [liveCrop, setLiveCrop] = useState<CoverImageCrop>(crop || { x: 50, y: 50, zoom: 1 })
   const [editCrop, setEditCrop] = useState<CoverImageCrop>(crop || { x: 50, y: 50, zoom: 1 })
+  const [isLargeScreen, setIsLargeScreen] = useState(true)
 
   // Drag state
   const isDragging = useRef(false)
   const dragStartPos = useRef({ x: 0, y: 0 })
   const dragStartCrop = useRef({ x: 50, y: 50 })
   const editorRef = useRef<HTMLDivElement>(null)
+
+  // Track screen size -- crop/zoom only applies on md+ (768px)
+  useEffect(() => {
+    const checkSize = () => setIsLargeScreen(window.innerWidth >= 768)
+    checkSize()
+    window.addEventListener('resize', checkSize)
+    return () => window.removeEventListener('resize', checkSize)
+  }, [])
 
   // Check admin session
   useEffect(() => {
@@ -175,7 +184,9 @@ export function CoverImageWithCrop({
     setIsEditing(false)
   }
 
-  const displayCrop = isEditing ? editCrop : liveCrop
+  // On small screens, show default centered image with no crop/zoom
+  const defaultCrop: CoverImageCrop = { x: 50, y: 50, zoom: 1 }
+  const displayCrop = isEditing ? editCrop : (isLargeScreen ? liveCrop : defaultCrop)
   const zoom = displayCrop.zoom || 1
 
   // Use background-image for rendering. This allows zoom-out (< 100%) to show more
@@ -218,8 +229,8 @@ export function CoverImageWithCrop({
         aria-label={alt}
       />
 
-      {/* Admin edit button */}
-      {isAdmin && !isEditing && (
+      {/* Admin edit button -- only on larger screens */}
+      {isAdmin && !isEditing && isLargeScreen && (
         <button
           onClick={() => {
             setEditCrop(liveCrop)
