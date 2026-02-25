@@ -16,6 +16,7 @@ import {
   X,
   ChevronRight,
   Megaphone,
+  FileCheck,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -34,6 +35,7 @@ const navItems = [
   { href: '/admin/courses', label: 'Courses', icon: BookOpen },
   { href: '/admin/announcements', label: 'Announcements', icon: Megaphone },
   { href: '/admin/messages', label: 'Messages', icon: MessageSquare },
+  { href: '/admin/student-applications', label: 'Study Applications', icon: FileCheck },
   { href: '/admin/applications', label: 'Job Applications', icon: Briefcase },
 ]
 
@@ -43,6 +45,20 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
   const [admin, setAdmin] = useState<AdminSession | null>(null)
   const [loading, setLoading] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [unviewedCount, setUnviewedCount] = useState(0)
+
+  useEffect(() => {
+    const fetchUnviewedCount = async () => {
+      try {
+        const res = await fetch('/api/admin/student-applications/count', { credentials: 'same-origin' })
+        const data = await res.json()
+        setUnviewedCount(data.count || 0)
+      } catch {}
+    }
+    fetchUnviewedCount()
+    const interval = setInterval(fetchUnviewedCount, 30000)
+    return () => clearInterval(interval)
+  }, [])
 
   useEffect(() => {
     const checkSession = async () => {
@@ -142,7 +158,12 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
               >
                 <item.icon className={cn('h-4.5 w-4.5', isActive ? 'text-teal-600' : 'text-slate-500')} />
                 {item.label}
-                {isActive && <ChevronRight className="h-3.5 w-3.5 ml-auto text-teal-600/60" />}
+                {item.href === '/admin/student-applications' && unviewedCount > 0 && (
+                  <span className="ml-auto bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[20px] h-5 flex items-center justify-center px-1.5">
+                    {unviewedCount}
+                  </span>
+                )}
+                {isActive && item.href !== '/admin/student-applications' && <ChevronRight className="h-3.5 w-3.5 ml-auto text-teal-600/60" />}
               </Link>
             )
           })}
