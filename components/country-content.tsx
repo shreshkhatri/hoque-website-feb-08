@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { CoverImageWithCrop } from './cover-image-with-crop'
 import Link from 'next/link'
 import {
   Users,
@@ -193,19 +194,17 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
   return (
     <>
       {/* Hero Section */}
-      <section className="relative h-[350px] md:h-[450px] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70" />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={country.landmark_image_url || '/hero-bg.jpg'}
-          alt={`Study in ${country.name}`}
-          className="absolute inset-0 w-full h-full object-cover object-center scale-110"
-          onError={(e) => {
-            if (e.currentTarget.src !== '/hero-bg.jpg') {
-              e.currentTarget.src = '/hero-bg.jpg'
-            }
-          }}
-        />
+      <CoverImageWithCrop
+        src={country.landmark_image_url || '/hero-bg.jpg'}
+        alt={`Study in ${country.name}`}
+        fallbackSrc="/hero-bg.jpg"
+        entityType="countries"
+        entityId={country.id}
+        crop={country.cover_image_crop}
+        containerClassName="relative h-[350px] md:h-[450px] overflow-hidden"
+        useNextImage={false}
+        imageClassName="absolute inset-0 w-full h-full object-cover"
+      >
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-end pb-12">
@@ -213,6 +212,7 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
             <p className="text-lg md:text-3xl mb-2 opacity-90">Transform your life in the hub of global education</p>
             <div className="flex items-center gap-4 mb-4">
               {country.flag_image_url ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img src={country.flag_image_url} alt={`${country.name} flag`} className="w-14 h-10 md:w-18 md:h-12 object-cover rounded" />
               ) : (
                 <span className="text-5xl md:text-6xl">{country.flag_emoji}</span>
@@ -225,7 +225,7 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
             </Button>
           </div>
         </div>
-      </section>
+      </CoverImageWithCrop>
 
       {/* Stats Bar */}
       <section className="bg-card border-b border-border">

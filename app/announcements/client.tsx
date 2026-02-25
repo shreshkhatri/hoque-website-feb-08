@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
+import { CoverImageWithCrop } from '@/components/cover-image-with-crop'
 import { Calendar, Award, Bell, AlertCircle, ExternalLink, Clock, ArrowLeft, MapPin } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -23,6 +24,7 @@ interface Announcement {
   external_link: string | null
   application_link: string | null
   cover_image_url: string | null
+  cover_image_crop: { x: number; y: number } | null
   universities: { id: number; name: string } | null
   countries: { name: string } | null
 }
@@ -162,14 +164,16 @@ export default function AnnouncementsClient() {
           <CardContent className="p-0">
             {/* Cover image */}
             {a.cover_image_url && (
-              <div className="relative w-full aspect-[16/6] bg-slate-100">
-                <Image
-                  src={a.cover_image_url}
-                  alt={a.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
+              <CoverImageWithCrop
+                src={a.cover_image_url}
+                alt={a.title}
+                entityType="announcements"
+                entityId={a.id}
+                crop={a.cover_image_crop}
+                containerClassName="relative w-full aspect-[16/6] bg-slate-100"
+                imageClassName="object-cover"
+                useNextImage={true}
+              />
             )}
 
             {/* Header band */}
@@ -367,14 +371,16 @@ export default function AnnouncementsClient() {
               >
                 {/* Cover Image */}
                 {announcement.cover_image_url && (
-                  <div className="relative w-full h-40 bg-slate-100">
-                    <Image
-                      src={announcement.cover_image_url}
-                      alt={announcement.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
+                  <CoverImageWithCrop
+                    src={announcement.cover_image_url}
+                    alt={announcement.title}
+                    entityType="announcements"
+                    entityId={announcement.id}
+                    crop={announcement.cover_image_crop}
+                    containerClassName="relative w-full h-40 bg-slate-100"
+                    imageClassName="object-cover"
+                    useNextImage={true}
+                  />
                 )}
                 <CardContent className="p-6">
                   {/* Header */}
