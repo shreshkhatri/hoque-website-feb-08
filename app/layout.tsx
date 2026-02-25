@@ -87,7 +87,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body className={`font-sans antialiased overflow-x-hidden`}>
+        <body className="font-sans antialiased" style={{ overflowX: 'clip' }}>
         <AnnouncementBanner />
         <HeroSearchProvider>
           {children}
