@@ -47,9 +47,9 @@ export function AboutPageClient() {
                   count: '100+',
                   label: 'Partner Universities',
                   icon: GraduationCap,
-                  iconBg: 'bg-blue-100 dark:bg-blue-900/30',
-                  iconColor: 'text-blue-600 dark:text-blue-400',
-                  countColor: 'text-blue-600 dark:text-blue-400',
+                  iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
+                  iconColor: 'text-emerald-600 dark:text-emerald-400',
+                  countColor: 'text-emerald-600 dark:text-emerald-400',
                 },
                 {
                   title: 'Global Presence',
@@ -69,9 +69,9 @@ export function AboutPageClient() {
                   count: '17+',
                   label: 'Years Experience',
                   icon: Target,
-                  iconBg: 'bg-amber-100 dark:bg-amber-900/30',
-                  iconColor: 'text-amber-600 dark:text-amber-400',
-                  countColor: 'text-amber-600 dark:text-amber-400',
+                  iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
+                  iconColor: 'text-emerald-600 dark:text-emerald-400',
+                  countColor: 'text-emerald-600 dark:text-emerald-400'
                 },
               ].map((item, i) => {
                 const Icon = item.icon
