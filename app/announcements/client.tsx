@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { CoverImageWithCrop } from '@/components/cover-image-with-crop'
-import { Calendar, Award, Bell, AlertCircle, ExternalLink, Clock, ArrowLeft, MapPin } from 'lucide-react'
+import { Calendar, Award, Bell, AlertCircle, ExternalLink, Clock, ArrowLeft, MapPin, Building2 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -293,14 +293,19 @@ export default function AnnouncementsClient() {
                     </p>
                   </div>
                 </div>
-                {a.scholarship_type && (
-                  <div className="flex items-center gap-3 bg-slate-50 rounded-lg p-4">
-                    <Award className="h-5 w-5 text-slate-500 shrink-0" />
+                {a.announcement_type === 'scholarship' && a.universities && (
+                  <Link
+                    href={`/universities/${a.universities.id}`}
+                    className="flex items-center gap-3 bg-slate-50 hover:bg-teal-50 rounded-lg p-4 transition-colors group"
+                  >
+                    <Building2 className="h-5 w-5 text-slate-500 group-hover:text-teal-600 shrink-0 transition-colors" />
                     <div>
-                      <p className="text-xs text-slate-500 uppercase tracking-wide">Type</p>
-                      <p className="text-sm font-semibold text-slate-900 capitalize">{a.scholarship_type} Scholarship</p>
+                      <p className="text-xs text-slate-500 uppercase tracking-wide">University</p>
+                      <p className="text-sm font-semibold text-teal-600 group-hover:text-teal-700 transition-colors underline">
+                        {a.universities.name}
+                      </p>
                     </div>
-                  </div>
+                  </Link>
                 )}
               </div>
 
