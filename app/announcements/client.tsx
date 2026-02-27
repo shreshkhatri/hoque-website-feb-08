@@ -365,112 +365,100 @@ export default function AnnouncementsClient() {
             const daysRemaining = announcement.end_date ? getDaysRemaining(announcement.end_date) : null
 
             return (
-              <Card
+              <Link
                 key={announcement.id}
-                className="border-slate-200 hover:border-teal-300 hover:shadow-lg transition-all overflow-hidden"
+                href={`/announcements?slug=${encodeURIComponent(announcement.id)}`}
+                className="block h-full"
               >
-                {/* Cover Image */}
-                {announcement.cover_image_url && (
-                  <CoverImageWithCrop
-                    src={announcement.cover_image_url}
-                    alt={announcement.title}
-                    entityType="announcements"
-                    entityId={announcement.id}
-                    crop={announcement.cover_image_crop}
-                    containerClassName="relative w-full h-40 bg-slate-100"
-                    imageClassName="object-cover"
-                    useNextImage={true}
-                  />
-                )}
-                <CardContent className="p-6">
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <Badge className={`${getTypeColor(announcement.announcement_type)} text-xs`}>
-                      {getTypeIcon(announcement.announcement_type)}
-                      <span className="ml-1.5 capitalize">{announcement.announcement_type}</span>
-                    </Badge>
-                    {daysRemaining !== null && daysRemaining <= 30 && (
-                      <Badge
-                        variant="secondary"
-                        className={`text-xs ${
-                          daysRemaining <= 7 ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'
-                        }`}
-                      >
-                        <Clock className="h-3 w-3 mr-1" />
-                        {daysRemaining <= 0 ? 'Closed' : `${daysRemaining}d left`}
+                <Card
+                  className="border-slate-200 hover:border-teal-300 hover:shadow-lg transition-all overflow-hidden h-full cursor-pointer"
+                >
+                  {/* Cover Image */}
+                  {announcement.cover_image_url && (
+                    <CoverImageWithCrop
+                      src={announcement.cover_image_url}
+                      alt={announcement.title}
+                      entityType="announcements"
+                      entityId={announcement.id}
+                      crop={announcement.cover_image_crop}
+                      containerClassName="relative w-full h-40 bg-slate-100"
+                      imageClassName="object-cover"
+                      useNextImage={true}
+                    />
+                  )}
+                  <CardContent className="p-6">
+                    {/* Header */}
+                    <div className="flex items-start justify-between mb-4">
+                      <Badge className={`${getTypeColor(announcement.announcement_type)} text-xs`}>
+                        {getTypeIcon(announcement.announcement_type)}
+                        <span className="ml-1.5 capitalize">{announcement.announcement_type}</span>
                       </Badge>
+                      {daysRemaining !== null && daysRemaining <= 30 && (
+                        <Badge
+                          variant="secondary"
+                          className={`text-xs ${
+                            daysRemaining <= 7 ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'
+                          }`}
+                        >
+                          <Clock className="h-3 w-3 mr-1" />
+                          {daysRemaining <= 0 ? 'Closed' : `${daysRemaining}d left`}
+                        </Badge>
+                      )}
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-lg font-semibold text-slate-900 mb-3 line-clamp-2 leading-snug">
+                      {announcement.title}
+                    </h3>
+
+                    {/* Description */}
+                    {announcement.description && (
+                      <p className="text-sm text-slate-600 mb-4 line-clamp-3">{announcement.description}</p>
                     )}
-                  </div>
 
-                  {/* Title */}
-                  <h3 className="text-lg font-semibold text-slate-900 mb-3 line-clamp-2 leading-snug">
-                    {announcement.title}
-                  </h3>
+                    {/* University */}
+                    {announcement.universities && (
+                      <div className="mb-4 pb-4 border-b border-slate-100">
+                        <p className="text-sm text-teal-600">
+                          {announcement.universities.name}
+                        </p>
+                      </div>
+                    )}
 
-                  {/* Description */}
-                  {announcement.description && (
-                    <p className="text-sm text-slate-600 mb-4 line-clamp-3">{announcement.description}</p>
-                  )}
+                    {/* Scholarship Amount */}
+                    {announcement.scholarship_amount && (
+                      <div className="mb-4">
+                        <p className="text-2xl font-bold text-teal-600">
+                          ${announcement.scholarship_amount.toLocaleString()}
+                          {announcement.scholarship_type === 'percentage' && '%'}
+                        </p>
+                        <p className="text-xs text-slate-500 mt-1">
+                          {announcement.scholarship_type === 'full'
+                            ? 'Full Tuition'
+                            : announcement.scholarship_type === 'partial'
+                              ? 'Partial Tuition'
+                              : 'Scholarship Value'}
+                        </p>
+                      </div>
+                    )}
 
-                  {/* University */}
-                  {announcement.universities && (
-                    <div className="mb-4 pb-4 border-b border-slate-100">
-                      <p className="text-sm text-teal-600">
-                        {announcement.universities.name}
+                    {/* Deadline */}
+                    {announcement.end_date && (
+                      <div className="mb-4 flex items-center gap-2 text-sm text-slate-600">
+                        <Calendar className="h-4 w-4" />
+                        <span>Deadline: {new Date(announcement.end_date).toLocaleDateString()}</span>
+                      </div>
+                    )}
+
+                    {/* Published Date */}
+                    <div className="mt-4 pt-4 border-t border-slate-100">
+                      <p className="text-xs text-slate-400">
+                        Posted {new Date(announcement.published_at).toLocaleDateString()}
                       </p>
                     </div>
-                  )}
-
-                  {/* Scholarship Amount */}
-                  {announcement.scholarship_amount && (
-                    <div className="mb-4">
-                      <p className="text-2xl font-bold text-teal-600">
-                        ${announcement.scholarship_amount.toLocaleString()}
-                        {announcement.scholarship_type === 'percentage' && '%'}
-                      </p>
-                      <p className="text-xs text-slate-500 mt-1">
-                        {announcement.scholarship_type === 'full'
-                          ? 'Full Tuition'
-                          : announcement.scholarship_type === 'partial'
-                            ? 'Partial Tuition'
-                            : 'Scholarship Value'}
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Deadline */}
-                  {announcement.end_date && (
-                    <div className="mb-4 flex items-center gap-2 text-sm text-slate-600">
-                      <Calendar className="h-4 w-4" />
-                      <span>Deadline: {new Date(announcement.end_date).toLocaleDateString()}</span>
-                    </div>
-                  )}
-
-                  {/* Action Button */}
-                  {(announcement.application_link || announcement.external_link) && (
-                    <Button
-                      asChild
-                      className="w-full bg-teal-600 hover:bg-teal-700 text-white cursor-pointer"
-                    >
-                      <Link
-                        href={announcement.application_link || announcement.external_link || '#'}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {announcement.announcement_type === 'scholarship' ? 'Apply Now' : 'Learn More'}
-                        <ExternalLink className="h-4 w-4 ml-2" />
-                      </Link>
-                    </Button>
-                  )}
-
-                  {/* Published Date */}
-                  <div className="mt-4 pt-4 border-t border-slate-100">
-                    <p className="text-xs text-slate-400">
-                      Posted {new Date(announcement.published_at).toLocaleDateString()}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </Link>
             )
           })}
         </div>
