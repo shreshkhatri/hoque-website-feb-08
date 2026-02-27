@@ -29,6 +29,7 @@ import {
   MapPin,
   Search,
   Filter,
+  Trophy,
 } from 'lucide-react'
 import { Country, University, Course, CountryFunFact, CountryEmploymentSector } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
@@ -352,7 +353,7 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
             <section className="bg-gradient-to-br from-accent/10 to-primary/5 rounded-2xl p-8">
               <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
                 <div className="w-14 h-14 bg-accent/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Award className="w-7 h-7 text-accent" />
+                  <Trophy className="w-7 h-7 text-accent animate-bounce" />
                 </div>
                 <div className="flex-1">
                   <h3 className="text-xl font-bold text-foreground mb-2">
