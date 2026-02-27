@@ -397,6 +397,29 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
               </section>
             )}
 
+            {/* Scholarships CTA */}
+            <section className="bg-gradient-to-br from-accent/10 to-primary/5 rounded-2xl p-8">
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div className="w-14 h-14 bg-accent/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Award className="w-7 h-7 text-accent" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-foreground mb-2">
+                    Scholarships in {country.name}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Explore scholarships and funding opportunities available for international students studying in {country.name}. From government-funded programmes to university-specific bursaries.
+                  </p>
+                </div>
+                <Button asChild size="lg" className="shrink-0 bg-accent hover:bg-accent/90 text-accent-foreground">
+                  <Link href={`/scholarships?country=${encodeURIComponent(country.name)}`}>
+                    Browse Scholarships
+                    <ChevronRight className="ml-1 w-4 h-4" />
+                  </Link>
+                </Button>
+              </div>
+            </section>
+
             {/* Fun Facts Carousel */}
             {countryData.funFacts.length > 0 && (
               <section className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl p-8">

@@ -51,7 +51,7 @@ export function Header() {
     // Hardcoded universities list (7 total)
     const hardcodedUniversities: University[] = [
       { id: 75, name: "Queen's University Belfast", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
-    
+
       { id: 77, name: "University of Greenwich", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
       { id: 97, name: "University of Greater Manchester", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
       { id: 79, name: "London South Bank University", country_id: 1, logo_url: '', description: '', ranking: 0, location: '', website: '' },
@@ -188,14 +188,14 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-8">
           <Link href="/" onClick={() => closeMobileDrawer()} className="flex items-center space-x-2 flex-shrink-0">
-            <Image 
-              src="/hoque-logo.png" 
-              alt="HOQUE" 
-              width={358} 
+            <Image
+              src="/hoque-logo.png"
+              alt="HOQUE"
+              width={358}
               height={76}
               priority
               quality={100}
-              className="h-6 sm:h-8 md:h-10 w-auto" 
+              className="h-6 sm:h-8 md:h-10 w-auto"
               sizes="(max-width: 640px) 120px, (max-width: 768px) 160px, 200px"
             />
           </Link>
@@ -203,8 +203,8 @@ export function Header() {
           {/* Dynamic Search Box - appears when hero search scrolls out of view */}
           <div
             className={`search-box-compact hidden md:block flex-1 max-w-xs lg:max-w-sm transition-all duration-300 ease-in-out ${showHeaderSearch
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 -translate-y-2 pointer-events-none'
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 -translate-y-2 pointer-events-none'
               }`}
           >
             <SearchBox compact className="w-full" />
@@ -323,8 +323,8 @@ export function Header() {
                       onMouseEnter={() => setHoveredService('consultation')}
                       onClick={() => setHoveredService(hoveredService === 'consultation' ? null : 'consultation')}
                       className={`w-full text-left px-6 py-3 text-sm font-medium transition-colors flex items-center justify-between first:rounded-t-lg ${hoveredService === 'consultation'
-                          ? 'bg-primary text-primary-foreground'
-                          : 'text-foreground hover:bg-muted'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'text-foreground hover:bg-muted'
                         }`}
                     >
                       Free Consultation
@@ -376,8 +376,8 @@ export function Header() {
                       onMouseEnter={() => setHoveredService('application')}
                       onClick={() => setHoveredService(hoveredService === 'application' ? null : 'application')}
                       className={`w-full text-left px-6 py-3 text-sm font-medium transition-colors flex items-center justify-between ${hoveredService === 'application'
-                          ? 'bg-primary text-primary-foreground'
-                          : 'text-foreground hover:bg-muted'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'text-foreground hover:bg-muted'
                         }`}
                     >
                       Free Application
@@ -428,8 +428,8 @@ export function Header() {
                       onMouseEnter={() => setHoveredService('support')}
                       onClick={() => setHoveredService(hoveredService === 'support' ? null : 'support')}
                       className={`w-full text-left px-6 py-3 text-sm font-medium transition-colors flex items-center justify-between last:rounded-b-lg ${hoveredService === 'support'
-                          ? 'bg-primary text-primary-foreground'
-                          : 'text-foreground hover:bg-muted'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'text-foreground hover:bg-muted'
                         }`}
                     >
                       International Student Support
@@ -459,7 +459,7 @@ export function Header() {
                           }}
                           className="block px-6 py-3 text-sm text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                         >
-                          Scholarships & Funding Support
+                          Scholarships Available
                         </a>
                         <a
                           href="/services/ielts-preparation"
@@ -735,7 +735,7 @@ export function Header() {
                       Student Accommodation
                     </Link>
                     <Link href="/services/scholarships-funding-support" onClick={closeMobileDrawer} className="block text-sm text-foreground hover:text-primary transition-colors">
-                      Scholarships & Funding Support
+                      Scholarships Available
                     </Link>
                     <Link href="/services/ielts-preparation" onClick={closeMobileDrawer} className="block text-sm text-foreground hover:text-primary transition-colors">
                       IELTS Preparation
