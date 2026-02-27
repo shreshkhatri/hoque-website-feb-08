@@ -192,3 +192,17 @@ html {
   padding: 2px;
   box-shadow: 0 0 12px rgba(6, 182, 212, 0.3);
 }
+
+/* Marquee animation for testimonials */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
