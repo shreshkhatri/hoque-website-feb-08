@@ -45,6 +45,7 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
+import { RichTextEditor } from '@/components/rich-text-editor'
 
 interface Country {
   id: number
@@ -324,33 +325,33 @@ export default function ScholarshipsAdminPage() {
           {/* Eligibility Details */}
           <div className="space-y-1.5">
             <Label className="text-sm font-medium text-slate-700">Eligibility Details</Label>
-            <Textarea
+            <RichTextEditor
               value={editingScholarship.eligibility_details || ''}
-              onChange={(e) => setEditingScholarship((prev) => ({ ...prev, eligibility_details: e.target.value }))}
+              onChange={(v) => setEditingScholarship((prev) => ({ ...prev, eligibility_details: v }))}
               placeholder="Specific eligibility requirements..."
-              className="bg-white border-slate-200 min-h-[80px]"
+              minHeight="100px"
             />
           </div>
 
           {/* Short Description */}
           <div className="space-y-1.5">
             <Label className="text-sm font-medium text-slate-700">Short Description</Label>
-            <Textarea
+            <RichTextEditor
               value={editingScholarship.description || ''}
-              onChange={(e) => setEditingScholarship((prev) => ({ ...prev, description: e.target.value }))}
+              onChange={(v) => setEditingScholarship((prev) => ({ ...prev, description: v }))}
               placeholder="Brief summary for listing cards..."
-              className="bg-white border-slate-200 min-h-[80px]"
+              minHeight="100px"
             />
           </div>
 
           {/* Full Description */}
           <div className="space-y-1.5">
             <Label className="text-sm font-medium text-slate-700">Full Description</Label>
-            <Textarea
+            <RichTextEditor
               value={editingScholarship.full_description || ''}
-              onChange={(e) => setEditingScholarship((prev) => ({ ...prev, full_description: e.target.value }))}
+              onChange={(v) => setEditingScholarship((prev) => ({ ...prev, full_description: v }))}
               placeholder="Detailed description for the detail page..."
-              className="bg-white border-slate-200 min-h-[140px]"
+              minHeight="160px"
             />
           </div>
 
