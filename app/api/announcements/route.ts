@@ -13,7 +13,7 @@ export async function GET(request: Request) {
   if (slug) {
     const { data, error } = await supabase
       .from('announcements')
-      .select('*, universities(id, name), courses(id, name), countries(id, name)')
+      .select('*, universities(id, slug, name), courses(id, name), countries(id, name)')
       .eq('slug', slug)
       .eq('is_active', true)
       .single()
@@ -26,7 +26,7 @@ export async function GET(request: Request) {
 
   let query = supabase
     .from('announcements')
-    .select('*, universities(id, name), courses(id, name), countries(id, name)')
+    .select('*, universities(id, slug, name), courses(id, name), countries(id, name)')
     .eq('is_active', true)
 
   if (universityId) {
