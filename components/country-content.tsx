@@ -843,10 +843,11 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
               </div>
               <Link
                 href={`/scholarships?country=${encodeURIComponent(country.name)}`}
-                className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors group"
               >
+                <Sparkles className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 View all scholarships
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
 
