@@ -92,54 +92,63 @@ const testimonials: Testimonial[] = [
 
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
-    <div className="w-[340px] md:w-[380px] flex-shrink-0 mx-3">
-      <div className="bg-card border border-border rounded-2xl p-6 h-full flex flex-col shadow-sm hover:shadow-md hover:border-accent/40 transition-all duration-300">
-        {/* Top: Student photo + Uni logo */}
-        <div className="flex items-center justify-between mb-5">
-          <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-accent/30 ring-offset-2 ring-offset-card">
-            <Image
-              src={testimonial.image}
-              alt={testimonial.name}
-              fill
-              className="object-cover"
-            />
+    <div className="w-[360px] md:w-[400px] flex-shrink-0 mx-3">
+      <div className="bg-card border border-border rounded-2xl overflow-hidden h-full flex flex-col shadow-sm hover:shadow-lg hover:border-accent/40 transition-all duration-300">
+        {/* Top: Large student photo with university logo overlay */}
+        <div className="relative h-28 bg-gradient-to-r from-primary to-accent/80">
+          {/* Student photo - large and centered */}
+          <div className="absolute -bottom-10 left-6">
+            <div className="relative w-20 h-20 rounded-full overflow-hidden ring-4 ring-card shadow-lg">
+              <Image
+                src={testimonial.image}
+                alt={testimonial.name}
+                fill
+                className="object-cover"
+              />
+            </div>
           </div>
-          <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-white border border-border p-1">
-            <Image
-              src={testimonial.uniLogo}
-              alt={testimonial.university}
-              fill
-              className="object-contain"
-            />
+          {/* University logo - prominent top-right */}
+          <div className="absolute top-3 right-3 bg-white rounded-xl shadow-md p-1.5">
+            <div className="relative w-16 h-16 rounded-lg overflow-hidden">
+              <Image
+                src={testimonial.uniLogo}
+                alt={testimonial.university}
+                fill
+                className="object-contain"
+              />
+            </div>
           </div>
         </div>
 
-        {/* Quote + Review */}
-        <div className="relative flex-1 mb-4">
-          <Quote className="absolute -top-1 -left-1 w-8 h-8 text-accent/15" />
-          <p className="text-muted-foreground text-sm leading-relaxed pl-5 line-clamp-5">
-            {testimonial.review}
-          </p>
-        </div>
+        {/* Content area with top padding for avatar overlap */}
+        <div className="px-6 pt-14 pb-6 flex flex-col flex-1">
+          {/* Name + University + Origin */}
+          <div className="mb-4">
+            <h4 className="font-bold text-foreground text-base">
+              {testimonial.name}
+            </h4>
+            <p className="text-sm text-accent font-semibold mt-0.5">
+              {testimonial.university}
+            </p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {testimonial.program} &middot; From {testimonial.country}
+            </p>
+          </div>
 
-        {/* Rating */}
-        <div className="flex gap-0.5 mb-4">
-          {Array.from({ length: testimonial.rating }).map((_, i) => (
-            <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-          ))}
-        </div>
+          {/* Rating */}
+          <div className="flex gap-0.5 mb-3">
+            {Array.from({ length: testimonial.rating }).map((_, i) => (
+              <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+            ))}
+          </div>
 
-        {/* Name + Origin */}
-        <div className="pt-4 border-t border-border">
-          <h4 className="font-semibold text-foreground text-sm">
-            {testimonial.name}
-          </h4>
-          <p className="text-xs text-primary font-medium mt-0.5">
-            {testimonial.university}
-          </p>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            From {testimonial.country}
-          </p>
+          {/* Quote + Review */}
+          <div className="relative flex-1">
+            <Quote className="absolute -top-1 -left-1 w-7 h-7 text-accent/15" />
+            <p className="text-muted-foreground text-sm leading-relaxed pl-5 line-clamp-5">
+              {testimonial.review}
+            </p>
+          </div>
         </div>
       </div>
     </div>
