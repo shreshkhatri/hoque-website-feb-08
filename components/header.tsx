@@ -488,6 +488,10 @@ export function Header() {
               )}
             </div>
 
+            <Link href="/scholarships" className="text-foreground hover:text-primary transition-colors font-medium">
+              Scholarships
+            </Link>
+
           </nav>
 
           <div className="md:hidden flex items-center gap-1">
@@ -748,6 +752,10 @@ export function Header() {
               </div>
             )}
           </div>
+
+          <Link href="/scholarships" className="text-foreground hover:text-primary transition-colors font-medium" onClick={closeMobileDrawer}>
+            Scholarships
+          </Link>
 
           <Link href="/contact" className="text-foreground hover:text-primary transition-colors font-medium" onClick={closeMobileDrawer}>
             Contact
