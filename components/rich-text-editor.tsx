@@ -52,6 +52,7 @@ export function RichTextEditor({
       attributes: {
         class: `prose prose-sm max-w-none focus:outline-none px-4 py-3`,
         style: `min-height: ${minHeight}`,
+        'data-placeholder': placeholder,
       },
     },
     onUpdate: ({ editor }) => {
@@ -211,7 +212,7 @@ export function RichTextEditor({
 
       {/* Placeholder styling */}
       <style jsx global>{`
-        .tiptap p.is-editor-empty:first-child::before {
+        .tiptap.is-editor-empty::before {
           content: attr(data-placeholder);
           float: left;
           color: #94a3b8;

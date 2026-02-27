@@ -314,10 +314,10 @@ export default function ScholarshipsClient() {
                     )}
                   </div>
 
-                  {/* Description */}
+                  {/* Description — strip HTML tags for plain-text card snippet */}
                   {scholarship.description && (
                     <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
-                      {scholarship.description}
+                      {scholarship.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()}
                     </p>
                   )}
 

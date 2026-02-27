@@ -181,9 +181,10 @@ export default async function ScholarshipDetailPage({ params }: { params: Promis
               {scholarship.full_description && (
                 <section>
                   <h2 className="text-xl font-bold text-foreground mb-4">About This Scholarship</h2>
-                  <div className="text-foreground/80 leading-relaxed whitespace-pre-line">
-                    {scholarship.full_description}
-                  </div>
+                  <div
+                    className="prose prose-sm max-w-none text-foreground/80 prose-headings:text-foreground prose-a:text-accent prose-strong:text-foreground"
+                    dangerouslySetInnerHTML={{ __html: scholarship.full_description }}
+                  />
                 </section>
               )}
 
@@ -195,7 +196,10 @@ export default async function ScholarshipDetailPage({ params }: { params: Promis
                     <CardContent className="p-6">
                       <div className="flex items-start gap-3">
                         <CheckCircle className="h-5 w-5 text-accent shrink-0 mt-0.5" />
-                        <p className="text-foreground/80 leading-relaxed">{scholarship.eligibility_details}</p>
+                        <div
+                          className="prose prose-sm max-w-none text-foreground/80 prose-headings:text-foreground prose-a:text-accent prose-strong:text-foreground"
+                          dangerouslySetInnerHTML={{ __html: scholarship.eligibility_details }}
+                        />
                       </div>
                     </CardContent>
                   </Card>
