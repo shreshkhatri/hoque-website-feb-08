@@ -134,7 +134,7 @@ export function AboutPageClient() {
         </section>
         {/* CTA Section */}
         <CTAConsultation
-          heading="Ready to start your UK journey?"
+          heading="Ready to start your academy journey with HOQUE?"
           description="Get personalised advice from our expert counsellors. Whether you need help choosing a university, preparing your application, or navigating the visa process, we are here to help."
           badge="Let us guide you"
         />
