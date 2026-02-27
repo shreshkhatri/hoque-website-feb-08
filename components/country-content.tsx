@@ -274,8 +274,8 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 px-4 py-4 border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id
-                      ? 'border-primary text-primary font-medium'
-                      : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                    ? 'border-primary text-primary font-medium'
+                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
                     }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -292,22 +292,7 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
         {/* Overview Tab */}
         {activeTab === 'overview' && (
           <div className="space-y-12">
-            {/* Why Study Section */}
-            <section>
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
-                Why study in {country.name}
-              </h2>
-              <Card>
-                <CardContent className="p-6">
-                  <div
-                    className="prose prose-sm max-w-none text-muted-foreground leading-relaxed text-lg [&_h2]:text-foreground [&_h3]:text-foreground [&_a]:text-primary [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
-                    dangerouslySetInnerHTML={{
-                      __html: country.description || `${country.name} is a leading study destination with an excellent higher education system and a multicultural environment. The country is known for its world-renowned universities, providing students with excellent academic opportunities and career prospects. Apart from academics, the benefits of studying here include helping you land an awesome career and experience a great lifestyle.`
-                    }}
-                  />
-                </CardContent>
-              </Card>
-            </section>
+
 
             {/* About the Country */}
             {country.about && (
@@ -325,6 +310,47 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                 </Card>
               </section>
             )}
+
+            {/* Why Study Section */}
+            <section>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
+                Why study in {country.name}
+              </h2>
+              <Card>
+                <CardContent className="p-6">
+                  <div
+                    className="prose prose-sm max-w-none text-muted-foreground leading-relaxed text-lg [&_h2]:text-foreground [&_h3]:text-foreground [&_a]:text-primary [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+                    dangerouslySetInnerHTML={{
+                      __html: country.description || `${country.name} is a leading study destination with an excellent higher education system and a multicultural environment. The country is known for its world-renowned universities, providing students with excellent academic opportunities and career prospects. Apart from academics, the benefits of studying here include helping you land an awesome career and experience a great lifestyle.`
+                    }}
+                  />
+                </CardContent>
+              </Card>
+            </section>
+
+
+            {/* Scholarships CTA */}
+            <section className="bg-gradient-to-br from-accent/10 to-primary/5 rounded-2xl p-8">
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div className="w-14 h-14 bg-accent/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Award className="w-7 h-7 text-accent" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-foreground mb-2">
+                    Scholarships in {country.name}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Explore scholarships and funding opportunities available for international students studying in {country.name}. From government-funded programmes to university-specific bursaries.
+                  </p>
+                </div>
+                <Button asChild size="lg" className="shrink-0 bg-accent hover:bg-accent/90 text-accent-foreground">
+                  <Link href={`/scholarships?country=${encodeURIComponent(country.name)}`}>
+                    Browse Scholarships
+                    <ChevronRight className="ml-1 w-4 h-4" />
+                  </Link>
+                </Button>
+              </div>
+            </section>
 
             {/* What Sets Apart */}
             {whatSetsApart.length > 0 && (
@@ -397,28 +423,6 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
               </section>
             )}
 
-            {/* Scholarships CTA */}
-            <section className="bg-gradient-to-br from-accent/10 to-primary/5 rounded-2xl p-8">
-              <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-                <div className="w-14 h-14 bg-accent/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Award className="w-7 h-7 text-accent" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-foreground mb-2">
-                    Scholarships in {country.name}
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Explore scholarships and funding opportunities available for international students studying in {country.name}. From government-funded programmes to university-specific bursaries.
-                  </p>
-                </div>
-                <Button asChild size="lg" className="shrink-0 bg-accent hover:bg-accent/90 text-accent-foreground">
-                  <Link href={`/scholarships?country=${encodeURIComponent(country.name)}`}>
-                    Browse Scholarships
-                    <ChevronRight className="ml-1 w-4 h-4" />
-                  </Link>
-                </Button>
-              </div>
-            </section>
 
             {/* Fun Facts Carousel */}
             {countryData.funFacts.length > 0 && (
