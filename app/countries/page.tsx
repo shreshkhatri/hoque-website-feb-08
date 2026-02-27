@@ -6,6 +6,7 @@ import { ArrowRight, Globe } from 'lucide-react'
 import { Country, nameToSlug } from '@/lib/supabase'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
+import { CTAConsultation } from '@/components/cta-consultation'
 
 export default function CountriesPage() {
   const [countries, setCountries] = useState<Country[]>([])
@@ -122,6 +123,11 @@ export default function CountriesPage() {
             </div>
           </div>
         </section>
+        <CTAConsultation
+          heading="Not sure which country is right for you?"
+          description="Our experienced counsellors can help you compare destinations, understand visa requirements, and find the best fit for your academic goals and budget."
+          badge="Explore with confidence"
+        />
       </main>
       <Footer />
     </div>

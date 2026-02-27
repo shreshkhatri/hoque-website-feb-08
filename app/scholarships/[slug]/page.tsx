@@ -1,5 +1,6 @@
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
+import { CTAScholarships } from '@/components/cta-scholarships'
 import { supabaseAdmin as supabase } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -374,6 +375,7 @@ export default async function ScholarshipDetailPage({ params }: { params: Promis
           )}
         </div>
       </div>
+      <CTAScholarships universityName={scholarship.country} />
       <Footer />
     </>
   )

@@ -2,6 +2,7 @@
 
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
+import { CTAConsultation } from '@/components/cta-consultation'
 import { AboutCompany } from '@/components/about-company'
 import { CheckCircle, GraduationCap, HeartHandshake, Target, MessageCircle, Sparkles, Globe, DollarSign, Award } from 'lucide-react'
 
@@ -131,6 +132,12 @@ export function AboutPageClient() {
             </div>
           </div>
         </section>
+        {/* CTA Section */}
+        <CTAConsultation
+          heading="Ready to start your UK journey?"
+          description="Get personalised advice from our expert counsellors. Whether you need help choosing a university, preparing your application, or navigating the visa process, we are here to help."
+          badge="Let us guide you"
+        />
       </main>
 
       <Footer />

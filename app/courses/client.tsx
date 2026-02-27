@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
+import { CTAConsultation } from '@/components/cta-consultation'
 import Link from 'next/link'
 import { Course, nameToSlug } from '@/lib/supabase'
 import { ArrowRight, Clock, Zap, Search, X, Calendar, Sparkles, ChevronDown, Check, ChevronsUpDown } from 'lucide-react'
@@ -900,6 +901,12 @@ export function CoursesPageClient() {
           </div>
         </div>
       </main>
+
+      <CTAConsultation
+        heading="Need help finding the right course?"
+        description="Our counsellors can guide you through course selection, entry requirements, and the application process to help you find the ideal programme for your career goals."
+        badge="Course guidance"
+      />
 
       <Footer />
     </div>

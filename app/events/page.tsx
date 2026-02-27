@@ -1,6 +1,7 @@
 import { EventsClient } from './client'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
+import { CTAConsultation } from '@/components/cta-consultation'
 
 export const metadata = {
   title: 'Events | HOQUE - Student Events & Webinars',
@@ -13,6 +14,11 @@ export default function EventsPage() {
     <>
       <Header />
       <EventsClient />
+      <CTAConsultation
+        heading="Want to attend an event with guidance?"
+        description="Our counsellors can help you prepare for university fairs, webinars, and open days so you make the most of every opportunity."
+        badge="Event support"
+      />
       <Footer />
     </>
   )

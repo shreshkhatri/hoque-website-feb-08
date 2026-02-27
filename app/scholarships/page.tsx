@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
+import { CTAScholarships } from '@/components/cta-scholarships'
 import { Skeleton } from '@/components/ui/skeleton'
 import ScholarshipsClient from './client'
 import { Award } from 'lucide-react'
@@ -41,6 +42,7 @@ export default function ScholarshipsPage() {
             <ScholarshipsClient />
           </Suspense>
         </div>
+        <CTAScholarships />
       </div>
       <Footer />
     </>

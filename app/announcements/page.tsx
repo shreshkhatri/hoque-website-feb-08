@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import AnnouncementsClient from './client'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
+import { CTAConsultation } from '@/components/cta-consultation'
 import { Skeleton } from '@/components/ui/skeleton'
 
 
@@ -31,6 +32,11 @@ export default function AnnouncementsPage() {
           </Suspense>
         </div>
       </div>
+      <CTAConsultation
+        heading="Looking for more opportunities?"
+        description="Our counsellors stay on top of the latest scholarships and university announcements. Book a consultation to get personalised guidance on your options."
+        badge="Stay ahead"
+      />
       <Footer />
     </>
   )

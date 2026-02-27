@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
+import { CTAConsultation } from '@/components/cta-consultation'
 import Link from 'next/link'
 import { University, nameToSlug } from '@/lib/supabase'
 import { ArrowRight, Globe, Users, BookOpen, Search, X } from 'lucide-react'
@@ -287,6 +288,12 @@ export function UniversitiesPageClient() {
           </div>
         )}
       </main>
+
+      <CTAConsultation
+        heading="Need help choosing the right university?"
+        description="With 100+ partner universities, our counsellors can help you find the perfect match for your academic goals, budget, and career aspirations."
+        badge="Expert university guidance"
+      />
 
       <Footer />
     </div>
