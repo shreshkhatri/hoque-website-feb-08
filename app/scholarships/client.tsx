@@ -12,7 +12,8 @@ interface Scholarship {
   id: number
   name: string
   slug: string
-  country: string
+  country: string        // flattened from countries join
+  country_id: number
   funding_body: string | null
   funding_amount: string | null
   program_level: string | null

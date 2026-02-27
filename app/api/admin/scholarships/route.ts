@@ -9,26 +9,42 @@ function generateSlug(name: string): string {
     .replace(/^-+|-+$/g, '')
 }
 
+const SELECT_WITH_COUNTRY = `
+  id, name, slug, funding_body, funding_amount, program_level,
+  eligibility_type, eligibility_details, description, full_description,
+  how_to_apply, application_period, official_url, is_active, created_at,
+  country_id,
+  countries!fk_scholarships_country ( id, name )
+`
+
+function flattenCountry(s: Record<string, unknown>) {
+  return {
+    ...s,
+    country: (s.countries as { id: number; name: string } | null)?.name ?? '',
+  }
+}
+
 export async function GET(request: Request) {
   const session = await verifySession()
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { searchParams } = new URL(request.url)
   const search = searchParams.get('search') || ''
-  const country = searchParams.get('country')
+  const countryId = searchParams.get('country_id')
   const page = parseInt(searchParams.get('page') || '1')
   const limit = parseInt(searchParams.get('limit') || '20')
   const offset = (page - 1) * limit
 
   let query = supabase
     .from('scholarships')
-    .select('*', { count: 'exact' })
+    .select(SELECT_WITH_COUNTRY, { count: 'exact' })
 
   if (search) {
-    query = query.or(`name.ilike.%${search}%,funding_body.ilike.%${search}%,country.ilike.%${search}%`)
+    // Search by name, funding_body; country name needs a separate approach
+    query = query.or(`name.ilike.%${search}%,funding_body.ilike.%${search}%`)
   }
-  if (country) {
-    query = query.eq('country', country)
+  if (countryId) {
+    query = query.eq('country_id', parseInt(countryId))
   }
 
   query = query.order('created_at', { ascending: false })
@@ -37,7 +53,8 @@ export async function GET(request: Request) {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  return NextResponse.json({ data, total: count || 0, page, limit })
+  const flat = (data || []).map(flattenCountry)
+  return NextResponse.json({ data: flat, total: count || 0, page, limit })
 }
 
 export async function POST(request: Request) {
@@ -48,7 +65,7 @@ export async function POST(request: Request) {
     const body = await request.json()
     const {
       name,
-      country,
+      country_id,
       funding_body,
       funding_amount,
       program_level,
@@ -62,7 +79,7 @@ export async function POST(request: Request) {
       is_active,
     } = body
 
-    if (!name || !country) {
+    if (!name || !country_id) {
       return NextResponse.json({ error: 'Name and country are required' }, { status: 400 })
     }
 
@@ -73,7 +90,7 @@ export async function POST(request: Request) {
       .insert({
         name,
         slug,
-        country,
+        country_id: Number(country_id),
         funding_body: funding_body || null,
         funding_amount: funding_amount || null,
         program_level: program_level || null,
@@ -86,12 +103,12 @@ export async function POST(request: Request) {
         official_url: official_url || null,
         is_active: is_active !== undefined ? is_active : true,
       })
-      .select()
+      .select(SELECT_WITH_COUNTRY)
       .single()
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-    return NextResponse.json({ data })
+    return NextResponse.json({ data: flattenCountry(data as Record<string, unknown>) })
   } catch {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }
@@ -103,10 +120,15 @@ export async function PUT(request: Request) {
 
   try {
     const body = await request.json()
-    const { id, ...updates } = body
+    const { id, country, ...updates } = body // strip old text country if accidentally sent
 
     if (!id) {
       return NextResponse.json({ error: 'ID is required' }, { status: 400 })
+    }
+
+    // Ensure country_id is a number
+    if (updates.country_id) {
+      updates.country_id = Number(updates.country_id)
     }
 
     // Regenerate slug if name changed
@@ -120,12 +142,12 @@ export async function PUT(request: Request) {
       .from('scholarships')
       .update(updates)
       .eq('id', id)
-      .select()
+      .select(SELECT_WITH_COUNTRY)
       .single()
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-    return NextResponse.json({ data })
+    return NextResponse.json({ data: flattenCountry(data as Record<string, unknown>) })
   } catch {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }

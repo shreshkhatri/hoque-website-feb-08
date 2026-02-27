@@ -12,7 +12,6 @@ import {
   MapPin,
   GraduationCap,
   Users,
-  ExternalLink,
   X,
   Save,
   Globe,
@@ -47,11 +46,17 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 
+interface Country {
+  id: number
+  name: string
+}
+
 interface Scholarship {
   id: number
   name: string
   slug: string
-  country: string
+  country: string       // flattened from join
+  country_id: number
   funding_body: string | null
   funding_amount: string | null
   program_level: string | null
@@ -68,7 +73,7 @@ interface Scholarship {
 
 const emptyScholarship: Partial<Scholarship> = {
   name: '',
-  country: '',
+  country_id: undefined,
   funding_body: '',
   funding_amount: '',
   program_level: '',
@@ -82,18 +87,9 @@ const emptyScholarship: Partial<Scholarship> = {
   is_active: true,
 }
 
-const countries = [
-  'United Kingdom',
-  'Australia',
-  'Canada',
-  'Ireland',
-  'New Zealand',
-  'United States',
-  'Dubai',
-]
-
 export default function ScholarshipsAdminPage() {
   const [scholarships, setScholarships] = useState<Scholarship[]>([])
+  const [availableCountries, setAvailableCountries] = useState<Country[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
@@ -107,6 +103,14 @@ export default function ScholarshipsAdminPage() {
   const [editingScholarship, setEditingScholarship] = useState<Partial<Scholarship>>(emptyScholarship)
   const [formError, setFormError] = useState('')
   const limit = 12
+
+  // Fetch countries from DB for dropdown
+  useEffect(() => {
+    fetch('/api/countries')
+      .then((r) => r.json())
+      .then((d) => setAvailableCountries(d.data || []))
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedSearch(search), 300)
@@ -122,7 +126,7 @@ export default function ScholarshipsAdminPage() {
         search: debouncedSearch,
       })
       if (countryFilter && countryFilter !== 'all') {
-        params.append('country', countryFilter)
+        params.append('country_id', countryFilter)
       }
       const res = await fetch(`/api/admin/scholarships?${params}`, { credentials: 'same-origin' })
       const data = await res.json()
@@ -158,7 +162,7 @@ export default function ScholarshipsAdminPage() {
 
   const handleSave = async () => {
     setFormError('')
-    if (!editingScholarship.name?.trim() || !editingScholarship.country?.trim()) {
+    if (!editingScholarship.name?.trim() || !editingScholarship.country_id) {
       setFormError('Name and country are required')
       return
     }
@@ -241,21 +245,21 @@ export default function ScholarshipsAdminPage() {
             />
           </div>
 
-          {/* Country */}
+          {/* Country (FK) */}
           <div className="space-y-1.5">
-            <Label htmlFor="country" className="text-sm font-medium text-slate-700">
+            <Label htmlFor="country_id" className="text-sm font-medium text-slate-700">
               Country <span className="text-red-500">*</span>
             </Label>
             <Select
-              value={editingScholarship.country || ''}
-              onValueChange={(v) => setEditingScholarship((prev) => ({ ...prev, country: v }))}
+              value={editingScholarship.country_id ? String(editingScholarship.country_id) : ''}
+              onValueChange={(v) => setEditingScholarship((prev) => ({ ...prev, country_id: Number(v) }))}
             >
               <SelectTrigger className="bg-white border-slate-200">
                 <SelectValue placeholder="Select country" />
               </SelectTrigger>
               <SelectContent className="bg-white">
-                {countries.map((c) => (
-                  <SelectItem key={c} value={c}>{c}</SelectItem>
+                {availableCountries.map((c) => (
+                  <SelectItem key={c.id} value={String(c.id)}>{c.name}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -443,8 +447,8 @@ export default function ScholarshipsAdminPage() {
             </SelectTrigger>
             <SelectContent className="bg-white border-slate-200">
               <SelectItem value="all">All Countries</SelectItem>
-              {countries.map((c) => (
-                <SelectItem key={c} value={c}>{c}</SelectItem>
+              {availableCountries.map((c) => (
+                <SelectItem key={c.id} value={String(c.id)}>{c.name}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -585,9 +589,9 @@ export default function ScholarshipsAdminPage() {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-slate-600">
-            Showing {(page - 1) * limit + 1}-{Math.min(page * limit, total)} of {total}
+        <div className="flex items-center justify-between border-t border-slate-200 pt-4">
+          <p className="text-sm text-slate-500">
+            Page {page} of {totalPages} &middot; {total} total
           </p>
           <div className="flex gap-2">
             <Button
@@ -595,19 +599,16 @@ export default function ScholarshipsAdminPage() {
               size="sm"
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="h-8 border-slate-200 hover:bg-slate-50"
+              className="border-slate-200"
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            <div className="flex items-center gap-1 px-3 text-sm text-slate-700">
-              {page} / {totalPages}
-            </div>
             <Button
               variant="outline"
               size="sm"
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className="h-8 border-slate-200 hover:bg-slate-50"
+              className="border-slate-200"
             >
               <ChevronRight className="h-4 w-4" />
             </Button>
@@ -621,12 +622,15 @@ export default function ScholarshipsAdminPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Scholarship</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete this scholarship? This action cannot be undone.
+              This will permanently delete this scholarship from the database. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel className="border-slate-200">Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-red-600 hover:bg-red-700 text-white">
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>

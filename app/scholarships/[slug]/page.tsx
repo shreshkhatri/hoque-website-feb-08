@@ -8,11 +8,20 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 
+const SELECT_WITH_COUNTRY = `
+  id, name, slug, funding_body, funding_amount, program_level,
+  eligibility_type, eligibility_details, description, full_description,
+  how_to_apply, application_period, official_url, is_active, created_at,
+  country_id,
+  countries!fk_scholarships_country ( id, name )
+`
+
 interface Scholarship {
   id: number
   name: string
   slug: string
-  country: string
+  country: string       // flattened from join
+  country_id: number
   funding_body: string | null
   funding_amount: string | null
   program_level: string | null
@@ -26,29 +35,36 @@ interface Scholarship {
   created_at: string
 }
 
+function flatten(data: Record<string, unknown>): Scholarship {
+  return {
+    ...data,
+    country: (data.countries as { name: string } | null)?.name ?? '',
+  } as Scholarship
+}
+
 async function getScholarship(slug: string): Promise<Scholarship | null> {
   const { data, error } = await supabase
     .from('scholarships')
-    .select('*')
+    .select(SELECT_WITH_COUNTRY)
     .eq('slug', slug)
     .eq('is_active', true)
     .single()
 
   if (error || !data) return null
-  return data
+  return flatten(data as Record<string, unknown>)
 }
 
-async function getRelatedScholarships(country: string, currentSlug: string): Promise<Scholarship[]> {
+async function getRelatedScholarships(countryId: number, currentSlug: string): Promise<Scholarship[]> {
   const { data } = await supabase
     .from('scholarships')
-    .select('*')
-    .eq('country', country)
+    .select(SELECT_WITH_COUNTRY)
+    .eq('country_id', countryId)
     .eq('is_active', true)
     .neq('slug', currentSlug)
     .order('created_at', { ascending: false })
     .limit(3)
 
-  return data || []
+  return (data || []).map((s) => flatten(s as Record<string, unknown>))
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -67,7 +83,7 @@ export default async function ScholarshipDetailPage({ params }: { params: Promis
 
   if (!scholarship) notFound()
 
-  const related = await getRelatedScholarships(scholarship.country, scholarship.slug)
+  const related = await getRelatedScholarships(scholarship.country_id, scholarship.slug)
 
   const countryFlags: Record<string, string> = {
     'United Kingdom': 'gb',
