@@ -44,7 +44,7 @@ export function AboutPageClient() {
                   title: 'University Partnerships',
                   description:
                     'Strong relationships with 28+ leading UK universities ensuring quality education opportunities.',
-                  count: '28+',
+                  count: '100+',
                   label: 'Partner Universities',
                   icon: GraduationCap,
                   iconBg: 'bg-blue-100 dark:bg-blue-900/30',
@@ -66,7 +66,7 @@ export function AboutPageClient() {
                   title: 'Proven Experience',
                   description:
                     'Over 15 years of excellence in guiding international students to UK universities.',
-                  count: '15+',
+                  count: '17+',
                   label: 'Years Experience',
                   icon: Target,
                   iconBg: 'bg-amber-100 dark:bg-amber-900/30',
@@ -116,7 +116,7 @@ export function AboutPageClient() {
                 { text: 'Strong partnerships with 28+ leading UK universities', icon: Award, iconBg: 'bg-purple-100 dark:bg-purple-900/30', iconColor: 'text-purple-600 dark:text-purple-400', border: 'border-purple-200 dark:border-purple-800' },
                 { text: 'Global support network with 14 offices worldwide', icon: Globe, iconBg: 'bg-teal-100 dark:bg-teal-900/30', iconColor: 'text-teal-600 dark:text-teal-400', border: 'border-teal-200 dark:border-teal-800' },
                 { text: 'Comprehensive support from application to enrollment', icon: HeartHandshake, iconBg: 'bg-rose-100 dark:bg-rose-900/30', iconColor: 'text-rose-600 dark:text-rose-400', border: 'border-rose-200 dark:border-rose-800' },
-                { text: '15+ years of proven expertise in international student recruitment', icon: Target, iconBg: 'bg-amber-100 dark:bg-amber-900/30', iconColor: 'text-amber-600 dark:text-amber-400', border: 'border-amber-200 dark:border-amber-800' },
+                { text: '17+ years of proven expertise in international student recruitment', icon: Target, iconBg: 'bg-amber-100 dark:bg-amber-900/30', iconColor: 'text-amber-600 dark:text-amber-400', border: 'border-amber-200 dark:border-amber-800' },
               ].map((promise, i) => {
                 const Icon = promise.icon
                 return (
