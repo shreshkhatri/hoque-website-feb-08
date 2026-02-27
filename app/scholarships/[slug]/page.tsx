@@ -96,7 +96,10 @@ export default async function ScholarshipDetailPage({ params }: { params: Promis
   }
 
   const howToApplySteps = scholarship.how_to_apply
-    ? scholarship.how_to_apply.split('\n').filter(line => line.trim())
+    ? scholarship.how_to_apply
+        .split(/\\n|\n/)
+        .filter(line => line.trim())
+        .map(line => line.trim())
     : []
 
   return (
