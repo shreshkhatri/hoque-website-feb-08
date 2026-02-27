@@ -10,6 +10,7 @@ import { ApplicationProcess } from '@/components/application-process'
 import { QuickOverview } from '@/components/quick-overview'
 // import { TopUniversities } from '@/components/top-universities'
 // import { UpcomingEvents } from '@/components/upcoming-events'
+import { LatestAnnouncements } from '@/components/latest-announcements'
 import { FeaturedScholarships } from '@/components/featured-scholarships'
 import { StudentTestimonials } from '@/components/student-testimonials'
 import { UniversityPartners } from '@/components/university-partners'
@@ -27,6 +28,7 @@ export default function Home() {
       <ServicesSection />
       <ApplicationProcess />
       <QuickOverview />
+      <LatestAnnouncements />
       {/* <TopUniversities /> */}
       {/* <UpcomingEvents /> */}
       <FeaturedScholarships />
