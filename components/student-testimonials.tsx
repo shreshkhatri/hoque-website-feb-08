@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
 import { Star, Quote } from 'lucide-react'
 
@@ -93,10 +94,9 @@ const testimonials: Testimonial[] = [
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
     <div className="w-[360px] md:w-[400px] flex-shrink-0 mx-3">
-      <div className="bg-card border border-border rounded-2xl overflow-hidden h-full flex flex-col shadow-sm hover:shadow-lg hover:border-accent/40 transition-all duration-300">
-        {/* Top: Large student photo with university logo overlay */}
+      <div className="bg-card border border-border rounded-2xl overflow-hidden h-full flex flex-col shadow-sm hover:shadow-lg hover:border-accent/40 transition-shadow duration-300">
+        {/* Top banner with student photo and uni logo */}
         <div className="relative h-28 bg-gradient-to-r from-primary to-accent/80">
-          {/* Student photo - large and centered */}
           <div className="absolute -bottom-10 left-6">
             <div className="relative w-20 h-20 rounded-full overflow-hidden ring-4 ring-card shadow-lg">
               <Image
@@ -107,7 +107,6 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
               />
             </div>
           </div>
-          {/* University logo - prominent top-right */}
           <div className="absolute top-3 right-3 bg-white rounded-xl shadow-md p-1.5">
             <div className="relative w-16 h-16 rounded-lg overflow-hidden">
               <Image
@@ -120,9 +119,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           </div>
         </div>
 
-        {/* Content area with top padding for avatar overlap */}
         <div className="px-6 pt-14 pb-6 flex flex-col flex-1">
-          {/* Name + University + Origin */}
           <div className="mb-4">
             <h4 className="font-bold text-foreground text-base">
               {testimonial.name}
@@ -135,14 +132,12 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
             </p>
           </div>
 
-          {/* Rating */}
           <div className="flex gap-0.5 mb-3">
             {Array.from({ length: testimonial.rating }).map((_, i) => (
               <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
             ))}
           </div>
 
-          {/* Quote + Review */}
           <div className="relative flex-1">
             <Quote className="absolute -top-1 -left-1 w-7 h-7 text-accent/15" />
             <p className="text-muted-foreground text-sm leading-relaxed pl-5 line-clamp-5">
@@ -156,8 +151,40 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
 }
 
 export function StudentTestimonials() {
-  // Double the testimonials array for seamless infinite loop
-  const doubledTestimonials = [...testimonials, ...testimonials]
+  const trackRef = useRef<HTMLDivElement>(null)
+  const positionRef = useRef(0)
+  const isPausedRef = useRef(false)
+  const rafRef = useRef<number>(0)
+
+  const animate = useCallback(() => {
+    if (!trackRef.current) return
+    const track = trackRef.current
+    const halfWidth = track.scrollWidth / 2
+
+    if (!isPausedRef.current) {
+      // Move left-to-right: increase position
+      positionRef.current += 0.5
+      // When we've scrolled past the first set, snap back
+      if (positionRef.current >= halfWidth) {
+        positionRef.current -= halfWidth
+      }
+    }
+
+    // We translate negatively because we start from 0 and want content
+    // to appear to scroll to the right — which means the container shifts left
+    // But to go left-to-right, we start shifted left and move toward 0
+    track.style.transform = `translate3d(${-halfWidth + positionRef.current}px, 0, 0)`
+
+    rafRef.current = requestAnimationFrame(animate)
+  }, [])
+
+  useEffect(() => {
+    rafRef.current = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [animate])
+
+  // Triple the array for seamless wrap
+  const tripled = [...testimonials, ...testimonials, ...testimonials]
 
   return (
     <section className="py-20 bg-background overflow-hidden">
@@ -175,15 +202,20 @@ export function StudentTestimonials() {
         </p>
       </div>
 
-      {/* Marquee */}
+      {/* Scrolling track */}
       <div className="relative">
         {/* Fade edges */}
-        <div className="absolute inset-y-0 left-0 w-20 md:w-40 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-20 md:w-40 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
 
-        {/* Scrolling track */}
-        <div className="flex animate-marquee hover:[animation-play-state:paused]">
-          {doubledTestimonials.map((testimonial, index) => (
+        <div
+          ref={trackRef}
+          className="flex will-change-transform"
+          style={{ transform: 'translate3d(0,0,0)' }}
+          onMouseEnter={() => { isPausedRef.current = true }}
+          onMouseLeave={() => { isPausedRef.current = false }}
+        >
+          {tripled.map((testimonial, index) => (
             <TestimonialCard key={`${testimonial.id}-${index}`} testimonial={testimonial} />
           ))}
         </div>
