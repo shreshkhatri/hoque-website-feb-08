@@ -29,6 +29,7 @@ import {
   MapPin,
   Search,
   Filter,
+  Trophy,
 } from 'lucide-react'
 import { Country, University, Course, CountryFunFact, CountryEmploymentSector } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
@@ -54,6 +55,21 @@ interface WhatSetsApartItem {
   display_order: number
 }
 
+interface Scholarship {
+  id: number
+  name: string
+  slug: string
+  country: string
+  funding_body: string | null
+  funding_amount: string | null
+  program_level: string | null
+  eligibility_type: string | null
+  description: string | null
+  application_period: string | null
+  official_url: string | null
+  created_at: string
+}
+
 interface CountryContentProps {
   country: Country
   universities: University[]
@@ -61,6 +77,7 @@ interface CountryContentProps {
   funFacts?: CountryFunFact[]
   employmentSectors?: CountryEmploymentSector[]
   whatSetsApart?: WhatSetsApartItem[]
+  scholarships?: Scholarship[]
 }
 
 const iconMap: Record<string, any> = {
@@ -79,6 +96,7 @@ const tabs = [
   { id: 'overview', label: 'Overview', icon: BookOpen },
   { id: 'universities', label: 'Universities', icon: Building2 },
   { id: 'courses', label: 'Courses', icon: GraduationCap },
+  { id: 'scholarships', label: 'Scholarships', icon: Award },
   { id: 'student-life', label: 'Student Life', icon: Heart },
   { id: 'visa', label: 'Visa & Work', icon: FileText },
   { id: 'faqs', label: 'FAQs', icon: ChevronDown },
@@ -110,13 +128,15 @@ const defaultPlaceholders = {
   },
 }
 
-export function CountryContent({ country, universities, courses, funFacts = [], employmentSectors = [], whatSetsApart = [] }: CountryContentProps) {
+export function CountryContent({ country, universities, courses, funFacts = [], employmentSectors = [], whatSetsApart = [], scholarships = [] }: CountryContentProps) {
   const [activeTab, setActiveTab] = useState('overview')
   const [currentFactIndex, setCurrentFactIndex] = useState(0)
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
   const [uniSearch, setUniSearch] = useState('')
   const [courseSearch, setCourseSearch] = useState('')
   const [levelFilter, setLevelFilter] = useState('all')
+  const [scholarshipSearch, setScholarshipSearch] = useState('')
+  const [scholarshipLevelFilter, setScholarshipLevelFilter] = useState('')
 
   // All data comes from the database; minimal placeholders only when DB field is empty
   const countryData = {
@@ -274,8 +294,8 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 px-4 py-4 border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id
-                      ? 'border-primary text-primary font-medium'
-                      : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                    ? 'border-primary text-primary font-medium'
+                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
                     }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -292,22 +312,7 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
         {/* Overview Tab */}
         {activeTab === 'overview' && (
           <div className="space-y-12">
-            {/* Why Study Section */}
-            <section>
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
-                Why study in {country.name}
-              </h2>
-              <Card>
-                <CardContent className="p-6">
-                  <div
-                    className="prose prose-sm max-w-none text-muted-foreground leading-relaxed text-lg [&_h2]:text-foreground [&_h3]:text-foreground [&_a]:text-primary [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
-                    dangerouslySetInnerHTML={{
-                      __html: country.description || `${country.name} is a leading study destination with an excellent higher education system and a multicultural environment. The country is known for its world-renowned universities, providing students with excellent academic opportunities and career prospects. Apart from academics, the benefits of studying here include helping you land an awesome career and experience a great lifestyle.`
-                    }}
-                  />
-                </CardContent>
-              </Card>
-            </section>
+
 
             {/* About the Country */}
             {country.about && (
@@ -325,6 +330,47 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                 </Card>
               </section>
             )}
+
+            {/* Why Study Section */}
+            <section>
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-6">
+                Why study in {country.name}
+              </h2>
+              <Card>
+                <CardContent className="p-6">
+                  <div
+                    className="prose prose-sm max-w-none text-muted-foreground leading-relaxed text-lg [&_h2]:text-foreground [&_h3]:text-foreground [&_a]:text-primary [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+                    dangerouslySetInnerHTML={{
+                      __html: country.description || `${country.name} is a leading study destination with an excellent higher education system and a multicultural environment. The country is known for its world-renowned universities, providing students with excellent academic opportunities and career prospects. Apart from academics, the benefits of studying here include helping you land an awesome career and experience a great lifestyle.`
+                    }}
+                  />
+                </CardContent>
+              </Card>
+            </section>
+
+
+            {/* Scholarships CTA */}
+            <section className="bg-gradient-to-br from-accent/10 to-primary/5 rounded-2xl p-8">
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+                <div className="w-14 h-14 bg-accent/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Trophy className="w-7 h-7 text-accent animate-bounce" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-foreground mb-2">
+                    Scholarships in {country.name}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Explore scholarships and funding opportunities available for international students studying in {country.name}. From government-funded programmes to university-specific bursaries.
+                  </p>
+                </div>
+                <Button asChild size="lg" className="shrink-0 bg-accent hover:bg-accent/90 text-accent-foreground">
+                  <Link href={`/scholarships?country=${encodeURIComponent(country.name)}`}>
+                    Browse Scholarships
+                    <ChevronRight className="ml-1 w-4 h-4" />
+                  </Link>
+                </Button>
+              </div>
+            </section>
 
             {/* What Sets Apart */}
             {whatSetsApart.length > 0 && (
@@ -397,28 +443,6 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
               </section>
             )}
 
-            {/* Scholarships CTA */}
-            <section className="bg-gradient-to-br from-accent/10 to-primary/5 rounded-2xl p-8">
-              <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-                <div className="w-14 h-14 bg-accent/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Award className="w-7 h-7 text-accent" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-foreground mb-2">
-                    Scholarships in {country.name}
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Explore scholarships and funding opportunities available for international students studying in {country.name}. From government-funded programmes to university-specific bursaries.
-                  </p>
-                </div>
-                <Button asChild size="lg" className="shrink-0 bg-accent hover:bg-accent/90 text-accent-foreground">
-                  <Link href={`/scholarships?country=${encodeURIComponent(country.name)}`}>
-                    Browse Scholarships
-                    <ChevronRight className="ml-1 w-4 h-4" />
-                  </Link>
-                </Button>
-              </div>
-            </section>
 
             {/* Fun Facts Carousel */}
             {countryData.funFacts.length > 0 && (
@@ -806,6 +830,157 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
         )}
 
         {/* FAQs Tab */}
+        {/* Scholarships Tab */}
+        {activeTab === 'scholarships' && (
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+                  Scholarships in {country.name}
+                </h2>
+                <p className="text-muted-foreground mt-1">
+                  {scholarships.length} scholarship{scholarships.length !== 1 ? 's' : ''} available
+                </p>
+              </div>
+              <Link
+                href={`/scholarships?country=${encodeURIComponent(country.name)}`}
+                className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors group"
+              >
+                <Sparkles className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                View all scholarships
+                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+
+            {/* Filters */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Search scholarships..."
+                  value={scholarshipSearch}
+                  onChange={(e) => setScholarshipSearch(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
+                />
+              </div>
+              <select
+                value={scholarshipLevelFilter}
+                onChange={(e) => setScholarshipLevelFilter(e.target.value)}
+                className="px-3 py-2.5 rounded-lg border border-border bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 sm:w-48"
+              >
+                <option value="">All Levels</option>
+                <option value="Undergraduate">Undergraduate</option>
+                <option value="Postgraduate">Postgraduate</option>
+                <option value="PhD">PhD / Doctoral</option>
+              </select>
+            </div>
+
+            {/* Scholarship Cards */}
+            {(() => {
+              const filtered = scholarships.filter((s) => {
+                const q = scholarshipSearch.toLowerCase()
+                const matchesSearch = !q || s.name.toLowerCase().includes(q) || (s.funding_body || '').toLowerCase().includes(q) || (s.description || '').toLowerCase().includes(q)
+                const matchesLevel = !scholarshipLevelFilter || (s.program_level || '').toLowerCase().includes(scholarshipLevelFilter.toLowerCase())
+                return matchesSearch && matchesLevel
+              })
+
+              if (filtered.length === 0) {
+                return (
+                  <Card>
+                    <CardContent className="py-16 text-center">
+                      <Award className="w-12 h-12 text-muted-foreground/40 mx-auto mb-3" />
+                      <p className="text-muted-foreground font-medium">
+                        {scholarships.length === 0
+                          ? `No scholarships listed for ${country.name} yet.`
+                          : 'No scholarships match your search.'}
+                      </p>
+                      {scholarships.length === 0 && (
+                        <Link
+                          href="/scholarships"
+                          className="mt-4 inline-flex items-center gap-1.5 text-sm text-primary hover:text-primary/80 font-medium"
+                        >
+                          Browse all scholarships
+                          <ChevronRight className="w-4 h-4" />
+                        </Link>
+                      )}
+                    </CardContent>
+                  </Card>
+                )
+              }
+
+              return (
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                  {filtered.map((scholarship) => (
+                    <Link
+                      key={scholarship.id}
+                      href={`/scholarships/${scholarship.slug}`}
+                      className="group block"
+                    >
+                      <Card className="h-full border-border hover:border-primary/40 hover:shadow-lg transition-all duration-200 overflow-hidden">
+
+                        <CardContent className="p-5 flex flex-col h-full">
+                          {/* Badges row */}
+                          <div className="flex flex-wrap gap-2 mb-3">
+                            {scholarship.program_level && (
+                              <Badge variant="outline" className="text-xs border-primary/30 text-primary bg-primary/5">
+                                <GraduationCap className="w-3 h-3 mr-1" />
+                                {scholarship.program_level}
+                              </Badge>
+                            )}
+                            {scholarship.eligibility_type && (
+                              <Badge variant="outline" className="text-xs border-border text-muted-foreground">
+                                <Users className="w-3 h-3 mr-1" />
+                                {scholarship.eligibility_type}
+                              </Badge>
+                            )}
+                          </div>
+
+                          {/* Title */}
+                          <h3 className="font-semibold text-foreground text-base leading-snug mb-1 group-hover:text-primary transition-colors line-clamp-2">
+                            {scholarship.name}
+                          </h3>
+
+                          {/* Funding body */}
+                          {scholarship.funding_body && (
+                            <p className="text-xs text-muted-foreground mb-3 flex items-center gap-1">
+                              <Building2 className="w-3.5 h-3.5 shrink-0" />
+                              {scholarship.funding_body}
+                            </p>
+                          )}
+
+                          {/* Description */}
+                          {scholarship.description && (
+                            <p className="text-sm text-muted-foreground line-clamp-2 mb-4 flex-1">
+                              {scholarship.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()}
+                            </p>
+                          )}
+
+                          <div className="mt-auto pt-3 border-t border-border flex items-center justify-between">
+                            {/* Funding amount */}
+                            {scholarship.funding_amount ? (
+                              <span className="text-sm font-semibold text-primary">
+                                {scholarship.funding_amount}
+                              </span>
+                            ) : (
+                              <span className="text-sm text-muted-foreground">Amount varies</span>
+                            )}
+
+                            <span className="text-xs text-primary font-medium group-hover:translate-x-1 transition-transform inline-flex items-center gap-0.5">
+                              View details
+                              <ChevronRight className="w-3.5 h-3.5" />
+                            </span>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+              )
+            })()}
+          </div>
+        )}
+
         {activeTab === 'faqs' && (
           <div className="space-y-4 max-w-3xl">
             <h2 className="text-2xl font-bold text-foreground mb-6">Frequently Asked Questions</h2>

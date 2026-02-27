@@ -2,6 +2,7 @@
 
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
+import { CTAConsultation } from '@/components/cta-consultation'
 import { AboutCompany } from '@/components/about-company'
 import { CheckCircle, GraduationCap, HeartHandshake, Target, MessageCircle, Sparkles, Globe, DollarSign, Award } from 'lucide-react'
 
@@ -18,7 +19,7 @@ export function AboutPageClient() {
               About Us
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto text-balance">
-              Empowering international students since 2009 with expert guidance and 100% free application services to leading UK universities
+              Empowering international students since 2009 with expert guidance and 100% free application services to leading universities worldwide
             </p>
           </div>
         </section>
@@ -43,13 +44,13 @@ export function AboutPageClient() {
                 {
                   title: 'University Partnerships',
                   description:
-                    'Strong relationships with 28+ leading UK universities ensuring quality education opportunities.',
-                  count: '28+',
+                    'Strong relationships with 100+ leading universities ensuring quality education opportunities across multiple destinations.',
+                  count: '100+',
                   label: 'Partner Universities',
                   icon: GraduationCap,
-                  iconBg: 'bg-blue-100 dark:bg-blue-900/30',
-                  iconColor: 'text-blue-600 dark:text-blue-400',
-                  countColor: 'text-blue-600 dark:text-blue-400',
+                  iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
+                  iconColor: 'text-emerald-600 dark:text-emerald-400',
+                  countColor: 'text-emerald-600 dark:text-emerald-400',
                 },
                 {
                   title: 'Global Presence',
@@ -65,13 +66,13 @@ export function AboutPageClient() {
                 {
                   title: 'Proven Experience',
                   description:
-                    'Over 15 years of excellence in guiding international students to UK universities.',
-                  count: '15+',
+                    'Over 17 years of excellence in guiding international students to top universities worldwide.',
+                  count: '17+',
                   label: 'Years Experience',
                   icon: Target,
-                  iconBg: 'bg-amber-100 dark:bg-amber-900/30',
-                  iconColor: 'text-amber-600 dark:text-amber-400',
-                  countColor: 'text-amber-600 dark:text-amber-400',
+                  iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
+                  iconColor: 'text-emerald-600 dark:text-emerald-400',
+                  countColor: 'text-emerald-600 dark:text-emerald-400'
                 },
               ].map((item, i) => {
                 const Icon = item.icon
@@ -112,11 +113,11 @@ export function AboutPageClient() {
             <div className="space-y-4">
               {[
                 { text: '100% free application service for Foundation, Undergraduate, Postgraduate, and PhD programs', icon: DollarSign, iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400', border: 'border-emerald-200 dark:border-emerald-800' },
-                { text: 'Personalized counselling from fully trained education advisors', icon: MessageCircle, iconBg: 'bg-blue-100 dark:bg-blue-900/30', iconColor: 'text-blue-600 dark:text-blue-400', border: 'border-blue-200 dark:border-blue-800' },
-                { text: 'Strong partnerships with 28+ leading UK universities', icon: Award, iconBg: 'bg-purple-100 dark:bg-purple-900/30', iconColor: 'text-purple-600 dark:text-purple-400', border: 'border-purple-200 dark:border-purple-800' },
-                { text: 'Global support network with 14 offices worldwide', icon: Globe, iconBg: 'bg-teal-100 dark:bg-teal-900/30', iconColor: 'text-teal-600 dark:text-teal-400', border: 'border-teal-200 dark:border-teal-800' },
-                { text: 'Comprehensive support from application to enrollment', icon: HeartHandshake, iconBg: 'bg-rose-100 dark:bg-rose-900/30', iconColor: 'text-rose-600 dark:text-rose-400', border: 'border-rose-200 dark:border-rose-800' },
-                { text: '15+ years of proven expertise in international student recruitment', icon: Target, iconBg: 'bg-amber-100 dark:bg-amber-900/30', iconColor: 'text-amber-600 dark:text-amber-400', border: 'border-amber-200 dark:border-amber-800' },
+                { text: 'Personalized counselling from fully trained education advisors', icon: MessageCircle, iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400', border: 'border-emerald-200 dark:border-emerald-800' },
+                { text: 'Strong partnerships with 100+ leading universities across multiple countries', icon: Award, iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400', border: 'border-emerald-200 dark:border-emerald-800' },
+                { text: 'Global support network with 14 offices worldwide', icon: Globe, iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400', border: 'border-emerald-200 dark:border-emerald-800' },
+                { text: 'Comprehensive support from application to enrollment', icon: HeartHandshake, iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400', border: 'border-emerald-200 dark:border-emerald-800' },
+                { text: '17+ years of proven expertise in international student recruitment', icon: Target, iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400', border: 'border-emerald-200 dark:border-emerald-800' },
               ].map((promise, i) => {
                 const Icon = promise.icon
                 return (
@@ -131,6 +132,12 @@ export function AboutPageClient() {
             </div>
           </div>
         </section>
+        {/* CTA Section */}
+        <CTAConsultation
+          heading="Ready to start your academic journey with HOQUE?"
+          description="Get personalised advice from our expert counsellors. Whether you need help choosing a university, preparing your application, or navigating the visa process, we are here to help."
+          badge="Let us guide you"
+        />
       </main>
 
       <Footer />

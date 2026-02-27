@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Award, Calendar, GraduationCap, ArrowRight, Clock, MapPin } from 'lucide-react'
@@ -52,20 +52,19 @@ function getAmountDisplay(amount: number | null, type: string | null) {
 export function FeaturedScholarships() {
   const [scholarships, setScholarships] = useState<Announcement[]>([])
   const [loading, setLoading] = useState(true)
+  const fetched = useRef(false)
+
+
 
   useEffect(() => {
-    const fetchScholarships = async () => {
-      try {
-        const res = await fetch('/api/announcements?announcement_type=scholarship&limit=4')
-        const data = await res.json()
-        setScholarships(data.data || [])
-      } catch {
-        console.error('Failed to fetch scholarships')
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchScholarships()
+    if (fetched.current) return
+    fetched.current = true
+
+    fetch('/api/announcements?announcement_type=scholarship&limit=4')
+      .then((res) => res.json())
+      .then((data) => setScholarships(data.data || []))
+      .catch(() => { })
+      .finally(() => setLoading(false))
   }, [])
 
   // Don't render the section if there are no scholarships and not loading

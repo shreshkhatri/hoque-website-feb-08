@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { CoverImageWithCrop } from '@/components/cover-image-with-crop'
-import { Calendar, Award, Bell, AlertCircle, ExternalLink, Clock, ArrowLeft, MapPin } from 'lucide-react'
+import { Calendar, Award, Bell, AlertCircle, ExternalLink, Clock, ArrowLeft, MapPin, Building2, Trophy, GraduationCap, MessageCircle } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -12,6 +12,7 @@ import Link from 'next/link'
 
 interface Announcement {
   id: number
+  slug: string
   title: string
   description: string
   announcement_type: string
@@ -25,7 +26,7 @@ interface Announcement {
   application_link: string | null
   cover_image_url: string | null
   cover_image_crop: { x: number; y: number } | null
-  universities: { id: number; name: string } | null
+  universities: { id: number; name: string; slug: string } | null
   countries: { name: string } | null
 }
 
@@ -186,15 +187,14 @@ export default function AnnouncementsClient() {
                 {daysRemaining !== null && (
                   <Badge
                     variant="secondary"
-                    className={`text-xs ${
-                      daysRemaining <= 0
+                    className={`text-xs ${daysRemaining <= 0
                         ? 'bg-red-100 text-red-700'
                         : daysRemaining <= 7
                           ? 'bg-red-100 text-red-700'
                           : daysRemaining <= 30
                             ? 'bg-yellow-100 text-yellow-700'
                             : 'bg-green-100 text-green-700'
-                    }`}
+                      }`}
                   >
                     <Clock className="h-3 w-3 mr-1" />
                     {daysRemaining <= 0 ? 'Closed' : `${daysRemaining} days remaining`}
@@ -235,7 +235,7 @@ export default function AnnouncementsClient() {
               {a.description && (
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900 mb-2">Description</h3>
-                  <div 
+                  <div
                     className="text-slate-600 leading-relaxed prose prose-sm max-w-none"
                     dangerouslySetInnerHTML={{ __html: a.description }}
                   />
@@ -246,7 +246,7 @@ export default function AnnouncementsClient() {
               {a.eligibility_criteria && (
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900 mb-2">Eligibility Criteria</h3>
-                  <div 
+                  <div
                     className="text-slate-600 leading-relaxed prose prose-sm max-w-none"
                     dangerouslySetInnerHTML={{ __html: a.eligibility_criteria }}
                   />
@@ -292,21 +292,26 @@ export default function AnnouncementsClient() {
                     </p>
                   </div>
                 </div>
-                {a.scholarship_type && (
-                  <div className="flex items-center gap-3 bg-slate-50 rounded-lg p-4">
-                    <Award className="h-5 w-5 text-slate-500 shrink-0" />
+                {a.announcement_type === 'scholarship' && a.universities && (
+                  <Link
+                    href={`/university/${a.universities.slug}`}
+                    className="flex items-center gap-3 bg-slate-50 hover:bg-teal-50 rounded-lg p-4 transition-colors group"
+                  >
+                    <Building2 className="h-5 w-5 text-slate-500 group-hover:text-teal-600 shrink-0 transition-colors" />
                     <div>
-                      <p className="text-xs text-slate-500 uppercase tracking-wide">Type</p>
-                      <p className="text-sm font-semibold text-slate-900 capitalize">{a.scholarship_type} Scholarship</p>
+                      <p className="text-xs text-slate-500 uppercase tracking-wide">University</p>
+                      <p className="text-sm font-semibold text-teal-600 group-hover:text-teal-700 transition-colors underline">
+                        {a.universities.name}
+                      </p>
                     </div>
-                  </div>
+                  </Link>
                 )}
               </div>
 
               {/* Action buttons */}
               <div className="flex flex-wrap gap-4 pt-4">
                 {a.application_link && (
-                  <Button asChild className="bg-teal-600 hover:bg-teal-700 text-white cursor-pointer">
+                  <Button asChild className="bg-primary hover:bg-teal-700 text-white cursor-pointer">
                     <Link href={a.application_link} target="_blank" rel="noopener noreferrer">
                       Apply Now
                       <ExternalLink className="h-4 w-4 ml-2" />
@@ -325,6 +330,49 @@ export default function AnnouncementsClient() {
             </div>
           </CardContent>
         </Card>
+
+        {/* CTA Section — scholarship announcements only */}
+        {a.announcement_type === 'scholarship' && (
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary to-secondary p-8 md:p-10 shadow-xl">
+            {/* Decorative circles */}
+            <div className="pointer-events-none absolute -top-10 -right-10 h-48 w-48 rounded-full bg-white/10" />
+            <div className="pointer-events-none absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-white/10" />
+
+            <div className="relative flex flex-col md:flex-row md:items-center gap-8">
+              {/* Text */}
+              <div className="flex-1">
+                <div className="inline-flex items-center gap-2 rounded-full bg-accent/20 px-3 py-1 text-xs font-semibold text-accent uppercase tracking-wider mb-4">
+                  <Trophy className="h-3.5 w-3.5" />
+                  Ready to take the next step?
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold text-primary-foreground mb-2">
+                  Don&apos;t miss this opportunity
+                </h2>
+                <p className="text-primary-foreground/80 text-sm md:text-base leading-relaxed max-w-lg">
+                  Apply directly to{a.universities ? ` ${a.universities.name}` : ' this university'} or speak with one of our expert consultants to guide you through the process.
+                </p>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-3 shrink-0">
+                <Link
+                  href="/application-form"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-accent via-cyan-400 to-blue-500 px-6 py-3.5 text-sm font-bold text-white shadow-md hover:opacity-90 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <GraduationCap className="h-5 w-5" />
+                  Apply Now
+                </Link>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-accent/50 bg-primary-foreground/10 px-6 py-3.5 text-sm font-bold text-primary-foreground backdrop-blur-sm hover:bg-primary-foreground/20 hover:border-accent transition-all hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <MessageCircle className="h-5 w-5" />
+                  Book a Consultation
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     )
   }
@@ -337,11 +385,10 @@ export default function AnnouncementsClient() {
           <button
             key={btn.value}
             onClick={() => setFilterType(btn.value)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              filterType === btn.value
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filterType === btn.value
                 ? 'bg-teal-600 text-white'
                 : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
-            }`}
+              }`}
           >
             {btn.label}
           </button>
@@ -365,112 +412,99 @@ export default function AnnouncementsClient() {
             const daysRemaining = announcement.end_date ? getDaysRemaining(announcement.end_date) : null
 
             return (
-              <Card
+              <Link
                 key={announcement.id}
-                className="border-slate-200 hover:border-teal-300 hover:shadow-lg transition-all overflow-hidden"
+                href={`/announcements?slug=${encodeURIComponent(announcement.slug)}&type=${encodeURIComponent(announcement.announcement_type)}`}
+                className="block h-full"
               >
-                {/* Cover Image */}
-                {announcement.cover_image_url && (
-                  <CoverImageWithCrop
-                    src={announcement.cover_image_url}
-                    alt={announcement.title}
-                    entityType="announcements"
-                    entityId={announcement.id}
-                    crop={announcement.cover_image_crop}
-                    containerClassName="relative w-full h-40 bg-slate-100"
-                    imageClassName="object-cover"
-                    useNextImage={true}
-                  />
-                )}
-                <CardContent className="p-6">
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <Badge className={`${getTypeColor(announcement.announcement_type)} text-xs`}>
-                      {getTypeIcon(announcement.announcement_type)}
-                      <span className="ml-1.5 capitalize">{announcement.announcement_type}</span>
-                    </Badge>
-                    {daysRemaining !== null && daysRemaining <= 30 && (
-                      <Badge
-                        variant="secondary"
-                        className={`text-xs ${
-                          daysRemaining <= 7 ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'
-                        }`}
-                      >
-                        <Clock className="h-3 w-3 mr-1" />
-                        {daysRemaining <= 0 ? 'Closed' : `${daysRemaining}d left`}
+                <Card
+                  className="border-slate-200 hover:border-teal-300 hover:shadow-lg transition-all overflow-hidden h-full cursor-pointer"
+                >
+                  {/* Cover Image */}
+                  {announcement.cover_image_url && (
+                    <CoverImageWithCrop
+                      src={announcement.cover_image_url}
+                      alt={announcement.title}
+                      entityType="announcements"
+                      entityId={announcement.id}
+                      crop={announcement.cover_image_crop}
+                      containerClassName="relative w-full h-40 bg-slate-100"
+                      imageClassName="object-cover"
+                      useNextImage={true}
+                    />
+                  )}
+                  <CardContent className="p-6">
+                    {/* Header */}
+                    <div className="flex items-start justify-between mb-4">
+                      <Badge className={`${getTypeColor(announcement.announcement_type)} text-xs`}>
+                        {getTypeIcon(announcement.announcement_type)}
+                        <span className="ml-1.5 capitalize">{announcement.announcement_type}</span>
                       </Badge>
+                      {daysRemaining !== null && daysRemaining <= 30 && (
+                        <Badge
+                          variant="secondary"
+                          className={`text-xs ${daysRemaining <= 7 ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'
+                            }`}
+                        >
+                          <Clock className="h-3 w-3 mr-1" />
+                          {daysRemaining <= 0 ? 'Closed' : `${daysRemaining}d left`}
+                        </Badge>
+                      )}
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-lg font-semibold text-slate-900 mb-3 line-clamp-2 leading-snug">
+                      {announcement.title}
+                    </h3>
+
+                    {/* Description */}
+                    {announcement.description && (
+                      <p className="text-sm text-slate-600 mb-4 line-clamp-3">{announcement.description}</p>
                     )}
-                  </div>
 
-                  {/* Title */}
-                  <h3 className="text-lg font-semibold text-slate-900 mb-3 line-clamp-2 leading-snug">
-                    {announcement.title}
-                  </h3>
+                    {/* University */}
+                    {announcement.universities && (
+                      <div className="mb-4 pb-4 border-b border-slate-100">
+                        <p className="text-sm text-teal-600">
+                          {announcement.universities.name}
+                        </p>
+                      </div>
+                    )}
 
-                  {/* Description */}
-                  {announcement.description && (
-                    <p className="text-sm text-slate-600 mb-4 line-clamp-3">{announcement.description}</p>
-                  )}
+                    {/* Scholarship Amount */}
+                    {announcement.scholarship_amount && (
+                      <div className="mb-4">
+                        <p className="text-2xl font-bold text-teal-600">
+                          ${announcement.scholarship_amount.toLocaleString()}
+                          {announcement.scholarship_type === 'percentage' && '%'}
+                        </p>
+                        <p className="text-xs text-slate-500 mt-1">
+                          {announcement.scholarship_type === 'full'
+                            ? 'Full Tuition'
+                            : announcement.scholarship_type === 'partial'
+                              ? 'Partial Tuition'
+                              : 'Scholarship Value'}
+                        </p>
+                      </div>
+                    )}
 
-                  {/* University */}
-                  {announcement.universities && (
-                    <div className="mb-4 pb-4 border-b border-slate-100">
-                      <p className="text-sm text-teal-600">
-                        {announcement.universities.name}
+                    {/* Deadline */}
+                    {announcement.end_date && (
+                      <div className="mb-4 flex items-center gap-2 text-sm text-slate-600">
+                        <Calendar className="h-4 w-4" />
+                        <span>Deadline: {new Date(announcement.end_date).toLocaleDateString()}</span>
+                      </div>
+                    )}
+
+                    {/* Published Date */}
+                    <div className="mt-4 pt-4 border-t border-slate-100">
+                      <p className="text-xs text-slate-400">
+                        Posted {new Date(announcement.published_at).toLocaleDateString()}
                       </p>
                     </div>
-                  )}
-
-                  {/* Scholarship Amount */}
-                  {announcement.scholarship_amount && (
-                    <div className="mb-4">
-                      <p className="text-2xl font-bold text-teal-600">
-                        ${announcement.scholarship_amount.toLocaleString()}
-                        {announcement.scholarship_type === 'percentage' && '%'}
-                      </p>
-                      <p className="text-xs text-slate-500 mt-1">
-                        {announcement.scholarship_type === 'full'
-                          ? 'Full Tuition'
-                          : announcement.scholarship_type === 'partial'
-                            ? 'Partial Tuition'
-                            : 'Scholarship Value'}
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Deadline */}
-                  {announcement.end_date && (
-                    <div className="mb-4 flex items-center gap-2 text-sm text-slate-600">
-                      <Calendar className="h-4 w-4" />
-                      <span>Deadline: {new Date(announcement.end_date).toLocaleDateString()}</span>
-                    </div>
-                  )}
-
-                  {/* Action Button */}
-                  {(announcement.application_link || announcement.external_link) && (
-                    <Button
-                      asChild
-                      className="w-full bg-teal-600 hover:bg-teal-700 text-white cursor-pointer"
-                    >
-                      <Link
-                        href={announcement.application_link || announcement.external_link || '#'}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {announcement.announcement_type === 'scholarship' ? 'Apply Now' : 'Learn More'}
-                        <ExternalLink className="h-4 w-4 ml-2" />
-                      </Link>
-                    </Button>
-                  )}
-
-                  {/* Published Date */}
-                  <div className="mt-4 pt-4 border-t border-slate-100">
-                    <p className="text-xs text-slate-400">
-                      Posted {new Date(announcement.published_at).toLocaleDateString()}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </Link>
             )
           })}
         </div>

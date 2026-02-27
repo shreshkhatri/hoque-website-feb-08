@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ChevronDown } from 'lucide-react'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
+import { CTAConsultation } from '@/components/cta-consultation'
 import { supabase } from '@/lib/supabase'
 
 interface CountryFAQ {
@@ -177,6 +178,11 @@ export function FAQPageClient() {
             </div>
           </div>
         </section>
+        <CTAConsultation
+          heading="Still have questions?"
+          description="Our expert counsellors are happy to answer any questions you have about studying abroad, visa applications, or the enrollment process."
+          badge="Get answers"
+        />
       </main>
       <Footer />
     </div>

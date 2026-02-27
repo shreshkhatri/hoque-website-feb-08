@@ -20,26 +20,21 @@ export function AboutCompany() {
               <p className="text-lg text-muted-foreground leading-relaxed">
                 Since 2009, HOQUE has provided expert educational guidance and advice to international students throughout the UK. With a head office in London and a global network of offices including Dhaka, Colombo, Islamabad, New York, Dubai, Mumbai, Hyderabad, Gujarat, Kochi, Sri Lanka, Sylhet, Chattogram, and Nepal, we have a team of fully trained counsellors dedicated to helping students achieve their dreams of studying in the UK.
               </p>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                Our mission is to support international students in their journey to access higher education from UK universities. We believe in empowering students not only to discover personal success but also to contribute to the betterment of society by becoming leaders of tomorrow. With our strong understanding of international student recruitment and strategic support, we continue to impart knowledge and guidance every step of the way.
+              </p>
             </div>
-
-            <p className="text-muted-foreground leading-relaxed">
-              HOQUE is managed by Mr. Fazlul Hoque, an internationally experienced and qualified higher educational advisor and successful entrepreneur with proven expertise in strategy, marketing, and corporate governance across a range of higher educational services for international students in the United Kingdom. Having been an international student himself, Mr. Hoque successfully completed his Master of Business Administration (MBA) from Liverpool John Moores University, UK, and brings first-hand understanding of the challenges and opportunities that await international students.
-            </p>
-
-            <p className="text-muted-foreground leading-relaxed">
-              As a visionary leader, Mr. Hoque has instilled a strong understanding of key principles within international student recruitment, support activities, events, marketing, and strategic development at HOQUE. He is passionate about continuing the proud tradition of imparting knowledge and education by supporting international students in their journey to access higher education from UK universities, helping them not only discover personal success but also contribute to the betterment of society by creating leaders for tomorrow.
-            </p>
 
             <div className="space-y-3 pt-2">
               {[
-                '15+ years of experience guiding international students',
+                '17+ years of experience guiding international students',
                 '14 global offices serving students worldwide',
                 '100% free application service for UK universities',
                 'Strong partnerships with leading UK universities',
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <CheckCircle
-                    className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5"
+                    className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5"
                   />
                   <span className="text-foreground">{item}</span>
                 </div>
@@ -65,7 +60,7 @@ export function AboutCompany() {
             <div className="absolute -bottom-6 -left-6 bg-card border border-border rounded-xl p-6 shadow-xl">
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center">
-                  <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">15+</span>
+                  <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">17+</span>
                 </div>
                 <div>
                   <p className="font-semibold text-foreground">Years Experience</p>
@@ -79,10 +74,10 @@ export function AboutCompany() {
         {/* Stats section */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 pt-16 border-t border-border">
           {[
-            { number: '15+', label: 'Years Experience', color: 'text-blue-600 dark:text-blue-400' },
-            { number: '14', label: 'Global Offices', color: 'text-emerald-600 dark:text-emerald-400' },
-            { number: '5000+', label: 'Students Guided', color: 'text-amber-600 dark:text-amber-400' },
-            { number: '28+', label: 'Partner Universities', color: 'text-rose-600 dark:text-rose-400' },
+            { number: '17+', label: 'Years Experience', color: 'text-amber-600 dark:text-amber-600' },
+            { number: '14', label: 'Global Offices', color: 'text-amber-600 dark:text-amber-600' },
+            { number: '5000+', label: 'Students Guided', color: 'text-amber-600 dark:text-amber-600' },
+            { number: '100+', label: 'Partner Universities', color: 'text-amber-600 dark:text-amber-600' },
           ].map((stat, i) => (
             <div key={i} className="text-center">
               <div className={`text-3xl md:text-4xl font-bold ${stat.color} mb-2`}>

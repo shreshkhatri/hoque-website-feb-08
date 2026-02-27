@@ -122,6 +122,24 @@ export default async function CountryPage({
     .eq('country_id', country.id)
     .order('display_order', { ascending: true })
 
+  // Fetch scholarships for this country
+  const { data: scholarships } = await supabase
+    .from('scholarships')
+    .select(`
+      id, name, slug, funding_body, funding_amount, program_level,
+      eligibility_type, description, application_period, official_url, created_at,
+      countries!fk_scholarships_country ( id, name )
+    `)
+    .eq('country_id', country.id)
+    .eq('is_active', true)
+    .order('created_at', { ascending: false })
+
+  // Flatten country name onto each scholarship
+  const flatScholarships = (scholarships || []).map((s: any) => ({
+    ...s,
+    country: (s.countries as { name: string } | null)?.name ?? country.name,
+  }))
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -132,6 +150,7 @@ export default async function CountryPage({
         funFacts={funFacts || []}
         employmentSectors={employmentSectors || []}
         whatSetsApart={whatSetsApart || []}
+        scholarships={flatScholarships}
       />
       <Footer />
     </div>

@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
-import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Star, Quote } from 'lucide-react'
 
 interface Testimonial {
   id: number
@@ -12,6 +11,7 @@ interface Testimonial {
   university: string
   program: string
   image: string
+  uniLogo: string
   rating: number
   review: string
 }
@@ -23,9 +23,11 @@ const testimonials: Testimonial[] = [
     country: 'Nepal',
     university: 'University of Greenwich',
     program: 'MSc Digital Marketing',
-    image: '/placeholder-user.jpg',
+    image: '/images/students/student-1.jpg',
+    uniLogo: '/images/uni-logos/greenwich.jpg',
     rating: 5,
-    review: "Thanks to HOQUE's incredible and free support, I have successfully completed my chosen course at the University of Greenwich. They made my study-abroad dream come true by guiding me every step of the way. If you're planning to study overseas, I highly recommend HOQUE as your trusted partner.",
+    review:
+      "Thanks to HOQUE's incredible and free support, I have successfully completed my chosen course at the University of Greenwich. They made my study-abroad dream come true by guiding me every step of the way. If you're planning to study overseas, I highly recommend HOQUE as your trusted partner.",
   },
   {
     id: 2,
@@ -33,9 +35,11 @@ const testimonials: Testimonial[] = [
     country: 'Bangladesh',
     university: "Queen's University Belfast",
     program: 'MSc Artificial Intelligence',
-    image: '/placeholder-user.jpg',
+    image: '/images/students/student-2.jpg',
+    uniLogo: '/images/uni-logos/queens-belfast.jpg',
     rating: 5,
-    review: "I have successfully secured admission to Queen's University Belfast for a Master of Science in Artificial Intelligence with a scholarship. The best part of HOQUE's support was their expert staff, who guided and motivated me to choose the right university to achieve my academic goals.",
+    review:
+      "I have successfully secured admission to Queen's University Belfast for a Master of Science in Artificial Intelligence with a scholarship. The best part of HOQUE's support was their expert staff, who guided and motivated me to choose the right university to achieve my academic goals.",
   },
   {
     id: 3,
@@ -43,9 +47,11 @@ const testimonials: Testimonial[] = [
     country: 'Nigeria',
     university: 'University of Bolton',
     program: 'PhD Research',
-    image: '/placeholder-user.jpg',
+    image: '/images/students/student-3.jpg',
+    uniLogo: '/images/uni-logos/bolton.jpg',
     rating: 5,
-    review: "As a PhD student, I truly appreciate the personalized support I received from HOQUE. Their expertise and guidance made complex processes easier and allowed me to focus on my research with confidence. I just know the entire process was smooth even when I was under pressure due to the timeline to start.",
+    review:
+      "As a PhD student, I truly appreciate the personalized support I received from HOQUE. Their expertise and guidance made complex processes easier and allowed me to focus on my research with confidence. I just know the entire process was smooth even when I was under pressure due to the timeline to start.",
   },
   {
     id: 4,
@@ -53,9 +59,11 @@ const testimonials: Testimonial[] = [
     country: 'Pakistan',
     university: 'Middlesex University London',
     program: 'BSc Computer Science',
-    image: '/placeholder-user.jpg',
+    image: '/images/students/student-4.jpg',
+    uniLogo: '/images/uni-logos/middlesex.jpg',
     rating: 5,
-    review: "My journey with HOQUE began at a Spot Admission Day, where I first learned about their services. They supported me throughout the entire process, from Faisalabad, Pakistan to London, making the transition seamless and stress-free. From receiving a faster offer letter and securing scholarships to arranging airport pick-up, every step was managed with great care - and all at no cost.",
+    review:
+      "My journey with HOQUE began at a Spot Admission Day, where I first learned about their services. They supported me throughout the entire process, from Faisalabad, Pakistan to London, making the transition seamless and stress-free. From receiving a faster offer letter and securing scholarships to arranging airport pick-up, every step was managed with great care - and all at no cost.",
   },
   {
     id: 5,
@@ -63,9 +71,11 @@ const testimonials: Testimonial[] = [
     country: 'India',
     university: 'Northumbria University',
     program: 'MSc Digital Marketing',
-    image: '/placeholder-user.jpg',
+    image: '/images/students/student-5.jpg',
+    uniLogo: '/images/uni-logos/northumbria.jpg',
     rating: 5,
-    review: "My name is Vishnu from Kerala, and I have completed my MSc in Digital Marketing at Northumbria University. Without the unwavering, step-by-step support from HOQUE, my dream of studying in the UK might have felt impossible. They believed in me and guided me through every challenge, making my journey truly life-changing.",
+    review:
+      "My name is Vishnu from Kerala, and I have completed my MSc in Digital Marketing at Northumbria University. Without the unwavering, step-by-step support from HOQUE, my dream of studying in the UK might have felt impossible. They believed in me and guided me through every challenge, making my journey truly life-changing.",
   },
   {
     id: 6,
@@ -73,187 +83,140 @@ const testimonials: Testimonial[] = [
     country: 'Sri Lanka',
     university: 'University for the Creative Arts',
     program: 'Global MBA',
-    image: '/placeholder-user.jpg',
+    image: '/images/students/student-6.jpg',
+    uniLogo: '/images/uni-logos/uca.jpg',
     rating: 5,
-    review: "I am grateful to Uni Admission for guiding me through the admission process for the Global Master of Business & Management program at University for the Creative Arts. Their knowledge, professionalism, and dedication truly made a difference throughout my journey.",
+    review:
+      "I am grateful to HOQUE for guiding me through the admission process for the Global Master of Business & Management program at University for the Creative Arts. Their knowledge, professionalism, and dedication truly made a difference throughout my journey.",
   },
 ]
 
-export function StudentTestimonials() {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isMobile, setIsMobile] = useState(false)
-  const [isClient, setIsClient] = useState(false)
-
-  useEffect(() => {
-    setIsClient(true)
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-    
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
-  const visibleCount = isMobile ? 1 : 3
-  const maxIndex = testimonials.length - visibleCount
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1))
-  }
-
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1))
-  }
-
+function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <span className="text-primary font-semibold text-sm uppercase tracking-wider">
-            Success Stories
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-2 mb-4">
-            Student Experience With HOQUE
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Hear from our successful students who achieved their dreams of studying at 
-            top universities with our guidance and support.
-          </p>
-        </div>
-
-        {/* Testimonials Carousel */}
-        <div className="relative">
-          {/* Navigation Buttons - Desktop */}
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 hidden md:flex bg-card border-border hover:bg-muted"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 hidden md:flex bg-card border-border hover:bg-muted"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </Button>
-
-          {/* Navigation Buttons - Mobile */}
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={prevSlide}
-            aria-label="Previous testimonial"
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 md:hidden bg-card border-border hover:bg-muted"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={nextSlide}
-            aria-label="Next testimonial"
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 md:hidden bg-card border-border hover:bg-muted"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </Button>
-
-          {/* Cards Slider Container */}
-          <div className="overflow-hidden px-4 md:px-8">
-            <div 
-              className="flex gap-6 transition-transform duration-500 ease-in-out"
-              style={{ 
-                transform: isMobile 
-                  ? `translateX(calc(-${currentIndex} * (100% + 1.5rem)))`
-                  : `translateX(calc(-${currentIndex} * calc(100% / 3 + 0.5rem)))`
-              }}
-            >
-              {testimonials.map((testimonial) => (
-                <div
-                  key={testimonial.id}
-                  className={`flex-shrink-0 w-full md:w-[calc((100%-3rem)/3)]`}
-                >
-                  <div className="bg-card border border-border rounded-xl p-6 hover:border-accent hover:shadow-lg transition-all duration-300 flex flex-col">
-                    {/* Quote Icon */}
-                    <Quote className="w-10 h-10 text-primary/20 mb-4" />
-
-                    {/* Review Text */}
-                    <p className="text-muted-foreground text-sm leading-relaxed mb-6 flex-grow line-clamp-5">
-                      "{testimonial.review}"
-                    </p>
-
-                    {/* Rating */}
-                    <div className="flex gap-1 mb-4">
-                      {Array.from({ length: testimonial.rating }).map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      ))}
-                    </div>
-
-                    {/* Student Info */}
-                    <div className="flex items-center gap-4 pt-4 border-t border-border">
-                      <div className="relative w-12 h-12 rounded-full overflow-hidden bg-muted">
-                        <Image
-                          src={testimonial.image || "/placeholder.svg"}
-                          alt={testimonial.name}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-foreground truncate">
-                          {testimonial.name}
-                        </h4>
-                        <p className="text-xs text-primary font-medium truncate">
-                          {testimonial.university}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {testimonial.country}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+    <div className="w-[360px] md:w-[400px] flex-shrink-0 mx-3">
+      <div className="bg-card border border-border rounded-2xl overflow-hidden h-full flex flex-col shadow-sm hover:shadow-lg hover:border-accent/40 transition-shadow duration-300">
+        {/* Top banner with student photo and uni logo */}
+        <div className="relative h-28 bg-gradient-to-r from-primary to-accent/80">
+          <div className="absolute -bottom-10 left-6">
+            <div className="relative w-20 h-20 rounded-full overflow-hidden ring-4 ring-card shadow-lg">
+              <Image
+                src={testimonial.image}
+                alt={testimonial.name}
+                fill
+                className="object-cover"
+              />
+            </div>
+          </div>
+          <div className="absolute top-3 right-3 bg-white rounded-xl shadow-md p-1.5">
+            <div className="relative w-25 h-25 rounded-lg overflow-hidden">
+              <Image
+                src={testimonial.uniLogo}
+                alt={testimonial.university}
+                fill
+                className="object-contain"
+              />
             </div>
           </div>
         </div>
 
-        {/* Mobile Navigation Dots */}
-        <div className="flex justify-center gap-2 mt-8 md:hidden">
-          {Array.from({ length: Math.ceil(testimonials.length / visibleCount) }).map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentIndex(i * visibleCount)}
-              aria-label={`Go to page ${i + 1}`}
-              aria-current={Math.floor(currentIndex / visibleCount) === i ? 'true' : 'false'}
-              className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
-                Math.floor(currentIndex / visibleCount) === i
-                  ? 'bg-primary w-6'
-                  : 'bg-muted-foreground/30'
-              }`}
-            />
-          ))}
-        </div>
+        <div className="px-6 pt-14 pb-6 flex flex-col flex-1">
+          <div className="mb-4">
+            <h4 className="font-bold text-foreground text-base">
+              {testimonial.name}
+            </h4>
+            <p className="text-sm text-accent font-semibold mt-0.5">
+              {testimonial.university}
+            </p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {testimonial.program} &middot; From {testimonial.country}
+            </p>
+          </div>
 
-        {/* Desktop Dots */}
-        <div className="hidden md:flex justify-center gap-2 mt-8">
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentIndex(i)}
-              aria-label={`Go to testimonial ${i + 1}`}
-              aria-current={currentIndex === i ? 'true' : 'false'}
-              className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
-                currentIndex === i
-                  ? 'bg-primary w-6'
-                  : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
-              }`}
-            />
+          <div className="flex gap-0.5 mb-3">
+            {Array.from({ length: testimonial.rating }).map((_, i) => (
+              <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+            ))}
+          </div>
+
+          <div className="relative flex-1">
+            <Quote className="absolute -top-1 -left-1 w-7 h-7 text-accent/15" />
+            <p className="text-muted-foreground text-sm leading-relaxed pl-5 line-clamp-5">
+              {testimonial.review}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function StudentTestimonials() {
+  const trackRef = useRef<HTMLDivElement>(null)
+  const positionRef = useRef(0)
+  const isPausedRef = useRef(false)
+  const rafRef = useRef<number>(0)
+
+  const animate = useCallback(() => {
+    if (!trackRef.current) return
+    const track = trackRef.current
+    const halfWidth = track.scrollWidth / 2
+
+    if (!isPausedRef.current) {
+      // Move left-to-right: increase position
+      positionRef.current += 0.5
+      // When we've scrolled past the first set, snap back
+      if (positionRef.current >= halfWidth) {
+        positionRef.current -= halfWidth
+      }
+    }
+
+    // We translate negatively because we start from 0 and want content
+    // to appear to scroll to the right — which means the container shifts left
+    // But to go left-to-right, we start shifted left and move toward 0
+    track.style.transform = `translate3d(${-halfWidth + positionRef.current}px, 0, 0)`
+
+    rafRef.current = requestAnimationFrame(animate)
+  }, [])
+
+  useEffect(() => {
+    rafRef.current = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [animate])
+
+  // Triple the array for seamless wrap
+  const tripled = [...testimonials, ...testimonials, ...testimonials]
+
+  return (
+    <section className="py-20 bg-background overflow-hidden">
+      {/* Header */}
+      <div className="text-center mb-14 px-4 sm:px-6 lg:px-8">
+        <span className="text-primary font-semibold text-sm uppercase tracking-wider">
+          Success Stories
+        </span>
+        <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-2 mb-4 text-balance">
+          Student Experience With HOQUE
+        </h2>
+        <p className="text-muted-foreground max-w-2xl mx-auto text-pretty">
+          Hear from our successful students who achieved their dreams of studying at
+          top universities with our guidance and support.
+        </p>
+      </div>
+
+      {/* Scrolling track */}
+      <div className="relative">
+        {/* Fade edges */}
+        <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
+        <div
+          ref={trackRef}
+          className="flex will-change-transform"
+          style={{ transform: 'translate3d(0,0,0)' }}
+          onMouseEnter={() => { isPausedRef.current = true }}
+          onMouseLeave={() => { isPausedRef.current = false }}
+        >
+          {tripled.map((testimonial, index) => (
+            <TestimonialCard key={`${testimonial.id}-${index}`} testimonial={testimonial} />
           ))}
         </div>
       </div>

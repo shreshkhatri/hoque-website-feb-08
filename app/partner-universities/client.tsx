@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { ArrowRight, Building2 } from 'lucide-react'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
+import { CTAConsultation } from '@/components/cta-consultation'
 
 const ALL_PARTNERS = [
   { name: 'Abertay University', logo: '/logos/abertay-university.png' },
@@ -110,6 +111,11 @@ export function PartnersClient() {
           </p>
         </div>
       </div>
+      <CTAConsultation
+        heading="Interested in our partner universities?"
+        description="Our counsellors can connect you with the right partner university, guide your application, and help you secure your place at a top institution."
+        badge="Partner university access"
+      />
       <Footer />
     </div>
   )

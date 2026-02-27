@@ -11,6 +11,7 @@ import { QuickOverview } from '@/components/quick-overview'
 // import { TopUniversities } from '@/components/top-universities'
 // import { UpcomingEvents } from '@/components/upcoming-events'
 import { FeaturedScholarships } from '@/components/featured-scholarships'
+import { CTAHomepage } from '@/components/cta-homepage'
 import { StudentTestimonials } from '@/components/student-testimonials'
 import { UniversityPartners } from '@/components/university-partners'
 import { Footer } from '@/components/footer'
@@ -31,6 +32,7 @@ export default function Home() {
       {/* <UpcomingEvents /> */}
       <FeaturedScholarships />
       <StudentTestimonials />
+      <CTAHomepage />
       <UniversityPartners />
       <Footer />
     </div>

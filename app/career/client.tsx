@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
+import { CTAConsultation } from '@/components/cta-consultation'
 import {
   Search,
   MapPin,
@@ -604,6 +605,11 @@ export function CareerPageClient() {
           </div>
         </section>
       </main>
+      <CTAConsultation
+        heading="Interested in studying abroad instead?"
+        description="If you are a prospective student, our counsellors can help you find the right university, course, and scholarship for your academic journey."
+        badge="Student enquiry"
+      />
       <Footer />
     </>
   )
