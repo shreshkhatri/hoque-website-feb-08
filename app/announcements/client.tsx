@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { CoverImageWithCrop } from '@/components/cover-image-with-crop'
-import { Calendar, Award, Bell, AlertCircle, ExternalLink, Clock, ArrowLeft, MapPin, Building2 } from 'lucide-react'
+import { Calendar, Award, Bell, AlertCircle, ExternalLink, Clock, ArrowLeft, MapPin, Building2, Trophy, GraduationCap, MessageCircle } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -331,6 +331,49 @@ export default function AnnouncementsClient() {
             </div>
           </CardContent>
         </Card>
+
+        {/* CTA Section — scholarship announcements only */}
+        {a.announcement_type === 'scholarship' && (
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-teal-700 via-teal-600 to-teal-500 p-8 md:p-10 shadow-xl">
+            {/* Decorative circles */}
+            <div className="pointer-events-none absolute -top-10 -right-10 h-48 w-48 rounded-full bg-white/10" />
+            <div className="pointer-events-none absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-white/10" />
+
+            <div className="relative flex flex-col md:flex-row md:items-center gap-8">
+              {/* Text */}
+              <div className="flex-1">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-white uppercase tracking-wider mb-4">
+                  <Trophy className="h-3.5 w-3.5" />
+                  Ready to take the next step?
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                  Don&apos;t miss this opportunity
+                </h2>
+                <p className="text-teal-100 text-sm md:text-base leading-relaxed max-w-lg">
+                  Apply directly to{a.universities ? ` ${a.universities.name}` : ' this university'} or speak with one of our expert consultants to guide you through the process.
+                </p>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-3 shrink-0">
+                <Link
+                  href="/application-form"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-bold text-teal-700 shadow-md hover:bg-teal-50 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <GraduationCap className="h-5 w-5" />
+                  Apply Now
+                </Link>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-white/60 bg-white/10 px-6 py-3.5 text-sm font-bold text-white backdrop-blur-sm hover:bg-white/20 hover:border-white transition-all hover:scale-[1.02] active:scale-[0.98]"
+                >
+                  <MessageCircle className="h-5 w-5" />
+                  Book a Consultation
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     )
   }
