@@ -54,14 +54,16 @@ export function FeaturedScholarships() {
   const [loading, setLoading] = useState(true)
   const fetched = useRef(false)
 
+
+
   useEffect(() => {
     if (fetched.current) return
     fetched.current = true
 
     fetch('/api/announcements?announcement_type=scholarship&limit=4')
       .then((res) => res.json())
-      .then((data) => setScholarships(data.data || []))
-      .catch(() => {})
+      .then((data) => { console.log(data); setScholarships(data.data || []); })
+      .catch(() => { })
       .finally(() => setLoading(false))
   }, [])
 

@@ -26,7 +26,7 @@ interface Announcement {
   application_link: string | null
   cover_image_url: string | null
   cover_image_crop: { x: number; y: number } | null
-  universities: { id: number; slug: string; name: string } | null
+  universities: { id: number; name: string } | null
   countries: { name: string } | null
 }
 
@@ -295,7 +295,7 @@ export default function AnnouncementsClient() {
                 </div>
                 {a.announcement_type === 'scholarship' && a.universities && (
                   <Link
-                    href={`/universities/${a.universities.slug}`}
+                    href={`/universities/${a.universities.id}`}
                     className="flex items-center gap-3 bg-slate-50 hover:bg-teal-50 rounded-lg p-4 transition-colors group"
                   >
                     <Building2 className="h-5 w-5 text-slate-500 group-hover:text-teal-600 shrink-0 transition-colors" />
