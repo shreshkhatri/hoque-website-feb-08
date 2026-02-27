@@ -1,11 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import useSWR from 'swr'
 import { Award, Calendar, GraduationCap, ArrowRight, Clock, MapPin } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
+
+const fetcher = (url: string) => fetch(url).then(r => r.json())
 
 interface Announcement {
   id: number
@@ -50,23 +52,14 @@ function getAmountDisplay(amount: number | null, type: string | null) {
 }
 
 export function FeaturedScholarships() {
-  const [scholarships, setScholarships] = useState<Announcement[]>([])
-  const [loading, setLoading] = useState(true)
+  const { data, isLoading } = useSWR(
+    '/api/announcements?announcement_type=scholarship&limit=4',
+    fetcher,
+    { revalidateOnFocus: false }
+  )
 
-  useEffect(() => {
-    const fetchScholarships = async () => {
-      try {
-        const res = await fetch('/api/announcements?announcement_type=scholarship&limit=4')
-        const data = await res.json()
-        setScholarships(data.data || [])
-      } catch {
-        console.error('Failed to fetch scholarships')
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchScholarships()
-  }, [])
+  const scholarships: Announcement[] = data?.data || []
+  const loading = isLoading
 
   // Don't render the section if there are no scholarships and not loading
   if (!loading && scholarships.length === 0) return null
