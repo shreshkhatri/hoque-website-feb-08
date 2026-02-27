@@ -20,15 +20,10 @@ export function AboutCompany() {
               <p className="text-lg text-muted-foreground leading-relaxed">
                 Since 2009, HOQUE has provided expert educational guidance and advice to international students throughout the UK. With a head office in London and a global network of offices including Dhaka, Colombo, Islamabad, New York, Dubai, Mumbai, Hyderabad, Gujarat, Kochi, Sri Lanka, Sylhet, Chattogram, and Nepal, we have a team of fully trained counsellors dedicated to helping students achieve their dreams of studying in the UK.
               </p>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                Our mission is to support international students in their journey to access higher education from UK universities. We believe in empowering students not only to discover personal success but also to contribute to the betterment of society by becoming leaders of tomorrow. With our strong understanding of international student recruitment and strategic support, we continue to impart knowledge and guidance every step of the way.
+              </p>
             </div>
-
-            <p className="text-muted-foreground leading-relaxed">
-              HOQUE is managed by Mr. Fazlul Hoque, an internationally experienced and qualified higher educational advisor and successful entrepreneur with proven expertise in strategy, marketing, and corporate governance across a range of higher educational services for international students in the United Kingdom. Having been an international student himself, Mr. Hoque successfully completed his Master of Business Administration (MBA) from Liverpool John Moores University, UK, and brings first-hand understanding of the challenges and opportunities that await international students.
-            </p>
-
-            <p className="text-muted-foreground leading-relaxed">
-              As a visionary leader, Mr. Hoque has instilled a strong understanding of key principles within international student recruitment, support activities, events, marketing, and strategic development at HOQUE. He is passionate about continuing the proud tradition of imparting knowledge and education by supporting international students in their journey to access higher education from UK universities, helping them not only discover personal success but also contribute to the betterment of society by creating leaders for tomorrow.
-            </p>
 
             <div className="space-y-3 pt-2">
               {[
