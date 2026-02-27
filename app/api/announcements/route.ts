@@ -1,6 +1,23 @@
 import { NextResponse } from 'next/server'
 import { supabaseAdmin as supabase } from '@/lib/supabase'
 
+function nameToSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim()
+}
+
+function enrichWithUniversitySlug(data: Record<string, unknown>) {
+  if (data?.universities && typeof data.universities === 'object') {
+    const uni = data.universities as { id: number; name: string }
+    return { ...data, universities: { ...uni, slug: nameToSlug(uni.name) } }
+  }
+  return data
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const universityId = searchParams.get('university_id')
@@ -21,7 +38,7 @@ export async function GET(request: Request) {
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 404 })
     }
-    return NextResponse.json({ data })
+    return NextResponse.json({ data: enrichWithUniversitySlug(data as Record<string, unknown>) })
   }
 
   let query = supabase
@@ -54,5 +71,5 @@ export async function GET(request: Request) {
     return new Date(a.expires_at) > now
   })
 
-  return NextResponse.json({ data: filtered })
+  return NextResponse.json({ data: filtered.map((a: Record<string, unknown>) => enrichWithUniversitySlug(a)) })
 }
