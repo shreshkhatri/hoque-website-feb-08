@@ -62,7 +62,7 @@ export function FeaturedScholarships() {
 
     fetch('/api/announcements?announcement_type=scholarship&limit=4')
       .then((res) => res.json())
-      .then((data) => { console.log(data); setScholarships(data.data || []); })
+      .then((data) => setScholarships(data.data || []))
       .catch(() => { })
       .finally(() => setLoading(false))
   }, [])
