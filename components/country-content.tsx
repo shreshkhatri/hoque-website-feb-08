@@ -916,8 +916,7 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                       className="group block"
                     >
                       <Card className="h-full border-border hover:border-primary/40 hover:shadow-lg transition-all duration-200 overflow-hidden">
-                        {/* Coloured top accent bar */}
-                        <div className="h-1 bg-primary" />
+
                         <CardContent className="p-5 flex flex-col h-full">
                           {/* Badges row */}
                           <div className="flex flex-wrap gap-2 mb-3">
