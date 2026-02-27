@@ -19,7 +19,22 @@ import {
   Calendar,
   Eye,
   EyeOff,
+  ChevronsUpDown,
+  Check,
 } from 'lucide-react'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
@@ -88,6 +103,119 @@ const emptyScholarship: Partial<Scholarship> = {
   is_active: true,
 }
 
+function CountryCombobox({
+  countries,
+  value,
+  onChange,
+  placeholder = 'Select country',
+}: {
+  countries: Country[]
+  value: number | undefined
+  onChange: (id: number) => void
+  placeholder?: string
+}) {
+  const [open, setOpen] = useState(false)
+  const selected = countries.find((c) => c.id === value)
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          role="combobox"
+          aria-expanded={open}
+          className="flex h-9 w-full items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <span className={selected ? 'text-slate-900' : 'text-slate-400'}>
+            {selected ? selected.name : placeholder}
+          </span>
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 text-slate-400" />
+        </button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[320px] p-0 bg-white border-slate-200" align="start">
+        <Command>
+          <CommandInput placeholder="Search country..." className="h-9" />
+          <CommandList>
+            <CommandEmpty>No country found.</CommandEmpty>
+            <CommandGroup>
+              {countries.map((c) => (
+                <CommandItem
+                  key={c.id}
+                  value={c.name}
+                  onSelect={() => {
+                    onChange(c.id)
+                    setOpen(false)
+                  }}
+                >
+                  <Check
+                    className={`mr-2 h-4 w-4 ${value === c.id ? 'opacity-100 text-teal-600' : 'opacity-0'}`}
+                  />
+                  {c.name}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
+function FilterCountryCombobox({
+  countries,
+  value,
+  onChange,
+}: {
+  countries: Country[]
+  value: string
+  onChange: (val: string) => void
+}) {
+  const [open, setOpen] = useState(false)
+  const selectedLabel = value === 'all'
+    ? 'All Countries'
+    : countries.find((c) => String(c.id) === value)?.name ?? 'Filter by country'
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          role="combobox"
+          aria-expanded={open}
+          className="flex h-9 w-full sm:w-52 items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+        >
+          <span className={value === 'all' ? 'text-slate-500' : 'text-slate-900'}>{selectedLabel}</span>
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 text-slate-400" />
+        </button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[280px] p-0 bg-white border-slate-200" align="start">
+        <Command>
+          <CommandInput placeholder="Search country..." className="h-9" />
+          <CommandList>
+            <CommandEmpty>No country found.</CommandEmpty>
+            <CommandGroup>
+              <CommandItem value="all" onSelect={() => { onChange('all'); setOpen(false) }}>
+                <Check className={`mr-2 h-4 w-4 ${value === 'all' ? 'opacity-100 text-teal-600' : 'opacity-0'}`} />
+                All Countries
+              </CommandItem>
+              {countries.map((c) => (
+                <CommandItem
+                  key={c.id}
+                  value={c.name}
+                  onSelect={() => { onChange(String(c.id)); setOpen(false) }}
+                >
+                  <Check className={`mr-2 h-4 w-4 ${String(c.id) === value ? 'opacity-100 text-teal-600' : 'opacity-0'}`} />
+                  {c.name}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
 export default function ScholarshipsAdminPage() {
   const [scholarships, setScholarships] = useState<Scholarship[]>([])
   const [availableCountries, setAvailableCountries] = useState<Country[]>([])
@@ -109,7 +237,7 @@ export default function ScholarshipsAdminPage() {
   useEffect(() => {
     fetch('/api/countries')
       .then((r) => r.json())
-      .then((d) => setAvailableCountries(d.data || []))
+      .then((d) => setAvailableCountries(d.countries || []))
       .catch(() => {})
   }, [])
 
@@ -248,22 +376,15 @@ export default function ScholarshipsAdminPage() {
 
           {/* Country (FK) */}
           <div className="space-y-1.5">
-            <Label htmlFor="country_id" className="text-sm font-medium text-slate-700">
+            <Label className="text-sm font-medium text-slate-700">
               Country <span className="text-red-500">*</span>
             </Label>
-            <Select
-              value={editingScholarship.country_id ? String(editingScholarship.country_id) : ''}
-              onValueChange={(v) => setEditingScholarship((prev) => ({ ...prev, country_id: Number(v) }))}
-            >
-              <SelectTrigger className="bg-white border-slate-200">
-                <SelectValue placeholder="Select country" />
-              </SelectTrigger>
-              <SelectContent className="bg-white">
-                {availableCountries.map((c) => (
-                  <SelectItem key={c.id} value={String(c.id)}>{c.name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <CountryCombobox
+              countries={availableCountries}
+              value={editingScholarship.country_id}
+              onChange={(id) => setEditingScholarship((prev) => ({ ...prev, country_id: id }))}
+              placeholder="Search and select country..."
+            />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -442,17 +563,11 @@ export default function ScholarshipsAdminPage() {
             />
           </div>
 
-          <Select value={countryFilter} onValueChange={setCountryFilter}>
-            <SelectTrigger className="h-9 bg-white border-slate-200 text-slate-900 w-full sm:w-48">
-              <SelectValue placeholder="Filter by country" />
-            </SelectTrigger>
-            <SelectContent className="bg-white border-slate-200">
-              <SelectItem value="all">All Countries</SelectItem>
-              {availableCountries.map((c) => (
-                <SelectItem key={c.id} value={String(c.id)}>{c.name}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <FilterCountryCombobox
+            countries={availableCountries}
+            value={countryFilter}
+            onChange={setCountryFilter}
+          />
         </div>
       </div>
 
