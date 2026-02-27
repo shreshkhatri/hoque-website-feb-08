@@ -108,7 +108,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
             </div>
           </div>
           <div className="absolute top-3 right-3 bg-white rounded-xl shadow-md p-1.5">
-            <div className="relative w-16 h-16 rounded-lg overflow-hidden">
+            <div className="relative w-25 h-25 rounded-lg overflow-hidden">
               <Image
                 src={testimonial.uniLogo}
                 alt={testimonial.university}
