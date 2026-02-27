@@ -99,6 +99,7 @@ export function Footer() {
             <ul className="space-y-3">
               {[
                 { label: 'Apply Now', href: '/application-form' },
+                { label: 'Scholarships', href: '/scholarships' },
                 { label: 'Support & Guidance', href: '/faq' },
                 { label: 'Blog', href: '/blog' },
                 { label: 'Career', href: '/career' },
