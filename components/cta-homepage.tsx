@@ -14,12 +14,12 @@ export function CTAHomepage() {
           <div className="relative flex flex-col items-center text-center">
             {/* Badge */}
             <span className="inline-flex items-center gap-2 rounded-full bg-accent/20 px-4 py-1.5 text-xs font-semibold text-accent uppercase tracking-wider mb-6">
-              Start Your UK Journey
+              Dream Big And Make It happen
             </span>
 
             {/* Heading */}
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground max-w-3xl text-balance leading-tight mb-4">
-              Your dream of studying in the UK starts here
+              Start your application with us today
             </h2>
 
             {/* Subtext */}
