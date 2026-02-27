@@ -12,6 +12,7 @@ import Link from 'next/link'
 
 interface Announcement {
   id: number
+  slug: string
   title: string
   description: string
   announcement_type: string
@@ -367,7 +368,7 @@ export default function AnnouncementsClient() {
             return (
               <Link
                 key={announcement.id}
-                href={`/announcements?slug=${encodeURIComponent(announcement.id)}`}
+                href={`/announcements?slug=${encodeURIComponent(announcement.slug)}&type=${encodeURIComponent(announcement.announcement_type)}`}
                 className="block h-full"
               >
                 <Card
