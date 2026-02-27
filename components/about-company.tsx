@@ -74,10 +74,10 @@ export function AboutCompany() {
         {/* Stats section */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20 pt-16 border-t border-border">
           {[
-            { number: '17+', label: 'Years Experience', color: 'text-blue-600 dark:text-blue-400' },
-            { number: '14', label: 'Global Offices', color: 'text-emerald-600 dark:text-emerald-400' },
-            { number: '5000+', label: 'Students Guided', color: 'text-amber-600 dark:text-amber-400' },
-            { number: '100+', label: 'Partner Universities', color: 'text-rose-600 dark:text-rose-400' },
+            { number: '17+', label: 'Years Experience', color: 'text-amber-600 dark:text-amber-600' },
+            { number: '14', label: 'Global Offices', color: 'text-amber-600 dark:text-amber-600' },
+            { number: '5000+', label: 'Students Guided', color: 'text-amber-600 dark:text-amber-600' },
+            { number: '100+', label: 'Partner Universities', color: 'text-amber-600 dark:text-amber-600' },
           ].map((stat, i) => (
             <div key={i} className="text-center">
               <div className={`text-3xl md:text-4xl font-bold ${stat.color} mb-2`}>
