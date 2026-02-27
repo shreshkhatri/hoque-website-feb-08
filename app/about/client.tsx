@@ -65,7 +65,7 @@ export function AboutPageClient() {
                 {
                   title: 'Proven Experience',
                   description:
-                    'Over 15 years of excellence in guiding international students to UK universities.',
+                    'Over 17 years of excellence in guiding international students to UK universities.',
                   count: '17+',
                   label: 'Years Experience',
                   icon: Target,
