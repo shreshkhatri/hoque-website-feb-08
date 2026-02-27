@@ -19,7 +19,7 @@ export function AboutPageClient() {
               About Us
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto text-balance">
-              Empowering international students since 2009 with expert guidance and 100% free application services to leading UK universities
+              Empowering international students since 2009 with expert guidance and 100% free application services to leading universities worldwide
             </p>
           </div>
         </section>
@@ -44,7 +44,7 @@ export function AboutPageClient() {
                 {
                   title: 'University Partnerships',
                   description:
-                    'Strong relationships with 28+ leading UK universities ensuring quality education opportunities.',
+                    'Strong relationships with 100+ leading universities ensuring quality education opportunities across multiple destinations.',
                   count: '100+',
                   label: 'Partner Universities',
                   icon: GraduationCap,
@@ -66,7 +66,7 @@ export function AboutPageClient() {
                 {
                   title: 'Proven Experience',
                   description:
-                    'Over 17 years of excellence in guiding international students to UK universities.',
+                    'Over 17 years of excellence in guiding international students to top universities worldwide.',
                   count: '17+',
                   label: 'Years Experience',
                   icon: Target,
@@ -114,7 +114,7 @@ export function AboutPageClient() {
               {[
                 { text: '100% free application service for Foundation, Undergraduate, Postgraduate, and PhD programs', icon: DollarSign, iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400', border: 'border-emerald-200 dark:border-emerald-800' },
                 { text: 'Personalized counselling from fully trained education advisors', icon: MessageCircle, iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400', border: 'border-emerald-200 dark:border-emerald-800' },
-                { text: 'Strong partnerships with 28+ leading UK universities', icon: Award, iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400', border: 'border-emerald-200 dark:border-emerald-800' },
+                { text: 'Strong partnerships with 100+ leading universities across multiple countries', icon: Award, iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400', border: 'border-emerald-200 dark:border-emerald-800' },
                 { text: 'Global support network with 14 offices worldwide', icon: Globe, iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400', border: 'border-emerald-200 dark:border-emerald-800' },
                 { text: 'Comprehensive support from application to enrollment', icon: HeartHandshake, iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400', border: 'border-emerald-200 dark:border-emerald-800' },
                 { text: '17+ years of proven expertise in international student recruitment', icon: Target, iconBg: 'bg-emerald-100 dark:bg-emerald-900/30', iconColor: 'text-emerald-600 dark:text-emerald-400', border: 'border-emerald-200 dark:border-emerald-800' },
@@ -134,7 +134,7 @@ export function AboutPageClient() {
         </section>
         {/* CTA Section */}
         <CTAConsultation
-          heading="Ready to start your academy journey with HOQUE?"
+          heading="Ready to start your academic journey with HOQUE?"
           description="Get personalised advice from our expert counsellors. Whether you need help choosing a university, preparing your application, or navigating the visa process, we are here to help."
           badge="Let us guide you"
         />

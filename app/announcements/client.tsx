@@ -357,7 +357,7 @@ export default function AnnouncementsClient() {
               <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-3 shrink-0">
                 <Link
                   href="/application-form"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3.5 text-sm font-bold text-accent-foreground shadow-md hover:bg-accent/90 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-accent via-cyan-400 to-blue-500 px-6 py-3.5 text-sm font-bold text-white shadow-md hover:opacity-90 transition-all hover:scale-[1.02] active:scale-[0.98]"
                 >
                   <GraduationCap className="h-5 w-5" />
                   Apply Now

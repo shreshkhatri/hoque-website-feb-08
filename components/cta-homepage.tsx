@@ -31,7 +31,7 @@ export function CTAHomepage() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/application-form"
-                className="inline-flex items-center justify-center gap-2.5 rounded-xl bg-accent px-8 py-4 text-sm font-bold text-accent-foreground shadow-lg hover:bg-accent/90 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                className="inline-flex items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-accent via-cyan-400 to-blue-500 px-8 py-4 text-sm font-bold text-white shadow-lg hover:opacity-90 transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
                 <GraduationCap className="h-5 w-5" />
                 Apply Now
