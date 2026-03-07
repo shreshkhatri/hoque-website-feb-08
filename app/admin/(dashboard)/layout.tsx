@@ -64,6 +64,16 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
     return () => clearInterval(interval)
   }, [])
 
+  // Lock body scroll so only the inner panel scrolls
+  useEffect(() => {
+    document.documentElement.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.documentElement.style.overflow = ''
+      document.body.style.overflow = ''
+    }
+  }, [])
+
   useEffect(() => {
     const checkSession = async () => {
       try {
@@ -105,7 +115,7 @@ export default function AdminDashboardLayout({ children }: { children: React.Rea
 
   return (
     <ToastProvider>
-    <div className="flex h-screen bg-slate-50 overflow-hidden">
+    <div className="flex h-svh bg-slate-50 overflow-hidden" style={{ maxHeight: '100dvh' }}>
       {/* Mobile Overlay */}
       {sidebarOpen && (
         <div

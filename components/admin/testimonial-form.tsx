@@ -55,26 +55,44 @@ interface University {
 export function TestimonialForm({ initialData, onSubmit, isLoading }: TestimonialFormProps) {
   const [formData, setFormData] = useState({
     name: initialData?.name || '',
-    country_id: initialData?.country_id || null,
-    university_id: initialData?.university_id || null,
+    country_id: initialData?.country_id ?? null,
+    university_id: initialData?.university_id ?? null,
     program: initialData?.program || '',
     photo_url: initialData?.photo_url || '',
     rating: initialData?.rating || 5,
     review: initialData?.review || '',
-    display_at_homepage: initialData?.display_at_homepage || false,
-    display_order: initialData?.display_order || 0,
-    is_active: initialData?.is_active || true,
+    display_at_homepage: initialData?.display_at_homepage ?? false,
+    display_order: initialData?.display_order ?? 0,
+    is_active: initialData?.is_active ?? true,
   })
 
   const [countries, setCountries] = useState<Country[]>([])
   const [universities, setUniversities] = useState<University[]>([])
   const [photoFile, setPhotoFile] = useState<File | null>(null)
-  const [photoPreview, setPhotoPreview] = useState<string>(formData.photo_url)
+  const [photoPreview, setPhotoPreview] = useState<string>(initialData?.photo_url || '')
   const [uploadingPhoto, setUploadingPhoto] = useState(false)
   const [openCountry, setOpenCountry] = useState(false)
   const [openUni, setOpenUni] = useState(false)
   const [countrySearch, setCountrySearch] = useState('')
   const [uniSearch, setUniSearch] = useState('')
+
+  // Re-sync form when initialData arrives (edit page fetches async)
+  useEffect(() => {
+    if (!initialData) return
+    setFormData({
+      name: initialData.name || '',
+      country_id: initialData.country_id ?? null,
+      university_id: initialData.university_id ?? null,
+      program: initialData.program || '',
+      photo_url: initialData.photo_url || '',
+      rating: initialData.rating || 5,
+      review: initialData.review || '',
+      display_at_homepage: initialData.display_at_homepage ?? false,
+      display_order: initialData.display_order ?? 0,
+      is_active: initialData.is_active ?? true,
+    })
+    if (initialData.photo_url) setPhotoPreview(initialData.photo_url)
+  }, [initialData?.id])
 
   // Fetch countries
   useEffect(() => {
