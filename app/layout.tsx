@@ -21,7 +21,6 @@ export const metadata: Metadata = {
   },
   description: 'Expert educational institute helping international students secure places at top universities worldwide. Personalised guidance for admissions, visas, scholarships, and more.',
   keywords: 'international students, UK universities, university admissions, education counselling, visa guidance, scholarships',
-  generator: 'v0.app',
   referrer: 'strict-origin-when-cross-origin',
   robots: {
     index: true,
@@ -88,7 +87,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-        <body className="font-sans antialiased" style={{ overflowX: 'clip' }}>
+      <body className="font-sans antialiased" style={{ overflowX: 'clip' }}>
         <BannerProvider>
           <AnnouncementBanner />
           <HeroSearchProvider>

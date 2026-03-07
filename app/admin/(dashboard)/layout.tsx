@@ -18,6 +18,7 @@ import {
   Megaphone,
   FileCheck,
   Award,
+  Quote,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -36,6 +37,7 @@ const navItems = [
   { href: '/admin/courses', label: 'Courses', icon: BookOpen },
   { href: '/admin/announcements', label: 'Announcements', icon: Megaphone },
   { href: '/admin/scholarships', label: 'Scholarships', icon: Award },
+  { href: '/admin/testimonials', label: 'Testimonials', icon: Quote },
   { href: '/admin/messages', label: 'Messages', icon: MessageSquare },
   { href: '/admin/student-applications', label: 'Study Applications', icon: FileCheck },
   { href: '/admin/applications', label: 'Job Applications', icon: Briefcase },

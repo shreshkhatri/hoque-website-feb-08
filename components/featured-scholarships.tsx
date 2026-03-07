@@ -79,7 +79,7 @@ export function FeaturedScholarships() {
             Financial Support
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-2 mb-4 text-balance">
-            Latest Scholarship Opportunities
+            Scholarship Opportunities
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Explore the latest scholarships and funding opportunities available for
