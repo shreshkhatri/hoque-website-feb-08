@@ -17,12 +17,19 @@ export async function GET(request: Request) {
 
   let query = supabase
     .from('student_testimonials')
-    .select('*', { count: 'exact' })
+    .select(
+      `*,
+      universities:university_id(id, name, logo_url),
+      countries:country_id(id, name)`,
+      { count: 'exact' }
+    )
 
   if (search) {
-    query = query.or(`name.ilike.%${search}%,university.ilike.%${search}%,country.ilike.%${search}%`)
+    query = query.or(
+      `name.ilike.%${search}%,universities.name.ilike.%${search}%,countries.name.ilike.%${search}%`
+    )
   }
-  
+
   if (displayAtHomepage === 'true') {
     query = query.eq('display_at_homepage', true)
   } else if (displayAtHomepage === 'false') {
@@ -47,11 +54,10 @@ export async function POST(request: Request) {
     const body = await request.json()
     const {
       name,
-      country,
-      university,
+      country_id,
+      university_id,
       program,
       photo_url,
-      university_logo_url,
       rating,
       review,
       display_at_homepage,
@@ -59,26 +65,43 @@ export async function POST(request: Request) {
       is_active,
     } = body
 
-    if (!name || !country || !university || !program || !review) {
-      return NextResponse.json({ error: 'Name, country, university, program, and review are required' }, { status: 400 })
+    if (!name || !country_id || !university_id || !review) {
+      return NextResponse.json(
+        { error: 'Name, country, university, and review are required' },
+        { status: 400 }
+      )
+    }
+
+    // Get max display_order if not provided
+    let finalOrder = display_order || 0
+    if (!display_order) {
+      const { data: maxOrder } = await supabase
+        .from('student_testimonials')
+        .select('display_order')
+        .order('display_order', { ascending: false })
+        .limit(1)
+      finalOrder = ((maxOrder?.[0]?.display_order as number) || 0) + 1
     }
 
     const { data, error } = await supabase
       .from('student_testimonials')
       .insert({
         name,
-        country,
-        university,
-        program,
+        country_id,
+        university_id,
+        program: program || '',
         photo_url: photo_url || null,
-        university_logo_url: university_logo_url || null,
         rating: rating || 5,
         review,
         display_at_homepage: display_at_homepage !== undefined ? display_at_homepage : false,
-        display_order: display_order || 0,
+        display_order: finalOrder,
         is_active: is_active !== undefined ? is_active : true,
       })
-      .select()
+      .select(
+        `*,
+        universities:university_id(id, name, logo_url),
+        countries:country_id(id, name)`
+      )
       .single()
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })

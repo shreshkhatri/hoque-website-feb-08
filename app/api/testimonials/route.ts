@@ -8,7 +8,11 @@ export async function GET(request: Request) {
 
   let query = supabase
     .from('student_testimonials')
-    .select('*')
+    .select(
+      `*,
+      universities:university_id(id, name, logo_url),
+      countries:country_id(id, name)`
+    )
     .eq('is_active', true)
 
   if (homepageOnly) {

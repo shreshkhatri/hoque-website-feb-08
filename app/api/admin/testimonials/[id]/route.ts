@@ -10,7 +10,11 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
   const { data, error } = await supabase
     .from('student_testimonials')
-    .select('*')
+    .select(
+      `*,
+      universities:university_id(id, name, logo_url),
+      countries:country_id(id, name)`
+    )
     .eq('id', id)
     .single()
 
@@ -32,11 +36,10 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
     const allowedFields = [
       'name',
-      'country',
-      'university',
+      'country_id',
+      'university_id',
       'program',
       'photo_url',
-      'university_logo_url',
       'rating',
       'review',
       'display_at_homepage',
@@ -56,7 +59,11 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       .from('student_testimonials')
       .update(updates)
       .eq('id', id)
-      .select()
+      .select(
+        `*,
+        universities:university_id(id, name, logo_url),
+        countries:country_id(id, name)`
+      )
       .single()
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
