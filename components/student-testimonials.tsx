@@ -251,8 +251,9 @@ export function StudentTestimonials() {
     '/api/testimonials?homepage=true',
     fetcher,
     {
-      revalidateOnFocus: false,
-      dedupingInterval: 60000,
+      revalidateOnFocus: true,
+      revalidateOnMount: true,
+      dedupingInterval: 30000, // 30 seconds
     }
   )
 
@@ -317,26 +318,28 @@ export function StudentTestimonials() {
   }, [startAnimation, testimonials])
 
   return (
-    <section className="py-20 bg-background overflow-hidden">
-      {/* Header */}
-      <div className="text-center mb-14 px-4 sm:px-6 lg:px-8">
-        <span className="text-primary font-semibold text-sm uppercase tracking-wider">
-          Success Stories
-        </span>
-        <h2 className="text-3xl md:text-4xl font-bold text-foreground mt-2 mb-4 text-balance">
-          Student Experience With HOQUE
-        </h2>
-        <p className="text-muted-foreground max-w-2xl mx-auto text-pretty">
-          Hear from our successful students who achieved their dreams of studying at
-          top universities with our guidance and support.
-        </p>
+    <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-background overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12 sm:mb-16">
+          <span className="text-primary font-semibold text-xs sm:text-sm uppercase tracking-wider">
+            Success Stories
+          </span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mt-2 mb-4 text-balance">
+            Student Experience With HOQUE
+          </h2>
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto text-pretty">
+            Hear from our successful students who achieved their dreams of studying at
+            top universities with our guidance and support.
+          </p>
+        </div>
       </div>
 
-      {/* Scrolling track */}
-      <div className="relative">
+      {/* Scrolling track - full width for seamless loop */}
+      <div className="relative w-full overflow-hidden">
         {/* Fade edges */}
-        <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 left-0 w-12 sm:w-16 md:w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-12 sm:w-16 md:w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
 
         {isLoading ? (
           <div className="flex">
@@ -361,3 +364,4 @@ export function StudentTestimonials() {
     </section>
   )
 }
+
