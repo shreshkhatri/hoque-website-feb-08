@@ -84,6 +84,10 @@ const iconMap: Record<string, any> = {
   BookOpen,
 }
 
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+}
+
 export function UniversityContent({ university, courses, campuses = [], currency, announcements = [] }: UniversityContentProps) {
   const [activeTab, setActiveTab] = useState('overview')
   const [courseSearch, setCourseSearch] = useState('')
@@ -332,7 +336,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
                               </div>
                               <h3 className="font-medium text-slate-900 mb-1 line-clamp-2">{announcement.title}</h3>
                               {announcement.description && (
-                                <p className="text-sm text-slate-600 line-clamp-2 mb-2">{announcement.description}</p>
+                                <p className="text-sm text-slate-600 line-clamp-2 mb-2">{stripHtml(announcement.description)}</p>
                               )}
                               {announcement.scholarship_amount && (
                                 <p className="text-lg font-bold text-teal-600">
