@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { verifySession } from '@/lib/admin-auth'
 import { supabaseAdmin as supabase } from '@/lib/supabase'
 
@@ -67,6 +68,10 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       .single()
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+
+    // Revalidate homepage to show updated testimonials
+    revalidatePath('/')
+    revalidatePath('/api/testimonials')
 
     return NextResponse.json({ data })
   } catch (err) {

@@ -208,7 +208,7 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start" sideOffset={4}>
-                <Command>
+                <Command shouldFilter={false}>
                   <CommandInput
                     placeholder="Search countries..."
                     value={countrySearch}
@@ -220,7 +220,7 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
                       {filteredCountries.map((country) => (
                         <CommandItem
                           key={country.id}
-                          value={country.name}
+                          value={String(country.id)}
                           onSelect={() => {
                             setFormData((prev) => ({ ...prev, country_id: country.id }))
                             setOpenCountry(false)
@@ -259,7 +259,7 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start" sideOffset={4}>
-                <Command>
+                <Command shouldFilter={false}>
                   <CommandInput
                     placeholder="Search universities..."
                     value={uniSearch}
@@ -271,7 +271,7 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
                       {filteredUniversities.map((university) => (
                         <CommandItem
                           key={university.id}
-                          value={university.name}
+                          value={String(university.id)}
                           onSelect={() => {
                             setFormData((prev) => ({ ...prev, university_id: university.id }))
                             setOpenUni(false)
