@@ -53,10 +53,23 @@ interface University {
 }
 
 export function TestimonialForm({ initialData, onSubmit, isLoading }: TestimonialFormProps) {
+  // Extract IDs from initialData - handle both direct IDs and nested objects
+  const getInitialCountryId = () => {
+    if (initialData?.country_id) return initialData.country_id
+    if (initialData?.countries?.id) return initialData.countries.id
+    return null
+  }
+  
+  const getInitialUniversityId = () => {
+    if (initialData?.university_id) return initialData.university_id
+    if (initialData?.universities?.id) return initialData.universities.id
+    return null
+  }
+
   const [formData, setFormData] = useState({
     name: initialData?.name || '',
-    country_id: initialData?.country_id ?? null,
-    university_id: initialData?.university_id ?? null,
+    country_id: getInitialCountryId(),
+    university_id: getInitialUniversityId(),
     program: initialData?.program || '',
     photo_url: initialData?.photo_url || '',
     rating: initialData?.rating || 5,
@@ -79,10 +92,14 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
   // Re-sync form when initialData arrives (edit page fetches async)
   useEffect(() => {
     if (!initialData) return
+    
+    const countryId = initialData.country_id ?? initialData.countries?.id ?? null
+    const universityId = initialData.university_id ?? initialData.universities?.id ?? null
+    
     setFormData({
       name: initialData.name || '',
-      country_id: initialData.country_id ?? null,
-      university_id: initialData.university_id ?? null,
+      country_id: countryId,
+      university_id: universityId,
       program: initialData.program || '',
       photo_url: initialData.photo_url || '',
       rating: initialData.rating || 5,
@@ -92,7 +109,7 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
       is_active: initialData.is_active ?? true,
     })
     if (initialData.photo_url) setPhotoPreview(initialData.photo_url)
-  }, [initialData?.id])
+  }, [initialData])
 
   // Fetch countries
   useEffect(() => {
@@ -135,6 +152,7 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
     try {
       const formDataForUpload = new FormData()
       formDataForUpload.append('file', file)
+      formDataForUpload.append('name', formData.name || 'student')
 
       const res = await fetch('/api/admin/testimonials/upload-photo', {
         method: 'POST',
@@ -161,16 +179,22 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
     await onSubmit(formData)
   }
 
-  const filteredCountries = countries.filter((c) =>
-    c.name.toLowerCase().includes(countrySearch.toLowerCase())
-  )
+  // Case-insensitive search with trimming
+  const filteredCountries = countries.filter((c) => {
+    const search = countrySearch.trim().toLowerCase()
+    if (!search) return true
+    return c.name.toLowerCase().includes(search)
+  })
 
-  const filteredUniversities = universities.filter((u) =>
-    u.name.toLowerCase().includes(uniSearch.toLowerCase())
-  )
+  const filteredUniversities = universities.filter((u) => {
+    const search = uniSearch.trim().toLowerCase()
+    if (!search) return true
+    return u.name.toLowerCase().includes(search)
+  })
 
-  const selectedCountry = countries.find((c) => c.id === formData.country_id)
-  const selectedUni = universities.find((u) => u.id === formData.university_id)
+  // Use Number() to ensure type-safe comparison (IDs might come as strings from API)
+  const selectedCountry = countries.find((c) => Number(c.id) === Number(formData.country_id))
+  const selectedUni = universities.find((u) => Number(u.id) === Number(formData.university_id))
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -230,7 +254,7 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
                           <Check
                             className={cn(
                               'mr-2 h-4 w-4',
-                              formData.country_id === country.id ? 'opacity-100' : 'opacity-0'
+                              Number(formData.country_id) === Number(country.id) ? 'opacity-100' : 'opacity-0'
                             )}
                           />
                           {country.name}
@@ -281,7 +305,7 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
                           <Check
                             className={cn(
                               'mr-2 h-4 w-4',
-                              formData.university_id === university.id ? 'opacity-100' : 'opacity-0'
+                              Number(formData.university_id) === Number(university.id) ? 'opacity-100' : 'opacity-0'
                             )}
                           />
                           {university.name}
