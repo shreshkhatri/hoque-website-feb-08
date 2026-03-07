@@ -189,14 +189,14 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
                   <Check className="ml-2 h-4 w-4 opacity-0" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-full p-0">
+              <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start" sideOffset={4}>
                 <Command>
                   <CommandInput
                     placeholder="Search countries..."
                     value={countrySearch}
                     onValueChange={setCountrySearch}
                   />
-                  <CommandList>
+                  <CommandList className="max-h-60 overflow-y-auto">
                     <CommandEmpty>No country found</CommandEmpty>
                     <CommandGroup>
                       {filteredCountries.map((country) => (
@@ -240,14 +240,14 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
                   <Check className="ml-2 h-4 w-4 opacity-0" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-full p-0">
+              <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start" sideOffset={4}>
                 <Command>
                   <CommandInput
                     placeholder="Search universities..."
                     value={uniSearch}
                     onValueChange={setUniSearch}
                   />
-                  <CommandList>
+                  <CommandList className="max-h-60 overflow-y-auto">
                     <CommandEmpty>No university found</CommandEmpty>
                     <CommandGroup>
                       {filteredUniversities.map((university) => (
