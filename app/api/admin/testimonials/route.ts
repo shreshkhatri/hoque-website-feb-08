@@ -57,6 +57,8 @@ export async function POST(request: Request) {
       name,
       country_id,
       university_id,
+      university_name,
+      country_name,
       program,
       photo_url,
       rating,
@@ -90,6 +92,9 @@ export async function POST(request: Request) {
         name,
         country_id,
         university_id,
+        // Keep legacy text fields in sync for any queries that still use them
+        university: university_name || null,
+        country: country_name || null,
         program: program || '',
         photo_url: photo_url || null,
         rating: rating || 5,

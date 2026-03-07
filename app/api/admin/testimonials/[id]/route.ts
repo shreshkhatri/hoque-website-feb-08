@@ -54,7 +54,15 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       }
     })
 
-    updates.updated_at = new Date().toISOString()
+    // If university_id is being updated, also sync the legacy text field
+    if (body.university_id !== undefined && body.university_name) {
+      updates.university = body.university_name
+    }
+
+    // If country_id is being updated, also sync the legacy text field
+    if (body.country_id !== undefined && body.country_name) {
+      updates.country = body.country_name
+    }
 
     const { data, error } = await supabase
       .from('student_testimonials')

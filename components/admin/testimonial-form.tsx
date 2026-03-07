@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Upload, Loader2 } from 'lucide-react'
+import { Upload, Loader2, ChevronsUpDown } from 'lucide-react'
 import Image from 'next/image'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
@@ -36,6 +36,9 @@ interface TestimonialFormProps {
     is_active: boolean
     universities?: { id: number; name: string; logo_url: string }
     countries?: { id: number; name: string }
+    // Legacy text fields (before FK migration)
+    country?: string
+    university?: string
   }
   onSubmit: (data: any) => Promise<void>
   isLoading?: boolean
@@ -53,36 +56,28 @@ interface University {
 }
 
 export function TestimonialForm({ initialData, onSubmit, isLoading }: TestimonialFormProps) {
-  // Extract IDs from initialData - handle both direct IDs and nested objects
-  const getInitialCountryId = () => {
-    if (initialData?.country_id) return initialData.country_id
-    if (initialData?.countries?.id) return initialData.countries.id
-    return null
-  }
-  
-  const getInitialUniversityId = () => {
-    if (initialData?.university_id) return initialData.university_id
-    if (initialData?.universities?.id) return initialData.universities.id
-    return null
-  }
-
   const [formData, setFormData] = useState({
-    name: initialData?.name || '',
-    country_id: getInitialCountryId(),
-    university_id: getInitialUniversityId(),
-    program: initialData?.program || '',
-    photo_url: initialData?.photo_url || '',
-    rating: initialData?.rating || 5,
-    review: initialData?.review || '',
-    display_at_homepage: initialData?.display_at_homepage ?? false,
-    display_order: initialData?.display_order ?? 0,
-    is_active: initialData?.is_active ?? true,
+    name: '',
+    country_id: null as number | null,
+    university_id: null as number | null,
+    program: '',
+    photo_url: '',
+    rating: 5,
+    review: '',
+    display_at_homepage: false,
+    display_order: 0,
+    is_active: true,
   })
 
   const [countries, setCountries] = useState<Country[]>([])
-  const [universities, setUniversities] = useState<University[]>([])
-  const [photoFile, setPhotoFile] = useState<File | null>(null)
-  const [photoPreview, setPhotoPreview] = useState<string>(initialData?.photo_url || '')
+
+  // University: search-as-you-type, no upfront load
+  const [uniResults, setUniResults] = useState<University[]>([])
+  const [uniSearching, setUniSearching] = useState(false)
+  const [selectedUniName, setSelectedUniName] = useState<string>('')
+  const uniDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const [photoPreview, setPhotoPreview] = useState<string>('')
   const [uploadingPhoto, setUploadingPhoto] = useState(false)
   const [openCountry, setOpenCountry] = useState(false)
   const [openUni, setOpenUni] = useState(false)
@@ -92,10 +87,12 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
   // Re-sync form when initialData arrives (edit page fetches async)
   useEffect(() => {
     if (!initialData) return
-    
+
     const countryId = initialData.country_id ?? initialData.countries?.id ?? null
     const universityId = initialData.university_id ?? initialData.universities?.id ?? null
-    
+    // Pre-fill university name so the button shows the correct label immediately
+    const universityName = initialData.universities?.name ?? initialData.university ?? ''
+
     setFormData({
       name: initialData.name || '',
       country_id: countryId,
@@ -108,14 +105,15 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
       display_order: initialData.display_order ?? 0,
       is_active: initialData.is_active ?? true,
     })
+    if (universityName) setSelectedUniName(universityName)
     if (initialData.photo_url) setPhotoPreview(initialData.photo_url)
   }, [initialData])
 
-  // Fetch countries
+  // Fetch countries (small list, fine to load upfront)
   useEffect(() => {
     async function fetchCountries() {
       try {
-        const res = await fetch('/api/admin/countries')
+        const res = await fetch('/api/admin/countries?limit=300')
         const json = await res.json()
         setCountries(Array.isArray(json.data) ? json.data : json)
       } catch (err) {
@@ -125,29 +123,35 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
     fetchCountries()
   }, [])
 
-  // Fetch universities
-  useEffect(() => {
-    async function fetchUniversities() {
-      try {
-        const res = await fetch('/api/admin/universities')
-        const json = await res.json()
-        setUniversities(Array.isArray(json.data) ? json.data : json)
-      } catch (err) {
-        console.error('Failed to fetch universities:', err)
-      }
+  // Search universities on type (debounced 300ms)
+  const handleUniSearch = (value: string) => {
+    setUniSearch(value)
+    if (uniDebounceRef.current) clearTimeout(uniDebounceRef.current)
+    if (!value.trim()) {
+      setUniResults([])
+      return
     }
-    fetchUniversities()
-  }, [])
+    uniDebounceRef.current = setTimeout(async () => {
+      setUniSearching(true)
+      try {
+        const res = await fetch(`/api/admin/universities?search=${encodeURIComponent(value.trim())}&limit=20`)
+        const json = await res.json()
+        setUniResults(Array.isArray(json.data) ? json.data : [])
+      } catch (err) {
+        console.error('University search failed:', err)
+      } finally {
+        setUniSearching(false)
+      }
+    }, 300)
+  }
 
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
-    setPhotoFile(file)
     const preview = URL.createObjectURL(file)
     setPhotoPreview(preview)
 
-    // Upload photo
     setUploadingPhoto(true)
     try {
       const formDataForUpload = new FormData()
@@ -176,25 +180,23 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
       alert('Please fill all required fields')
       return
     }
-    await onSubmit(formData)
+    // Include names alongside IDs so the API can keep legacy text fields in sync
+    const selectedCountry = countries.find((c) => Number(c.id) === Number(formData.country_id))
+    await onSubmit({
+      ...formData,
+      university_name: selectedUniName,
+      country_name: selectedCountry?.name ?? '',
+    })
   }
 
-  // Case-insensitive search with trimming
+  // Case-insensitive client-side filter for countries (small list)
   const filteredCountries = countries.filter((c) => {
     const search = countrySearch.trim().toLowerCase()
     if (!search) return true
     return c.name.toLowerCase().includes(search)
   })
 
-  const filteredUniversities = universities.filter((u) => {
-    const search = uniSearch.trim().toLowerCase()
-    if (!search) return true
-    return u.name.toLowerCase().includes(search)
-  })
-
-  // Use Number() to ensure type-safe comparison (IDs might come as strings from API)
   const selectedCountry = countries.find((c) => Number(c.id) === Number(formData.country_id))
-  const selectedUni = universities.find((u) => Number(u.id) === Number(formData.university_id))
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -267,19 +269,27 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
             </Popover>
           </div>
 
-          {/* University - Searchable Dropdown */}
+          {/* University - Search-as-you-type */}
           <div>
             <Label htmlFor="university">University *</Label>
-            <Popover open={openUni} onOpenChange={setOpenUni}>
+            <Popover open={openUni} onOpenChange={(open) => {
+              setOpenUni(open)
+              if (!open) {
+                setUniSearch('')
+                setUniResults([])
+              }
+            }}>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
-                  className="w-full justify-between"
+                  className="w-full justify-between font-normal"
                   role="combobox"
                   aria-expanded={openUni}
                 >
-                  {selectedUni?.name || 'Select university...'}
-                  <Check className="ml-2 h-4 w-4 opacity-0" />
+                  <span className={cn(!selectedUniName && 'text-muted-foreground')}>
+                    {selectedUniName || 'Type to search universities...'}
+                  </span>
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start" sideOffset={4}>
@@ -287,31 +297,48 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
                   <CommandInput
                     placeholder="Search universities..."
                     value={uniSearch}
-                    onValueChange={setUniSearch}
+                    onValueChange={handleUniSearch}
                   />
                   <CommandList className="max-h-60 overflow-y-auto">
-                    <CommandEmpty>No university found</CommandEmpty>
-                    <CommandGroup>
-                      {filteredUniversities.map((university) => (
-                        <CommandItem
-                          key={university.id}
-                          value={String(university.id)}
-                          onSelect={() => {
-                            setFormData((prev) => ({ ...prev, university_id: university.id }))
-                            setOpenUni(false)
-                            setUniSearch('')
-                          }}
-                        >
-                          <Check
-                            className={cn(
-                              'mr-2 h-4 w-4',
-                              Number(formData.university_id) === Number(university.id) ? 'opacity-100' : 'opacity-0'
-                            )}
-                          />
-                          {university.name}
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
+                    {uniSearching && (
+                      <div className="flex items-center justify-center py-4 text-sm text-muted-foreground gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Searching...
+                      </div>
+                    )}
+                    {!uniSearching && uniSearch.trim() && uniResults.length === 0 && (
+                      <CommandEmpty>No university found for &quot;{uniSearch}&quot;</CommandEmpty>
+                    )}
+                    {!uniSearching && !uniSearch.trim() && (
+                      <div className="py-4 text-center text-sm text-muted-foreground">
+                        Start typing to search universities
+                      </div>
+                    )}
+                    {!uniSearching && uniResults.length > 0 && (
+                      <CommandGroup>
+                        {uniResults.map((university) => (
+                          <CommandItem
+                            key={university.id}
+                            value={String(university.id)}
+                            onSelect={() => {
+                              setFormData((prev) => ({ ...prev, university_id: university.id }))
+                              setSelectedUniName(university.name)
+                              setOpenUni(false)
+                              setUniSearch('')
+                              setUniResults([])
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                'mr-2 h-4 w-4',
+                                Number(formData.university_id) === Number(university.id) ? 'opacity-100' : 'opacity-0'
+                              )}
+                            />
+                            {university.name}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    )}
                   </CommandList>
                 </Command>
               </PopoverContent>

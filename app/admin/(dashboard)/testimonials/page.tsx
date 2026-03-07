@@ -42,17 +42,32 @@ import Image from 'next/image'
 interface Testimonial {
   id: string
   name: string
-  country: string
-  university: string
+  // Legacy flat fields
+  country?: string
+  university?: string
+  university_logo_url?: string | null
+  // Nested FK objects returned by the API
+  countries?: { id: number; name: string }
+  universities?: { id: number; name: string; logo_url: string }
   program: string
   photo_url: string | null
-  university_logo_url: string | null
   rating: number
   review: string
   display_at_homepage: boolean
   display_order: number
   is_active: boolean
   created_at: string
+}
+
+// Helper to resolve name from either nested object or legacy flat field
+function getCountryName(t: Testimonial) {
+  return t.countries?.name ?? t.country ?? '—'
+}
+function getUniversityName(t: Testimonial) {
+  return t.universities?.name ?? t.university ?? '—'
+}
+function getUniversityLogo(t: Testimonial) {
+  return t.universities?.logo_url ?? t.university_logo_url ?? null
 }
 
 export default function TestimonialsPage() {
@@ -85,7 +100,10 @@ export default function TestimonialsPage() {
       if (homepageFilter && homepageFilter !== 'all') {
         params.append('display_at_homepage', homepageFilter)
       }
-      const res = await fetch(`/api/admin/testimonials?${params}`, { credentials: 'same-origin' })
+      const res = await fetch(`/api/admin/testimonials?${params}`, {
+        credentials: 'same-origin',
+        cache: 'no-store',
+      })
       const data = await res.json()
       setTestimonials(data.data || [])
       setTotal(data.total || 0)
@@ -209,14 +227,14 @@ export default function TestimonialsPage() {
                     <h3 className="font-medium text-slate-900 truncate">{testimonial.name}</h3>
                     <div className="flex items-center gap-1 text-xs text-slate-500">
                       <MapPin className="h-3 w-3" />
-                      <span className="truncate">{testimonial.country}</span>
+                      <span className="truncate">{getCountryName(testimonial)}</span>
                     </div>
                   </div>
-                  {testimonial.university_logo_url && (
+                  {getUniversityLogo(testimonial) && (
                     <div className="relative h-8 w-8 rounded bg-white border border-slate-200 p-0.5 flex-shrink-0">
                       <Image
-                        src={testimonial.university_logo_url}
-                        alt={testimonial.university}
+                        src={getUniversityLogo(testimonial)!}
+                        alt={getUniversityName(testimonial)}
                         fill
                         className="object-contain"
                       />
@@ -227,7 +245,7 @@ export default function TestimonialsPage() {
                 {/* University & Program */}
                 <div className="flex items-center gap-1 text-xs text-teal-600 mb-2">
                   <GraduationCap className="h-3 w-3" />
-                  <span className="truncate">{testimonial.university}</span>
+                  <span className="truncate">{getUniversityName(testimonial)}</span>
                 </div>
                 <p className="text-xs text-slate-500 mb-2 truncate">{testimonial.program}</p>
 
