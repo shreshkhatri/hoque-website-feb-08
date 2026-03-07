@@ -93,18 +93,21 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
   useEffect(() => {
     if (!initialData) return
     
-    const countryId = initialData.country_id ?? initialData.countries?.id ?? null
-    const universityId = initialData.university_id ?? initialData.universities?.id ?? null
+    // Try multiple ways to get the IDs - check direct fields, nested objects, and fallback to finding by name
+    let countryId = initialData.country_id ?? initialData.countries?.id ?? null
+    let universityId = initialData.university_id ?? initialData.universities?.id ?? null
     
-    console.log('[v0] InitialData received:', {
-      name: initialData.name,
-      country_id: initialData.country_id,
-      countries: initialData.countries,
-      university_id: initialData.university_id,
-      universities: initialData.universities,
-      resolvedCountryId: countryId,
-      resolvedUniversityId: universityId,
-    })
+    // If we have country name but no ID, try to find it
+    if (!countryId && initialData.country && countries.length > 0) {
+      const found = countries.find(c => c.name.toLowerCase() === (initialData.country || '').toLowerCase())
+      if (found) countryId = found.id
+    }
+    
+    // If we have university name but no ID, try to find it
+    if (!universityId && initialData.university && universities.length > 0) {
+      const found = universities.find(u => u.name.toLowerCase() === (initialData.university || '').toLowerCase())
+      if (found) universityId = found.id
+    }
     
     setFormData({
       name: initialData.name || '',
@@ -119,7 +122,7 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
       is_active: initialData.is_active ?? true,
     })
     if (initialData.photo_url) setPhotoPreview(initialData.photo_url)
-  }, [initialData])
+  }, [initialData, countries, universities])
 
   // Fetch countries
   useEffect(() => {
@@ -142,7 +145,6 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
         const res = await fetch('/api/admin/universities')
         const json = await res.json()
         const unis = Array.isArray(json.data) ? json.data : json
-        console.log('[v0] Loaded universities:', unis.length, 'Looking for ID:', formData.university_id)
         setUniversities(unis)
       } catch (err) {
         console.error('Failed to fetch universities:', err)
@@ -207,11 +209,6 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
   // Use Number() to ensure type-safe comparison (IDs might come as strings from API)
   const selectedCountry = countries.find((c) => Number(c.id) === Number(formData.country_id))
   const selectedUni = universities.find((u) => Number(u.id) === Number(formData.university_id))
-
-  // Debug: log when form data changes
-  useEffect(() => {
-    console.log('[v0] Form university_id:', formData.university_id, 'selectedUni:', selectedUni, 'universities count:', universities.length)
-  }, [formData.university_id, selectedUni, universities.length])
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
