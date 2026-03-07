@@ -180,7 +180,13 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
       alert('Please fill all required fields')
       return
     }
-    await onSubmit(formData)
+    // Include names alongside IDs so the API can keep legacy text fields in sync
+    const selectedCountry = countries.find((c) => Number(c.id) === Number(formData.country_id))
+    await onSubmit({
+      ...formData,
+      university_name: selectedUniName,
+      country_name: selectedCountry?.name ?? '',
+    })
   }
 
   // Case-insensitive client-side filter for countries (small list)
