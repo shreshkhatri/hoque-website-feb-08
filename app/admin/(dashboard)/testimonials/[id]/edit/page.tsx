@@ -61,7 +61,7 @@ export default function EditTestimonialPage({ params }: { params: Promise<{ id: 
 
   if (loading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 max-w-2xl mx-auto pb-10">
         <Skeleton className="h-10 w-48" />
         <Skeleton className="h-64 w-full" />
         <Skeleton className="h-64 w-full" />
@@ -71,7 +71,7 @@ export default function EditTestimonialPage({ params }: { params: Promise<{ id: 
 
   if (!testimonial) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 max-w-2xl mx-auto pb-10">
         <div>
           <Link href="/admin/testimonials">
             <Button variant="ghost" size="sm">
@@ -89,7 +89,7 @@ export default function EditTestimonialPage({ params }: { params: Promise<{ id: 
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-2xl mx-auto pb-10">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
