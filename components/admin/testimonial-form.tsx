@@ -96,6 +96,16 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
     const countryId = initialData.country_id ?? initialData.countries?.id ?? null
     const universityId = initialData.university_id ?? initialData.universities?.id ?? null
     
+    console.log('[v0] InitialData received:', {
+      name: initialData.name,
+      country_id: initialData.country_id,
+      countries: initialData.countries,
+      university_id: initialData.university_id,
+      universities: initialData.universities,
+      resolvedCountryId: countryId,
+      resolvedUniversityId: universityId,
+    })
+    
     setFormData({
       name: initialData.name || '',
       country_id: countryId,
@@ -131,7 +141,9 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
       try {
         const res = await fetch('/api/admin/universities')
         const json = await res.json()
-        setUniversities(Array.isArray(json.data) ? json.data : json)
+        const unis = Array.isArray(json.data) ? json.data : json
+        console.log('[v0] Loaded universities:', unis.length, 'Looking for ID:', formData.university_id)
+        setUniversities(unis)
       } catch (err) {
         console.error('Failed to fetch universities:', err)
       }
@@ -195,6 +207,11 @@ export function TestimonialForm({ initialData, onSubmit, isLoading }: Testimonia
   // Use Number() to ensure type-safe comparison (IDs might come as strings from API)
   const selectedCountry = countries.find((c) => Number(c.id) === Number(formData.country_id))
   const selectedUni = universities.find((u) => Number(u.id) === Number(formData.university_id))
+
+  // Debug: log when form data changes
+  useEffect(() => {
+    console.log('[v0] Form university_id:', formData.university_id, 'selectedUni:', selectedUni, 'universities count:', universities.length)
+  }, [formData.university_id, selectedUni, universities.length])
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
