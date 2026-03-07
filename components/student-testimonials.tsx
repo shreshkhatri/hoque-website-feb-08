@@ -283,11 +283,16 @@ export function StudentTestimonials() {
         return
       }
 
+      // Start from loopWidth so content moves right-to-left → left-to-right
+      if (positionRef.current === 0) {
+        positionRef.current = loopWidth
+      }
+
       if (!isPausedRef.current) {
-        positionRef.current += 0.8
-        // Seamless reset: when we've scrolled one full copy, jump back
-        if (positionRef.current >= loopWidth) {
-          positionRef.current -= loopWidth
+        positionRef.current -= 0.8
+        // Seamless reset: when we've scrolled back to 0, jump to loopWidth
+        if (positionRef.current <= 0) {
+          positionRef.current = loopWidth
         }
       }
 
