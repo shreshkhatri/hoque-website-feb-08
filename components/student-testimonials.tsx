@@ -244,6 +244,7 @@ export function StudentTestimonials() {
   const positionRef = useRef(0)
   const isPausedRef = useRef(false)
   const rafRef = useRef<number>(0)
+  const loopWidthRef = useRef(0)
 
   // Fetch testimonials from database (only homepage ones)
   const { data, isLoading } = useSWR<{ data: Testimonial[] }>(
@@ -251,37 +252,64 @@ export function StudentTestimonials() {
     fetcher,
     {
       revalidateOnFocus: false,
-      dedupingInterval: 60000, // Cache for 1 minute
+      dedupingInterval: 60000,
     }
   )
 
   // Use fetched data or fallback to hardcoded testimonials
   const testimonials = data?.data && data.data.length > 0 ? data.data : fallbackTestimonials
 
-  const animate = useCallback(() => {
-    if (!trackRef.current) return
-    const track = trackRef.current
-    const halfWidth = track.scrollWidth / 2
+  // Triple the array for seamless wrap
+  const tripled = [...testimonials, ...testimonials, ...testimonials]
 
-    if (!isPausedRef.current) {
-      positionRef.current += 0.8 // Slightly faster scrolling
-      if (positionRef.current >= halfWidth) {
-        positionRef.current = 0 // Reset without jump
+  const startAnimation = useCallback(() => {
+    cancelAnimationFrame(rafRef.current)
+
+    const step = () => {
+      const track = trackRef.current
+      if (!track) {
+        rafRef.current = requestAnimationFrame(step)
+        return
       }
+
+      // Measure the width of one copy (total / 3) lazily after mount
+      if (loopWidthRef.current === 0) {
+        loopWidthRef.current = track.scrollWidth / 3
+      }
+
+      const loopWidth = loopWidthRef.current
+      if (loopWidth === 0) {
+        rafRef.current = requestAnimationFrame(step)
+        return
+      }
+
+      if (!isPausedRef.current) {
+        positionRef.current += 0.8
+        // Seamless reset: when we've scrolled one full copy, jump back
+        if (positionRef.current >= loopWidth) {
+          positionRef.current -= loopWidth
+        }
+      }
+
+      track.style.transform = `translate3d(${-positionRef.current}px, 0, 0)`
+      rafRef.current = requestAnimationFrame(step)
     }
 
-    track.style.transform = `translate3d(${-positionRef.current}px, 0, 0)`
-
-    rafRef.current = requestAnimationFrame(animate)
+    rafRef.current = requestAnimationFrame(step)
   }, [])
 
   useEffect(() => {
-    rafRef.current = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(rafRef.current)
-  }, [animate])
+    // Small delay so the DOM has painted and scrollWidth is measurable
+    const timer = setTimeout(() => {
+      loopWidthRef.current = 0 // reset so it re-measures after data loads
+      startAnimation()
+    }, 50)
 
-  // Triple the array for seamless wrap
-  const tripled = [...testimonials, ...testimonials, ...testimonials]
+    return () => {
+      clearTimeout(timer)
+      cancelAnimationFrame(rafRef.current)
+    }
+  }, [startAnimation, testimonials])
 
   return (
     <section className="py-20 bg-background overflow-hidden">
@@ -316,12 +344,8 @@ export function StudentTestimonials() {
             ref={trackRef}
             className="flex will-change-transform"
             style={{ transform: 'translate3d(0,0,0)' }}
-            onMouseEnter={() => {
-              isPausedRef.current = true
-            }}
-            onMouseLeave={() => {
-              isPausedRef.current = false
-            }}
+            onMouseEnter={() => { isPausedRef.current = true }}
+            onMouseLeave={() => { isPausedRef.current = false }}
           >
             {tripled.map((testimonial, index) => (
               <TestimonialCard key={`${testimonial.id}-${index}`} testimonial={testimonial} />
