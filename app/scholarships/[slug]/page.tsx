@@ -154,15 +154,12 @@ export default async function ScholarshipDetailPage({ params }: { params: Promis
                       {scholarship.eligibility_type}
                     </Badge>
                   )}
-                  <Badge className="bg-primary-foreground/15 text-primary-foreground border-primary-foreground/20 text-sm">
-                  <Users className="h-3.5 w-3.5 mr-1.5" />
-                  {scholarship.eligibility_type}
-                </Badge>
-              )}
-              <Badge className="bg-primary-foreground/15 text-primary-foreground border-primary-foreground/20 text-sm">
-                <MapPin className="h-3.5 w-3.5 mr-1.5" />
-                {scholarship.country}
-              </Badge>
+                  {scholarship.country && (
+                    <Badge className="bg-primary-foreground/15 text-primary-foreground border-primary-foreground/20 text-sm">
+                      <MapPin className="h-3.5 w-3.5 mr-1.5" />
+                      {scholarship.country}
+                    </Badge>
+                  )}
             </div>
           </div>
         </div>
