@@ -550,14 +550,15 @@ export function CoursesPageClient() {
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
-                    <Command>
-                      <CommandInput placeholder="Search program levels..." />
-                      <CommandList>
-                        <CommandEmpty>No level found.</CommandEmpty>
-                        <CommandGroup>
+                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0 font-sans" align="start">
+                    <Command className="font-sans">
+                      <CommandInput className="font-sans" placeholder="Search program levels..." />
+                      <CommandList className="font-sans">
+                        <CommandEmpty className="font-sans">No level found.</CommandEmpty>
+                        <CommandGroup className="font-sans">
                           {programLevels.map((level) => (
                             <CommandItem
+                              className="font-sans"
                               key={level}
                               value={level}
                               onSelect={() => {

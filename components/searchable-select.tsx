@@ -55,7 +55,7 @@ export function SearchableSelect({
         type="button"
         disabled={disabled}
         onClick={() => { setOpen(!open); setSearch('') }}
-        className="flex items-center justify-between w-full h-10 px-3 py-2 text-sm rounded-md border border-slate-200 bg-white text-slate-900 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-1 cursor-pointer"
+        className="flex items-center justify-between w-full h-10 px-3 py-2 text-sm rounded-md border border-slate-200 bg-white text-slate-900 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-1 cursor-pointer font-sans"
       >
         <span className={selectedLabel ? 'text-slate-900 truncate' : 'text-slate-500 truncate'}>
           {selectedLabel || placeholder}
@@ -76,7 +76,7 @@ export function SearchableSelect({
       </button>
 
       {open && (
-        <div className="absolute z-50 mt-1 w-full bg-white border border-slate-200 rounded-md shadow-lg max-h-64 flex flex-col">
+        <div className="absolute z-50 mt-1 w-full bg-white border border-slate-200 rounded-md shadow-lg max-h-64 flex flex-col font-sans">
           <div className="flex items-center gap-2 px-3 py-2 border-b border-slate-100">
             <Search className="h-4 w-4 text-slate-400 shrink-0" />
             <input
@@ -85,7 +85,7 @@ export function SearchableSelect({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Type to search..."
-              className="w-full text-sm outline-none bg-transparent text-slate-900 placeholder:text-slate-400"
+              className="w-full text-sm outline-none bg-transparent text-slate-900 placeholder:text-slate-400 font-sans"
             />
           </div>
           <div className="overflow-y-auto flex-1">
@@ -97,7 +97,7 @@ export function SearchableSelect({
                   key={option.value}
                   type="button"
                   onClick={() => { onValueChange(option.value); setOpen(false); setSearch('') }}
-                  className={`w-full text-left px-3 py-2 text-sm hover:bg-teal-50 hover:text-teal-700 transition-colors cursor-pointer ${
+                  className={`w-full text-left px-3 py-2 text-sm hover:bg-teal-50 hover:text-teal-700 transition-colors cursor-pointer font-sans ${
                     option.value === value ? 'bg-teal-50 text-teal-700 font-medium' : 'text-slate-700'
                   }`}
                 >
