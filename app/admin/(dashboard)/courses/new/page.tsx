@@ -134,7 +134,11 @@ export default function NewCoursePage() {
       })
 
       if (res.ok) {
-        router.push('/admin/courses')
+        const created = await res.json()
+        const newId = created?.data?.id || created?.id
+        showToast('success', 'Course created', 'You can now add country-specific requirements below.')
+        // Redirect to edit page so country-specific requirements can be added immediately
+        router.push(`/admin/courses/${newId}/edit`)
       } else {
         const err = await res.json().catch(() => null)
         showToast('error', 'Failed to create course', err?.error || 'An unexpected error occurred.')
@@ -374,6 +378,16 @@ export default function NewCoursePage() {
           <CardTitle className="text-lg text-slate-900">Entry Requirements</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
+          {/* Country-specific callout */}
+          <div className="flex items-start gap-3 rounded-lg border border-teal-200 bg-teal-50 px-4 py-3">
+            <div className="mt-0.5 h-5 w-5 shrink-0 rounded-full bg-teal-500 flex items-center justify-center">
+              <span className="text-white text-[10px] font-bold leading-none">i</span>
+            </div>
+            <p className="text-sm text-teal-800">
+              These are the <strong>global defaults</strong> shown to all visitors. After creating this course, you will be taken to the edit page where you can add <strong>country-specific requirement overrides</strong> (e.g. different IELTS scores for students from Nepal vs. Nigeria).
+            </p>
+          </div>
+
           <div className="space-y-2">
             <Label className="text-sm text-slate-700">Entry Requirements (General)</Label>
             <RichTextEditor
