@@ -45,6 +45,7 @@ export async function GET(request: NextRequest) {
         .from('universities')
         .select('id, name, countries(id, name)')
         .ilike('name', `%${query}%`)
+        .eq('partnership_status', 'active') // Only active partnerships
         .not('name', 'in', `(${EXCLUDED_UNIVERSITIES.map((u) => `"${u}"`).join(',')})`)
         .limit(limit)
 
@@ -56,11 +57,11 @@ export async function GET(request: NextRequest) {
         type: 'university',
       })) || []
     } else if (type === 'courses') {
-      // First, get excluded university IDs
+      // First, get excluded university IDs (explicitly excluded + on_hold partnerships)
       const { data: excludedUnis } = await supabase
         .from('universities')
         .select('id')
-        .in('name', EXCLUDED_UNIVERSITIES)
+        .or(`name.in.(${EXCLUDED_UNIVERSITIES.map((u) => `"${u}"`).join(',')}),partnership_status.eq.on_hold`)
 
       const excludedUniIds = excludedUnis?.map((u) => u.id) || []
 
@@ -85,11 +86,11 @@ export async function GET(request: NextRequest) {
         type: 'course',
       })) || []
     } else if (type === 'intake') {
-      // First, get excluded university IDs
+      // First, get excluded university IDs (explicitly excluded + on_hold partnerships)
       const { data: excludedUnis } = await supabase
         .from('universities')
         .select('id')
-        .in('name', EXCLUDED_UNIVERSITIES)
+        .or(`name.in.(${EXCLUDED_UNIVERSITIES.map((u) => `"${u}"`).join(',')}),partnership_status.eq.on_hold`)
 
       const excludedUniIds = excludedUnis?.map((u) => u.id) || []
 

@@ -33,11 +33,11 @@ export async function GET(request: NextRequest) {
     const intakeMonths = searchParams.get('intake_months') // comma-separated
     const campusId = searchParams.get('campus_id')
 
-    // Get excluded university IDs
+    // Get excluded university IDs (explicitly excluded + on_hold partnerships)
     const { data: excludedUnis } = await supabase
       .from('universities')
       .select('id')
-      .in('name', EXCLUDED_UNIVERSITIES)
+      .or(`name.in.(${EXCLUDED_UNIVERSITIES.map((u) => `"${u}"`).join(',')}),partnership_status.eq.on_hold`)
 
     const excludedUniIds = excludedUnis?.map((u) => u.id) || []
     const excludeFilter = excludedUniIds.length > 0
@@ -51,6 +51,7 @@ export async function GET(request: NextRequest) {
         .from('universities')
         .select('id')
         .eq('country_id', parseInt(countryId))
+        .eq('partnership_status', 'active') // Only active partnerships
         .not('id', 'in', excludeFilter)
 
       countryUniversityIds = universities?.map((u) => u.id) || []
@@ -77,13 +78,14 @@ export async function GET(request: NextRequest) {
       tokens = tokenize(searchQuery)
 
       if (tokens.length > 0) {
-        // Find universities whose name matches any token
-        const uniOrConditions = tokens.map((t) => `name.ilike.%${t}%`).join(',')
-        const { data: matchedUnis } = await supabase
-          .from('universities')
-          .select('id, name')
-          .or(uniOrConditions)
-          .not('id', 'in', excludeFilter)
+      // Find universities whose name matches any token
+      const uniOrConditions = tokens.map((t) => `name.ilike.%${t}%`).join(',')
+      const { data: matchedUnis } = await supabase
+        .from('universities')
+        .select('id, name')
+        .or(uniOrConditions)
+        .eq('partnership_status', 'active') // Only active partnerships
+        .not('id', 'in', excludeFilter)
 
         searchMatchedUniIds = (matchedUnis || []).map((u) => u.id)
       }

@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { Award, MapPin, GraduationCap, Users, Calendar, ExternalLink, ArrowLeft, CheckCircle, Globe, Building2 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { getLevelBadgeColor, getEligibilityBadgeColor } from '@/lib/badge-colors'
 import { Button } from '@/components/ui/button'
 
 const SELECT_WITH_COUNTRY = `
@@ -139,16 +140,21 @@ export default async function ScholarshipDetailPage({ params }: { params: Promis
               </div>
             </div>
 
-            {/* Quick badges */}
-            <div className="flex flex-wrap gap-2 mt-5">
-              {scholarship.program_level && (
-                <Badge className="bg-accent/20 text-accent border-accent/30 text-sm">
-                  <GraduationCap className="h-3.5 w-3.5 mr-1.5" />
-                  {scholarship.program_level}
-                </Badge>
-              )}
-              {scholarship.eligibility_type && (
-                <Badge className="bg-primary-foreground/15 text-primary-foreground border-primary-foreground/20 text-sm">
+                {/* Quick badges */}
+                <div className="flex flex-wrap gap-2">
+                  {scholarship.program_level && (
+                    <Badge variant="outline" className={`text-sm border ${getLevelBadgeColor(scholarship.program_level)}`}>
+                      <GraduationCap className="h-4 w-4 mr-1.5" />
+                      {scholarship.program_level}
+                    </Badge>
+                  )}
+                  {scholarship.eligibility_type && (
+                    <Badge variant="outline" className={`text-sm border ${getEligibilityBadgeColor(scholarship.eligibility_type)}`}>
+                      <Users className="h-4 w-4 mr-1.5" />
+                      {scholarship.eligibility_type}
+                    </Badge>
+                  )}
+                  <Badge className="bg-primary-foreground/15 text-primary-foreground border-primary-foreground/20 text-sm">
                   <Users className="h-3.5 w-3.5 mr-1.5" />
                   {scholarship.eligibility_type}
                 </Badge>
@@ -355,12 +361,12 @@ export default async function ScholarshipDetailPage({ params }: { params: Promis
                         {r.funding_amount && (
                           <p className="text-sm font-medium text-accent">{r.funding_amount}</p>
                         )}
-                        {r.program_level && (
-                          <Badge variant="outline" className="text-xs">
-                            <GraduationCap className="h-3 w-3 mr-1" />
-                            {r.program_level}
-                          </Badge>
-                        )}
+                    {r.program_level && (
+                      <Badge variant="outline" className={`text-xs ${getLevelBadgeColor(r.program_level)}`}>
+                        <GraduationCap className="h-3 w-3 mr-1" />
+                        {r.program_level}
+                      </Badge>
+                    )}
                         <Button asChild size="sm" variant="outline" className="w-full">
                           <Link href={`/scholarships/${r.slug}`}>
                             View Details

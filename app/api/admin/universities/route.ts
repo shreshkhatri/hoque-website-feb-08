@@ -12,6 +12,7 @@ export async function GET(request: Request) {
   const limit = parseInt(searchParams.get('limit') || '20')
   const sortBy = searchParams.get('sort_by') || 'name'
   const sortOrder = searchParams.get('sort_order') || 'asc'
+  const partnershipStatus = searchParams.get('partnership_status') // 'active' | 'on_hold' | null
   const offset = (page - 1) * limit
 
   let query = supabase
@@ -20,6 +21,11 @@ export async function GET(request: Request) {
 
   if (search) {
     query = query.or(`name.ilike.%${search}%,city.ilike.%${search}%`)
+  }
+
+  // Filter by partnership status if specified
+  if (partnershipStatus && (partnershipStatus === 'active' || partnershipStatus === 'on_hold')) {
+    query = query.eq('partnership_status', partnershipStatus)
   }
 
   // Apply sorting

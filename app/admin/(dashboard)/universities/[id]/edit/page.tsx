@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ArrowLeft, Save, Loader2, Plus, X, Upload, Image as ImageIcon } from 'lucide-react'
+import { ArrowLeft, Save, Loader2, Plus, X, Upload, Image as ImageIcon, AlertTriangle } from 'lucide-react'
 import { Skeleton } from '@/components/ui/skeleton'
 import Link from 'next/link'
 import { useToast } from '@/components/toast-notification'
@@ -49,6 +49,7 @@ export default function EditUniversityPage() {
     partner_universities_count: '',
     intakes: '',
     express_offer_available: false as boolean,
+    partnership_status: 'active' as 'active' | 'on_hold',
   })
   const [campusFacilities, setCampusFacilities] = useState<string[]>([])
   const [newFacility, setNewFacility] = useState('')
@@ -106,6 +107,7 @@ export default function EditUniversityPage() {
             partner_universities_count: u.partner_universities_count?.toString() || '',
             intakes: u.intakes || '',
             express_offer_available: u.express_offer_available || false,
+            partnership_status: u.partnership_status || 'active',
           })
           // Load existing campus facilities
           if (Array.isArray(u.campus_facilities) && u.campus_facilities.length > 0) {
@@ -215,6 +217,7 @@ export default function EditUniversityPage() {
         intakes: form.intakes.trim() || null,
         campus_facilities: campusFacilities.length > 0 ? campusFacilities : null,
         express_offer_available: form.express_offer_available,
+        partnership_status: form.partnership_status,
       }
 
       const res = await fetch(`/api/admin/universities/${id}`, {
@@ -293,6 +296,56 @@ export default function EditUniversityPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Partnership Status */}
+        <Card className={`border-2 ${form.partnership_status === 'on_hold' ? 'border-amber-400 bg-amber-50' : 'border-slate-200 bg-white'}`}>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg text-slate-900 flex items-center gap-2">
+              {form.partnership_status === 'on_hold' && <AlertTriangle className="h-5 w-5 text-amber-500" />}
+              Partnership Status
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-4">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="partnership_status"
+                    value="active"
+                    checked={form.partnership_status === 'active'}
+                    onChange={() => setForm({ ...form, partnership_status: 'active' })}
+                    className="h-4 w-4 text-teal-600 border-slate-300 focus:ring-teal-500"
+                  />
+                  <span className="text-sm font-medium text-slate-700">Active Partnership</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="partnership_status"
+                    value="on_hold"
+                    checked={form.partnership_status === 'on_hold'}
+                    onChange={() => setForm({ ...form, partnership_status: 'on_hold' })}
+                    className="h-4 w-4 text-amber-600 border-slate-300 focus:ring-amber-500"
+                  />
+                  <span className="text-sm font-medium text-slate-700">On Hold</span>
+                </label>
+              </div>
+              {form.partnership_status === 'on_hold' && (
+                <div className="flex items-start gap-3 rounded-lg border border-amber-300 bg-amber-100 px-4 py-3">
+                  <AlertTriangle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <div className="text-sm text-amber-800">
+                    <p className="font-semibold">This university is currently on hold.</p>
+                    <p className="mt-1">When on hold, this university and all its courses, scholarships, and announcements will be <strong>hidden from the public website</strong>, including search results and partner listings. They will still be visible in the admin panel for management.</p>
+                  </div>
+                </div>
+              )}
+              {form.partnership_status === 'active' && (
+                <p className="text-sm text-slate-500">This university and all its related content are visible on the public website.</p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Basic Information */}
         <Card className="bg-white border-slate-200">
           <CardHeader>

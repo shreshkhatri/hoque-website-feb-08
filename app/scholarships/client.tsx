@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Search, Award, MapPin, GraduationCap, Users, ArrowRight, ExternalLink, Calendar } from 'lucide-react'
+import { getLevelBadgeColor, getEligibilityBadgeColor } from '@/lib/badge-colors'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -66,27 +67,9 @@ export default function ScholarshipsClient() {
     return () => clearTimeout(timer)
   }, [debouncedSearch])
 
-  const getEligibilityColor = (type: string | null) => {
-    switch (type) {
-      case 'International':
-        return 'bg-accent/15 text-accent border-accent/30'
-      case 'Domestic & International':
-      case 'International & Domestic':
-        return 'bg-blue-50 text-blue-700 border-blue-200'
-      case 'Worldwide':
-        return 'bg-emerald-50 text-emerald-700 border-emerald-200'
-      default:
-        return 'bg-muted text-muted-foreground border-border'
-    }
-  }
+  const getEligibilityColor = (type: string | null) => getEligibilityBadgeColor(type)
 
-  const getLevelColor = (level: string | null) => {
-    if (!level) return 'bg-muted text-muted-foreground'
-    if (level.includes('PhD') || level.includes('Doctoral')) return 'bg-amber-50 text-amber-700 border-amber-200'
-    if (level.includes('Postgraduate') || level.includes('Masters')) return 'bg-indigo-50 text-indigo-700 border-indigo-200'
-    if (level.includes('Undergraduate')) return 'bg-teal-50 text-teal-700 border-teal-200'
-    return 'bg-muted text-muted-foreground border-border'
-  }
+  const getLevelColor = (level: string | null) => getLevelBadgeColor(level)
 
   const countryFlags: Record<string, string> = {
     'United Kingdom': 'GB',

@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { CoverImageWithCrop } from '@/components/cover-image-with-crop'
-import { Calendar, Award, Bell, AlertCircle, ExternalLink, Clock, ArrowLeft, MapPin, Building2, Trophy, GraduationCap, MessageCircle } from 'lucide-react'
+import { Calendar, Award, Bell, AlertCircle, Newspaper, ExternalLink, Clock, ArrowLeft, MapPin, Building2, Trophy, GraduationCap, MessageCircle } from 'lucide-react'
+import { getAnnouncementTypeBadgeColor, getAnnouncementTypeAccentBar } from '@/lib/badge-colors'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -82,31 +83,18 @@ export default function AnnouncementsClient() {
     fetchAnnouncements()
   }, [filterType, slugFromUrl])
 
-  const getTypeIcon = (type: string) => {
+  const getTypeIcon = (type: string, size: 'sm' | 'md' = 'md') => {
+    const cls = size === 'sm' ? 'h-4 w-4' : 'h-5 w-5'
     switch (type) {
-      case 'scholarship':
-        return <Award className="h-5 w-5" />
-      case 'deadline':
-        return <Calendar className="h-5 w-5" />
-      case 'event':
-        return <Bell className="h-5 w-5" />
-      default:
-        return <AlertCircle className="h-5 w-5" />
+      case 'scholarship': return <Award className={cls} />
+      case 'deadline':    return <Calendar className={cls} />
+      case 'event':       return <Bell className={cls} />
+      case 'news':        return <Newspaper className={cls} />
+      default:            return <AlertCircle className={cls} />
     }
   }
 
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case 'scholarship':
-        return 'bg-blue-50 text-blue-700 border-blue-200'
-      case 'deadline':
-        return 'bg-red-50 text-red-700 border-red-200'
-      case 'event':
-        return 'bg-purple-50 text-purple-700 border-purple-200'
-      default:
-        return 'bg-slate-50 text-slate-700 border-slate-200'
-    }
-  }
+  const getTypeColor = (type: string) => getAnnouncementTypeBadgeColor(type)
 
   const getDaysRemaining = (endDate: string) => {
     const end = new Date(endDate)
@@ -116,11 +104,12 @@ export default function AnnouncementsClient() {
   }
 
   const filterButtons = [
-    { label: 'All', value: 'all' },
-    { label: 'Scholarships', value: 'scholarship' },
-    { label: 'Deadlines', value: 'deadline' },
-    { label: 'Events', value: 'event' },
-    { label: 'General', value: 'general' },
+    { label: 'All',          value: 'all',        activeClass: 'filter-btn-all-active',        inactiveClass: 'filter-btn-all-inactive' },
+    { label: 'Scholarships', value: 'scholarship', activeClass: 'filter-btn-emerald-active',   inactiveClass: 'filter-btn-emerald-inactive' },
+    { label: 'Deadlines',    value: 'deadline',    activeClass: 'filter-btn-red-active',       inactiveClass: 'filter-btn-red-inactive' },
+    { label: 'Events',       value: 'event',       activeClass: 'filter-btn-violet-active',    inactiveClass: 'filter-btn-violet-inactive' },
+    { label: 'News',         value: 'news',        activeClass: 'filter-btn-sky-active',       inactiveClass: 'filter-btn-sky-inactive' },
+    { label: 'General',      value: 'general',     activeClass: 'filter-btn-slate-active',     inactiveClass: 'filter-btn-slate-inactive' },
   ]
 
   // Single announcement detail view
@@ -187,14 +176,12 @@ export default function AnnouncementsClient() {
                 {daysRemaining !== null && (
                   <Badge
                     variant="secondary"
-                    className={`text-xs ${daysRemaining <= 0
-                        ? 'bg-red-100 text-red-700'
-                        : daysRemaining <= 7
-                          ? 'bg-red-100 text-red-700'
-                          : daysRemaining <= 30
-                            ? 'bg-yellow-100 text-yellow-700'
-                            : 'bg-green-100 text-green-700'
-                      }`}
+                    className={`text-xs ${
+                      daysRemaining <= 0  ? 'badge-countdown-closed' :
+                      daysRemaining <= 7  ? 'badge-countdown-urgent' :
+                      daysRemaining <= 30 ? 'badge-countdown-soon'   :
+                                            'badge-countdown-ok'
+                    }`}
                   >
                     <Clock className="h-3 w-3 mr-1" />
                     {daysRemaining <= 0 ? 'Closed' : `${daysRemaining} days remaining`}
@@ -380,16 +367,16 @@ export default function AnnouncementsClient() {
   return (
     <div className="space-y-6">
       {/* Filter Buttons */}
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-2">
         {filterButtons.map((btn) => (
           <button
             key={btn.value}
             onClick={() => setFilterType(btn.value)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filterType === btn.value
-                ? 'bg-teal-600 text-white'
-                : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
-              }`}
+            className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              filterType === btn.value ? btn.activeClass : btn.inactiveClass
+            }`}
           >
+            {btn.value !== 'all' && getTypeIcon(btn.value, 'sm')}
             {btn.label}
           </button>
         ))}
@@ -443,8 +430,7 @@ export default function AnnouncementsClient() {
                       {daysRemaining !== null && daysRemaining <= 30 && (
                         <Badge
                           variant="secondary"
-                          className={`text-xs ${daysRemaining <= 7 ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'
-                            }`}
+                          className={`text-xs ${daysRemaining <= 7 ? 'badge-countdown-urgent' : 'badge-countdown-soon'}`}
                         >
                           <Clock className="h-3 w-3 mr-1" />
                           {daysRemaining <= 0 ? 'Closed' : `${daysRemaining}d left`}

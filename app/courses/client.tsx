@@ -6,6 +6,7 @@ import { Footer } from '@/components/footer'
 import { CTAConsultation } from '@/components/cta-consultation'
 import Link from 'next/link'
 import { Course, nameToSlug } from '@/lib/supabase'
+import { getLevelBadgeColor } from '@/lib/badge-colors'
 import { ArrowRight, Clock, Zap, Search, X, Calendar, Sparkles, ChevronDown, Check, ChevronsUpDown } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
@@ -269,18 +270,7 @@ export function CoursesPageClient() {
     fetchCourses(false)
   }
 
-  const getLevelColor = (level: string) => {
-    switch (level) {
-      case 'Undergraduate':
-        return 'bg-blue-500/10 text-blue-700 dark:text-blue-400'
-      case 'Master':
-        return 'bg-purple-500/10 text-purple-700 dark:text-purple-400'
-      case 'PhD':
-        return 'bg-red-500/10 text-red-700 dark:text-red-400'
-      default:
-        return 'bg-gray-500/10 text-gray-700 dark:text-gray-400'
-    }
-  }
+  const getLevelColor = (level: string) => getLevelBadgeColor(level)
 
   const selectedCountryName = countries.find((c) => c.id === selectedCountry)?.name
 
@@ -560,14 +550,15 @@ export function CoursesPageClient() {
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
-                    <Command>
-                      <CommandInput placeholder="Search program levels..." />
-                      <CommandList>
-                        <CommandEmpty>No level found.</CommandEmpty>
-                        <CommandGroup>
+                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0 font-sans" align="start">
+                    <Command className="font-sans">
+                      <CommandInput className="font-sans" placeholder="Search program levels..." />
+                      <CommandList className="font-sans">
+                        <CommandEmpty className="font-sans">No level found.</CommandEmpty>
+                        <CommandGroup className="font-sans">
                           {programLevels.map((level) => (
                             <CommandItem
+                              className="font-sans"
                               key={level}
                               value={level}
                               onSelect={() => {

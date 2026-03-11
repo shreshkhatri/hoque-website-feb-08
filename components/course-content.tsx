@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { Course } from '@/lib/supabase'
+import { getLevelBadgeColor } from '@/lib/badge-colors'
 import {
   ArrowLeft,
   Clock,
@@ -112,18 +113,7 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
   })
 
   const currency = course.countries?.currency || ''
-  const getLevelColor = (level: string) => {
-    switch (level) {
-      case 'Undergraduate':
-        return 'bg-accent/10 text-accent'
-      case 'Master':
-        return 'bg-primary/10 text-primary'
-      case 'PhD':
-        return 'bg-destructive/10 text-destructive'
-      default:
-        return 'bg-muted text-muted-foreground'
-    }
-  }
+  const getLevelColor = (level: string) => getLevelBadgeColor(level)
 
   const universityName =
     course.universities && typeof course.universities === 'object' && 'name' in course.universities

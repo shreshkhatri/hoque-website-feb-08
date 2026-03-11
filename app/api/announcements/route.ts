@@ -26,14 +26,28 @@ export async function GET(request: Request) {
   const limit = parseInt(searchParams.get('limit') || '20')
   const showBannerOnly = searchParams.get('banner_only') === 'true'
 
+  // Get on-hold university IDs to exclude
+  const { data: onHoldUnis } = await supabase
+    .from('universities')
+    .select('id')
+    .eq('partnership_status', 'on_hold')
+  
+  const onHoldUniIds = onHoldUnis?.map((u) => u.id) || []
+
   // If a slug is provided, fetch that single announcement
   if (slug) {
-    const { data, error } = await supabase
+    let singleQuery = supabase
       .from('announcements')
       .select('*, universities(id, name), courses(id, name), countries(id, name)')
       .eq('slug', slug)
       .eq('is_active', true)
-      .single()
+    
+    // Exclude announcements from on-hold universities
+    if (onHoldUniIds.length > 0) {
+      singleQuery = singleQuery.not('university_id', 'in', `(${onHoldUniIds.join(',')})`)
+    }
+    
+    const { data, error } = await singleQuery.single()
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 404 })
@@ -45,6 +59,11 @@ export async function GET(request: Request) {
     .from('announcements')
     .select('*, universities(id, name), courses(id, name), countries(id, name)')
     .eq('is_active', true)
+
+  // Exclude announcements from on-hold universities
+  if (onHoldUniIds.length > 0) {
+    query = query.not('university_id', 'in', `(${onHoldUniIds.join(',')})`)
+  }
 
   if (universityId) {
     query = query.eq('university_id', parseInt(universityId))
