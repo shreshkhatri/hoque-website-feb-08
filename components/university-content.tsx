@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { CoverImageWithCrop } from './cover-image-with-crop'
 import Link from 'next/link'
 import { University, Course, UniversityCampus } from '@/lib/supabase'
+import { getLevelBadgeColor, getAnnouncementTypeBadgeColor } from '@/lib/badge-colors'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -323,7 +324,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
                           <div className="flex items-start justify-between gap-3">
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 mb-2">
-                                <Badge className={announcement.announcement_type === 'scholarship' ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-700'}>
+                                <Badge variant="outline" className={`text-xs capitalize ${getAnnouncementTypeBadgeColor(announcement.announcement_type)}`}>
                                   {announcement.announcement_type === 'scholarship' && <Award className="h-3 w-3 mr-1" />}
                                   {announcement.announcement_type}
                                 </Badge>
@@ -544,7 +545,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2 flex-wrap">
-                          <Badge variant="secondary">{course.level}</Badge>
+                          <Badge variant="outline" className={`text-xs ${getLevelBadgeColor(course.level)}`}>{course.level}</Badge>
                           <Badge variant="outline">{course.code}</Badge>
                           {course.university_campuses && (
                             <Badge variant="outline" className="flex items-center gap-1">

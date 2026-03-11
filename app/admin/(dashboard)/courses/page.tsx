@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { getLevelBadgeColor } from '@/lib/badge-colors'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   AlertDialog,
@@ -76,12 +77,7 @@ interface University {
 }
 
 function levelColor(level: string) {
-  const l = level?.toLowerCase()
-  if (l?.includes('bachelor')) return 'bg-blue-100 text-blue-700 border-blue-200'
-  if (l?.includes('master')) return 'bg-purple-100 text-purple-700 border-purple-200'
-  if (l?.includes('phd') || l?.includes('doctor')) return 'bg-amber-100 text-amber-700 border-amber-200'
-  if (l?.includes('foundation')) return 'bg-teal-100 text-teal-700 border-teal-200'
-  return 'bg-slate-100 text-slate-700 border-slate-200'
+  return getLevelBadgeColor(level)
 }
 
 function formatFee(fee: number | null, currency?: string | null) {

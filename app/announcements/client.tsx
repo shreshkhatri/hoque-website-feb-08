@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { CoverImageWithCrop } from '@/components/cover-image-with-crop'
-import { Calendar, Award, Bell, AlertCircle, ExternalLink, Clock, ArrowLeft, MapPin, Building2, Trophy, GraduationCap, MessageCircle } from 'lucide-react'
+import { Calendar, Award, Bell, AlertCircle, Newspaper, ExternalLink, Clock, ArrowLeft, MapPin, Building2, Trophy, GraduationCap, MessageCircle } from 'lucide-react'
+import { getAnnouncementTypeBadgeColor, getAnnouncementTypeAccentBar } from '@/lib/badge-colors'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -82,31 +83,18 @@ export default function AnnouncementsClient() {
     fetchAnnouncements()
   }, [filterType, slugFromUrl])
 
-  const getTypeIcon = (type: string) => {
+  const getTypeIcon = (type: string, size: 'sm' | 'md' = 'md') => {
+    const cls = size === 'sm' ? 'h-4 w-4' : 'h-5 w-5'
     switch (type) {
-      case 'scholarship':
-        return <Award className="h-5 w-5" />
-      case 'deadline':
-        return <Calendar className="h-5 w-5" />
-      case 'event':
-        return <Bell className="h-5 w-5" />
-      default:
-        return <AlertCircle className="h-5 w-5" />
+      case 'scholarship': return <Award className={cls} />
+      case 'deadline':    return <Calendar className={cls} />
+      case 'event':       return <Bell className={cls} />
+      case 'news':        return <Newspaper className={cls} />
+      default:            return <AlertCircle className={cls} />
     }
   }
 
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case 'scholarship':
-        return 'bg-blue-50 text-blue-700 border-blue-200'
-      case 'deadline':
-        return 'bg-red-50 text-red-700 border-red-200'
-      case 'event':
-        return 'bg-purple-50 text-purple-700 border-purple-200'
-      default:
-        return 'bg-slate-50 text-slate-700 border-slate-200'
-    }
-  }
+  const getTypeColor = (type: string) => getAnnouncementTypeBadgeColor(type)
 
   const getDaysRemaining = (endDate: string) => {
     const end = new Date(endDate)
@@ -116,11 +104,12 @@ export default function AnnouncementsClient() {
   }
 
   const filterButtons = [
-    { label: 'All', value: 'all' },
-    { label: 'Scholarships', value: 'scholarship' },
-    { label: 'Deadlines', value: 'deadline' },
-    { label: 'Events', value: 'event' },
-    { label: 'General', value: 'general' },
+    { label: 'All',          value: 'all',        activeClass: 'bg-teal-600 text-white',                         inactiveClass: 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50' },
+    { label: 'Scholarships', value: 'scholarship', activeClass: 'bg-emerald-600 text-white border-emerald-600',   inactiveClass: 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100' },
+    { label: 'Deadlines',    value: 'deadline',    activeClass: 'bg-red-600 text-white border-red-600',           inactiveClass: 'bg-red-50 text-red-700 border border-red-200 hover:bg-red-100' },
+    { label: 'Events',       value: 'event',       activeClass: 'bg-violet-600 text-white border-violet-600',     inactiveClass: 'bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100' },
+    { label: 'News',         value: 'news',        activeClass: 'bg-sky-600 text-white border-sky-600',           inactiveClass: 'bg-sky-50 text-sky-700 border border-sky-200 hover:bg-sky-100' },
+    { label: 'General',      value: 'general',     activeClass: 'bg-slate-600 text-white border-slate-600',       inactiveClass: 'bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100' },
   ]
 
   // Single announcement detail view
@@ -380,16 +369,16 @@ export default function AnnouncementsClient() {
   return (
     <div className="space-y-6">
       {/* Filter Buttons */}
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-2">
         {filterButtons.map((btn) => (
           <button
             key={btn.value}
             onClick={() => setFilterType(btn.value)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filterType === btn.value
-                ? 'bg-teal-600 text-white'
-                : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
-              }`}
+            className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              filterType === btn.value ? btn.activeClass : btn.inactiveClass
+            }`}
           >
+            {btn.value !== 'all' && getTypeIcon(btn.value, 'sm')}
             {btn.label}
           </button>
         ))}

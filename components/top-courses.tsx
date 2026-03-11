@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, Clock, Zap, GraduationCap } from 'lucide-react'
 import { Course, nameToSlug } from '@/lib/supabase'
+import { getLevelBadgeColor } from '@/lib/badge-colors'
 
 interface CourseWithUniversity extends Course {
   universities?: { id: number; name: string; city: string; country_id?: number | null; countries?: { currency: string | null } | null }
@@ -31,18 +32,7 @@ export function TopCourses() {
     }
   }
 
-  const getLevelColor = (level: string) => {
-    switch (level) {
-      case 'Undergraduate':
-        return 'bg-blue-500/10 text-blue-700 dark:text-blue-400'
-      case 'Master':
-        return 'bg-purple-500/10 text-purple-700 dark:text-purple-400'
-      case 'PhD':
-        return 'bg-red-500/10 text-red-700 dark:text-red-400'
-      default:
-        return 'bg-gray-500/10 text-gray-700 dark:text-gray-400'
-    }
-  }
+  const getLevelColor = (level: string) => getLevelBadgeColor(level)
 
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-primary/5">

@@ -12,7 +12,9 @@ import {
   AlertCircle,
   Award,
   Bell,
+  Newspaper,
 } from 'lucide-react'
+import { getAnnouncementTypeBadgeColor } from '@/lib/badge-colors'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
@@ -122,29 +124,15 @@ export default function AnnouncementsPage() {
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'scholarship':
-        return <Award className="h-4 w-4" />
-      case 'deadline':
-        return <Calendar className="h-4 w-4" />
-      case 'event':
-        return <Bell className="h-4 w-4" />
-      default:
-        return <AlertCircle className="h-4 w-4" />
+      case 'scholarship': return <Award className="h-4 w-4" />
+      case 'deadline':    return <Calendar className="h-4 w-4" />
+      case 'event':       return <Bell className="h-4 w-4" />
+      case 'news':        return <Newspaper className="h-4 w-4" />
+      default:            return <AlertCircle className="h-4 w-4" />
     }
   }
 
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case 'scholarship':
-        return 'bg-blue-50 text-blue-700 border-blue-200'
-      case 'deadline':
-        return 'bg-red-50 text-red-700 border-red-200'
-      case 'event':
-        return 'bg-purple-50 text-purple-700 border-purple-200'
-      default:
-        return 'bg-slate-50 text-slate-700 border-slate-200'
-    }
-  }
+  const getTypeColor = (type: string) => getAnnouncementTypeBadgeColor(type)
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {

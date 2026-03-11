@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Bell, Calendar, AlertCircle, Award, Clock, ArrowRight, ExternalLink } from 'lucide-react'
+import { Bell, Calendar, AlertCircle, Award, Clock, ArrowRight, ExternalLink, Newspaper } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
+import { getAnnouncementTypeBadgeColor, getAnnouncementTypeAccentBar } from '@/lib/badge-colors'
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 
@@ -31,28 +32,16 @@ function getDaysRemaining(endDate: string) {
 
 function getTypeIcon(type: string) {
   switch (type) {
-    case 'scholarship':
-      return <Award className="h-4 w-4" />
-    case 'event':
-      return <Bell className="h-4 w-4" />
-    case 'deadline':
-      return <Calendar className="h-4 w-4" />
-    default:
-      return <AlertCircle className="h-4 w-4" />
+    case 'scholarship': return <Award className="h-4 w-4" />
+    case 'event':       return <Bell className="h-4 w-4" />
+    case 'deadline':    return <Calendar className="h-4 w-4" />
+    case 'news':        return <Newspaper className="h-4 w-4" />
+    default:            return <AlertCircle className="h-4 w-4" />
   }
 }
 
 function getTypeColor(type: string) {
-  switch (type) {
-    case 'scholarship':
-      return 'bg-emerald-100 text-emerald-700 border-emerald-200'
-    case 'event':
-      return 'bg-blue-100 text-blue-700 border-blue-200'
-    case 'deadline':
-      return 'bg-red-100 text-red-700 border-red-200'
-    default:
-      return 'bg-slate-100 text-slate-700 border-slate-200'
-  }
+  return getAnnouncementTypeBadgeColor(type)
 }
 
 export function LatestAnnouncements() {
@@ -133,17 +122,7 @@ export function LatestAnnouncements() {
                 >
                   <Card className="h-full border-border hover:border-primary/40 hover:shadow-lg transition-all duration-200 overflow-hidden cursor-pointer">
                     {/* Top accent line based on type */}
-                    <div
-                      className={`h-1 ${
-                        announcement.announcement_type === 'scholarship'
-                          ? 'bg-emerald-500'
-                          : announcement.announcement_type === 'event'
-                            ? 'bg-blue-500'
-                            : announcement.announcement_type === 'deadline'
-                              ? 'bg-red-500'
-                              : 'bg-primary'
-                      }`}
-                    />
+                    <div className={`h-1 ${getAnnouncementTypeAccentBar(announcement.announcement_type)}`} />
                     <CardContent className="p-5 flex flex-col h-full">
 
                       {/* Type badge + urgency badge */}

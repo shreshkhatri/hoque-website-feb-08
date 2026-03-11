@@ -39,6 +39,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { getLevelBadgeColor, getEligibilityBadgeColor } from '@/lib/badge-colors'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   AlertDialog,
@@ -644,19 +645,19 @@ export default function ScholarshipsAdminPage() {
 
                 <div className="flex flex-wrap gap-1.5 mb-3">
                   {scholarship.program_level && (
-                    <Badge variant="outline" className="text-xs border-slate-200 text-slate-600">
+                    <Badge variant="outline" className={`text-xs ${getLevelBadgeColor(scholarship.program_level)}`}>
                       <GraduationCap className="h-3 w-3 mr-1" />
                       {scholarship.program_level}
                     </Badge>
                   )}
                   {scholarship.eligibility_type && (
-                    <Badge variant="outline" className="text-xs border-slate-200 text-slate-600">
+                    <Badge variant="outline" className={`text-xs ${getEligibilityBadgeColor(scholarship.eligibility_type)}`}>
                       <Users className="h-3 w-3 mr-1" />
                       {scholarship.eligibility_type}
                     </Badge>
                   )}
                   {scholarship.application_period && (
-                    <Badge variant="outline" className="text-xs border-slate-200 text-slate-600">
+                    <Badge variant="outline" className="text-xs bg-sky-50 text-sky-700 border-sky-200">
                       <Calendar className="h-3 w-3 mr-1" />
                       {scholarship.application_period}
                     </Badge>
