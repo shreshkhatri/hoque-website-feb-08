@@ -13,6 +13,7 @@ import Link from 'next/link'
 import { SearchableSelect } from '@/components/searchable-select'
 import { RichTextEditor } from '@/components/rich-text-editor'
 import { CategorySelect } from '@/components/category-select'
+import { CourseCountryRequirements } from '@/components/admin/course-country-requirements'
 
 type University = { id: number; name: string; country_id: number | null; currency: string | null }
 type Campus = { id: number; name: string; location: string | null }
@@ -483,6 +484,9 @@ export default function EditCoursePage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Country-Specific Requirements */}
+      <CourseCountryRequirements courseId={id} />
 
       {/* Actions */}
       <div className="flex items-center justify-end gap-3">

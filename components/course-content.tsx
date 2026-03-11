@@ -19,6 +19,7 @@ import {
   MessageCircle,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { CourseCountryRequirementsPublic } from '@/components/course-country-requirements-public'
 
 function nameToSlug(name: string, code?: string): string {
   const base = name
@@ -286,87 +287,17 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
             </section>
           )}
 
-          {/* Entry Requirements */}
-          {(course.academic_requirements || course.english_language_requirements || course.other_requirements || course.entry_requirements) && (
-            <section className="bg-card border border-border rounded-xl p-8">
-              <h2 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2.5">
-                <CheckCircle size={22} className="text-primary" />
-                Requirements
-              </h2>
-              <div className="space-y-0 divide-y divide-border">
-                {/* General Entry Requirements */}
-                {course.entry_requirements && (
-                  <div className="pb-6">
-                    <div className="flex items-center gap-2.5 mb-3">
-                      <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <CheckCircle size={16} className="text-primary" />
-                      </div>
-                      <h3 className="text-base font-semibold text-foreground">Entry Requirements</h3>
-                    </div>
-                    <div className="pl-[42px]">
-                      <RichContent content={course.entry_requirements} className="text-sm" />
-                    </div>
-                  </div>
-                )}
-
-                {/* Academic Requirements */}
-                {course.academic_requirements && (
-                  <div className="py-6">
-                    <div className="flex items-center gap-2.5 mb-3">
-                      <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                        <GraduationCap size={16} className="text-primary" />
-                      </div>
-                      <h3 className="text-base font-semibold text-foreground">Academic Requirements</h3>
-                    </div>
-                    <div className="pl-[42px]">
-                      <RichContent content={course.academic_requirements} className="text-sm" />
-                    </div>
-                  </div>
-                )}
-
-                {/* English Language Requirements */}
-                {course.english_language_requirements && (
-                  <div className="py-6">
-                    <div className="flex items-center gap-2.5 mb-3">
-                      <div className="h-8 w-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                        <Globe size={16} className="text-accent" />
-                      </div>
-                      <h3 className="text-base font-semibold text-foreground">English Language Requirements</h3>
-                    </div>
-                    <div className="pl-[42px]">
-                      <RichContent content={course.english_language_requirements} className="text-sm" />
-                    </div>
-                  </div>
-                )}
-
-                {/* Other Requirements */}
-                {course.other_requirements && (
-                  <div className="pt-6">
-                    <div className="flex items-center gap-2.5 mb-3">
-                      <div className="h-8 w-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
-                        <FileText size={16} className="text-muted-foreground" />
-                      </div>
-                      <h3 className="text-base font-semibold text-foreground">Other Requirements</h3>
-                    </div>
-                    <div className="pl-[42px]">
-                      <RichContent content={course.other_requirements} className="text-sm" />
-                    </div>
-                  </div>
-                )}
-              </div>
-            </section>
-          )}
-
-          {/* Document Requirements */}
-          {course.document_requirements && (
-            <section className="bg-card border border-border rounded-xl p-8">
-              <h2 className="text-xl font-bold text-foreground mb-5 flex items-center gap-2.5">
-                <FileText size={22} className="text-primary" />
-                Document Requirements
-              </h2>
-              <RichContent content={course.document_requirements} />
-            </section>
-          )}
+          {/* Requirements — country-aware with global fallback */}
+          <CourseCountryRequirementsPublic
+            courseId={course.id}
+            globalRequirements={{
+              entry_requirements: course.entry_requirements,
+              academic_requirements: course.academic_requirements,
+              english_language_requirements: course.english_language_requirements,
+              other_requirements: course.other_requirements,
+              document_requirements: course.document_requirements,
+            }}
+          />
 
           {/* Fees */}
           {course.tuition_fees_international && (
