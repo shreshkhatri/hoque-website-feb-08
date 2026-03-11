@@ -22,6 +22,7 @@ export async function GET(request: NextRequest) {
       .select('*', { count: 'exact' })
       .order('id', { ascending: true })
       .not('name', 'in', `(${EXCLUDED_UNIVERSITIES.map((u) => `"${u}"`).join(',')})`)
+      .eq('partnership_status', 'active') // Only show active partnerships
 
     // Filter by country if provided
     if (countryId) {

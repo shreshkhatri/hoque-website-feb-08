@@ -46,11 +46,11 @@ export async function GET(request: NextRequest) {
     let universities: any[] = []
     let courses: any[] = []
 
-    // Get excluded university IDs
+    // Get excluded university IDs (explicitly excluded + on_hold partnerships)
     const { data: excludedUnis } = await supabase
       .from('universities')
       .select('id')
-      .in('name', EXCLUDED_UNIVERSITIES)
+      .or(`name.in.(${EXCLUDED_UNIVERSITIES.map((u) => `"${u}"`).join(',')}),partnership_status.eq.on_hold`)
     const excludedUniIds = excludedUnis?.map((u) => u.id) || []
     const excludeFilter = excludedUniIds.length > 0
       ? `(${excludedUniIds.join(',')})`
@@ -68,6 +68,7 @@ export async function GET(request: NextRequest) {
         .from('universities')
         .select('*, countries!inner(id, name)')
         .or(tokenFilters[0])
+        .eq('partnership_status', 'active') // Only active partnerships
         .not('name', 'in', excludeFilter)
         .limit(50)
 
@@ -88,6 +89,7 @@ export async function GET(request: NextRequest) {
         .from('universities')
         .select('id, name')
         .or(uniOrConditions)
+        .eq('partnership_status', 'active') // Only active partnerships
         .not('id', 'in', excludeFilter)
 
       const matchedUniMap = new Map<number, string>()

@@ -49,7 +49,7 @@ export async function PUT(
       'international_students_percentage', 'acceptance_rate', 'logo_url', 'cover_image_url',
       'highlights', 'required_documents', 'faqs', 'employment_rate', 'nationalities_count',
       'partner_universities_count', 'intakes', 'campus_facilities', 'express_offer_available',
-      'slug'
+      'slug', 'partnership_status'
     ]
     
     const sanitizedBody: Record<string, any> = {}

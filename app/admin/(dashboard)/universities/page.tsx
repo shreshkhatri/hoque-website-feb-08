@@ -12,6 +12,7 @@ import {
   MapPin,
   ExternalLink,
   ArrowUpDown,
+  AlertTriangle,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -46,6 +47,7 @@ interface University {
   description: string | null
   rank_world: string | null
   founded_year: number | null
+  partnership_status: 'active' | 'on_hold'
   countries: { name: string } | null
   university_campuses: { id: number; name: string; location: string }[]
 }
@@ -59,6 +61,7 @@ export default function UniversitiesPage() {
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [sortBy, setSortBy] = useState<'name' | 'created_at'>('name')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'on_hold'>('all')
   const [loading, setLoading] = useState(true)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [deleteId, setDeleteId] = useState<number | null>(null)
@@ -77,7 +80,8 @@ export default function UniversitiesPage() {
         limit: String(limit), 
         search: debouncedSearch,
         sort_by: sortBy,
-        sort_order: sortOrder
+        sort_order: sortOrder,
+        ...(statusFilter !== 'all' && { partnership_status: statusFilter }),
       })
       const res = await fetch(`/api/admin/universities?${params}`)
       const data = await res.json()
@@ -88,7 +92,7 @@ export default function UniversitiesPage() {
     } finally {
       setLoading(false)
     }
-  }, [page, debouncedSearch, sortBy, sortOrder])
+  }, [page, debouncedSearch, sortBy, sortOrder, statusFilter])
 
   useEffect(() => {
     fetchUniversities()
@@ -96,7 +100,7 @@ export default function UniversitiesPage() {
 
   useEffect(() => {
     setPage(1)
-  }, [debouncedSearch, sortBy, sortOrder])
+  }, [debouncedSearch, sortBy, sortOrder, statusFilter])
 
 
 
@@ -141,6 +145,18 @@ export default function UniversitiesPage() {
           </div>
 
           <div className="flex items-center gap-2 w-full sm:w-auto flex-wrap">
+            {/* Status Filter */}
+            <Select value={statusFilter} onValueChange={(value: 'all' | 'active' | 'on_hold') => setStatusFilter(value)}>
+              <SelectTrigger className="h-9 bg-white border-slate-200 text-slate-900 w-full sm:w-36">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent className="bg-white border-slate-200">
+                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="on_hold">On Hold</SelectItem>
+              </SelectContent>
+            </Select>
+
             {/* Sort By */}
             <Select value={sortBy} onValueChange={(value: 'name' | 'created_at') => setSortBy(value)}>
               <SelectTrigger className="h-9 bg-white border-slate-200 text-slate-900 w-full sm:w-40">
@@ -180,12 +196,20 @@ export default function UniversitiesPage() {
                 </CardContent>
               </Card>
             ))
-          : universities.map((uni) => (
-              <Card key={uni.id} className="bg-white border-slate-200 hover:border-slate-300 transition-colors group">
+            : universities.map((uni) => (
+              <Card key={uni.id} className={`hover:border-slate-300 transition-colors group ${uni.partnership_status === 'on_hold' ? 'border-amber-300 bg-amber-50/50' : 'bg-white border-slate-200'}`}>
                 <CardContent className="p-5">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-semibold text-slate-900 truncate">{uni.name}</h3>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-sm font-semibold text-slate-900 truncate">{uni.name}</h3>
+                        {uni.partnership_status === 'on_hold' && (
+                          <Badge variant="outline" className="text-[10px] bg-amber-100 text-amber-700 border-amber-300 flex items-center gap-1 flex-shrink-0">
+                            <AlertTriangle className="h-2.5 w-2.5" />
+                            On Hold
+                          </Badge>
+                        )}
+                      </div>
                       <div className="flex items-center gap-1.5 mt-1 text-xs text-slate-600">
                         <MapPin className="h-3 w-3 flex-shrink-0" />
                         <span className="truncate">{uni.city}, {uni.countries?.name}</span>
