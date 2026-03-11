@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { CoverImageWithCrop } from './cover-image-with-crop'
 import Link from 'next/link'
@@ -38,6 +38,115 @@ function nameToSlug(name: string, code?: string): string {
     .replace(/-+/g, '-')
     .trim()
   return code ? `${base}-${code.toLowerCase()}` : base
+}
+
+// Custom level filter dropdown — avoids native <select> which ignores CSS font
+function LevelDropdown({ levels, value, onChange }: { levels: string[], value: string, onChange: (v: string) => void }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [])
+
+  const label = value === 'all' ? 'All Levels' : value
+
+  return (
+    <div ref={ref} className="relative font-sans min-w-[180px]">
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-2 w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground text-sm font-sans focus:outline-none focus:ring-2 focus:ring-primary hover:bg-muted/40 transition-colors"
+      >
+        <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
+        {value !== 'all'
+          ? <span className={`inline-flex items-center px-2 py-0.5 rounded-full border text-xs font-medium font-sans ${getLevelBadgeColor(value)}`}>{value}</span>
+          : <span className="font-sans">{label}</span>
+        }
+        <ChevronDown className={`ml-auto w-4 h-4 text-muted-foreground transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div className="absolute z-50 mt-1 w-full bg-background border border-border rounded-lg shadow-lg overflow-hidden font-sans">
+          <button
+            type="button"
+            onClick={() => { onChange('all'); setOpen(false) }}
+            className={`w-full text-left px-4 py-2.5 text-sm font-sans hover:bg-muted/50 transition-colors ${value === 'all' ? 'bg-primary/5 text-primary font-medium' : 'text-foreground'}`}
+          >
+            All Levels
+          </button>
+          {levels.map(level => (
+            <button
+              key={level}
+              type="button"
+              onClick={() => { onChange(level); setOpen(false) }}
+              className={`w-full text-left px-4 py-2.5 text-sm font-sans hover:bg-muted/50 transition-colors flex items-center gap-2 ${value === level ? 'bg-primary/5' : ''}`}
+            >
+              <span className={`inline-flex items-center px-2 py-0.5 rounded-full border text-xs font-medium font-sans ${getLevelBadgeColor(level)}`}>
+                {level}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// Custom campus filter dropdown
+function CampusDropdown({ campuses, value, onChange }: { campuses: UniversityCampus[], value: string, onChange: (v: string) => void }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [])
+
+  const selected = campuses.find(c => String(c.id) === value)
+  const label = selected ? (selected.location || selected.name) : 'All Campuses'
+
+  return (
+    <div ref={ref} className="relative font-sans min-w-[180px]">
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-2 w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground text-sm font-sans focus:outline-none focus:ring-2 focus:ring-primary hover:bg-muted/40 transition-colors"
+      >
+        <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
+        <span className="font-sans truncate">{label}</span>
+        <ChevronDown className={`ml-auto w-4 h-4 text-muted-foreground transition-transform flex-shrink-0 ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div className="absolute z-50 mt-1 w-full bg-background border border-border rounded-lg shadow-lg overflow-hidden font-sans">
+          <button
+            type="button"
+            onClick={() => { onChange('all'); setOpen(false) }}
+            className={`w-full text-left px-4 py-2.5 text-sm font-sans hover:bg-muted/50 transition-colors ${value === 'all' ? 'bg-primary/5 text-primary font-medium' : 'text-foreground'}`}
+          >
+            All Campuses
+          </button>
+          {campuses.map(campus => (
+            <button
+              key={campus.id}
+              type="button"
+              onClick={() => { onChange(String(campus.id)); setOpen(false) }}
+              className={`w-full text-left px-4 py-2.5 text-sm font-sans hover:bg-muted/50 transition-colors ${value === String(campus.id) ? 'bg-primary/5 text-primary font-medium' : 'text-foreground'}`}
+            >
+              {campus.location || campus.name}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 }
 
 interface CourseWithCampus extends Course {
@@ -502,35 +611,18 @@ export function UniversityContent({ university, courses, campuses = [], currency
                   className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
-              <div className="relative">
-                <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                <select
-                  value={levelFilter}
-                  onChange={(e) => setLevelFilter(e.target.value)}
-                  className="pl-10 pr-8 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary appearance-none min-w-[200px]"
-                >
-                  <option value="all">All Levels</option>
-                  {uniqueLevels.map(level => (
-                    <option key={level} value={level}>{level}</option>
-                  ))}
-                </select>
-              </div>
+              {/* Level filter — custom dropdown so site font is respected */}
+              <LevelDropdown
+                levels={uniqueLevels}
+                value={levelFilter}
+                onChange={setLevelFilter}
+              />
               {campuses.length > 1 && (
-                <div className="relative">
-                  <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                  <select
-                    value={campusFilter}
-                    onChange={(e) => setCampusFilter(e.target.value)}
-                    className="pl-10 pr-8 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary appearance-none min-w-[200px]"
-                  >
-                    <option value="all">All Campuses</option>
-                    {campuses.map(campus => (
-                      <option key={campus.id} value={String(campus.id)}>
-                        {campus.location || campus.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <CampusDropdown
+                  campuses={campuses}
+                  value={campusFilter}
+                  onChange={setCampusFilter}
+                />
               )}
             </div>
 
