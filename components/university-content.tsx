@@ -514,12 +514,21 @@ export function UniversityContent({ university, courses, campuses = [], currency
                           className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors group"
                         >
                           <div>
+                            <div className="flex items-center gap-2 mb-1 flex-wrap">
+                              {course.level && (
+                                <span className={`inline-flex items-center px-2 py-0.5 rounded-full border text-xs font-medium font-sans ${getLevelBadgeColor(course.level)}`}>
+                                  {course.level}
+                                </span>
+                              )}
+                              {course.duration_years && (
+                                <span className="text-xs text-muted-foreground">
+                                  {course.duration_years} {course.duration_years === 1 ? 'year' : 'years'}
+                                </span>
+                              )}
+                            </div>
                             <h3 className="font-medium text-foreground group-hover:text-primary transition-colors">
                               {course.name}
                             </h3>
-                            <p className="text-sm text-muted-foreground">
-                              {course.level} {course.duration_years && `• ${course.duration_years} ${course.duration_years === 1 ? 'year' : 'years'}`}
-                            </p>
                           </div>
                           <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                         </Link>
@@ -636,7 +645,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2 flex-wrap">
-                          <Badge variant="outline" className={`text-xs ${getLevelBadgeColor(course.level)}`}>{course.level}</Badge>
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full border text-xs font-medium font-sans ${getLevelBadgeColor(course.level)}`}>{course.level}</span>
                           <Badge variant="outline">{course.code}</Badge>
                           {course.university_campuses && (
                             <Badge variant="outline" className="flex items-center gap-1">

@@ -148,54 +148,53 @@ html {
 }
 
 /*
-  Badge colour safelist — these classes are generated dynamically from lib/badge-colors.ts
-  and must be listed here so Tailwind v4 includes them in the CSS bundle.
+  Badge colour classes — raw CSS values (no @apply) so Tailwind v4 always includes them.
 */
 
-/* Programme / level badges */
-.badge-blue    { @apply bg-blue-50 text-blue-700 border-blue-200; }
-.badge-indigo  { @apply bg-indigo-50 text-indigo-700 border-indigo-200; }
-.badge-amber   { @apply bg-amber-50 text-amber-700 border-amber-200; }
-.badge-orange  { @apply bg-orange-50 text-orange-700 border-orange-200; }
-.badge-teal    { @apply bg-teal-50 text-teal-700 border-teal-200; }
-.badge-emerald { @apply bg-emerald-50 text-emerald-700 border-emerald-200; }
-.badge-rose    { @apply bg-rose-50 text-rose-700 border-rose-200; }
-.badge-purple  { @apply bg-purple-50 text-purple-700 border-purple-200; }
-.badge-slate   { @apply bg-slate-100 text-slate-600 border-slate-200; }
-.badge-red     { @apply bg-red-50 text-red-700 border-red-200; }
-.badge-violet  { @apply bg-violet-50 text-violet-700 border-violet-200; }
-.badge-sky     { @apply bg-sky-50 text-sky-700 border-sky-200; }
-.badge-cyan    { @apply bg-cyan-50 text-cyan-700 border-cyan-200; }
-.badge-green   { @apply bg-green-50 text-green-700 border-green-200; }
+/* Programme / course level badges */
+.badge-blue    { background-color: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+.badge-indigo  { background-color: #eef2ff; color: #4338ca; border-color: #c7d2fe; }
+.badge-amber   { background-color: #fffbeb; color: #b45309; border-color: #fde68a; }
+.badge-orange  { background-color: #fff7ed; color: #c2410c; border-color: #fed7aa; }
+.badge-teal    { background-color: #f0fdfa; color: #0f766e; border-color: #99f6e4; }
+.badge-emerald { background-color: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
+.badge-rose    { background-color: #fff1f2; color: #be123c; border-color: #fecdd3; }
+.badge-purple  { background-color: #faf5ff; color: #7e22ce; border-color: #e9d5ff; }
+.badge-slate   { background-color: #f1f5f9; color: #475569; border-color: #e2e8f0; }
+.badge-red     { background-color: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+.badge-violet  { background-color: #f5f3ff; color: #6d28d9; border-color: #ddd6fe; }
+.badge-sky     { background-color: #f0f9ff; color: #0369a1; border-color: #bae6fd; }
+.badge-cyan    { background-color: #ecfeff; color: #0e7490; border-color: #a5f3fc; }
+.badge-green   { background-color: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
 
 /* Accent bars for announcement cards */
-.accent-emerald { @apply bg-emerald-500; }
-.accent-red     { @apply bg-red-500; }
-.accent-violet  { @apply bg-violet-500; }
-.accent-sky     { @apply bg-sky-500; }
-.accent-slate   { @apply bg-slate-400; }
+.accent-emerald { background-color: #10b981; }
+.accent-red     { background-color: #ef4444; }
+.accent-violet  { background-color: #8b5cf6; }
+.accent-sky     { background-color: #0ea5e9; }
+.accent-slate   { background-color: #94a3b8; }
 
 /* Announcement filter buttons — active states */
-.filter-btn-all-active     { @apply bg-teal-600 text-white border border-teal-600; }
-.filter-btn-emerald-active { @apply bg-emerald-600 text-white border border-emerald-600; }
-.filter-btn-red-active     { @apply bg-red-600 text-white border border-red-600; }
-.filter-btn-violet-active  { @apply bg-violet-600 text-white border border-violet-600; }
-.filter-btn-sky-active     { @apply bg-sky-600 text-white border border-sky-600; }
-.filter-btn-slate-active   { @apply bg-slate-600 text-white border border-slate-600; }
+.filter-btn-all-active     { background-color: #0d9488; color: #ffffff; border: 1px solid #0d9488; }
+.filter-btn-emerald-active { background-color: #059669; color: #ffffff; border: 1px solid #059669; }
+.filter-btn-red-active     { background-color: #dc2626; color: #ffffff; border: 1px solid #dc2626; }
+.filter-btn-violet-active  { background-color: #7c3aed; color: #ffffff; border: 1px solid #7c3aed; }
+.filter-btn-sky-active     { background-color: #0284c7; color: #ffffff; border: 1px solid #0284c7; }
+.filter-btn-slate-active   { background-color: #475569; color: #ffffff; border: 1px solid #475569; }
 
 /* Announcement filter buttons — inactive states */
-.filter-btn-all-inactive     { @apply bg-white text-slate-700 border border-slate-200 hover:bg-slate-50; }
-.filter-btn-emerald-inactive { @apply bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100; }
-.filter-btn-red-inactive     { @apply bg-red-50 text-red-700 border border-red-200 hover:bg-red-100; }
-.filter-btn-violet-inactive  { @apply bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100; }
-.filter-btn-sky-inactive     { @apply bg-sky-50 text-sky-700 border border-sky-200 hover:bg-sky-100; }
-.filter-btn-slate-inactive   { @apply bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100; }
+.filter-btn-all-inactive     { background-color: #ffffff; color: #334155; border: 1px solid #e2e8f0; }
+.filter-btn-emerald-inactive { background-color: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+.filter-btn-red-inactive     { background-color: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+.filter-btn-violet-inactive  { background-color: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe; }
+.filter-btn-sky-inactive     { background-color: #f0f9ff; color: #0369a1; border: 1px solid #bae6fd; }
+.filter-btn-slate-inactive   { background-color: #f8fafc; color: #334155; border: 1px solid #e2e8f0; }
 
 /* Deadline countdown badges */
-.badge-countdown-closed  { @apply bg-red-100 text-red-700; }
-.badge-countdown-urgent  { @apply bg-red-100 text-red-700; }
-.badge-countdown-soon    { @apply bg-yellow-100 text-yellow-700; }
-.badge-countdown-ok      { @apply bg-green-100 text-green-700; }
+.badge-countdown-closed { background-color: #fee2e2; color: #b91c1c; }
+.badge-countdown-urgent { background-color: #fee2e2; color: #b91c1c; }
+.badge-countdown-soon   { background-color: #fef9c3; color: #a16207; }
+.badge-countdown-ok     { background-color: #dcfce7; color: #15803d; }
 
 /* Utility to hide scrollbar */
 .scrollbar-hide {
