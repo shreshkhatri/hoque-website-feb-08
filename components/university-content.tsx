@@ -147,7 +147,6 @@ function CampusDropdown({ campuses, value, onChange }: { campuses: UniversityCam
     </div>
   )
 }
-}
 
 interface CourseWithCampus extends Course {
   university_campuses?: { id: number; name: string; location: string | null; is_main_campus: boolean } | null
