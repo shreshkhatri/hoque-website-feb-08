@@ -104,12 +104,12 @@ export default function AnnouncementsClient() {
   }
 
   const filterButtons = [
-    { label: 'All',          value: 'all',        activeClass: 'bg-teal-600 text-white',                         inactiveClass: 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50' },
-    { label: 'Scholarships', value: 'scholarship', activeClass: 'bg-emerald-600 text-white border-emerald-600',   inactiveClass: 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100' },
-    { label: 'Deadlines',    value: 'deadline',    activeClass: 'bg-red-600 text-white border-red-600',           inactiveClass: 'bg-red-50 text-red-700 border border-red-200 hover:bg-red-100' },
-    { label: 'Events',       value: 'event',       activeClass: 'bg-violet-600 text-white border-violet-600',     inactiveClass: 'bg-violet-50 text-violet-700 border border-violet-200 hover:bg-violet-100' },
-    { label: 'News',         value: 'news',        activeClass: 'bg-sky-600 text-white border-sky-600',           inactiveClass: 'bg-sky-50 text-sky-700 border border-sky-200 hover:bg-sky-100' },
-    { label: 'General',      value: 'general',     activeClass: 'bg-slate-600 text-white border-slate-600',       inactiveClass: 'bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100' },
+    { label: 'All',          value: 'all',        activeClass: 'filter-btn-all-active',        inactiveClass: 'filter-btn-all-inactive' },
+    { label: 'Scholarships', value: 'scholarship', activeClass: 'filter-btn-emerald-active',   inactiveClass: 'filter-btn-emerald-inactive' },
+    { label: 'Deadlines',    value: 'deadline',    activeClass: 'filter-btn-red-active',       inactiveClass: 'filter-btn-red-inactive' },
+    { label: 'Events',       value: 'event',       activeClass: 'filter-btn-violet-active',    inactiveClass: 'filter-btn-violet-inactive' },
+    { label: 'News',         value: 'news',        activeClass: 'filter-btn-sky-active',       inactiveClass: 'filter-btn-sky-inactive' },
+    { label: 'General',      value: 'general',     activeClass: 'filter-btn-slate-active',     inactiveClass: 'filter-btn-slate-inactive' },
   ]
 
   // Single announcement detail view
@@ -176,14 +176,12 @@ export default function AnnouncementsClient() {
                 {daysRemaining !== null && (
                   <Badge
                     variant="secondary"
-                    className={`text-xs ${daysRemaining <= 0
-                        ? 'bg-red-100 text-red-700'
-                        : daysRemaining <= 7
-                          ? 'bg-red-100 text-red-700'
-                          : daysRemaining <= 30
-                            ? 'bg-yellow-100 text-yellow-700'
-                            : 'bg-green-100 text-green-700'
-                      }`}
+                    className={`text-xs ${
+                      daysRemaining <= 0  ? 'badge-countdown-closed' :
+                      daysRemaining <= 7  ? 'badge-countdown-urgent' :
+                      daysRemaining <= 30 ? 'badge-countdown-soon'   :
+                                            'badge-countdown-ok'
+                    }`}
                   >
                     <Clock className="h-3 w-3 mr-1" />
                     {daysRemaining <= 0 ? 'Closed' : `${daysRemaining} days remaining`}
@@ -432,8 +430,7 @@ export default function AnnouncementsClient() {
                       {daysRemaining !== null && daysRemaining <= 30 && (
                         <Badge
                           variant="secondary"
-                          className={`text-xs ${daysRemaining <= 7 ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700'
-                            }`}
+                          className={`text-xs ${daysRemaining <= 7 ? 'badge-countdown-urgent' : 'badge-countdown-soon'}`}
                         >
                           <Clock className="h-3 w-3 mr-1" />
                           {daysRemaining <= 0 ? 'Closed' : `${daysRemaining}d left`}
