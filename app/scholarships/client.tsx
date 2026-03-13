@@ -284,10 +284,10 @@ export default function ScholarshipsClient() {
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2">
                     {scholarship.program_level && (
-                      <Badge variant="outline" className={`text-xs ${getLevelColor(scholarship.program_level)}`}>
-                        <GraduationCap className="h-3 w-3 mr-1" />
+                      <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border text-xs font-medium font-sans ${getLevelColor(scholarship.program_level)}`}>
+                        <GraduationCap className="h-3 w-3" />
                         {scholarship.program_level}
-                      </Badge>
+                      </span>
                     )}
                     {scholarship.application_period && (
                       <Badge variant="outline" className="text-xs border-border text-muted-foreground">
