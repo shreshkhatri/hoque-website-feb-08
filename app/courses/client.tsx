@@ -784,7 +784,7 @@ export function CoursesPageClient() {
                     >
                       <div className="flex items-start justify-between mb-3">
                         <span
-                          className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getLevelColor(
+                          className={`inline-flex items-center px-3 py-1 rounded-full border text-xs font-semibold font-sans ${getLevelColor(
                             course.level,
                           )}`}
                         >
@@ -899,7 +899,7 @@ export function CoursesPageClient() {
 
                     <div className="flex items-start justify-between mb-3">
                       <span
-                        className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getLevelColor(
+                        className={`inline-flex items-center px-3 py-1 rounded-full border text-xs font-semibold font-sans ${getLevelColor(
                           course.level,
                         )}`}
                       >

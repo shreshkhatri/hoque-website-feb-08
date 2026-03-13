@@ -585,7 +585,7 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2 flex-wrap">
-                          <Badge variant="outline" className={`text-xs ${getLevelBadgeColor(course.level)}`}>{course.level}</Badge>
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full border text-xs font-medium font-sans ${getLevelBadgeColor(course.level)}`}>{course.level}</span>
                           <Badge variant="outline">{course.code}</Badge>
                           {course.university_campuses && (
                             <Badge variant="outline" className="flex items-center gap-1">

@@ -143,7 +143,7 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
         <div className="bg-primary/5 px-8 py-10">
           <div className="flex flex-wrap items-center gap-3 mb-4">
             <span
-              className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getLevelColor(
+              className={`inline-flex items-center px-3 py-1 rounded-full border text-xs font-semibold font-sans ${getLevelColor(
                 course.level
               )}`}
             >
@@ -431,7 +431,7 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
               >
                 <div className="flex items-center gap-2 mb-3">
                   <span
-                    className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wide ${getLevelColor(sc.level)}`}
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full border text-[10px] font-semibold uppercase tracking-wide font-sans ${getLevelColor(sc.level)}`}
                   >
                     {sc.level}
                   </span>
