@@ -13,8 +13,10 @@
  * Call with the raw `level` string stored in the DB.
  */
 export function getLevelBadgeColor(level: string | null | undefined): string {
+  console.log('[v0] getLevelBadgeColor called with:', JSON.stringify(level), 'type:', typeof level)
   if (!level) return 'bg-slate-100 text-slate-600 border-slate-200'
   const l = level.toLowerCase().trim()
+  console.log('[v0] getLevelBadgeColor normalized:', JSON.stringify(l))
 
   if (l === 'bachelor')
     return 'bg-blue-50 text-blue-700 border-blue-200'
