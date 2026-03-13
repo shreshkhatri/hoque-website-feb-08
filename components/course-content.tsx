@@ -113,7 +113,11 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
   })
 
   const currency = course.countries?.currency || ''
-  const getLevelColor = (level: string) => getLevelBadgeColor(level)
+  console.log('[v0] course.level value:', JSON.stringify(course.level), 'type:', typeof course.level, 'keys:', Object.keys(course).join(','))
+  const getLevelColor = (level: string) => {
+    console.log('[v0] getLevelColor called with:', JSON.stringify(level), 'type:', typeof level)
+    return getLevelBadgeColor(level)
+  }
 
   const universityName =
     course.universities && typeof course.universities === 'object' && 'name' in course.universities
