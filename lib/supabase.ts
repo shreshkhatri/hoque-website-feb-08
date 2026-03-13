@@ -71,6 +71,28 @@ export function nameToSlug(name: string, code?: string): string {
   return code ? `${base}-${code.toLowerCase()}` : base
 }
 
+export type LevelCategory = {
+  id: number
+  name: string
+  display_order: number
+  badge_color: string
+  description: string | null
+  created_at: string
+  updated_at: string
+}
+
+export type CourseLevel = {
+  id: number
+  name: string
+  category_id: number | null
+  display_order: number
+  badge_color: string
+  description: string | null
+  created_at: string
+  updated_at: string
+  category?: LevelCategory
+}
+
 export type University = {
   id: number
   name: string

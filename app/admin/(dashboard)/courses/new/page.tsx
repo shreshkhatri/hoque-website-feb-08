@@ -15,15 +15,8 @@ import { CategorySelect } from '@/components/category-select'
 
 type University = { id: number; name: string; country_id: number | null; currency: string | null }
 type Campus = { id: number; name: string; location: string | null }
-
-const LEVEL_OPTIONS = [
-  { value: 'Foundation', label: 'Foundation' },
-  { value: "Bachelor's", label: "Bachelor's" },
-  { value: "Master's", label: "Master's" },
-  { value: 'PhD', label: 'PhD' },
-  { value: 'Diploma', label: 'Diploma' },
-  { value: 'Certificate', label: 'Certificate' },
-]
+type CourseLevel = { id: number; name: string; category_id: number | null; badge_color: string }
+type LevelCategory = { id: number; name: string; badge_color: string }
 
 export default function NewCoursePage() {
   const router = useRouter()
@@ -32,6 +25,8 @@ export default function NewCoursePage() {
   const [universities, setUniversities] = useState<University[]>([])
   const [campuses, setCampuses] = useState<Campus[]>([])
   const [loadingCampuses, setLoadingCampuses] = useState(false)
+  const [courseLevels, setCourseLevels] = useState<CourseLevel[]>([])
+  const [levelCategories, setLevelCategories] = useState<LevelCategory[]>([])
 
   const [form, setForm] = useState({
     name: '',
@@ -59,12 +54,21 @@ export default function NewCoursePage() {
 
   const setField = (key: string, val: string) => setForm((prev) => ({ ...prev, [key]: val }))
 
-  // Load universities on mount
+  // Load universities and course levels on mount
   useEffect(() => {
     fetch('/api/admin/universities?limit=500', { credentials: 'same-origin' })
       .then((r) => r.json())
       .then((uniData) => {
         setUniversities((uniData.data || []).map((u: any) => ({ id: u.id, name: u.name, country_id: u.country_id, currency: u.countries?.currency || null })))
+      })
+      .catch(() => {})
+    
+    // Fetch course levels from database
+    fetch('/api/course-levels')
+      .then((r) => r.json())
+      .then((data) => {
+        setCourseLevels(data.levels || [])
+        setLevelCategories(data.categories || [])
       })
       .catch(() => {})
   }, [])
@@ -224,7 +228,7 @@ export default function NewCoursePage() {
               <SearchableSelect
                 value={form.level}
                 onValueChange={(val) => setField('level', val)}
-                options={LEVEL_OPTIONS}
+                options={courseLevels.map(l => ({ value: l.name, label: l.name }))}
                 placeholder="Search level..."
               />
             </div>
