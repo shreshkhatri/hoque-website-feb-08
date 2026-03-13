@@ -924,10 +924,10 @@ export function CountryContent({ country, universities, courses, funFacts = [], 
                           {/* Badges row */}
                           <div className="flex flex-wrap gap-2 mb-3">
                             {scholarship.program_level && (
-                              <Badge variant="outline" className={`text-xs ${getLevelBadgeColor(scholarship.program_level)}`}>
-                                <GraduationCap className="w-3 h-3 mr-1" />
+                              <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border text-xs font-medium font-sans ${getLevelBadgeColor(scholarship.program_level)}`}>
+                                <GraduationCap className="w-3 h-3" />
                                 {scholarship.program_level}
-                              </Badge>
+                              </span>
                             )}
                             {scholarship.eligibility_type && (
                               <Badge variant="outline" className={`text-xs ${getEligibilityBadgeColor(scholarship.eligibility_type)}`}>

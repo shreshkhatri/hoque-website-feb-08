@@ -143,10 +143,10 @@ export default async function ScholarshipDetailPage({ params }: { params: Promis
                 {/* Quick badges */}
                 <div className="flex flex-wrap gap-2">
                   {scholarship.program_level && (
-                    <Badge variant="outline" className={`text-sm border ${getLevelBadgeColor(scholarship.program_level)}`}>
-                      <GraduationCap className="h-4 w-4 mr-1.5" />
+                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-sm font-medium font-sans ${getLevelBadgeColor(scholarship.program_level)}`}>
+                      <GraduationCap className="h-4 w-4" />
                       {scholarship.program_level}
-                    </Badge>
+                    </span>
                   )}
                   {scholarship.eligibility_type && (
                     <Badge variant="outline" className={`text-sm border ${getEligibilityBadgeColor(scholarship.eligibility_type)}`}>
@@ -359,10 +359,10 @@ export default async function ScholarshipDetailPage({ params }: { params: Promis
                           <p className="text-sm font-medium text-accent">{r.funding_amount}</p>
                         )}
                     {r.program_level && (
-                      <Badge variant="outline" className={`text-xs ${getLevelBadgeColor(r.program_level)}`}>
-                        <GraduationCap className="h-3 w-3 mr-1" />
+                      <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border text-xs font-medium font-sans ${getLevelBadgeColor(r.program_level)}`}>
+                        <GraduationCap className="h-3 w-3" />
                         {r.program_level}
-                      </Badge>
+                      </span>
                     )}
                         <Button asChild size="sm" variant="outline" className="w-full">
                           <Link href={`/scholarships/${r.slug}`}>
