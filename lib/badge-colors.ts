@@ -13,36 +13,53 @@
  * Call with the raw `level` string stored in the DB.
  */
 export function getLevelBadgeColor(level: string | null | undefined): string {
-  if (!level) return 'badge-slate'
+  if (!level) return 'bg-slate-100 text-slate-600 border-slate-200'
   const l = level.toLowerCase().trim()
 
-  // Exact matches first (canonical DB values)
-  if (l === 'bachelor')    return 'badge-blue'
-  if (l === 'master')      return 'badge-indigo'
-  if (l === 'phd')         return 'badge-amber'
-  if (l === 'mba')         return 'badge-violet'
-  if (l === 'mphil')       return 'badge-purple'
-  if (l === 'foundation')  return 'badge-orange'
-  if (l === 'diploma')     return 'badge-teal'
-  if (l === 'hnd')         return 'badge-teal'
-  if (l === 'hnc')         return 'badge-teal'
-  if (l === 'certificate') return 'badge-emerald'
-  if (l === 'pgdip')       return 'badge-indigo'
-  if (l === 'pgce')        return 'badge-indigo'
-  if (l === 'doctoral')    return 'badge-amber'
-  if (l === 'research')    return 'badge-rose'
-  if (l === 'postgraduate')return 'badge-indigo'
+  if (l === 'bachelor')
+    return 'bg-blue-50 text-blue-700 border-blue-200'
+  if (l === 'master')
+    return 'bg-indigo-50 text-indigo-700 border-indigo-200'
+  if (l === 'phd')
+    return 'bg-amber-50 text-amber-700 border-amber-200'
+  if (l === 'mba')
+    return 'bg-violet-50 text-violet-700 border-violet-200'
+  if (l === 'mphil')
+    return 'bg-purple-50 text-purple-700 border-purple-200'
+  if (l === 'foundation')
+    return 'bg-orange-50 text-orange-700 border-orange-200'
+  if (l === 'diploma')
+    return 'bg-teal-50 text-teal-700 border-teal-200'
+  if (l === 'hnd' || l === 'hnc')
+    return 'bg-teal-50 text-teal-700 border-teal-200'
+  if (l === 'certificate')
+    return 'bg-emerald-50 text-emerald-700 border-emerald-200'
+  if (l === 'pgdip' || l === 'pgce')
+    return 'bg-indigo-50 text-indigo-700 border-indigo-200'
+  if (l === 'doctoral')
+    return 'bg-amber-50 text-amber-700 border-amber-200'
+  if (l === 'research')
+    return 'bg-rose-50 text-rose-700 border-rose-200'
+  if (l === 'postgraduate')
+    return 'bg-indigo-50 text-indigo-700 border-indigo-200'
 
-  // Fuzzy fallback for non-canonical values
-  if (l.includes('bachelor') || l.includes('undergraduate')) return 'badge-blue'
-  if (l.includes('master') || l.includes('msc'))             return 'badge-indigo'
-  if (l.includes('phd') || l.includes('doctor'))             return 'badge-amber'
-  if (l.includes('foundation'))                              return 'badge-orange'
-  if (l.includes('diploma'))                                 return 'badge-teal'
-  if (l.includes('certificate'))                             return 'badge-emerald'
-  if (l.includes('research'))                                return 'badge-rose'
+  // Fallback: pattern matching for any other values
+  if (l.includes('bachelor') || l.includes('undergraduate'))
+    return 'bg-blue-50 text-blue-700 border-blue-200'
+  if (l.includes('master') || l.includes('msc'))
+    return 'bg-indigo-50 text-indigo-700 border-indigo-200'
+  if (l.includes('phd') || l.includes('doctor'))
+    return 'bg-amber-50 text-amber-700 border-amber-200'
+  if (l.includes('foundation'))
+    return 'bg-orange-50 text-orange-700 border-orange-200'
+  if (l.includes('diploma'))
+    return 'bg-teal-50 text-teal-700 border-teal-200'
+  if (l.includes('certificate'))
+    return 'bg-emerald-50 text-emerald-700 border-emerald-200'
+  if (l.includes('research'))
+    return 'bg-rose-50 text-rose-700 border-rose-200'
 
-  return 'badge-slate'
+  return 'bg-slate-100 text-slate-600 border-slate-200'
 }
 
 // ---------------------------------------------------------------------------
