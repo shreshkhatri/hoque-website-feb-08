@@ -16,47 +16,47 @@ export function getLevelBadgeColor(level: string | null | undefined): string {
   if (!level) return 'bg-slate-100 text-slate-600 border-slate-200'
   const l = level.toLowerCase().trim()
 
-  if (l === 'Bachelor')
+  if (l === 'bachelor')
     return 'bg-blue-50 text-blue-700 border-blue-200'
-  if (l === 'Master')
+  if (l === 'master')
     return 'bg-indigo-50 text-indigo-700 border-indigo-200'
-  if (l === 'Phd')
+  if (l === 'phd')
     return 'bg-amber-50 text-amber-700 border-amber-200'
-  if (l === 'MBA')
+  if (l === 'mba')
     return 'bg-violet-50 text-violet-700 border-violet-200'
-  if (l === 'Mphil')
+  if (l === 'mphil')
     return 'bg-purple-50 text-purple-700 border-purple-200'
-  if (l === 'Foundation')
+  if (l === 'foundation')
     return 'bg-orange-50 text-orange-700 border-orange-200'
-  if (l === 'Diploma')
+  if (l === 'diploma')
     return 'bg-teal-50 text-teal-700 border-teal-200'
-  if (l === 'HND' || l === 'HNC')
+  if (l === 'hnd' || l === 'hnc')
     return 'bg-teal-50 text-teal-700 border-teal-200'
-  if (l === 'Certificate')
+  if (l === 'certificate')
     return 'bg-emerald-50 text-emerald-700 border-emerald-200'
-  if (l === 'Pgdip' || l === 'Pgce')
+  if (l === 'pgdip' || l === 'pgce')
     return 'bg-indigo-50 text-indigo-700 border-indigo-200'
-  if (l === 'Doctoral')
+  if (l === 'doctoral')
     return 'bg-amber-50 text-amber-700 border-amber-200'
-  if (l === 'Research')
+  if (l === 'research')
     return 'bg-rose-50 text-rose-700 border-rose-200'
-  if (l === 'Postgraduate')
+  if (l === 'postgraduate')
     return 'bg-indigo-50 text-indigo-700 border-indigo-200'
 
   // Fallback: pattern matching for any other values
-  if (l.includes('Bachelor') || l.includes('undergraduate'))
+  if (l.includes('bachelor') || l.includes('undergraduate'))
     return 'bg-blue-50 text-blue-700 border-blue-200'
-  if (l.includes('Master') || l.includes('msc'))
+  if (l.includes('master') || l.includes('msc'))
     return 'bg-indigo-50 text-indigo-700 border-indigo-200'
-  if (l.includes('Phd') || l.includes('doctor'))
+  if (l.includes('phd') || l.includes('doctor'))
     return 'bg-amber-50 text-amber-700 border-amber-200'
-  if (l.includes('Foundation'))
+  if (l.includes('foundation'))
     return 'bg-orange-50 text-orange-700 border-orange-200'
-  if (l.includes('Diploma'))
+  if (l.includes('diploma'))
     return 'bg-teal-50 text-teal-700 border-teal-200'
-  if (l.includes('Certificate'))
+  if (l.includes('certificate'))
     return 'bg-emerald-50 text-emerald-700 border-emerald-200'
-  if (l.includes('Research'))
+  if (l.includes('research'))
     return 'bg-rose-50 text-rose-700 border-rose-200'
 
   return 'bg-slate-100 text-slate-600 border-slate-200'
