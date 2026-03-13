@@ -19,6 +19,7 @@ import {
   FileCheck,
   Award,
   Quote,
+  Layers,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -35,6 +36,7 @@ const navItems = [
   { href: '/admin/countries', label: 'Countries', icon: Globe },
   { href: '/admin/universities', label: 'Universities', icon: GraduationCap },
   { href: '/admin/courses', label: 'Courses', icon: BookOpen },
+  { href: '/admin/course-levels', label: 'Course Levels', icon: Layers },
   { href: '/admin/announcements', label: 'Announcements', icon: Megaphone },
   { href: '/admin/scholarships', label: 'Scholarships', icon: Award },
   { href: '/admin/testimonials', label: 'Testimonials', icon: Quote },

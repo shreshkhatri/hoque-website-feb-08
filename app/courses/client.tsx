@@ -45,7 +45,8 @@ interface Campus {
   university_id: number
 }
 
-const programLevels = ['All', 'Undergraduate', 'Master', 'PhD', 'Diploma', 'Certificate']
+  const levelCategories = ['All', 'Undergraduate', 'Postgraduate', 'Research']
+  const programLevels = ['All', 'Undergraduate', 'Master', 'PhD', 'Diploma', 'Certificate', 'Foundation', 'HND', 'HNC']
 
 export function CoursesPageClient() {
   const [courses, setCourses] = useState<CourseWithUniversity[]>([])
@@ -65,6 +66,7 @@ export function CoursesPageClient() {
   const [selectedUniversity, setSelectedUniversity] = useState<number | null>(null)
   const [selectedCampus, setSelectedCampus] = useState<number | null>(null)
   const [campuses, setCampuses] = useState<Campus[]>([])
+  const [selectedLevelCategory, setSelectedLevelCategory] = useState<string>('All')
   const [selectedLevel, setSelectedLevel] = useState<string>('All')
   const [selectedIntakeMonths, setSelectedIntakeMonths] = useState<string[]>([])
   const [searchQuery, setSearchQuery] = useState<string>('')
@@ -74,6 +76,7 @@ export function CoursesPageClient() {
   const [countryOpen, setCountryOpen] = useState(false)
   const [universityOpen, setUniversityOpen] = useState(false)
   const [campusOpen, setCampusOpen] = useState(false)
+  const [levelCategoryOpen, setLevelCategoryOpen] = useState(false)
   const [levelOpen, setLevelOpen] = useState(false)
 
   // Fetch featured courses on mount
@@ -216,7 +219,7 @@ export function CoursesPageClient() {
     if (selectedCountry) {
       fetchCourses(true)
     }
-  }, [selectedCountry, selectedUniversity, selectedCampus, selectedLevel, selectedIntakeMonths, debouncedSearch])
+  }, [selectedCountry, selectedUniversity, selectedCampus, selectedLevelCategory, selectedLevel, selectedIntakeMonths, debouncedSearch])
 
   const fetchCourses = async (reset = true) => {
     try {
@@ -233,6 +236,9 @@ export function CoursesPageClient() {
       }
       if (selectedCampus) {
         url.searchParams.append('campus_id', selectedCampus.toString())
+      }
+      if (selectedLevelCategory && selectedLevelCategory !== 'All') {
+        url.searchParams.append('level_category', selectedLevelCategory)
       }
       if (selectedLevel && selectedLevel !== 'All') {
         url.searchParams.append('level', selectedLevel)
@@ -535,9 +541,67 @@ export function CoursesPageClient() {
                 </div>
               )}
 
+              {/* Level Category Dropdown (Undergraduate/Postgraduate/Research) */}
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold text-foreground">Study Level</Label>
+                <Popover open={levelCategoryOpen} onOpenChange={setLevelCategoryOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={levelCategoryOpen}
+                      className="w-full justify-between"
+                    >
+                      <span className={`truncate ${selectedLevelCategory !== 'All' ? (
+                        selectedLevelCategory === 'Undergraduate' ? 'text-blue-700' :
+                        selectedLevelCategory === 'Postgraduate' ? 'text-indigo-700' :
+                        selectedLevelCategory === 'Research' ? 'text-amber-700' : ''
+                      ) : ''}`}>
+                        {selectedLevelCategory === 'All' ? 'All Study Levels' : selectedLevelCategory}
+                      </span>
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0 font-sans" align="start">
+                    <Command className="font-sans">
+                      <CommandList className="font-sans">
+                        <CommandGroup className="font-sans">
+                          {levelCategories.map((cat) => (
+                            <CommandItem
+                              className="font-sans"
+                              key={cat}
+                              value={cat}
+                              onSelect={() => {
+                                setSelectedLevelCategory(cat)
+                                setSelectedLevel('All') // Reset specific level when category changes
+                                setLevelCategoryOpen(false)
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  'mr-2 h-4 w-4',
+                                  selectedLevelCategory === cat ? 'opacity-100' : 'opacity-0'
+                                )}
+                              />
+                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full border text-xs font-medium font-sans ${
+                                cat === 'Undergraduate' ? 'badge-blue' :
+                                cat === 'Postgraduate' ? 'badge-indigo' :
+                                cat === 'Research' ? 'badge-amber' : 'badge-slate'
+                              }`}>
+                                {cat === 'All' ? 'All Study Levels' : cat}
+                              </span>
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+
               {/* Program Level Dropdown */}
               <div className="space-y-2">
-                <Label className="text-sm font-semibold text-foreground">Program Level</Label>
+                <Label className="text-sm font-semibold text-foreground">Specific Qualification</Label>
                 <Popover open={levelOpen} onOpenChange={setLevelOpen}>
                   <PopoverTrigger asChild>
                     <Button
@@ -546,15 +610,15 @@ export function CoursesPageClient() {
                       aria-expanded={levelOpen}
                       className="w-full justify-between"
                     >
-                      <span className="truncate">{selectedLevel}</span>
+                      <span className="truncate">{selectedLevel === 'All' ? 'All Qualifications' : selectedLevel}</span>
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-[--radix-popover-trigger-width] p-0 font-sans" align="start">
                     <Command className="font-sans">
-                      <CommandInput className="font-sans" placeholder="Search program levels..." />
+                      <CommandInput className="font-sans" placeholder="Search qualifications..." />
                       <CommandList className="font-sans">
-                        <CommandEmpty className="font-sans">No level found.</CommandEmpty>
+                        <CommandEmpty className="font-sans">No qualification found.</CommandEmpty>
                         <CommandGroup className="font-sans">
                           {programLevels.map((level) => (
                             <CommandItem
@@ -572,7 +636,9 @@ export function CoursesPageClient() {
                                   selectedLevel === level ? 'opacity-100' : 'opacity-0'
                                 )}
                               />
-                              {level}
+                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full border text-xs font-medium font-sans ${getLevelBadgeColor(level)}`}>
+                                {level === 'All' ? 'All Qualifications' : level}
+                              </span>
                             </CommandItem>
                           ))}
                         </CommandGroup>

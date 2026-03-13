@@ -148,6 +148,69 @@ function CampusDropdown({ campuses, value, onChange }: { campuses: UniversityCam
   )
 }
 
+// Level category dropdown (Undergraduate / Postgraduate / Research)
+function LevelCategoryDropdown({ categories, value, onChange }: { categories: string[], value: string, onChange: (v: string) => void }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [])
+
+  const getCategoryColor = (cat: string) => {
+    switch (cat) {
+      case 'Undergraduate': return 'badge-blue'
+      case 'Postgraduate':  return 'badge-indigo'
+      case 'Research':      return 'badge-amber'
+      default:              return 'badge-slate'
+    }
+  }
+
+  return (
+    <div ref={ref} className="relative font-sans min-w-[180px]">
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-2 w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground text-sm font-sans focus:outline-none focus:ring-2 focus:ring-primary hover:bg-muted/40 transition-colors"
+      >
+        <GraduationCap className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
+        {value !== 'all'
+          ? <span className={`inline-flex items-center px-2 py-0.5 rounded-full border text-xs font-medium font-sans ${getCategoryColor(value)}`}>{value}</span>
+          : <span className="font-sans">All Categories</span>
+        }
+        <ChevronDown className={`ml-auto w-4 h-4 text-muted-foreground transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div className="absolute z-50 mt-1 w-full bg-background border border-border rounded-lg shadow-lg overflow-hidden font-sans">
+          <button
+            type="button"
+            onClick={() => { onChange('all'); setOpen(false) }}
+            className={`w-full text-left px-4 py-2.5 text-sm font-sans hover:bg-muted/50 transition-colors ${value === 'all' ? 'bg-primary/5 text-primary font-medium' : 'text-foreground'}`}
+          >
+            All Categories
+          </button>
+          {categories.map(cat => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => { onChange(cat); setOpen(false) }}
+              className={`w-full text-left px-4 py-2.5 text-sm font-sans hover:bg-muted/50 transition-colors flex items-center gap-2 ${value === cat ? 'bg-primary/5' : ''}`}
+            >
+              <span className={`inline-flex items-center px-2 py-0.5 rounded-full border text-xs font-medium font-sans ${getCategoryColor(cat)}`}>
+                {cat}
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 interface CourseWithCampus extends Course {
   university_campuses?: { id: number; name: string; location: string | null; is_main_campus: boolean } | null
 }
@@ -200,6 +263,7 @@ function stripHtml(html: string): string {
 export function UniversityContent({ university, courses, campuses = [], currency, announcements = [] }: UniversityContentProps) {
   const [activeTab, setActiveTab] = useState('overview')
   const [courseSearch, setCourseSearch] = useState('')
+  const [levelCategoryFilter, setLevelCategoryFilter] = useState('all')
   const [levelFilter, setLevelFilter] = useState('all')
   const [campusFilter, setCampusFilter] = useState('all')
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
@@ -224,12 +288,16 @@ export function UniversityContent({ university, courses, campuses = [], currency
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.name.toLowerCase().includes(courseSearch.toLowerCase()) ||
       course.code.toLowerCase().includes(courseSearch.toLowerCase())
+    const matchesLevelCategory = levelCategoryFilter === 'all' || course.level_category === levelCategoryFilter
     const matchesLevel = levelFilter === 'all' || course.level === levelFilter
     const matchesCampus = campusFilter === 'all' || String(course.campus_id) === campusFilter
-    return matchesSearch && matchesLevel && matchesCampus
+    return matchesSearch && matchesLevelCategory && matchesLevel && matchesCampus
   })
 
-  const uniqueLevels = [...new Set(courses.map(c => c.level))]
+  // Get unique level categories and levels (filtered by selected category)
+  const uniqueLevelCategories = [...new Set(courses.map(c => c.level_category).filter(Boolean))] as string[]
+  const filteredByCategory = levelCategoryFilter === 'all' ? courses : courses.filter(c => c.level_category === levelCategoryFilter)
+  const uniqueLevels = [...new Set(filteredByCategory.map(c => c.level))]
 
   // Use actual DB values
   const acceptanceRate = university.acceptance_rate ?? null
@@ -619,7 +687,15 @@ export function UniversityContent({ university, courses, campuses = [], currency
                   className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
-              {/* Level filter — custom dropdown so site font is respected */}
+              {/* Level category filter (Undergraduate/Postgraduate/Research) */}
+              {uniqueLevelCategories.length > 1 && (
+                <LevelCategoryDropdown
+                  categories={uniqueLevelCategories}
+                  value={levelCategoryFilter}
+                  onChange={(v) => { setLevelCategoryFilter(v); setLevelFilter('all') }}
+                />
+              )}
+              {/* Specific level filter */}
               <LevelDropdown
                 levels={uniqueLevels}
                 value={levelFilter}

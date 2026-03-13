@@ -71,6 +71,28 @@ export function nameToSlug(name: string, code?: string): string {
   return code ? `${base}-${code.toLowerCase()}` : base
 }
 
+export type LevelCategory = {
+  id: number
+  name: string
+  display_order: number
+  badge_color: string
+  description: string | null
+  created_at: string
+  updated_at: string
+}
+
+export type CourseLevel = {
+  id: number
+  name: string
+  category_id: number | null
+  display_order: number
+  badge_color: string
+  description: string | null
+  created_at: string
+  updated_at: string
+  category?: LevelCategory
+}
+
 export type University = {
   id: number
   name: string
@@ -128,6 +150,7 @@ export type Course = {
   campus_id: number | null
   country_id: number | null
   level: string
+  level_category: 'Undergraduate' | 'Postgraduate' | 'Research' | null
   duration_years: number | null
   description: string | null
   tuition_fees_international: number | null

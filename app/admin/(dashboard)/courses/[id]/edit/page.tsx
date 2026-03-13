@@ -17,15 +17,7 @@ import { CourseCountryRequirements } from '@/components/admin/course-country-req
 
 type University = { id: number; name: string; country_id: number | null; currency: string | null }
 type Campus = { id: number; name: string; location: string | null }
-
-const LEVEL_OPTIONS = [
-  { value: 'Foundation', label: 'Foundation' },
-  { value: "Bachelor's", label: "Bachelor's" },
-  { value: "Master's", label: "Master's" },
-  { value: 'PhD', label: 'PhD' },
-  { value: 'Diploma', label: 'Diploma' },
-  { value: 'Certificate', label: 'Certificate' },
-]
+type CourseLevel = { id: number; name: string; category_id: number | null; badge_color: string }
 
 export default function EditCoursePage() {
   const router = useRouter()
@@ -39,6 +31,7 @@ export default function EditCoursePage() {
   const [campuses, setCampuses] = useState<Campus[]>([])
   const [loadingCampuses, setLoadingCampuses] = useState(false)
   const [initialUniId, setInitialUniId] = useState('')
+  const [courseLevels, setCourseLevels] = useState<CourseLevel[]>([])
 
   const [form, setForm] = useState({
     name: '',
@@ -71,9 +64,11 @@ export default function EditCoursePage() {
     Promise.all([
       fetch(`/api/admin/courses/${id}`, { credentials: 'same-origin' }).then((r) => r.json()),
       fetch('/api/admin/universities?limit=500', { credentials: 'same-origin' }).then((r) => r.json()),
+      fetch('/api/course-levels').then((r) => r.json()),
     ])
-      .then(([courseData, uniData]) => {
+      .then(([courseData, uniData, levelsData]) => {
         setUniversities((uniData.data || []).map((u: any) => ({ id: u.id, name: u.name, country_id: u.country_id, currency: u.countries?.currency || null })))
+        setCourseLevels(levelsData.levels || [])
 
         if (courseData.course) {
           const c = courseData.course
@@ -283,7 +278,7 @@ export default function EditCoursePage() {
               <SearchableSelect
                 value={form.level}
                 onValueChange={(val) => setField('level', val)}
-                options={LEVEL_OPTIONS}
+                options={courseLevels.map(l => ({ value: l.name, label: l.name }))}
                 placeholder="Search level..."
               />
             </div>
