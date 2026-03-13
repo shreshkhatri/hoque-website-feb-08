@@ -128,6 +128,7 @@ export type Course = {
   campus_id: number | null
   country_id: number | null
   level: string
+  level_category: 'Undergraduate' | 'Postgraduate' | 'Research' | null
   duration_years: number | null
   description: string | null
   tuition_fees_international: number | null
