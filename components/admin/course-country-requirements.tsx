@@ -98,6 +98,7 @@ export function CourseCountryRequirements({ courseId }: Props) {
 
   // Search countries (debounced)
   const handleCountrySearch = (val: string) => {
+    console.log('[v0] handleCountrySearch called with:', val)
     setCountrySearch(val)
     setSelectedCountry(null)
     if (countryDebounceRef.current) clearTimeout(countryDebounceRef.current)
@@ -107,10 +108,14 @@ export function CourseCountryRequirements({ courseId }: Props) {
       try {
         const res = await fetch(`/api/admin/countries?search=${encodeURIComponent(val.trim())}&limit=10`, { credentials: 'same-origin' })
         const json = await res.json()
+        console.log('[v0] Country API response:', json)
         // Filter out countries already added
         const existingIds = new Set(requirements.map((r) => r.country_id))
-        setCountryResults((json.data || []).filter((c: Country) => !existingIds.has(c.id)))
-      } catch { /* ignore */ }
+        console.log('[v0] Existing country IDs:', [...existingIds])
+        const filtered = (json.data || []).filter((c: Country) => !existingIds.has(c.id))
+        console.log('[v0] Filtered results:', filtered)
+        setCountryResults(filtered)
+      } catch (err) { console.log('[v0] Country search error:', err) }
       finally { setCountrySearching(false) }
     }, 300)
   }
