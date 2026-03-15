@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
 import { ArrowRight, Building2 } from 'lucide-react'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
@@ -78,12 +77,11 @@ export function PartnersClient() {
                 >
                   <div className="w-full h-32 flex items-center justify-center mb-4">
                     {partner.logo_url ? (
-                      <Image
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
                         src={partner.logo_url}
                         alt={partner.name}
-                        width={140}
-                        height={140}
-                        className="opacity-70 group-hover:opacity-100 transition-opacity object-contain max-h-28"
+                        className="max-h-28 max-w-full object-contain opacity-70 group-hover:opacity-100 transition-opacity"
                       />
                     ) : (
                       <Building2 className="w-16 h-16 text-muted-foreground group-hover:text-primary transition-colors" />

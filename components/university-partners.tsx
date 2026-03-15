@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { Building2 } from 'lucide-react'
 
@@ -104,12 +103,11 @@ function PartnerCard({ partner }: { partner: Partner }) {
       <div className="text-center w-full">
         <div className="mb-2 sm:mb-3 flex justify-center h-20 sm:h-24 md:h-28 items-center">
           {partner.logo_url ? (
-            <Image
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
               src={partner.logo_url}
               alt={partner.name}
-              width={100}
-              height={100}
-              className="opacity-70 group-hover:opacity-100 transition-opacity object-contain"
+              className="max-h-full max-w-full object-contain opacity-70 group-hover:opacity-100 transition-opacity"
             />
           ) : (
             <Building2 className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 text-muted-foreground group-hover:text-primary transition-colors" />

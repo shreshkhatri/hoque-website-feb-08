@@ -9,6 +9,7 @@ export async function GET() {
       .from('universities')
       .select('id, name, logo_url')
       .eq('partnership_status', 'active')
+      .eq('country_id', 1) // UK only
       .order('name')
 
     if (error) throw error
