@@ -54,6 +54,60 @@ const EMPTY_FORM: RequirementForm = {
   additional_notes: '',
 }
 
+// Defined OUTSIDE the parent component so React never treats it as a new type on re-render
+function RequirementFields({
+  form,
+  onChange,
+}: {
+  form: RequirementForm
+  onChange: (key: keyof RequirementForm, val: string) => void
+}) {
+  return (
+    <div className="space-y-5 pt-4">
+      <div className="space-y-2">
+        <Label className="text-sm text-slate-700">Academic Requirements</Label>
+        <RichTextEditor
+          value={form.academic_requirements}
+          onChange={(v) => onChange('academic_requirements', v)}
+          placeholder="e.g. Minimum GPA 3.0, A-Levels BBC, or equivalent..."
+        />
+      </div>
+      <div className="space-y-2">
+        <Label className="text-sm text-slate-700">English Language Requirements</Label>
+        <RichTextEditor
+          value={form.english_language_requirements}
+          onChange={(v) => onChange('english_language_requirements', v)}
+          placeholder="e.g. IELTS 6.5 overall, no band below 6.0..."
+        />
+      </div>
+      <div className="space-y-2">
+        <Label className="text-sm text-slate-700">Other Requirements</Label>
+        <RichTextEditor
+          value={form.other_requirements}
+          onChange={(v) => onChange('other_requirements', v)}
+          placeholder="Any additional requirements specific to this country..."
+        />
+      </div>
+      <div className="space-y-2">
+        <Label className="text-sm text-slate-700">Document Requirements</Label>
+        <RichTextEditor
+          value={form.document_requirements}
+          onChange={(v) => onChange('document_requirements', v)}
+          placeholder="Required documents, e.g. transcripts, certificates..."
+        />
+      </div>
+      <div className="space-y-2">
+        <Label className="text-sm text-slate-700">Additional Notes</Label>
+        <RichTextEditor
+          value={form.additional_notes}
+          onChange={(v) => onChange('additional_notes', v)}
+          placeholder="Visa info, local qualification equivalencies, etc..."
+        />
+      </div>
+    </div>
+  )
+}
+
 interface Props {
   courseId: string
 }
@@ -201,57 +255,6 @@ export function CourseCountryRequirements({ courseId }: Props) {
       return next
     })
   }
-
-  const RequirementFields = ({
-    form,
-    onChange,
-  }: {
-    form: RequirementForm
-    onChange: (key: keyof RequirementForm, val: string) => void
-  }) => (
-    <div className="space-y-5 pt-4">
-      <div className="space-y-2">
-        <Label className="text-sm text-slate-700">Academic Requirements</Label>
-        <RichTextEditor
-          value={form.academic_requirements}
-          onChange={(v) => onChange('academic_requirements', v)}
-          placeholder="e.g. Minimum GPA 3.0, A-Levels BBC, or equivalent..."
-        />
-      </div>
-      <div className="space-y-2">
-        <Label className="text-sm text-slate-700">English Language Requirements</Label>
-        <RichTextEditor
-          value={form.english_language_requirements}
-          onChange={(v) => onChange('english_language_requirements', v)}
-          placeholder="e.g. IELTS 6.5 overall, no band below 6.0..."
-        />
-      </div>
-      <div className="space-y-2">
-        <Label className="text-sm text-slate-700">Other Requirements</Label>
-        <RichTextEditor
-          value={form.other_requirements}
-          onChange={(v) => onChange('other_requirements', v)}
-          placeholder="Any additional requirements specific to this country..."
-        />
-      </div>
-      <div className="space-y-2">
-        <Label className="text-sm text-slate-700">Document Requirements</Label>
-        <RichTextEditor
-          value={form.document_requirements}
-          onChange={(v) => onChange('document_requirements', v)}
-          placeholder="Required documents, e.g. transcripts, certificates..."
-        />
-      </div>
-      <div className="space-y-2">
-        <Label className="text-sm text-slate-700">Additional Notes</Label>
-        <RichTextEditor
-          value={form.additional_notes}
-          onChange={(v) => onChange('additional_notes', v)}
-          placeholder="Visa info, local qualification equivalencies, etc..."
-        />
-      </div>
-    </div>
-  )
 
   return (
     <Card className="bg-white border-slate-200">
