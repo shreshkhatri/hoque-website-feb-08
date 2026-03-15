@@ -65,6 +65,18 @@ export function CourseCountryRequirements({ courseId }: Props) {
   const [newForm, setNewForm] = useState<RequirementForm>(EMPTY_FORM)
   const [saving, setSaving] = useState(false)
   const countryDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const countryDropdownRef = useRef<HTMLDivElement>(null)
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (countryDropdownRef.current && !countryDropdownRef.current.contains(e.target as Node)) {
+        setShowCountryDropdown(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
 
   // Edit state
   const [editingId, setEditingId] = useState<number | null>(null)
@@ -278,22 +290,21 @@ export function CourseCountryRequirements({ courseId }: Props) {
             </div>
 
             {/* Country search */}
-            <div className="space-y-1 relative">
+            <div className="space-y-1 relative" ref={countryDropdownRef}>
               <Label className="text-sm text-slate-700">Country <span className="text-red-500">*</span></Label>
               <div className="relative">
-                  <input
+                <input
                   type="text"
                   value={countrySearch}
                   onChange={(e) => { handleCountrySearch(e.target.value); setShowCountryDropdown(true) }}
                   onFocus={() => { if (countryResults.length > 0) setShowCountryDropdown(true) }}
-                  onBlur={() => setTimeout(() => setShowCountryDropdown(false), 150)}
                   placeholder="Search country..."
                   className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm text-slate-900 outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                 />
                 {countrySearching && (
                   <Loader2 className="absolute right-3 top-3 h-4 w-4 animate-spin text-slate-400" />
                 )}
-                {selectedCountry && (
+                {selectedCountry && !countrySearching && (
                   <Check className="absolute right-3 top-3 h-4 w-4 text-teal-600" />
                 )}
               </div>
@@ -302,7 +313,7 @@ export function CourseCountryRequirements({ courseId }: Props) {
                   {countryResults.map((c) => (
                     <li
                       key={c.id}
-                      onMouseDown={(e) => { e.preventDefault(); handleSelectCountry(c) }}
+                      onClick={() => handleSelectCountry(c)}
                       className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-slate-50 text-sm text-slate-800"
                     >
                       {c.flag_emoji && <span className="text-base">{c.flag_emoji}</span>}
