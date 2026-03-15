@@ -46,7 +46,18 @@ export async function POST(request: Request) {
   const session = await verifySession()
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const body = await request.json()
+  let body = await request.json()
+
+  // Auto-calculate level_category from level if not provided
+  if (!body.level_category && body.level) {
+    if (body.level === 'Bachelor') {
+      body.level_category = 'Undergraduate'
+    } else if (['Master', 'PhD', 'MPHIL', 'MBA', 'PGDIP', 'PGCE'].includes(body.level)) {
+      body.level_category = 'Postgraduate'
+    } else if (['Foundation', 'Diploma', 'HND', 'HNC', 'Certificate'].includes(body.level)) {
+      body.level_category = 'Foundation'
+    }
+  }
 
   // Check course code uniqueness if code is provided
   if (body.code && body.code.trim()) {
