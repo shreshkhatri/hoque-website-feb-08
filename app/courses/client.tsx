@@ -46,17 +46,6 @@ interface Campus {
   university_id: number
 }
 
-const levelCategories = ['All', 'Undergraduate', 'Postgraduate', 'Research']
-
-// Map category → its specific qualification options
-// Foundation/Diploma/HND/HNC sit under Undergraduate as pre-entry pathways
-const categoryLevelsMap: Record<string, string[]> = {
-  'All':           ['All', 'Bachelor', 'Foundation', 'Diploma', 'HND', 'HNC', 'Certificate', 'Master', 'PhD', 'MPHIL', 'MBA', 'PGDIP', 'PGCE'],
-  'Undergraduate': ['All', 'Bachelor', 'Foundation', 'Diploma', 'HND', 'HNC', 'Certificate'],
-  'Postgraduate':  ['All', 'Master', 'PhD', 'MPHIL', 'MBA', 'PGDIP', 'PGCE'],
-  'Research':      ['All', 'PhD', 'MPHIL'],
-}
-
 export function CoursesPageClient() {
   const router = useRouter()
   const pathname = usePathname()
@@ -73,6 +62,10 @@ export function CoursesPageClient() {
   const [hasMore, setHasMore] = useState(false)
   const [currentOffset, setCurrentOffset] = useState(0)
   const [itemsToShow, setItemsToShow] = useState(5)
+
+  // Level categories and levels — fetched dynamically from DB
+  const [levelCategories, setLevelCategories] = useState<string[]>(['All'])
+  const [categoryLevelsMap, setCategoryLevelsMap] = useState<Record<string, string[]>>({ All: ['All'] })
 
   // Filter states — initialized from URL params for persistence
   const [selectedCountry, setSelectedCountry] = useState<number | null>(
@@ -127,6 +120,21 @@ export function CoursesPageClient() {
 
   // Derived: which specific qualifications to show based on selected category
   const availableQualifications = categoryLevelsMap[selectedLevelCategory] ?? categoryLevelsMap['All']
+
+  // Fetch level categories and levels dynamically from DB on mount
+  useEffect(() => {
+    const fetchLevels = async () => {
+      try {
+        const res = await fetch('/api/course-levels')
+        const json = await res.json()
+        if (json.categories) setLevelCategories(json.categories)
+        if (json.categoryLevelsMap) setCategoryLevelsMap(json.categoryLevelsMap)
+      } catch (error) {
+        console.error('[v0] Error fetching course levels:', error)
+      }
+    }
+    fetchLevels()
+  }, [])
 
   // Fetch featured courses on mount
   useEffect(() => {
