@@ -1,13 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/components/toast-notification'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ArrowLeft, Save, Loader2 } from 'lucide-react'
+import { ArrowLeft, Save, Loader2, RefreshCw, CheckCircle2, XCircle, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
 import { SearchableSelect } from '@/components/searchable-select'
 import { RichTextEditor } from '@/components/rich-text-editor'
@@ -27,6 +27,9 @@ export default function NewCoursePage() {
   const [loadingCampuses, setLoadingCampuses] = useState(false)
   const [courseLevels, setCourseLevels] = useState<CourseLevel[]>([])
   const [levelCategories, setLevelCategories] = useState<LevelCategory[]>([])
+  const [codeStatus, setCodeStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle')
+  const [codeManuallyEdited, setCodeManuallyEdited] = useState(false)
+  const checkCodeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const [form, setForm] = useState({
     name: '',
@@ -53,6 +56,51 @@ export default function NewCoursePage() {
   })
 
   const setField = (key: string, val: string) => setForm((prev) => ({ ...prev, [key]: val }))
+
+  // Generate a course code from name + level + university
+  const generateCode = useCallback((name: string, level: string, unis: University[], uniId: string): string => {
+    const namePart = name
+      .trim()
+      .split(/\s+/)
+      .map((w) => w[0]?.toUpperCase() || '')
+      .join('')
+      .slice(0, 4)
+
+    const levelPart = level.slice(0, 3).toUpperCase()
+
+    const uni = unis.find((u) => u.id.toString() === uniId)
+    const uniPart = uni
+      ? uni.name.split(/\s+/).map((w) => w[0]?.toUpperCase() || '').join('').slice(0, 3)
+      : ''
+
+    const randomSuffix = Math.floor(100 + Math.random() * 900).toString()
+    return [namePart, levelPart, uniPart, randomSuffix].filter(Boolean).join('-')
+  }, [])
+
+  // Check availability of a code via API (debounced)
+  const checkCodeAvailability = useCallback((code: string) => {
+    if (checkCodeTimer.current) clearTimeout(checkCodeTimer.current)
+    if (!code.trim()) { setCodeStatus('idle'); return }
+    setCodeStatus('checking')
+    checkCodeTimer.current = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/admin/courses/check-code?code=${encodeURIComponent(code.trim())}`, { credentials: 'same-origin' })
+        const data = await res.json()
+        setCodeStatus(data.available ? 'available' : 'taken')
+      } catch {
+        setCodeStatus('idle')
+      }
+    }, 500)
+  }, [])
+
+  // Auto-regenerate code when name, level, or university changes (only if not manually edited)
+  useEffect(() => {
+    if (codeManuallyEdited) return
+    if (!form.name && !form.level && !form.university_id) return
+    const generated = generateCode(form.name, form.level, universities, form.university_id)
+    setForm((prev) => ({ ...prev, code: generated }))
+    checkCodeAvailability(generated)
+  }, [form.name, form.level, form.university_id, universities, codeManuallyEdited, generateCode, checkCodeAvailability])
 
   // Load universities and course levels on mount
   useEffect(() => {
@@ -99,6 +147,14 @@ export default function NewCoursePage() {
     e.preventDefault()
     if (!form.name.trim() || !form.university_id || !form.level) {
       showToast('warning', 'Missing required fields', 'Name, University, and Level are required.')
+      return
+    }
+    if (codeStatus === 'taken') {
+      showToast('error', 'Course code already exists', `The code "${form.code}" is already in use. Please modify it or regenerate a new one.`)
+      return
+    }
+    if (codeStatus === 'checking') {
+      showToast('warning', 'Please wait', 'Checking course code availability...')
       return
     }
     setSaving(true)
@@ -200,13 +256,61 @@ export default function NewCoursePage() {
             </div>
 
             <div className="space-y-2">
-              <Label className="text-sm text-slate-700">Course Code</Label>
-              <Input
-                value={form.code}
-                onChange={(e) => setField('code', e.target.value)}
-                placeholder="e.g. CS101"
-                className="bg-white border-slate-200 text-slate-900"
-              />
+              <div className="flex items-center justify-between">
+                <Label className="text-sm text-slate-700">
+                  Course Code
+                  <span className="ml-1.5 text-xs font-normal text-amber-600 inline-flex items-center gap-1">
+                    <AlertTriangle className="h-3 w-3" />
+                    Cannot be changed after creation
+                  </span>
+                </Label>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const generated = generateCode(form.name, form.level, universities, form.university_id)
+                    setForm((prev) => ({ ...prev, code: generated }))
+                    setCodeManuallyEdited(false)
+                    checkCodeAvailability(generated)
+                  }}
+                  className="text-xs text-teal-600 hover:text-teal-700 flex items-center gap-1 font-medium"
+                >
+                  <RefreshCw className="h-3 w-3" />
+                  Regenerate
+                </button>
+              </div>
+              <div className="relative">
+                <Input
+                  value={form.code}
+                  onChange={(e) => {
+                    const val = e.target.value.toUpperCase().replace(/[^A-Z0-9\-_]/g, '')
+                    setField('code', val)
+                    setCodeManuallyEdited(true)
+                    checkCodeAvailability(val)
+                  }}
+                  placeholder="Auto-generated from name + level + university"
+                  className={`bg-white border-slate-200 text-slate-900 pr-9 font-mono ${
+                    codeStatus === 'taken' ? 'border-red-400 focus-visible:ring-red-400' :
+                    codeStatus === 'available' ? 'border-emerald-400 focus-visible:ring-emerald-400' : ''
+                  }`}
+                />
+                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  {codeStatus === 'checking' && <Loader2 className="h-4 w-4 text-slate-400 animate-spin" />}
+                  {codeStatus === 'available' && <CheckCircle2 className="h-4 w-4 text-emerald-500" />}
+                  {codeStatus === 'taken' && <XCircle className="h-4 w-4 text-red-500" />}
+                </div>
+              </div>
+              {codeStatus === 'taken' && (
+                <p className="text-xs text-red-600 flex items-center gap-1">
+                  <XCircle className="h-3 w-3" />
+                  This code is already in use. Modify it or click Regenerate.
+                </p>
+              )}
+              {codeStatus === 'available' && form.code && (
+                <p className="text-xs text-emerald-600 flex items-center gap-1">
+                  <CheckCircle2 className="h-3 w-3" />
+                  This code is available.
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
