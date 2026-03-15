@@ -146,7 +146,13 @@ export function CoursesPageClient() {
       try {
         const res = await fetch('/api/course-categories')
         const json = await res.json()
-        if (json.data) setCourseCategories(json.data)
+        if (json.data) {
+          setCourseCategories(json.data)
+          // Auto-select first category on initial load only (if not already set via URL param)
+          if (!searchParams.get('field') && json.data.length > 0) {
+            setSelectedCategoryId(json.data[0].id)
+          }
+        }
       } catch (error) {
         console.error('[v0] Error fetching course categories:', error)
       }
@@ -292,9 +298,7 @@ export function CoursesPageClient() {
 
   // Fetch courses when filters change
   useEffect(() => {
-    if (selectedCountry) {
-      fetchCourses(true)
-    }
+    fetchCourses(true)
     // Sync all filters to URL
     syncToURL({
       country: selectedCountry,
@@ -381,13 +385,13 @@ export function CoursesPageClient() {
     searchQuery !== ''
 
   const resetFilters = () => {
-    const defaultCountry = countries.find((c) => c.name === 'Australia') ?? countries[0]
-    setSelectedCountry(defaultCountry ? defaultCountry.id : null)
+    setSelectedCountry(null)
     setSelectedUniversity(null)
     setSelectedCampus(null)
     setSelectedLevel('All')
     setSelectedLevelCategory('All')
-    setSelectedCategoryId(null)
+    // Reset to first category, not null
+    setSelectedCategoryId(courseCategories.length > 0 ? courseCategories[0].id : null)
     setSelectedIntakeMonths([])
     setSearchQuery('')
     setDebouncedSearch('')
