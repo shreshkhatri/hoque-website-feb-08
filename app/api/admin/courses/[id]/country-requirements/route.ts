@@ -60,9 +60,24 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       countryId = newCountry.id
     }
 
+    // Block duplicate: check if this course already has a requirement for this country
+    const { data: duplicate } = await supabase
+      .from('course_country_requirements')
+      .select('id')
+      .eq('course_id', parseInt(id))
+      .eq('country_id', countryId)
+      .single()
+
+    if (duplicate) {
+      return NextResponse.json(
+        { error: `A requirement for ${country_name} already exists for this course.` },
+        { status: 409 }
+      )
+    }
+
     const { data, error } = await supabase
       .from('course_country_requirements')
-      .upsert({
+      .insert({
         course_id: parseInt(id),
         country_id: countryId,
         academic_requirements: academic_requirements || null,
@@ -70,8 +85,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
         other_requirements: other_requirements || null,
         document_requirements: document_requirements || null,
         additional_notes: additional_notes || null,
-        updated_at: new Date().toISOString(),
-      }, { onConflict: 'course_id,country_id' })
+      })
       .select('*, countries(id, name, flag_emoji)')
       .single()
 

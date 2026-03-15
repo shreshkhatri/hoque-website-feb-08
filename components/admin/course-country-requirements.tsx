@@ -92,6 +92,11 @@ export function CourseCountryRequirements({ courseId }: Props) {
       .finally(() => setLoading(false))
   }, [courseId])
 
+  // Build the set of already-added country names (lowercased) from loaded requirements
+  const existingCountryNames = new Set(
+    requirements.map((r) => (r.countries?.name || '').toLowerCase()).filter(Boolean)
+  )
+
   // Search countries using static list (instant, no API call)
   const handleCountrySearch = (val: string) => {
     setCountrySearch(val)
@@ -101,10 +106,10 @@ export function CourseCountryRequirements({ courseId }: Props) {
       setShowCountryDropdown(false)
       return
     }
-    // Get existing country names to filter out
-    const existingNames = new Set(requirements.map((r) => r.countries?.name?.toLowerCase()))
-    // Search from static world countries list and filter out already added ones
-    const results = searchCountries(val, 15).filter(c => !existingNames.has(c.name.toLowerCase()))
+    // Filter out countries already added to this course
+    const results = searchCountries(val, 15).filter(
+      (c) => !existingCountryNames.has(c.name.toLowerCase())
+    )
     setCountryResults(results)
     setShowCountryDropdown(results.length > 0)
   }
