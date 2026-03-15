@@ -122,7 +122,21 @@ export async function GET(request: NextRequest) {
     }
 
     if (levelCategory) {
-      query = query.eq('level_category', levelCategory)
+      // Map category to the levels that belong to it (for courses with null level_category)
+      const categoryToLevels: Record<string, string[]> = {
+        'Undergraduate': ['Bachelor'],
+        'Postgraduate': ['Master', 'PhD', 'MPHIL', 'MBA', 'PGDIP', 'PGCE'],
+        'Foundation': ['Foundation', 'Diploma', 'HND', 'HNC', 'Certificate'],
+      }
+      const inferredLevels = categoryToLevels[levelCategory] || []
+
+      if (inferredLevels.length > 0) {
+        // Match explicit level_category OR courses where level_category is null but level infers the category
+        const levelOrConditions = inferredLevels.map((l) => `level.eq.${l}`).join(',')
+        query = query.or(`level_category.eq.${levelCategory},and(level_category.is.null,${levelOrConditions})`)
+      } else {
+        query = query.eq('level_category', levelCategory)
+      }
     }
 
     if (level) {
