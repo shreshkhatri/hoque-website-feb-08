@@ -10,11 +10,19 @@ import {
   Plus, Trash2, ChevronDown, ChevronUp, Globe, Loader2, Pencil, X, Check,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { searchCountries, WorldCountry } from '@/lib/world-countries'
 
 interface Country {
   id: number
   name: string
   flag_emoji: string | null
+}
+
+// Selected country can be either from DB or from static list
+interface SelectedCountry {
+  name: string
+  code: string
+  flag: string
 }
 
 interface CountryRequirement {
@@ -58,23 +66,11 @@ export function CourseCountryRequirements({ courseId }: Props) {
   // Add new requirement state
   const [adding, setAdding] = useState(false)
   const [countrySearch, setCountrySearch] = useState('')
-  const [countryResults, setCountryResults] = useState<Country[]>([])
-  const [countrySearching, setCountrySearching] = useState(false)
-  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null)
+  const [countryResults, setCountryResults] = useState<WorldCountry[]>([])
+  const [selectedCountry, setSelectedCountry] = useState<SelectedCountry | null>(null)
   const [showCountryDropdown, setShowCountryDropdown] = useState(false)
   const [newForm, setNewForm] = useState<RequirementForm>(EMPTY_FORM)
   const [saving, setSaving] = useState(false)
-  const countryDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  // Automatically show/hide dropdown based on results
-  useEffect(() => {
-    // Show dropdown whenever we have results and no country is selected yet
-    if (countryResults.length > 0 && !selectedCountry) {
-      setShowCountryDropdown(true)
-    } else if (countryResults.length === 0) {
-      setShowCountryDropdown(false)
-    }
-  }, [countryResults, selectedCountry])
 
   // Edit state
   const [editingId, setEditingId] = useState<number | null>(null)
@@ -96,32 +92,25 @@ export function CourseCountryRequirements({ courseId }: Props) {
       .finally(() => setLoading(false))
   }, [courseId])
 
-  // Search countries (debounced)
+  // Search countries using static list (instant, no API call)
   const handleCountrySearch = (val: string) => {
-    console.log('[v0] handleCountrySearch called with:', val)
     setCountrySearch(val)
     setSelectedCountry(null)
-    if (countryDebounceRef.current) clearTimeout(countryDebounceRef.current)
-    if (!val.trim()) { setCountryResults([]); return }
-    countryDebounceRef.current = setTimeout(async () => {
-      setCountrySearching(true)
-      try {
-        const res = await fetch(`/api/admin/countries?search=${encodeURIComponent(val.trim())}&limit=10`, { credentials: 'same-origin' })
-        const json = await res.json()
-        console.log('[v0] Country API response:', json)
-        // Filter out countries already added
-        const existingIds = new Set(requirements.map((r) => r.country_id))
-        console.log('[v0] Existing country IDs:', [...existingIds])
-        const filtered = (json.data || []).filter((c: Country) => !existingIds.has(c.id))
-        console.log('[v0] Filtered results:', filtered)
-        setCountryResults(filtered)
-      } catch (err) { console.log('[v0] Country search error:', err) }
-      finally { setCountrySearching(false) }
-    }, 300)
+    if (!val.trim()) {
+      setCountryResults([])
+      setShowCountryDropdown(false)
+      return
+    }
+    // Get existing country names to filter out
+    const existingNames = new Set(requirements.map((r) => r.countries?.name?.toLowerCase()))
+    // Search from static world countries list and filter out already added ones
+    const results = searchCountries(val, 15).filter(c => !existingNames.has(c.name.toLowerCase()))
+    setCountryResults(results)
+    setShowCountryDropdown(results.length > 0)
   }
 
-  const handleSelectCountry = (c: Country) => {
-    setSelectedCountry(c)
+  const handleSelectCountry = (c: WorldCountry) => {
+    setSelectedCountry({ name: c.name, code: c.code, flag: c.flag })
     setCountrySearch(c.name)
     setCountryResults([])
     setShowCountryDropdown(false)
@@ -135,7 +124,12 @@ export function CourseCountryRequirements({ courseId }: Props) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'same-origin',
-        body: JSON.stringify({ country_id: selectedCountry.id, ...newForm }),
+        body: JSON.stringify({ 
+          country_name: selectedCountry.name, 
+          country_code: selectedCountry.code, 
+          country_flag: selectedCountry.flag,
+          ...newForm 
+        }),
       })
       const json = await res.json()
       if (!res.ok) { showToast('error', 'Failed to save', json.error || 'Unknown error'); return }
@@ -300,26 +294,23 @@ export function CourseCountryRequirements({ courseId }: Props) {
                   type="text"
                   value={countrySearch}
                   onChange={(e) => handleCountrySearch(e.target.value)}
-                  placeholder="Search country..."
+                  placeholder="Search any country (e.g. Pakistan, India, Nepal...)"
                   className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm text-slate-900 outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                 />
-                {countrySearching && (
-                  <Loader2 className="absolute right-3 top-3 h-4 w-4 animate-spin text-slate-400" />
-                )}
-                {selectedCountry && !countrySearching && (
+                {selectedCountry && (
                   <Check className="absolute right-3 top-3 h-4 w-4 text-teal-600" />
                 )}
               </div>
-              {showCountryDropdown && (
+              {showCountryDropdown && countryResults.length > 0 && (
                 <ul className="absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-md shadow-lg max-h-48 overflow-y-auto">
                   {countryResults.map((c) => (
                     <li
-                      key={c.id}
+                      key={c.code}
                       onMouseDown={(e) => e.preventDefault()}
                       onClick={() => handleSelectCountry(c)}
                       className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-slate-50 text-sm text-slate-800"
                     >
-                      {c.flag_emoji && <span className="text-base">{c.flag_emoji}</span>}
+                      <span className="text-base">{c.flag}</span>
                       {c.name}
                     </li>
                   ))}

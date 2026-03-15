@@ -28,15 +28,43 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
 
   try {
     const body = await request.json()
-    const { country_id, academic_requirements, english_language_requirements, other_requirements, document_requirements, additional_notes } = body
+    const { country_name, country_code, country_flag, academic_requirements, english_language_requirements, other_requirements, document_requirements, additional_notes } = body
 
-    if (!country_id) return NextResponse.json({ error: 'country_id is required' }, { status: 400 })
+    if (!country_name) return NextResponse.json({ error: 'country_name is required' }, { status: 400 })
+
+    // Find or create the country in the countries table
+    let countryId: number
+
+    // First try to find existing country by name (case-insensitive)
+    const { data: existingCountry } = await supabase
+      .from('countries')
+      .select('id')
+      .ilike('name', country_name)
+      .single()
+
+    if (existingCountry) {
+      countryId = existingCountry.id
+    } else {
+      // Create new country entry
+      const { data: newCountry, error: createError } = await supabase
+        .from('countries')
+        .insert({
+          name: country_name,
+          code: country_code || country_name.slice(0, 2).toUpperCase(),
+          flag_emoji: country_flag || null,
+        })
+        .select('id')
+        .single()
+
+      if (createError) return NextResponse.json({ error: `Failed to create country: ${createError.message}` }, { status: 500 })
+      countryId = newCountry.id
+    }
 
     const { data, error } = await supabase
       .from('course_country_requirements')
       .upsert({
         course_id: parseInt(id),
-        country_id: parseInt(country_id),
+        country_id: countryId,
         academic_requirements: academic_requirements || null,
         english_language_requirements: english_language_requirements || null,
         other_requirements: other_requirements || null,
