@@ -281,11 +281,12 @@ export function CourseCountryRequirements({ courseId }: Props) {
             <div className="space-y-1 relative">
               <Label className="text-sm text-slate-700">Country <span className="text-red-500">*</span></Label>
               <div className="relative">
-                <input
+                  <input
                   type="text"
                   value={countrySearch}
                   onChange={(e) => { handleCountrySearch(e.target.value); setShowCountryDropdown(true) }}
-                  onFocus={() => setShowCountryDropdown(true)}
+                  onFocus={() => { if (countryResults.length > 0) setShowCountryDropdown(true) }}
+                  onBlur={() => setTimeout(() => setShowCountryDropdown(false), 150)}
                   placeholder="Search country..."
                   className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm text-slate-900 outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                 />
@@ -301,7 +302,7 @@ export function CourseCountryRequirements({ courseId }: Props) {
                   {countryResults.map((c) => (
                     <li
                       key={c.id}
-                      onClick={() => handleSelectCountry(c)}
+                      onMouseDown={(e) => { e.preventDefault(); handleSelectCountry(c) }}
                       className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-slate-50 text-sm text-slate-800"
                     >
                       {c.flag_emoji && <span className="text-base">{c.flag_emoji}</span>}
