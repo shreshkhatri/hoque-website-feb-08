@@ -190,9 +190,10 @@ export function CoursesPageClient() {
 
         if (data && data.length > 0) {
           setCountries(data)
-          // Set Australia as default, or first country if Australia not found
-          const australiaCountry = data.find(c => c.name === 'Australia')
-          setSelectedCountry(australiaCountry ? australiaCountry.id : data[0].id)
+          // Only restore country from URL param — no default country selected
+          if (!searchParams.get('country')) {
+            setSelectedCountry(null)
+          }
         }
       } catch (error) {
         console.error('[v0] Error fetching countries:', error)
@@ -374,15 +375,15 @@ export function CoursesPageClient() {
 
   const selectedCountryName = countries.find((c) => c.id === selectedCountry)?.name
 
-  const defaultCountryId = countries.find((c) => c.name === 'Australia')?.id ?? countries[0]?.id
-
   const isFiltered =
-    (selectedCountry !== null && selectedCountry !== defaultCountryId) ||
+    selectedCountry !== null ||
     selectedUniversity !== null ||
     selectedCampus !== null ||
+    selectedLevelCategory !== 'All' ||
     selectedLevel !== 'All' ||
     selectedIntakeMonths.length > 0 ||
-    searchQuery !== ''
+    searchQuery !== '' ||
+    (courseCategories.length > 0 && selectedCategoryId !== courseCategories[0]?.id)
 
   const resetFilters = () => {
     setSelectedCountry(null)
