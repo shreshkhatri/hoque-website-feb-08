@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { CTAConsultation } from '@/components/cta-consultation'
@@ -45,10 +46,22 @@ interface Campus {
   university_id: number
 }
 
-  const levelCategories = ['All', 'Undergraduate', 'Postgraduate', 'Research']
-  const programLevels = ['All', 'Undergraduate', 'Master', 'PhD', 'Diploma', 'Certificate', 'Foundation', 'HND', 'HNC']
+  const levelCategories = ['All', 'Undergraduate', 'Postgraduate', 'Foundation', 'Research']
+
+  // Map category → its specific qualification options
+  const categoryLevelsMap: Record<string, string[]> = {
+    'All':           ['All', 'Bachelor', 'Master', 'PhD', 'MPHIL', 'MBA', 'PGDIP', 'PGCE', 'Foundation', 'Diploma', 'HND', 'HNC', 'Certificate'],
+    'Undergraduate': ['All', 'Bachelor'],
+    'Postgraduate':  ['All', 'Master', 'PhD', 'MPHIL', 'MBA', 'PGDIP', 'PGCE'],
+    'Foundation':    ['All', 'Foundation', 'Diploma', 'HND', 'HNC', 'Certificate'],
+    'Research':      ['All', 'PhD', 'MPHIL'],
+  }
 
 export function CoursesPageClient() {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
   const [courses, setCourses] = useState<CourseWithUniversity[]>([])
   const [featuredCourses, setFeaturedCourses] = useState<CourseWithUniversity[]>([])
   const [countries, setCountries] = useState<Country[]>([])
@@ -61,23 +74,59 @@ export function CoursesPageClient() {
   const [currentOffset, setCurrentOffset] = useState(0)
   const [itemsToShow, setItemsToShow] = useState(5)
 
-  // Filter states
-  const [selectedCountry, setSelectedCountry] = useState<number | null>(null)
-  const [selectedUniversity, setSelectedUniversity] = useState<number | null>(null)
-  const [selectedCampus, setSelectedCampus] = useState<number | null>(null)
+  // Filter states — initialized from URL params for persistence
+  const [selectedCountry, setSelectedCountry] = useState<number | null>(
+    searchParams.get('country') ? Number(searchParams.get('country')) : null
+  )
+  const [selectedUniversity, setSelectedUniversity] = useState<number | null>(
+    searchParams.get('university') ? Number(searchParams.get('university')) : null
+  )
+  const [selectedCampus, setSelectedCampus] = useState<number | null>(
+    searchParams.get('campus') ? Number(searchParams.get('campus')) : null
+  )
   const [campuses, setCampuses] = useState<Campus[]>([])
-  const [selectedLevelCategory, setSelectedLevelCategory] = useState<string>('All')
-  const [selectedLevel, setSelectedLevel] = useState<string>('All')
-  const [selectedIntakeMonths, setSelectedIntakeMonths] = useState<string[]>([])
-  const [searchQuery, setSearchQuery] = useState<string>('')
-  const [debouncedSearch, setDebouncedSearch] = useState<string>('')
-  
+  const [selectedLevelCategory, setSelectedLevelCategory] = useState<string>(
+    searchParams.get('category') || 'All'
+  )
+  const [selectedLevel, setSelectedLevel] = useState<string>(
+    searchParams.get('level') || 'All'
+  )
+  const [selectedIntakeMonths, setSelectedIntakeMonths] = useState<string[]>(
+    searchParams.get('intake') ? searchParams.get('intake')!.split(',') : []
+  )
+  const [searchQuery, setSearchQuery] = useState<string>(searchParams.get('q') || '')
+  const [debouncedSearch, setDebouncedSearch] = useState<string>(searchParams.get('q') || '')
+
   // UI state for dropdowns
   const [countryOpen, setCountryOpen] = useState(false)
   const [universityOpen, setUniversityOpen] = useState(false)
   const [campusOpen, setCampusOpen] = useState(false)
   const [levelCategoryOpen, setLevelCategoryOpen] = useState(false)
   const [levelOpen, setLevelOpen] = useState(false)
+
+  // Sync filters to URL whenever they change
+  const syncToURL = useCallback((params: {
+    country?: number | null
+    university?: number | null
+    campus?: number | null
+    category?: string
+    level?: string
+    intake?: string[]
+    q?: string
+  }) => {
+    const p = new URLSearchParams()
+    if (params.country) p.set('country', String(params.country))
+    if (params.university) p.set('university', String(params.university))
+    if (params.campus) p.set('campus', String(params.campus))
+    if (params.category && params.category !== 'All') p.set('category', params.category)
+    if (params.level && params.level !== 'All') p.set('level', params.level)
+    if (params.intake && params.intake.length > 0) p.set('intake', params.intake.join(','))
+    if (params.q) p.set('q', params.q)
+    router.replace(`${pathname}?${p.toString()}`, { scroll: false })
+  }, [router, pathname])
+
+  // Derived: which specific qualifications to show based on selected category
+  const availableQualifications = categoryLevelsMap[selectedLevelCategory] ?? categoryLevelsMap['All']
 
   // Fetch featured courses on mount
   useEffect(() => {
@@ -219,7 +268,17 @@ export function CoursesPageClient() {
     if (selectedCountry) {
       fetchCourses(true)
     }
-  }, [selectedCountry, selectedUniversity, selectedCampus, selectedLevelCategory, selectedLevel, selectedIntakeMonths, debouncedSearch])
+    // Sync all filters to URL
+    syncToURL({
+      country: selectedCountry,
+      university: selectedUniversity,
+      campus: selectedCampus,
+      category: selectedLevelCategory,
+      level: selectedLevel,
+      intake: selectedIntakeMonths,
+      q: debouncedSearch,
+    })
+  }, [selectedCountry, selectedUniversity, selectedCampus, selectedLevelCategory, selectedLevel, selectedIntakeMonths, debouncedSearch, syncToURL])
 
   const fetchCourses = async (reset = true) => {
     try {
@@ -573,7 +632,7 @@ export function CoursesPageClient() {
                               value={cat}
                               onSelect={() => {
                                 setSelectedLevelCategory(cat)
-                                setSelectedLevel('All') // Reset specific level when category changes
+                                setSelectedLevel('All')
                                 setLevelCategoryOpen(false)
                               }}
                             >
@@ -620,7 +679,7 @@ export function CoursesPageClient() {
                       <CommandList className="font-sans">
                         <CommandEmpty className="font-sans">No qualification found.</CommandEmpty>
                         <CommandGroup className="font-sans">
-                          {programLevels.map((level) => (
+                          {availableQualifications.map((level) => (
                             <CommandItem
                               className="font-sans"
                               key={level}
