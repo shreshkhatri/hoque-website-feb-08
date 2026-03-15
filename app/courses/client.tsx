@@ -67,6 +67,13 @@ export function CoursesPageClient() {
   const [levelCategories, setLevelCategories] = useState<string[]>(['All'])
   const [categoryLevelsMap, setCategoryLevelsMap] = useState<Record<string, string[]>>({ All: ['All'] })
 
+  // Field of study (course_categories) — fetched dynamically from DB
+  const [courseCategories, setCourseCategories] = useState<{ id: number; name: string }[]>([])
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
+    searchParams.get('field') ? Number(searchParams.get('field')) : null
+  )
+  const [fieldOpen, setFieldOpen] = useState(false)
+
   // Filter states — initialized from URL params for persistence
   const [selectedCountry, setSelectedCountry] = useState<number | null>(
     searchParams.get('country') ? Number(searchParams.get('country')) : null
@@ -106,6 +113,7 @@ export function CoursesPageClient() {
     level?: string
     intake?: string[]
     q?: string
+    field?: number | null
   }) => {
     const p = new URLSearchParams()
     if (params.country) p.set('country', String(params.country))
@@ -115,6 +123,7 @@ export function CoursesPageClient() {
     if (params.level && params.level !== 'All') p.set('level', params.level)
     if (params.intake && params.intake.length > 0) p.set('intake', params.intake.join(','))
     if (params.q) p.set('q', params.q)
+    if (params.field) p.set('field', String(params.field))
     router.replace(`${pathname}?${p.toString()}`, { scroll: false })
   }, [router, pathname])
 
@@ -133,7 +142,17 @@ export function CoursesPageClient() {
         console.error('[v0] Error fetching course levels:', error)
       }
     }
+    const fetchCourseCategories = async () => {
+      try {
+        const res = await fetch('/api/course-categories')
+        const json = await res.json()
+        if (json.data) setCourseCategories(json.data)
+      } catch (error) {
+        console.error('[v0] Error fetching course categories:', error)
+      }
+    }
     fetchLevels()
+    fetchCourseCategories()
   }, [])
 
   // Fetch featured courses on mount
@@ -285,8 +304,9 @@ export function CoursesPageClient() {
       level: selectedLevel,
       intake: selectedIntakeMonths,
       q: debouncedSearch,
+      field: selectedCategoryId,
     })
-  }, [selectedCountry, selectedUniversity, selectedCampus, selectedLevelCategory, selectedLevel, selectedIntakeMonths, debouncedSearch, syncToURL])
+  }, [selectedCountry, selectedUniversity, selectedCampus, selectedLevelCategory, selectedLevel, selectedIntakeMonths, debouncedSearch, selectedCategoryId, syncToURL])
 
   const fetchCourses = async (reset = true) => {
     try {
@@ -316,6 +336,9 @@ export function CoursesPageClient() {
       }
       if (debouncedSearch) {
         url.searchParams.append('search', debouncedSearch)
+      }
+      if (selectedCategoryId) {
+        url.searchParams.append('category_id', selectedCategoryId.toString())
       }
 
       const response = await fetch(url.toString())
@@ -363,6 +386,8 @@ export function CoursesPageClient() {
     setSelectedUniversity(null)
     setSelectedCampus(null)
     setSelectedLevel('All')
+    setSelectedLevelCategory('All')
+    setSelectedCategoryId(null)
     setSelectedIntakeMonths([])
     setSearchQuery('')
     setDebouncedSearch('')
@@ -714,6 +739,65 @@ export function CoursesPageClient() {
                   </PopoverContent>
                 </Popover>
               </div>
+
+              {/* Field of Study Dropdown */}
+              {courseCategories.length > 0 && (
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold text-foreground">Field of Study</Label>
+                  <Popover open={fieldOpen} onOpenChange={setFieldOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={fieldOpen}
+                        className="w-full justify-between"
+                      >
+                        <span className="truncate">
+                          {selectedCategoryId
+                            ? courseCategories.find((c) => c.id === selectedCategoryId)?.name ?? 'All Fields'
+                            : 'All Fields'}
+                        </span>
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[--radix-popover-trigger-width] p-0 font-sans" align="start">
+                      <Command className="font-sans">
+                        <CommandInput className="font-sans" placeholder="Search field of study..." />
+                        <CommandList className="font-sans">
+                          <CommandEmpty className="font-sans">No field found.</CommandEmpty>
+                          <CommandGroup className="font-sans">
+                            <CommandItem
+                              className="font-sans"
+                              value="all"
+                              onSelect={() => {
+                                setSelectedCategoryId(null)
+                                setFieldOpen(false)
+                              }}
+                            >
+                              <Check className={cn('mr-2 h-4 w-4', selectedCategoryId === null ? 'opacity-100' : 'opacity-0')} />
+                              All Fields
+                            </CommandItem>
+                            {courseCategories.map((cat) => (
+                              <CommandItem
+                                className="font-sans"
+                                key={cat.id}
+                                value={cat.name}
+                                onSelect={() => {
+                                  setSelectedCategoryId(cat.id)
+                                  setFieldOpen(false)
+                                }}
+                              >
+                                <Check className={cn('mr-2 h-4 w-4', selectedCategoryId === cat.id ? 'opacity-100' : 'opacity-0')} />
+                                {cat.name}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              )}
 
               {/* Intake Months Checkboxes */}
               {intakeMonths.length > 0 && (

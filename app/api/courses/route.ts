@@ -25,6 +25,7 @@ export async function GET(request: NextRequest) {
     const intakeMonth = searchParams.get('intake_month')
     const intakeMonths = searchParams.get('intake_months') // comma-separated
     const campusId = searchParams.get('campus_id')
+    const categoryId = searchParams.get('category_id')
 
     // If country filter is provided, first get active university IDs for that country
     let countryUniversityIds: number[] = []
@@ -97,6 +98,10 @@ export async function GET(request: NextRequest) {
     // Filter by specific campus if provided
     if (campusId) {
       query = query.eq('campus_id', parseInt(campusId))
+    }
+
+    if (categoryId) {
+      query = query.eq('category_id', parseInt(categoryId))
     }
 
     if (levelCategory) {
