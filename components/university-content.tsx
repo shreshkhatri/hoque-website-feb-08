@@ -288,15 +288,40 @@ export function UniversityContent({ university, courses, campuses = [], currency
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.name.toLowerCase().includes(courseSearch.toLowerCase()) ||
       course.code.toLowerCase().includes(courseSearch.toLowerCase())
-    const matchesLevelCategory = levelCategoryFilter === 'all' || course.level_category === levelCategoryFilter
+    
+    // For level_category filter: if course has null level_category, use the level field to infer category
+    let courseCategory = course.level_category
+    if (!courseCategory) {
+      // Map level to category if not explicitly set
+      if (course.level === 'Bachelor') courseCategory = 'Undergraduate'
+      else if (['Master', 'PhD'].includes(course.level)) courseCategory = 'Postgraduate'
+    }
+    const matchesLevelCategory = levelCategoryFilter === 'all' || courseCategory === levelCategoryFilter
+    
     const matchesLevel = levelFilter === 'all' || course.level === levelFilter
     const matchesCampus = campusFilter === 'all' || String(course.campus_id) === campusFilter
     return matchesSearch && matchesLevelCategory && matchesLevel && matchesCampus
   })
 
   // Get unique level categories and levels (filtered by selected category)
-  const uniqueLevelCategories = [...new Set(courses.map(c => c.level_category).filter(Boolean))] as string[]
-  const filteredByCategory = levelCategoryFilter === 'all' ? courses : courses.filter(c => c.level_category === levelCategoryFilter)
+  const uniqueLevelCategories = [...new Set(
+    courses.map(c => {
+      if (c.level_category) return c.level_category
+      // Infer category from level if not set
+      if (c.level === 'Bachelor') return 'Undergraduate'
+      if (['Master', 'PhD'].includes(c.level)) return 'Postgraduate'
+      return null
+    }).filter(Boolean)
+  )] as string[]
+  
+  const filteredByCategory = levelCategoryFilter === 'all' ? courses : courses.filter(c => {
+    let courseCategory = c.level_category
+    if (!courseCategory) {
+      if (c.level === 'Bachelor') courseCategory = 'Undergraduate'
+      else if (['Master', 'PhD'].includes(c.level)) courseCategory = 'Postgraduate'
+    }
+    return courseCategory === levelCategoryFilter
+  })
   const uniqueLevels = [...new Set(filteredByCategory.map(c => c.level))]
 
   // Use actual DB values
