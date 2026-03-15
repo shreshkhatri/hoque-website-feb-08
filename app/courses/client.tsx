@@ -439,6 +439,172 @@ export function CoursesPageClient() {
                 </button>
               </div>
 
+              {/* Field of Study Dropdown */}
+              {courseCategories.length > 0 && (
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold text-foreground">Field of Study</Label>
+                  <Popover open={fieldOpen} onOpenChange={setFieldOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={fieldOpen}
+                        className="w-full justify-between"
+                      >
+                        <span className="truncate">
+                          {selectedCategoryId
+                            ? courseCategories.find((c) => c.id === selectedCategoryId)?.name ?? 'All Fields'
+                            : 'All Fields'}
+                        </span>
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[--radix-popover-trigger-width] p-0 font-sans" align="start">
+                      <Command className="font-sans">
+                        <CommandInput className="font-sans" placeholder="Search field of study..." />
+                        <CommandList className="font-sans">
+                          <CommandEmpty className="font-sans">No field found.</CommandEmpty>
+                          <CommandGroup className="font-sans">
+                            <CommandItem
+                              className="font-sans"
+                              value="all"
+                              onSelect={() => {
+                                setSelectedCategoryId(null)
+                                setFieldOpen(false)
+                              }}
+                            >
+                              <Check className={cn('mr-2 h-4 w-4', selectedCategoryId === null ? 'opacity-100' : 'opacity-0')} />
+                              All Fields
+                            </CommandItem>
+                            {courseCategories.map((cat) => (
+                              <CommandItem
+                                className="font-sans"
+                                key={cat.id}
+                                value={cat.name}
+                                onSelect={() => {
+                                  setSelectedCategoryId(cat.id)
+                                  setFieldOpen(false)
+                                }}
+                              >
+                                <Check className={cn('mr-2 h-4 w-4', selectedCategoryId === cat.id ? 'opacity-100' : 'opacity-0')} />
+                                {cat.name}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              )}
+
+              {/* Level Category Dropdown (Undergraduate/Postgraduate/Research) */}
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold text-foreground">Study Level</Label>
+                <Popover open={levelCategoryOpen} onOpenChange={setLevelCategoryOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={levelCategoryOpen}
+                      className="w-full justify-between"
+                    >
+                      <span className={`truncate ${selectedLevelCategory !== 'All' ? (
+                        selectedLevelCategory === 'Undergraduate' ? 'text-blue-700' :
+                        selectedLevelCategory === 'Postgraduate' ? 'text-indigo-700' :
+                        selectedLevelCategory === 'Research' ? 'text-amber-700' : ''
+                      ) : ''}`}>
+                        {selectedLevelCategory === 'All' ? 'All Study Levels' : selectedLevelCategory}
+                      </span>
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0 font-sans" align="start">
+                    <Command className="font-sans">
+                      <CommandList className="font-sans">
+                        <CommandGroup className="font-sans">
+                          {levelCategories.map((cat) => (
+                            <CommandItem
+                              className="font-sans"
+                              key={cat}
+                              value={cat}
+                              onSelect={() => {
+                                setSelectedLevelCategory(cat)
+                                setSelectedLevel('All')
+                                setLevelCategoryOpen(false)
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  'mr-2 h-4 w-4',
+                                  selectedLevelCategory === cat ? 'opacity-100' : 'opacity-0'
+                                )}
+                              />
+                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full border text-xs font-medium font-sans ${
+                                cat === 'Undergraduate' ? 'badge-blue' :
+                                cat === 'Postgraduate' ? 'badge-indigo' :
+                                cat === 'Research' ? 'badge-amber' : 'badge-slate'
+                              }`}>
+                                {cat === 'All' ? 'All Study Levels' : cat}
+                              </span>
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              {/* Program Level Dropdown */}
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold text-foreground">Specific Qualification</Label>
+                <Popover open={levelOpen} onOpenChange={setLevelOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={levelOpen}
+                      className="w-full justify-between"
+                    >
+                      <span className="truncate">{selectedLevel === 'All' ? 'All Qualifications' : selectedLevel}</span>
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0 font-sans" align="start">
+                    <Command className="font-sans">
+                      <CommandInput className="font-sans" placeholder="Search qualifications..." />
+                      <CommandList className="font-sans">
+                        <CommandEmpty className="font-sans">No qualification found.</CommandEmpty>
+                        <CommandGroup className="font-sans">
+                          {availableQualifications.map((level) => (
+                            <CommandItem
+                              className="font-sans"
+                              key={level}
+                              value={level}
+                              onSelect={() => {
+                                setSelectedLevel(level)
+                                setLevelOpen(false)
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  'mr-2 h-4 w-4',
+                                  selectedLevel === level ? 'opacity-100' : 'opacity-0'
+                                )}
+                              />
+                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full border text-xs font-medium font-sans ${getLevelBadgeColor(level)}`}>
+                                {level === 'All' ? 'All Qualifications' : level}
+                              </span>
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+
               {/* Country Dropdown */}
               {countries.length > 0 && (
                 <div className="space-y-2">
@@ -623,172 +789,6 @@ export function CoursesPageClient() {
                                     <span className="text-xs text-muted-foreground">{campus.city}</span>
                                   )}
                                 </div>
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                </div>
-              )}
-
-              {/* Level Category Dropdown (Undergraduate/Postgraduate/Research) */}
-              <div className="space-y-2">
-                <Label className="text-sm font-semibold text-foreground">Study Level</Label>
-                <Popover open={levelCategoryOpen} onOpenChange={setLevelCategoryOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={levelCategoryOpen}
-                      className="w-full justify-between"
-                    >
-                      <span className={`truncate ${selectedLevelCategory !== 'All' ? (
-                        selectedLevelCategory === 'Undergraduate' ? 'text-blue-700' :
-                        selectedLevelCategory === 'Postgraduate' ? 'text-indigo-700' :
-                        selectedLevelCategory === 'Research' ? 'text-amber-700' : ''
-                      ) : ''}`}>
-                        {selectedLevelCategory === 'All' ? 'All Study Levels' : selectedLevelCategory}
-                      </span>
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0 font-sans" align="start">
-                    <Command className="font-sans">
-                      <CommandList className="font-sans">
-                        <CommandGroup className="font-sans">
-                          {levelCategories.map((cat) => (
-                            <CommandItem
-                              className="font-sans"
-                              key={cat}
-                              value={cat}
-                              onSelect={() => {
-                                setSelectedLevelCategory(cat)
-                                setSelectedLevel('All')
-                                setLevelCategoryOpen(false)
-                              }}
-                            >
-                              <Check
-                                className={cn(
-                                  'mr-2 h-4 w-4',
-                                  selectedLevelCategory === cat ? 'opacity-100' : 'opacity-0'
-                                )}
-                              />
-                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full border text-xs font-medium font-sans ${
-                                cat === 'Undergraduate' ? 'badge-blue' :
-                                cat === 'Postgraduate' ? 'badge-indigo' :
-                                cat === 'Research' ? 'badge-amber' : 'badge-slate'
-                              }`}>
-                                {cat === 'All' ? 'All Study Levels' : cat}
-                              </span>
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-              </div>
-
-              {/* Program Level Dropdown */}
-              <div className="space-y-2">
-                <Label className="text-sm font-semibold text-foreground">Specific Qualification</Label>
-                <Popover open={levelOpen} onOpenChange={setLevelOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={levelOpen}
-                      className="w-full justify-between"
-                    >
-                      <span className="truncate">{selectedLevel === 'All' ? 'All Qualifications' : selectedLevel}</span>
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0 font-sans" align="start">
-                    <Command className="font-sans">
-                      <CommandInput className="font-sans" placeholder="Search qualifications..." />
-                      <CommandList className="font-sans">
-                        <CommandEmpty className="font-sans">No qualification found.</CommandEmpty>
-                        <CommandGroup className="font-sans">
-                          {availableQualifications.map((level) => (
-                            <CommandItem
-                              className="font-sans"
-                              key={level}
-                              value={level}
-                              onSelect={() => {
-                                setSelectedLevel(level)
-                                setLevelOpen(false)
-                              }}
-                            >
-                              <Check
-                                className={cn(
-                                  'mr-2 h-4 w-4',
-                                  selectedLevel === level ? 'opacity-100' : 'opacity-0'
-                                )}
-                              />
-                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full border text-xs font-medium font-sans ${getLevelBadgeColor(level)}`}>
-                                {level === 'All' ? 'All Qualifications' : level}
-                              </span>
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-              </div>
-
-              {/* Field of Study Dropdown */}
-              {courseCategories.length > 0 && (
-                <div className="space-y-2">
-                  <Label className="text-sm font-semibold text-foreground">Field of Study</Label>
-                  <Popover open={fieldOpen} onOpenChange={setFieldOpen}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={fieldOpen}
-                        className="w-full justify-between"
-                      >
-                        <span className="truncate">
-                          {selectedCategoryId
-                            ? courseCategories.find((c) => c.id === selectedCategoryId)?.name ?? 'All Fields'
-                            : 'All Fields'}
-                        </span>
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[--radix-popover-trigger-width] p-0 font-sans" align="start">
-                      <Command className="font-sans">
-                        <CommandInput className="font-sans" placeholder="Search field of study..." />
-                        <CommandList className="font-sans">
-                          <CommandEmpty className="font-sans">No field found.</CommandEmpty>
-                          <CommandGroup className="font-sans">
-                            <CommandItem
-                              className="font-sans"
-                              value="all"
-                              onSelect={() => {
-                                setSelectedCategoryId(null)
-                                setFieldOpen(false)
-                              }}
-                            >
-                              <Check className={cn('mr-2 h-4 w-4', selectedCategoryId === null ? 'opacity-100' : 'opacity-0')} />
-                              All Fields
-                            </CommandItem>
-                            {courseCategories.map((cat) => (
-                              <CommandItem
-                                className="font-sans"
-                                key={cat.id}
-                                value={cat.name}
-                                onSelect={() => {
-                                  setSelectedCategoryId(cat.id)
-                                  setFieldOpen(false)
-                                }}
-                              >
-                                <Check className={cn('mr-2 h-4 w-4', selectedCategoryId === cat.id ? 'opacity-100' : 'opacity-0')} />
-                                {cat.name}
                               </CommandItem>
                             ))}
                           </CommandGroup>
