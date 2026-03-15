@@ -50,12 +50,10 @@ export async function POST(request: Request) {
 
   // Auto-calculate level_category from level if not provided
   if (!body.level_category && body.level) {
-    if (body.level === 'Bachelor') {
+    if (['Bachelor', 'Foundation', 'Diploma', 'HND', 'HNC', 'Certificate'].includes(body.level)) {
       body.level_category = 'Undergraduate'
     } else if (['Master', 'PhD', 'MPHIL', 'MBA', 'PGDIP', 'PGCE'].includes(body.level)) {
       body.level_category = 'Postgraduate'
-    } else if (['Foundation', 'Diploma', 'HND', 'HNC', 'Certificate'].includes(body.level)) {
-      body.level_category = 'Foundation'
     }
   }
 

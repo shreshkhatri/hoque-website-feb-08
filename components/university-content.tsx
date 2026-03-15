@@ -292,9 +292,8 @@ export function UniversityContent({ university, courses, campuses = [], currency
     // For level_category filter: if course has null level_category, use the level field to infer category
     let courseCategory = course.level_category
     if (!courseCategory) {
-      // Map level to category if not explicitly set
-      if (course.level === 'Bachelor') courseCategory = 'Undergraduate'
-      else if (['Master', 'PhD'].includes(course.level)) courseCategory = 'Postgraduate'
+      if (['Bachelor', 'Foundation', 'Diploma', 'HND', 'HNC', 'Certificate'].includes(course.level)) courseCategory = 'Undergraduate'
+      else if (['Master', 'PhD', 'MPHIL', 'MBA', 'PGDIP', 'PGCE'].includes(course.level)) courseCategory = 'Postgraduate'
     }
     const matchesLevelCategory = levelCategoryFilter === 'all' || courseCategory === levelCategoryFilter
     
@@ -307,9 +306,8 @@ export function UniversityContent({ university, courses, campuses = [], currency
   const uniqueLevelCategories = [...new Set(
     courses.map(c => {
       if (c.level_category) return c.level_category
-      // Infer category from level if not set
-      if (c.level === 'Bachelor') return 'Undergraduate'
-      if (['Master', 'PhD'].includes(c.level)) return 'Postgraduate'
+      if (['Bachelor', 'Foundation', 'Diploma', 'HND', 'HNC', 'Certificate'].includes(c.level)) return 'Undergraduate'
+      if (['Master', 'PhD', 'MPHIL', 'MBA', 'PGDIP', 'PGCE'].includes(c.level)) return 'Postgraduate'
       return null
     }).filter(Boolean)
   )] as string[]
@@ -317,8 +315,8 @@ export function UniversityContent({ university, courses, campuses = [], currency
   const filteredByCategory = levelCategoryFilter === 'all' ? courses : courses.filter(c => {
     let courseCategory = c.level_category
     if (!courseCategory) {
-      if (c.level === 'Bachelor') courseCategory = 'Undergraduate'
-      else if (['Master', 'PhD'].includes(c.level)) courseCategory = 'Postgraduate'
+      if (['Bachelor', 'Foundation', 'Diploma', 'HND', 'HNC', 'Certificate'].includes(c.level)) courseCategory = 'Undergraduate'
+      else if (['Master', 'PhD', 'MPHIL', 'MBA', 'PGDIP', 'PGCE'].includes(c.level)) courseCategory = 'Postgraduate'
     }
     return courseCategory === levelCategoryFilter
   })
@@ -532,7 +530,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
                                 {announcement.end_date && (
                                   <span className="text-xs text-red-600 flex items-center gap-1">
                                     <Calendar className="h-3 w-3" />
-                                    Ends {new Date(announcement.end_date).toLocaleDateString()}
+                                    Ends {new Date(announcement.end_date).toLocaleDateString('en-GB')}
                                   </span>
                                 )}
                               </div>

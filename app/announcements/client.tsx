@@ -478,14 +478,14 @@ export default function AnnouncementsClient() {
                     {announcement.end_date && (
                       <div className="mb-4 flex items-center gap-2 text-sm text-slate-600">
                         <Calendar className="h-4 w-4" />
-                        <span>Deadline: {new Date(announcement.end_date).toLocaleDateString()}</span>
+                        <span>Deadline: {new Date(announcement.end_date).toLocaleDateString('en-GB')}</span>
                       </div>
                     )}
 
                     {/* Published Date */}
                     <div className="mt-4 pt-4 border-t border-slate-100">
                       <p className="text-xs text-slate-400">
-                        Posted {new Date(announcement.published_at).toLocaleDateString()}
+                        Posted {new Date(announcement.published_at).toLocaleDateString('en-GB')}
                       </p>
                     </div>
                   </CardContent>

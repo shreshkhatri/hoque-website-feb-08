@@ -108,7 +108,7 @@ export function AnnouncementBanner() {
               {current.title}
               {current.end_date && (
                 <span className="ml-2 text-xs opacity-90">
-                  • Deadline: {new Date(current.end_date).toLocaleDateString()}
+                  • Deadline: {new Date(current.end_date).toLocaleDateString('en-GB')}
                 </span>
               )}
             </p>

@@ -1,14 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import { NextRequest, NextResponse } from 'next/server'
 
-// List of universities to exclude
-const EXCLUDED_UNIVERSITIES = [
-  'Universities Ulster',
-  'Southampton Solent University',
-  'Oxford Book University',
-  'Swansea University',
-]
-
 /**
  * Splits a search query into meaningful tokens (2+ chars each).
  */
@@ -33,27 +25,16 @@ export async function GET(request: NextRequest) {
     const intakeMonth = searchParams.get('intake_month')
     const intakeMonths = searchParams.get('intake_months') // comma-separated
     const campusId = searchParams.get('campus_id')
+    const categoryId = searchParams.get('category_id')
 
-    // Get excluded university IDs (explicitly excluded + on_hold partnerships)
-    const { data: excludedUnis } = await supabase
-      .from('universities')
-      .select('id')
-      .or(`name.in.(${EXCLUDED_UNIVERSITIES.map((u) => `"${u}"`).join(',')}),partnership_status.eq.on_hold`)
-
-    const excludedUniIds = excludedUnis?.map((u) => u.id) || []
-    const excludeFilter = excludedUniIds.length > 0
-      ? `(${excludedUniIds.join(',')})`
-      : '(0)'
-
-    // If country filter is provided, first get university IDs for that country
+    // If country filter is provided, first get active university IDs for that country
     let countryUniversityIds: number[] = []
     if (countryId) {
       const { data: universities } = await supabase
         .from('universities')
         .select('id')
         .eq('country_id', parseInt(countryId))
-        .eq('partnership_status', 'active') // Only active partnerships
-        .not('id', 'in', excludeFilter)
+        .eq('partnership_status', 'active')
 
       countryUniversityIds = universities?.map((u) => u.id) || []
 
@@ -85,8 +66,7 @@ export async function GET(request: NextRequest) {
         .from('universities')
         .select('id, name')
         .or(uniOrConditions)
-        .eq('partnership_status', 'active') // Only active partnerships
-        .not('id', 'in', excludeFilter)
+        .eq('partnership_status', 'active')
 
         searchMatchedUniIds = (matchedUnis || []).map((u) => u.id)
       }
@@ -104,7 +84,6 @@ export async function GET(request: NextRequest) {
         { count: 'exact' },
       )
       .order('name', { ascending: true })
-      .not('university_id', 'in', excludeFilter)
 
     // Filter by university IDs (which belong to the selected country)
     if (countryId && countryUniversityIds.length > 0) {
@@ -121,25 +100,33 @@ export async function GET(request: NextRequest) {
       query = query.eq('campus_id', parseInt(campusId))
     }
 
+    if (categoryId) {
+      query = query.eq('category_id', parseInt(categoryId))
+    }
+
     if (levelCategory) {
       // Map category to the levels that belong to it (for courses with null level_category)
       const categoryToLevels: Record<string, string[]> = {
-        'Undergraduate': ['Bachelor'],
+        'Undergraduate': ['Bachelor', 'Foundation', 'Diploma', 'HND', 'HNC', 'Certificate'],
         'Postgraduate': ['Master', 'PhD', 'MPHIL', 'MBA', 'PGDIP', 'PGCE'],
-        'Foundation': ['Foundation', 'Diploma', 'HND', 'HNC', 'Certificate'],
+        'Research': ['PhD', 'MPHIL'],
       }
       const inferredLevels = categoryToLevels[levelCategory] || []
 
       if (inferredLevels.length > 0) {
-        // Match explicit level_category OR courses where level_category is null but level infers the category
-        const levelOrConditions = inferredLevels.map((l) => `level.eq.${l}`).join(',')
-        query = query.or(`level_category.eq.${levelCategory},and(level_category.is.null,${levelOrConditions})`)
+        // Match explicit level_category OR (level_category is null AND level is one of the inferred levels)
+        // Must use nested or() for the level conditions — not and()
+        const levelOrParts = inferredLevels.map((l) => `level.eq.${l}`).join(',')
+        query = query.or(
+          `level_category.eq.${levelCategory},and(level_category.is.null,or(${levelOrParts}))`
+        )
       } else {
         query = query.eq('level_category', levelCategory)
       }
     }
 
     if (level) {
+      // If level is also filtered, narrow by level directly (works for both null and set level_category)
       query = query.eq('level', level)
     }
 
