@@ -112,21 +112,21 @@ export async function GET(request: NextRequest) {
         'Research': ['PhD', 'MPHIL'],
       }
       const inferredLevels = categoryToLevels[levelCategory] || []
-      console.log('[v0] levelCategory filter:', levelCategory, 'inferredLevels:', inferredLevels)
 
       if (inferredLevels.length > 0) {
-        // Match explicit level_category OR courses where level_category is null but level infers the category
-        const levelOrConditions = inferredLevels.map((l) => `level.eq.${l}`).join(',')
-        const orFilter = `level_category.eq.${levelCategory},and(level_category.is.null,${levelOrConditions})`
-        console.log('[v0] OR filter applied:', orFilter)
-        query = query.or(orFilter)
+        // Match explicit level_category OR (level_category is null AND level is one of the inferred levels)
+        // Must use nested or() for the level conditions — not and()
+        const levelOrParts = inferredLevels.map((l) => `level.eq.${l}`).join(',')
+        query = query.or(
+          `level_category.eq.${levelCategory},and(level_category.is.null,or(${levelOrParts}))`
+        )
       } else {
         query = query.eq('level_category', levelCategory)
       }
     }
 
     if (level) {
-      console.log('[v0] level filter applied:', level)
+      // If level is also filtered, narrow by level directly (works for both null and set level_category)
       query = query.eq('level', level)
     }
 
@@ -165,7 +165,6 @@ export async function GET(request: NextRequest) {
     )
 
     if (error) throw error
-    console.log('[v0] courses API returned count:', rawCount, 'data length:', data?.length)
 
     let finalData = data || []
     let finalCount = rawCount || 0
