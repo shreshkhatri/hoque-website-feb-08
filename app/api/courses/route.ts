@@ -124,9 +124,9 @@ export async function GET(request: NextRequest) {
     if (levelCategory) {
       // Map category to the levels that belong to it (for courses with null level_category)
       const categoryToLevels: Record<string, string[]> = {
-        'Undergraduate': ['Bachelor'],
+        'Undergraduate': ['Bachelor', 'Foundation', 'Diploma', 'HND', 'HNC', 'Certificate'],
         'Postgraduate': ['Master', 'PhD', 'MPHIL', 'MBA', 'PGDIP', 'PGCE'],
-        'Foundation': ['Foundation', 'Diploma', 'HND', 'HNC', 'Certificate'],
+        'Research': ['PhD', 'MPHIL'],
       }
       const inferredLevels = categoryToLevels[levelCategory] || []
 

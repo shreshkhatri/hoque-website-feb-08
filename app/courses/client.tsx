@@ -46,14 +46,14 @@ interface Campus {
   university_id: number
 }
 
-  const levelCategories = ['All', 'Undergraduate', 'Postgraduate', 'Foundation', 'Research']
+  const levelCategories = ['All', 'Undergraduate', 'Postgraduate', 'Research']
 
   // Map category → its specific qualification options
+  // Foundation/Diploma/HND/HNC sit under Undergraduate as pre-entry pathways
   const categoryLevelsMap: Record<string, string[]> = {
-    'All':           ['All', 'Bachelor', 'Master', 'PhD', 'MPHIL', 'MBA', 'PGDIP', 'PGCE', 'Foundation', 'Diploma', 'HND', 'HNC', 'Certificate'],
-    'Undergraduate': ['All', 'Bachelor'],
+    'All':           ['All', 'Bachelor', 'Foundation', 'Diploma', 'HND', 'HNC', 'Certificate', 'Master', 'PhD', 'MPHIL', 'MBA', 'PGDIP', 'PGCE'],
+    'Undergraduate': ['All', 'Bachelor', 'Foundation', 'Diploma', 'HND', 'HNC', 'Certificate'],
     'Postgraduate':  ['All', 'Master', 'PhD', 'MPHIL', 'MBA', 'PGDIP', 'PGCE'],
-    'Foundation':    ['All', 'Foundation', 'Diploma', 'HND', 'HNC', 'Certificate'],
     'Research':      ['All', 'PhD', 'MPHIL'],
   }
 
