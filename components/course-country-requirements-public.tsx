@@ -36,7 +36,7 @@ function RichContent({ content, className = '' }: { content: string; className?:
   if (isHtml) {
     return (
       <div
-        className={`prose prose-sm max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-li:text-muted-foreground prose-a:text-primary prose-strong:text-foreground prose-ul:list-disc prose-ol:list-decimal [&_ul]:pl-5 [&_ol]:pl-5 [&_li]:my-0.5 ${className}`}
+        className={`rich-content ${className}`}
         dangerouslySetInnerHTML={{ __html: content }}
       />
     )
