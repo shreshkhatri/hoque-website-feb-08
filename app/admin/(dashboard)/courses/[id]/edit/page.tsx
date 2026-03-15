@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { ArrowLeft, Save, Loader2 } from 'lucide-react'
+import { ArrowLeft, Save, Loader2, Lock } from 'lucide-react'
 import Link from 'next/link'
 import { SearchableSelect } from '@/components/searchable-select'
 import { RichTextEditor } from '@/components/rich-text-editor'
@@ -134,10 +134,10 @@ export default function EditCoursePage() {
     try {
       const selectedUni = universities.find((u) => u.id.toString() === form.university_id)
 
-      const payload: Record<string, any> = {
-        name: form.name.trim(),
-        code: form.code.trim() || null,
-        university_id: parseInt(form.university_id),
+    const payload: Record<string, any> = {
+      name: form.name.trim(),
+      // code is intentionally excluded — course codes are permanent after creation
+      university_id: parseInt(form.university_id),
         country_id: selectedUni?.country_id || null,
         category_id: form.category_id,
         level: form.level,
@@ -250,13 +250,23 @@ export default function EditCoursePage() {
             </div>
 
             <div className="space-y-2">
-              <Label className="text-sm text-slate-700">Course Code</Label>
-              <Input
-                value={form.code}
-                onChange={(e) => setField('code', e.target.value)}
-                placeholder="e.g. CS101"
-                className="bg-white border-slate-200 text-slate-900"
-              />
+              <Label className="text-sm text-slate-700 flex items-center gap-1.5">
+                Course Code
+                <Lock className="h-3 w-3 text-slate-400" />
+              </Label>
+              <div className="relative">
+                <Input
+                  value={form.code}
+                  readOnly
+                  placeholder="No code set"
+                  className="bg-slate-50 border-slate-200 text-slate-500 font-mono cursor-not-allowed pr-9"
+                />
+                <Lock className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-300 pointer-events-none" />
+              </div>
+              <p className="text-xs text-slate-400 flex items-center gap-1">
+                <Lock className="h-3 w-3" />
+                Course codes are permanent and cannot be changed after creation.
+              </p>
             </div>
 
             <div className="space-y-2">
