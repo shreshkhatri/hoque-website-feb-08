@@ -530,7 +530,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
                                 {announcement.end_date && (
                                   <span className="text-xs text-red-600 flex items-center gap-1">
                                     <Calendar className="h-3 w-3" />
-                                    Ends {new Date(announcement.end_date).toLocaleDateString()}
+                                    Ends {new Date(announcement.end_date).toLocaleDateString('en-GB')}
                                   </span>
                                 )}
                               </div>

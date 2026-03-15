@@ -244,7 +244,7 @@ export default function AnnouncementsPage() {
                     </p>
                   )}
                   {announcement.end_date && (
-                    <p className="text-red-600">Ends: {new Date(announcement.end_date).toLocaleDateString()}</p>
+                    <p className="text-red-600">Ends: {new Date(announcement.end_date).toLocaleDateString('en-GB')}</p>
                   )}
                 </div>
 
