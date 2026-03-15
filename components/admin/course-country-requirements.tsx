@@ -65,18 +65,16 @@ export function CourseCountryRequirements({ courseId }: Props) {
   const [newForm, setNewForm] = useState<RequirementForm>(EMPTY_FORM)
   const [saving, setSaving] = useState(false)
   const countryDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const countryDropdownRef = useRef<HTMLDivElement>(null)
 
-  // Close dropdown on outside click
+  // Automatically show/hide dropdown based on results
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (countryDropdownRef.current && !countryDropdownRef.current.contains(e.target as Node)) {
-        setShowCountryDropdown(false)
-      }
+    // Show dropdown whenever we have results and no country is selected yet
+    if (countryResults.length > 0 && !selectedCountry) {
+      setShowCountryDropdown(true)
+    } else if (countryResults.length === 0) {
+      setShowCountryDropdown(false)
     }
-    document.addEventListener('mousedown', handler)
-    return () => document.removeEventListener('mousedown', handler)
-  }, [])
+  }, [countryResults, selectedCountry])
 
   // Edit state
   const [editingId, setEditingId] = useState<number | null>(null)
@@ -290,14 +288,13 @@ export function CourseCountryRequirements({ courseId }: Props) {
             </div>
 
             {/* Country search */}
-            <div className="space-y-1 relative" ref={countryDropdownRef}>
+            <div className="space-y-1 relative">
               <Label className="text-sm text-slate-700">Country <span className="text-red-500">*</span></Label>
               <div className="relative">
                 <input
                   type="text"
                   value={countrySearch}
-                  onChange={(e) => { handleCountrySearch(e.target.value); setShowCountryDropdown(true) }}
-                  onFocus={() => { if (countryResults.length > 0) setShowCountryDropdown(true) }}
+                  onChange={(e) => handleCountrySearch(e.target.value)}
                   placeholder="Search country..."
                   className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white text-sm text-slate-900 outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                 />
@@ -308,11 +305,12 @@ export function CourseCountryRequirements({ courseId }: Props) {
                   <Check className="absolute right-3 top-3 h-4 w-4 text-teal-600" />
                 )}
               </div>
-              {showCountryDropdown && countryResults.length > 0 && (
+              {showCountryDropdown && (
                 <ul className="absolute z-50 w-full mt-1 bg-white border border-slate-200 rounded-md shadow-lg max-h-48 overflow-y-auto">
                   {countryResults.map((c) => (
                     <li
                       key={c.id}
+                      onMouseDown={(e) => e.preventDefault()}
                       onClick={() => handleSelectCountry(c)}
                       className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-slate-50 text-sm text-slate-800"
                     >
