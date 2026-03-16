@@ -64,11 +64,17 @@ export default function EditCoursePage() {
     Promise.all([
       fetch(`/api/admin/courses/${id}`, { credentials: 'same-origin' }).then((r) => r.json()),
       fetch('/api/admin/universities?limit=500', { credentials: 'same-origin' }).then((r) => r.json()),
-      fetch('/api/course-levels').then((r) => r.json()),
+      fetch('/api/admin/course-levels', { credentials: 'same-origin' }).then((r) => r.json()),
     ])
       .then(([courseData, uniData, levelsData]) => {
         setUniversities((uniData.data || []).map((u: any) => ({ id: u.id, name: u.name, country_id: u.country_id, currency: u.countries?.currency || null })))
-        setCourseLevels(levelsData.levels || [])
+        // levelsData is an array from admin endpoint
+        setCourseLevels(Array.isArray(levelsData) ? levelsData.map((l: any) => ({
+          id: l.id,
+          name: l.name,
+          category_id: l.category_id,
+          badge_color: l.badge_color || 'badge-slate',
+        })) : [])
 
         if (courseData.course) {
           const c = courseData.course

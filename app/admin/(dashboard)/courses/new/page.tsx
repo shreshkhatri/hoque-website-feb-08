@@ -111,12 +111,25 @@ export default function NewCoursePage() {
       })
       .catch(() => {})
     
-    // Fetch course levels from database
-    fetch('/api/course-levels')
+    // Fetch course levels from database (admin endpoint returns full data with category)
+    fetch('/api/admin/course-levels', { credentials: 'same-origin' })
       .then((r) => r.json())
       .then((data) => {
-        setCourseLevels(data.levels || [])
-        setLevelCategories(data.categories || [])
+        // Data is an array of course levels with category info
+        if (Array.isArray(data)) {
+          setCourseLevels(data.map((l: any) => ({
+            id: l.id,
+            name: l.name,
+            category_id: l.category_id,
+            badge_color: l.badge_color || 'badge-slate',
+          })))
+          // Extract unique categories
+          const cats = data
+            .filter((l: any) => l.category)
+            .map((l: any) => l.category)
+            .filter((c: any, i: number, arr: any[]) => arr.findIndex((x) => x.id === c.id) === i)
+          setLevelCategories(cats)
+        }
       })
       .catch(() => {})
   }, [])
