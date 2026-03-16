@@ -699,107 +699,241 @@ export function UniversityContent({ university, courses, campuses = [], currency
         {/* Courses Tab */}
         {activeTab === 'courses' && (
           <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                <input
-                  type="text"
-                  placeholder="Search courses..."
-                  value={courseSearch}
-                  onChange={(e) => setCourseSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-              {/* Level category filter (Undergraduate/Postgraduate/Research) */}
-              {uniqueLevelCategories.length > 1 && (
-                <LevelCategoryDropdown
-                  categories={uniqueLevelCategories}
-                  value={levelCategoryFilter}
-                  onChange={(v) => { setLevelCategoryFilter(v); setLevelFilter('all') }}
-                />
-              )}
-              {/* Specific level filter */}
-              <LevelDropdown
-                levels={uniqueLevels}
-                value={levelFilter}
-                onChange={setLevelFilter}
-              />
-              {campuses.length > 1 && (
-                <CampusDropdown
-                  campuses={campuses}
-                  value={campusFilter}
-                  onChange={setCampusFilter}
-                />
-              )}
-            </div>
+            {/* Grouped by Level View - Shows up to 4 courses per level */}
+            {courseSearch === '' && levelCategoryFilter === 'all' && levelFilter === 'all' && campusFilter === 'all' ? (
+              <div className="space-y-8">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-xl font-semibold text-foreground">Courses by Level</h2>
+                    <p className="text-muted-foreground text-sm mt-1">
+                      Explore {courses.length} courses across different qualification levels
+                    </p>
+                  </div>
+                </div>
 
-            <p className="text-muted-foreground">
-              Showing {filteredCourses.length} of {courses.length} courses
-            </p>
+                {/* Group courses by level */}
+                {(() => {
+                  const coursesByLevel = courses.reduce((acc, course) => {
+                    const level = course.level || 'Other'
+                    if (!acc[level]) acc[level] = []
+                    acc[level].push(course)
+                    return acc
+                  }, {} as Record<string, CourseWithCampus[]>)
 
-            <div className="grid gap-4">
-              {filteredCourses.map((course) => (
-                <Card key={course.id} className="hover:border-accent transition-colors">
-                  <CardContent className="p-6">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2 flex-wrap">
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full border text-xs font-medium font-sans ${getLevelBadgeColor(course.level)}`}>{course.level}</span>
-                          <Badge variant="outline">{course.code}</Badge>
-                          {course.university_campuses && (
-                            <Badge variant="outline" className="flex items-center gap-1">
-                              <MapPin className="w-3 h-3" />
-                              {course.university_campuses.location || course.university_campuses.name}
-                            </Badge>
-                          )}
-                        </div>
-                        <Link
-                          href={`/course/${nameToSlug(course.name, course.code)}`}
-                          className="text-lg font-semibold text-foreground hover:text-primary transition-colors"
-                        >
-                          {course.name}
-                        </Link>
-                        <div className="flex flex-wrap gap-4 mt-2 text-sm text-muted-foreground">
-                          {course.duration_years && (
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-4 h-4" />
-                              {course.duration_years} {course.duration_years === 1 ? 'year' : 'years'}
+                  // Sort levels in a logical order
+                  const levelOrder = ['Bachelor', 'Foundation', 'Diploma', 'HND', 'HNC', 'Certificate', 'Master', 'MBA', 'PGDIP', 'PGCE', 'PhD', 'MPHIL']
+                  const sortedLevels = Object.keys(coursesByLevel).sort((a, b) => {
+                    const aIdx = levelOrder.indexOf(a)
+                    const bIdx = levelOrder.indexOf(b)
+                    if (aIdx === -1 && bIdx === -1) return a.localeCompare(b)
+                    if (aIdx === -1) return 1
+                    if (bIdx === -1) return -1
+                    return aIdx - bIdx
+                  })
+
+                  return sortedLevels.map((level) => {
+                    const levelCourses = coursesByLevel[level]
+                    const displayCourses = levelCourses.slice(0, 4)
+                    const remainingCount = levelCourses.length - 4
+
+                    return (
+                      <div key={level} className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <span className={`inline-flex items-center px-3 py-1 rounded-full border text-sm font-medium ${getLevelBadgeColor(level)}`}>
+                              {level}
                             </span>
-                          )}
-                          {course.intake_months && (
-                            <span className="flex items-center gap-1">
-                              <Calendar className="w-4 h-4" />
-                              {course.intake_months}
+                            <span className="text-muted-foreground text-sm">
+                              {levelCourses.length} {levelCourses.length === 1 ? 'course' : 'courses'}
                             </span>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex flex-col items-end gap-2">
-                        {course.tuition_fees_international && (
-                          <div className="text-right">
-                            <p className="text-sm text-muted-foreground">Tuition Fee</p>
-                            <p className="text-lg font-semibold text-foreground">
-                              {currency || ''} {course.tuition_fees_international.toLocaleString()}/year
-                            </p>
                           </div>
-                        )}
-                        <Button asChild size="sm">
-                          <Link href={`/course/${nameToSlug(course.name, course.code)}`}>
-                            View Details
-                          </Link>
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                          {levelCourses.length > 4 && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => { setLevelFilter(level); }}
+                              className="text-primary hover:text-primary"
+                            >
+                              View all {levelCourses.length}
+                              <ChevronRight className="w-4 h-4 ml-1" />
+                            </Button>
+                          )}
+                        </div>
 
-            {filteredCourses.length === 0 && (
-              <div className="text-center py-12">
-                <GraduationCap className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-foreground mb-2">No courses found</h3>
-                <p className="text-muted-foreground">Try adjusting your search or filter criteria</p>
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                          {displayCourses.map((course) => (
+                            <Link
+                              key={course.id}
+                              href={`/course/${nameToSlug(course.name, course.code)}`}
+                              className="group"
+                            >
+                              <Card className="h-full hover:border-primary/50 hover:shadow-md transition-all">
+                                <CardContent className="p-4">
+                                  <Badge variant="outline" className="mb-2 text-xs">
+                                    {course.code}
+                                  </Badge>
+                                  <h3 className="font-medium text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-2 text-sm">
+                                    {course.name}
+                                  </h3>
+                                  <div className="space-y-1.5 text-xs text-muted-foreground">
+                                    {course.duration_years && (
+                                      <div className="flex items-center gap-1.5">
+                                        <Clock className="w-3.5 h-3.5" />
+                                        {course.duration_years} {course.duration_years === 1 ? 'year' : 'years'}
+                                      </div>
+                                    )}
+                                    {course.tuition_fees_international && (
+                                      <div className="flex items-center gap-1.5 font-medium text-foreground">
+                                        {currency || ''} {course.tuition_fees_international.toLocaleString()}/yr
+                                      </div>
+                                    )}
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  })
+                })()}
+
+                {/* Search prompt */}
+                <div className="pt-4 border-t border-border">
+                  <p className="text-sm text-muted-foreground mb-3">Looking for a specific course?</p>
+                  <div className="relative max-w-md">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <input
+                      type="text"
+                      placeholder="Search by course name or code..."
+                      value={courseSearch}
+                      onChange={(e) => setCourseSearch(e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* Detailed Filtered View */
+              <div className="space-y-6">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <input
+                      type="text"
+                      placeholder="Search courses..."
+                      value={courseSearch}
+                      onChange={(e) => setCourseSearch(e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  {/* Level category filter (Undergraduate/Postgraduate/Research) */}
+                  {uniqueLevelCategories.length > 1 && (
+                    <LevelCategoryDropdown
+                      categories={uniqueLevelCategories}
+                      value={levelCategoryFilter}
+                      onChange={(v) => { setLevelCategoryFilter(v); setLevelFilter('all') }}
+                    />
+                  )}
+                  {/* Specific level filter */}
+                  <LevelDropdown
+                    levels={uniqueLevels}
+                    value={levelFilter}
+                    onChange={setLevelFilter}
+                  />
+                  {campuses.length > 1 && (
+                    <CampusDropdown
+                      campuses={campuses}
+                      value={campusFilter}
+                      onChange={setCampusFilter}
+                    />
+                  )}
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <p className="text-muted-foreground">
+                    Showing {filteredCourses.length} of {courses.length} courses
+                  </p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setCourseSearch('')
+                      setLevelCategoryFilter('all')
+                      setLevelFilter('all')
+                      setCampusFilter('all')
+                    }}
+                    className="text-primary hover:text-primary"
+                  >
+                    Clear filters
+                  </Button>
+                </div>
+
+                <div className="grid gap-4">
+                  {filteredCourses.map((course) => (
+                    <Card key={course.id} className="hover:border-accent transition-colors">
+                      <CardContent className="p-6">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-2 flex-wrap">
+                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full border text-xs font-medium font-sans ${getLevelBadgeColor(course.level)}`}>{course.level}</span>
+                              <Badge variant="outline">{course.code}</Badge>
+                              {course.university_campuses && (
+                                <Badge variant="outline" className="flex items-center gap-1">
+                                  <MapPin className="w-3 h-3" />
+                                  {course.university_campuses.location || course.university_campuses.name}
+                                </Badge>
+                              )}
+                            </div>
+                            <Link
+                              href={`/course/${nameToSlug(course.name, course.code)}`}
+                              className="text-lg font-semibold text-foreground hover:text-primary transition-colors"
+                            >
+                              {course.name}
+                            </Link>
+                            <div className="flex flex-wrap gap-4 mt-2 text-sm text-muted-foreground">
+                              {course.duration_years && (
+                                <span className="flex items-center gap-1">
+                                  <Clock className="w-4 h-4" />
+                                  {course.duration_years} {course.duration_years === 1 ? 'year' : 'years'}
+                                </span>
+                              )}
+                              {course.intake_months && (
+                                <span className="flex items-center gap-1">
+                                  <Calendar className="w-4 h-4" />
+                                  {course.intake_months}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex flex-col items-end gap-2">
+                            {course.tuition_fees_international && (
+                              <div className="text-right">
+                                <p className="text-sm text-muted-foreground">Tuition Fee</p>
+                                <p className="text-lg font-semibold text-foreground">
+                                  {currency || ''} {course.tuition_fees_international.toLocaleString()}/year
+                                </p>
+                              </div>
+                            )}
+                            <Button asChild size="sm">
+                              <Link href={`/course/${nameToSlug(course.name, course.code)}`}>
+                                View Details
+                              </Link>
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+
+                {filteredCourses.length === 0 && (
+                  <div className="text-center py-12">
+                    <GraduationCap className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-foreground mb-2">No courses found</h3>
+                    <p className="text-muted-foreground">Try adjusting your search or filter criteria</p>
+                  </div>
+                )}
               </div>
             )}
           </div>
