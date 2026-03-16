@@ -5,6 +5,7 @@ import { Search, X, ArrowRight, GraduationCap, Building2 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { nameToSlug } from '@/lib/supabase'
+import { getLevelBadgeColor } from '@/lib/badge-colors'
 
 interface SearchResults {
   universities: any[]
@@ -357,10 +358,7 @@ export function MobileSearch() {
                               className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-muted active:bg-muted transition-colors"
                             >
                               <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center shrink-0">
-                                <GraduationCap
-                                  size={18}
-                                  className="text-accent"
-                                />
+                                <GraduationCap size={18} className="text-accent" />
                               </div>
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-medium text-foreground truncate">
@@ -372,10 +370,12 @@ export function MobileSearch() {
                                   </p>
                                 )}
                               </div>
-                              <ArrowRight
-                                size={16}
-                                className="text-muted-foreground shrink-0"
-                              />
+                              {course.level && (
+                                <span className={`shrink-0 inline-flex items-center px-2 py-0.5 rounded-full border text-xs font-medium ${getLevelBadgeColor(course.level)}`}>
+                                  {course.level}
+                                </span>
+                              )}
+                              <ArrowRight size={16} className="text-muted-foreground shrink-0" />
                             </Link>
                           ))}
                         </div>

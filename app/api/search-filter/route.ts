@@ -1,14 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import { NextRequest, NextResponse } from 'next/server'
 
-// List of universities to exclude
-const EXCLUDED_UNIVERSITIES = [
-  'Universities Ulster',
-  'Southampton Solent University',
-  'Oxford Book University',
-  'Swansea University',
-]
-
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
@@ -40,13 +32,11 @@ export async function GET(request: NextRequest) {
         type: 'destination',
       })) || []
     } else if (type === 'university') {
-      // Search for universities
       const { data, error } = await supabase
         .from('universities')
         .select('id, name, countries(id, name)')
         .ilike('name', `%${query}%`)
-        .eq('partnership_status', 'active') // Only active partnerships
-        .not('name', 'in', `(${EXCLUDED_UNIVERSITIES.map((u) => `"${u}"`).join(',')})`)
+        .eq('partnership_status', 'active')
         .limit(limit)
 
       if (error) throw error
@@ -57,22 +47,11 @@ export async function GET(request: NextRequest) {
         type: 'university',
       })) || []
     } else if (type === 'courses') {
-      // First, get excluded university IDs (explicitly excluded + on_hold partnerships)
-      const { data: excludedUnis } = await supabase
-        .from('universities')
-        .select('id')
-        .or(`name.in.(${EXCLUDED_UNIVERSITIES.map((u) => `"${u}"`).join(',')}),partnership_status.eq.on_hold`)
-
-      const excludedUniIds = excludedUnis?.map((u) => u.id) || []
-
-      // Search for courses
       const { data, error } = await supabase
         .from('courses')
-        .select(
-          'id, name, code, universities(id, name, countries(id, name)), university_campuses(id, name, location)',
-        )
+        .select('id, name, code, level, universities!inner(id, name, partnership_status, countries(id, name))')
         .ilike('name', `%${query}%`)
-        .not('university_id', 'in', `(${excludedUniIds.join(',')})`)
+        .eq('universities.partnership_status', 'active')
         .limit(limit)
 
       if (error) throw error
@@ -80,21 +59,12 @@ export async function GET(request: NextRequest) {
         id: c.id,
         name: c.name,
         code: c.code,
+        level: c.level,
         university: c.universities?.name,
         country: c.universities?.countries?.name,
-        campus: c.university_campuses?.location || c.university_campuses?.name || null,
         type: 'course',
       })) || []
     } else if (type === 'intake') {
-      // First, get excluded university IDs (explicitly excluded + on_hold partnerships)
-      const { data: excludedUnis } = await supabase
-        .from('universities')
-        .select('id')
-        .or(`name.in.(${EXCLUDED_UNIVERSITIES.map((u) => `"${u}"`).join(',')}),partnership_status.eq.on_hold`)
-
-      const excludedUniIds = excludedUnis?.map((u) => u.id) || []
-
-      // Search for courses by intake month
       const { data: intakeData, error: intakeError } = await supabase
         .from('course_intake_months')
         .select('course_id, month')
@@ -107,9 +77,9 @@ export async function GET(request: NextRequest) {
         const courseIds = [...new Set(intakeData.map((r: any) => r.course_id))]
         const { data: coursesData, error: coursesError } = await supabase
           .from('courses')
-          .select('id, name, code, universities(id, name, countries(id, name))')
+          .select('id, name, code, level, universities!inner(id, name, partnership_status, countries(id, name))')
           .in('id', courseIds)
-          .not('university_id', 'in', `(${excludedUniIds.join(',')})`)
+          .eq('universities.partnership_status', 'active')
           .limit(limit)
 
         if (coursesError) throw coursesError
@@ -120,10 +90,12 @@ export async function GET(request: NextRequest) {
             .map((r: any) => r.month)
           return {
             id: c.id,
-            name: `${c.name} (${intakeMonths.join(', ')})`,
+            name: c.name,
             code: c.code,
+            level: c.level,
             university: c.universities?.name,
             country: c.universities?.countries?.name,
+            intakeMonths: intakeMonths.join(', '),
             type: 'intake',
           }
         }) || []
