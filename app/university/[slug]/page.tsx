@@ -2,6 +2,7 @@ import { supabase } from '@/lib/supabase'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { UniversityContent } from '@/components/university-content'
+import { getUniversityStructuredData, getBreadcrumbStructuredData } from '@/lib/seo-config'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
@@ -124,17 +125,52 @@ export default async function UniversityPage({
     .order('published_at', { ascending: false })
     .limit(5)
 
+  // Fetch country data for structured data
+  let countryData = null
+  if (university.country_id) {
+    const { data } = await supabase
+      .from('countries')
+      .select('name, currency')
+      .eq('id', university.country_id)
+      .single()
+    countryData = data
+  }
+
+  // Generate structured data for SEO
+  const universityStructuredData = getUniversityStructuredData(
+    { ...university, country: countryData },
+    slug,
+    courses?.length || 0
+  )
+
+  const breadcrumbStructuredData = getBreadcrumbStructuredData([
+    { name: 'Home', url: '/' },
+    { name: 'Universities', url: '/universities' },
+    { name: university.name, url: `/university/${slug}` },
+  ])
+
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <UniversityContent 
-        university={university} 
-        courses={courses || []} 
-        campuses={campuses || []} 
-        currency={currency}
-        announcements={announcements || []}
+    <>
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(universityStructuredData) }}
       />
-      <Footer />
-    </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
+      />
+      <div className="min-h-screen bg-background">
+        <Header />
+        <UniversityContent 
+          university={university} 
+          courses={courses || []} 
+          campuses={campuses || []} 
+          currency={currency}
+          announcements={announcements || []}
+        />
+        <Footer />
+      </div>
+    </>
   )
 }

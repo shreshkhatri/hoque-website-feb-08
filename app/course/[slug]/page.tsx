@@ -2,6 +2,7 @@ import { supabase } from '@/lib/supabase'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { CourseContent } from '@/components/course-content'
+import { getCourseStructuredData, getBreadcrumbStructuredData } from '@/lib/seo-config'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
@@ -118,21 +119,39 @@ export default async function CoursePage({
     notFound()
   }
 
-  console.log('[v0] Course data for scholarship debug:', {
-    id: course.id,
-    code: course.code,
-    scholarship_amount: course.scholarship_amount,
-    scholarship_type: course.scholarship_type,
-  })
-
   // Fetch similar courses based on field_of_study
   const similarCourses = await getSimilarCourses(course.id, course.field_of_study)
 
+  // Generate structured data for SEO
+  const courseStructuredData = getCourseStructuredData(course, slug)
+
+  const universityName = course.universities && typeof course.universities === 'object' && 'name' in course.universities
+    ? course.universities.name
+    : 'Partner University'
+
+  const breadcrumbStructuredData = getBreadcrumbStructuredData([
+    { name: 'Home', url: '/' },
+    { name: 'Courses', url: '/courses' },
+    { name: universityName, url: `/university/${universityName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}` },
+    { name: course.name, url: `/course/${slug}` },
+  ])
+
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <CourseContent course={course} similarCourses={similarCourses} />
-      <Footer />
-    </div>
+    <>
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseStructuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
+      />
+      <div className="min-h-screen bg-background">
+        <Header />
+        <CourseContent course={course} similarCourses={similarCourses} />
+        <Footer />
+      </div>
+    </>
   )
 }
