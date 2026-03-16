@@ -336,7 +336,7 @@ export function StudentTestimonials() {
       </div>
 
       {/* Scrolling track - clipped by parent's overflow-x-hidden */}
-      <div className="relative w-full overflow-hidden">
+      <div className="relative ">
         {/* Fade edges */}
         <div className="absolute inset-y-0 left-0 w-12 sm:w-16 md:w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 right-0 w-12 sm:w-16 md:w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
