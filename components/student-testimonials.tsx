@@ -318,8 +318,8 @@ export function StudentTestimonials() {
   }, [startAnimation, testimonials])
 
   return (
-    <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-background overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-16 sm:py-20 bg-background">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
           <span className="text-primary font-semibold text-xs sm:text-sm uppercase tracking-wider">
@@ -333,33 +333,33 @@ export function StudentTestimonials() {
             top universities with our guidance and support.
           </p>
         </div>
-      </div>
 
-      {/* Scrolling track - full width for seamless loop */}
-      <div className="relative w-full overflow-hidden">
-        {/* Fade edges */}
-        <div className="absolute inset-y-0 left-0 w-12 sm:w-16 md:w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-12 sm:w-16 md:w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+        {/* Scrolling track - contained within max-w-7xl */}
+        <div className="relative overflow-hidden rounded-lg">
+          {/* Fade edges */}
+          <div className="absolute inset-y-0 left-0 w-12 sm:w-16 md:w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-12 sm:w-16 md:w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
 
-        {isLoading ? (
-          <div className="flex">
-            {[...Array(6)].map((_, i) => (
-              <TestimonialSkeleton key={i} />
-            ))}
-          </div>
-        ) : (
-          <div
-            ref={trackRef}
-            className="flex will-change-transform"
-            style={{ transform: 'translate3d(0,0,0)' }}
-            onMouseEnter={() => { isPausedRef.current = true }}
-            onMouseLeave={() => { isPausedRef.current = false }}
-          >
-            {tripled.map((testimonial, index) => (
-              <TestimonialCard key={`${testimonial.id}-${index}`} testimonial={testimonial} />
-            ))}
-          </div>
-        )}
+          {isLoading ? (
+            <div className="flex">
+              {[...Array(6)].map((_, i) => (
+                <TestimonialSkeleton key={i} />
+              ))}
+            </div>
+          ) : (
+            <div
+              ref={trackRef}
+              className="flex will-change-transform"
+              style={{ transform: 'translate3d(0,0,0)' }}
+              onMouseEnter={() => { isPausedRef.current = true }}
+              onMouseLeave={() => { isPausedRef.current = false }}
+            >
+              {tripled.map((testimonial, index) => (
+                <TestimonialCard key={`${testimonial.id}-${index}`} testimonial={testimonial} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </section>
   )
