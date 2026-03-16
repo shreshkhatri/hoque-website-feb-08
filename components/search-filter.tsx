@@ -5,6 +5,7 @@ import { Search } from 'lucide-react'
 import Link from 'next/link'
 import { nameToSlug } from '@/lib/supabase'
 import { supabase } from '@/lib/supabase'
+import { getLevelBadgeColor } from '@/lib/badge-colors'
 
 type SearchType = 'destination' | 'university' | 'courses' | 'intake'
 
@@ -15,6 +16,8 @@ interface SearchResult {
   university?: string
   location?: string
   code?: string
+  level?: string
+  intakeMonths?: string
   type: string
 }
 
@@ -312,15 +315,32 @@ export function SearchFilter() {
                           <Link
                             key={`${result.id}-${activeTab}`}
                             href={getResultLink(result)}
-                            className="block px-4 py-3 hover:bg-primary/10 transition-colors text-sm"
+                            className="flex items-start gap-3 px-4 py-3 hover:bg-primary/10 transition-colors text-sm"
                             onClick={() => {
                               setShowResults(false)
                               setQuery('')
                             }}
                           >
-                            <div className="font-medium text-foreground">
-                              {getResultDisplay(result)}
+                            <div className="flex-1 min-w-0">
+                              <div className="font-medium text-foreground truncate">
+                                {result.name}
+                              </div>
+                              {(result.university || result.country) && (
+                                <div className="text-xs text-muted-foreground truncate mt-0.5">
+                                  {result.university}{result.university && result.country ? `, ` : ''}{result.country}
+                                </div>
+                              )}
+                              {result.intakeMonths && (
+                                <div className="text-xs text-muted-foreground mt-0.5">
+                                  Intake: {result.intakeMonths}
+                                </div>
+                              )}
                             </div>
+                            {result.level && (
+                              <span className={`shrink-0 inline-flex items-center px-2 py-0.5 rounded-full border text-xs font-medium mt-0.5 ${getLevelBadgeColor(result.level)}`}>
+                                {result.level}
+                              </span>
+                            )}
                           </Link>
                         ))}
                       </div>

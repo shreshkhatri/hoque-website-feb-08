@@ -4,6 +4,7 @@ import { Search } from 'lucide-react'
 import { useState } from 'react'
 import Link from 'next/link'
 import { nameToSlug } from '@/lib/supabase'
+import { getLevelBadgeColor } from '@/lib/badge-colors'
 
 interface SearchBoxProps {
   compact?: boolean
@@ -109,17 +110,24 @@ export function SearchBox({ compact = false, className = '' }: SearchBoxProps) {
                       <Link
                         key={course.id}
                         href={`/course/${nameToSlug(course.name, course.code)}`}
-                        className="block px-2 py-2 rounded hover:bg-primary hover:text-primary-foreground transition-colors text-xs"
+                        className="flex items-start gap-2 px-2 py-2 rounded hover:bg-primary hover:text-primary-foreground transition-colors text-xs group"
                         onClick={() => {
                           setSearchQuery('')
                           setSearchResults(null)
                         }}
                       >
-                        <div className="font-medium">{course.name}</div>
-                        {course.universities && (
-                          <div className="text-xs opacity-75">
-                            {course.universities.name}
-                          </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-medium truncate">{course.name}</div>
+                          {course.universities && (
+                            <div className="text-xs opacity-75 truncate">
+                              {course.universities.name}
+                            </div>
+                          )}
+                        </div>
+                        {course.level && (
+                          <span className={`shrink-0 inline-flex items-center px-1.5 py-0.5 rounded-full border text-[10px] font-medium group-hover:border-white/40 group-hover:bg-white/20 group-hover:text-white ${getLevelBadgeColor(course.level)}`}>
+                            {course.level}
+                          </span>
                         )}
                       </Link>
                     ))}
@@ -204,17 +212,24 @@ export function SearchBox({ compact = false, className = '' }: SearchBoxProps) {
                     <Link
                       key={course.id}
                       href={`/course/${nameToSlug(course.name, course.code)}`}
-                      className="block px-3 py-2 rounded hover:bg-primary hover:text-primary-foreground transition-colors text-sm"
+                      className="flex items-start gap-3 px-3 py-2 rounded hover:bg-primary hover:text-primary-foreground transition-colors text-sm group"
                       onClick={() => {
                         setSearchQuery('')
                         setSearchResults(null)
                       }}
                     >
-                      <div className="font-medium">{course.name}</div>
-                      {course.universities && (
-                        <div className="text-xs opacity-75">
-                          {course.universities.name}
-                        </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium truncate">{course.name}</div>
+                        {course.universities && (
+                          <div className="text-xs opacity-75 truncate">
+                            {course.universities.name}
+                          </div>
+                        )}
+                      </div>
+                      {course.level && (
+                        <span className={`shrink-0 inline-flex items-center px-2 py-0.5 rounded-full border text-xs font-medium group-hover:border-white/40 group-hover:bg-white/20 group-hover:text-white ${getLevelBadgeColor(course.level)}`}>
+                          {course.level}
+                        </span>
                       )}
                     </Link>
                   ))}
