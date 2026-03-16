@@ -318,8 +318,8 @@ export function StudentTestimonials() {
   }, [startAnimation, testimonials])
 
   return (
-    <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-background overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+    <section className="py-16 sm:py-20 bg-background">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
           <span className="text-primary font-semibold text-xs sm:text-sm uppercase tracking-wider">
@@ -335,8 +335,8 @@ export function StudentTestimonials() {
         </div>
       </div>
 
-      {/* Scrolling track - full width for seamless loop */}
-      <div className="relative w-full overflow-hidden">
+      {/* Scrolling track - full viewport width, clipped at page boundary */}
+      <div className="relative w-screen max-w-[100vw] overflow-hidden">
         {/* Fade edges */}
         <div className="absolute inset-y-0 left-0 w-12 sm:w-16 md:w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 right-0 w-12 sm:w-16 md:w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
