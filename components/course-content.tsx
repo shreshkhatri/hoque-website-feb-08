@@ -45,6 +45,7 @@ interface CourseWithUniversity extends Course {
   universities?: { id: number; name: string; city: string; country_id: number | null }
   university_campuses?: { id: number; name: string; location: string | null; is_main_campus: boolean } | null
   countries?: { currency: string | null } | null
+  tbc_fields?: string[] | null
 }
 
 interface SimilarCourse {
@@ -182,67 +183,90 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
         </div>
 
         {/* Quick Stats Bar */}
-        <div className="grid grid-cols-2 md:grid-cols-5 divide-x divide-y md:divide-y-0 divide-border border-t border-border">
-          {course.duration_years && (
-            <div className="flex items-center gap-3 px-5 py-4">
-              <Clock size={20} className="text-accent flex-shrink-0" />
-              <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Duration</p>
-                <p className="text-sm font-semibold text-foreground">
-                  {course.duration_years} year{course.duration_years > 1 ? 's' : ''} full-time
-                </p>
+        {(() => {
+          const tbc = course.tbc_fields || []
+          const isTbc = (field: string) => tbc.includes(field)
+          const TbcBadge = () => (
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-50 border border-amber-300 text-amber-700 tracking-wide">
+              TBC
+            </span>
+          )
+          return (
+            <div className="grid grid-cols-2 md:grid-cols-5 divide-x divide-y md:divide-y-0 divide-border border-t border-border">
+              {course.duration_years && (
+                <div className="flex items-center gap-3 px-5 py-4">
+                  <Clock size={20} className="text-accent flex-shrink-0" />
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">Duration</p>
+                    <p className="text-sm font-semibold text-foreground">
+                      {course.duration_years} year{course.duration_years > 1 ? 's' : ''} full-time
+                    </p>
+                  </div>
+                </div>
+              )}
+              <div className="flex items-center gap-3 px-5 py-4">
+                <Zap size={20} className="text-accent flex-shrink-0" />
+                <div className="flex-1">
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">{"Tuition (Int'l)"}</p>
+                  {isTbc('tuition_fees_international') ? (
+                    <TbcBadge />
+                  ) : course.tuition_fees_international ? (
+                    <>
+                      <p className="text-sm font-semibold text-foreground">
+                        {currency} {course.tuition_fees_international.toLocaleString()}/yr
+                      </p>
+                      {course.scholarship_amount && course.scholarship_amount > 0 && !isTbc('scholarship_amount') && (
+                        <p className="text-xs text-muted-foreground">
+                          Scholarship up to{' '}
+                          {course.scholarship_type === 'percentage'
+                            ? `${course.scholarship_amount}%`
+                            : `${currency} ${course.scholarship_amount.toLocaleString()}`}
+                        </p>
+                      )}
+                    </>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">Contact us</p>
+                  )}
+                </div>
+              </div>
+              <div className="flex items-center gap-3 px-5 py-4">
+                <Calendar size={20} className="text-accent flex-shrink-0" />
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Intakes</p>
+                  {isTbc('intake_months') ? (
+                    <TbcBadge />
+                  ) : course.intake_months ? (
+                    <p className="text-sm font-semibold text-foreground">{course.intake_months}</p>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">Contact us</p>
+                  )}
+                </div>
+              </div>
+              {course.level && (
+                <div className="flex items-center gap-3 px-5 py-4">
+                  <BookOpen size={20} className="text-accent flex-shrink-0" />
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">Level</p>
+                    <p className="text-sm font-semibold text-foreground">{course.level}</p>
+                  </div>
+                </div>
+              )}
+              <div className="flex items-center gap-3 px-5 py-4">
+                <Award size={20} className="text-accent flex-shrink-0" />
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Scholarship</p>
+                  {isTbc('scholarship_amount') ? (
+                    <TbcBadge />
+                  ) : (
+                    <p className="text-sm font-semibold text-foreground">
+                      {course.scholarships ? 'Available' : 'Check with University'}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
-          )}
-          {course.tuition_fees_international && (
-            <div className="flex items-center gap-3 px-5 py-4">
-              <Zap size={20} className="text-accent flex-shrink-0" />
-              <div className="flex-1">
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">{"Tuition (Int'l)"}</p>
-                <p className="text-sm font-semibold text-foreground">
-                  {currency} {course.tuition_fees_international.toLocaleString()}/yr 
-                </p>
-                {course.scholarship_amount && course.scholarship_amount > 0 && (
- <p className="text-sm font-semibold text-foreground">
-    (Scholarship Up To:{" "}
-    {course.scholarship_type === "percentage"
-      ? `${course.scholarship_amount}%`
-      : `${currency} ${course.scholarship_amount.toLocaleString()}`}
-    )
-  </p>
-)}
-                
-              </div>
-            </div>
-          )}
-          {course.intake_months && (
-            <div className="flex items-center gap-3 px-5 py-4">
-              <Calendar size={20} className="text-accent flex-shrink-0" />
-              <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Intakes</p>
-                <p className="text-sm font-semibold text-foreground">{course.intake_months}</p>
-              </div>
-            </div>
-          )}
-          {course.level && (
-            <div className="flex items-center gap-3 px-5 py-4">
-              <BookOpen size={20} className="text-accent flex-shrink-0" />
-              <div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Level</p>
-                <p className="text-sm font-semibold text-foreground">{course.level}</p>
-              </div>
-            </div>
-          )}
-          <div className="flex items-center gap-3 px-5 py-4">
-            <Award size={20} className="text-accent flex-shrink-0" />
-            <div>
-              <p className="text-xs text-muted-foreground uppercase tracking-wide">Scholarship</p>
-              <p className="text-sm font-semibold text-foreground">
-                {course.scholarships ? 'Available' : 'Check with University'}
-              </p>
-            </div>
-          </div>
-        </div>
+          )
+        })()}
       </div>
 
       {/* Two-column layout: Main content + Sidebar */}
@@ -284,22 +308,35 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
           />
 
           {/* Fees */}
-          {course.tuition_fees_international && (
+          {(course.tuition_fees_international || (course.tbc_fields || []).includes('tuition_fees_international')) && (
             <section className="bg-card border border-border rounded-xl p-8">
               <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2.5">
                 <Zap size={22} className="text-primary" />
                 Fees
               </h2>
               <div className="bg-primary/5 rounded-lg p-6">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-bold text-foreground">
-                    {currency} {course.tuition_fees_international.toLocaleString()}
-                  </span>
-                  <span className="text-muted-foreground">per year (International students)</span>
-                </div>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Fees may vary depending on nationality and funding arrangements. Please check with the university for the most up-to-date fee information.
-                </p>
+                {(course.tbc_fields || []).includes('tuition_fees_international') ? (
+                  <div className="flex items-center gap-3">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-md text-sm font-semibold bg-amber-50 border border-amber-300 text-amber-700">
+                      To Be Confirmed
+                    </span>
+                    <p className="text-sm text-muted-foreground">
+                      Tuition fees are being finalised. Please contact us for the latest information.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-bold text-foreground">
+                        {currency} {course.tuition_fees_international!.toLocaleString()}
+                      </span>
+                      <span className="text-muted-foreground">per year (International students)</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Fees may vary depending on nationality and funding arrangements. Please check with the university for the most up-to-date fee information.
+                    </p>
+                  </>
+                )}
               </div>
             </section>
           )}
@@ -365,10 +402,14 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
                     </span>
                   </div>
                 )}
-                {course.intake_months && (
+                {(course.intake_months || (course.tbc_fields || []).includes('intake_months')) && (
                   <div className="flex justify-between items-center text-sm">
                     <span className="text-muted-foreground">Intakes</span>
-                    <span className="font-medium text-foreground text-right max-w-[140px]">{course.intake_months}</span>
+                    {(course.tbc_fields || []).includes('intake_months') ? (
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-50 border border-amber-300 text-amber-700">TBC</span>
+                    ) : (
+                      <span className="font-medium text-foreground text-right max-w-[140px]">{course.intake_months}</span>
+                    )}
                   </div>
                 )}
                 {course.field_of_study && (
