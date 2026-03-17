@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { CoverImageWithCrop } from './cover-image-with-crop'
@@ -262,11 +262,22 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
 }
 
-export function UniversityContent({ university, courses, campuses = [], currency, announcements = [], slug = '' }: UniversityContentProps) {
+// Inner component that reads searchParams — must be wrapped in Suspense
+function TabInitialiser({ onTab }: { onTab: (tab: string) => void }) {
   const searchParams = useSearchParams()
   const tabFromUrl = searchParams.get('tab')
   const validTabs = tabs.map(t => t.id)
-  const [activeTab, setActiveTab] = useState(tabFromUrl && validTabs.includes(tabFromUrl) ? tabFromUrl : 'overview')
+  useEffect(() => {
+    if (tabFromUrl && validTabs.includes(tabFromUrl)) {
+      onTab(tabFromUrl)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tabFromUrl])
+  return null
+}
+
+export function UniversityContent({ university, courses, campuses = [], currency, announcements = [], slug = '' }: UniversityContentProps) {
+  const [activeTab, setActiveTab] = useState('overview')
   const [courseSearch, setCourseSearch] = useState('')
   const [levelCategoryFilter, setLevelCategoryFilter] = useState('all')
   const [levelFilter, setLevelFilter] = useState('all')
@@ -341,6 +352,10 @@ export function UniversityContent({ university, courses, campuses = [], currency
 
   return (
     <>
+      {/* Read ?tab= from URL without breaking SSG — useSearchParams requires Suspense */}
+      <Suspense fallback={null}>
+        <TabInitialiser onTab={setActiveTab} />
+      </Suspense>
       {/* Hero Section with Cover Image */}
       <CoverImageWithCrop
         src={university.cover_image_url || "/hero-bg.jpg"}
