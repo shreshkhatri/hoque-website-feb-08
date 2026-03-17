@@ -12,6 +12,7 @@ import Link from 'next/link'
 import { SearchableSelect } from '@/components/searchable-select'
 import { RichTextEditor } from '@/components/rich-text-editor'
 import { CategorySelect } from '@/components/category-select'
+import { TbcToggle } from '@/components/tbc-toggle'
 
 type University = { id: number; name: string; country_id: number | null; currency: string | null }
 type Campus = { id: number; name: string; location: string | null }
@@ -29,6 +30,7 @@ export default function NewCoursePage() {
   const [levelCategories, setLevelCategories] = useState<LevelCategory[]>([])
   const [codeStatus, setCodeStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle')
   const [codeManuallyEdited, setCodeManuallyEdited] = useState(false)
+  const [tbcFields, setTbcFields] = useState<string[]>([])
   const checkCodeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const [form, setForm] = useState({
@@ -197,6 +199,7 @@ export default function NewCoursePage() {
         english_language_requirements: form.english_language_requirements || null,
         other_requirements: form.other_requirements || null,
         document_requirements: form.document_requirements || null,
+        tbc_fields: tbcFields,
       }
 
       const res = await fetch('/api/admin/courses', {
@@ -382,54 +385,69 @@ export default function NewCoursePage() {
             </div>
 
             <div className="space-y-2">
-              <Label className="text-sm text-slate-700">
-                Tuition Fee (International{(() => { const cur = universities.find(u => u.id.toString() === form.university_id)?.currency; return cur ? `, ${cur}` : ''; })()})
-              </Label>
+              <div className="flex items-center justify-between">
+                <Label className="text-sm text-slate-700">
+                  Tuition Fee (International{(() => { const cur = universities.find(u => u.id.toString() === form.university_id)?.currency; return cur ? `, ${cur}` : ''; })()})
+                </Label>
+                <TbcToggle field="tuition_fees_international" tbcFields={tbcFields} onChange={setTbcFields} />
+              </div>
               <Input
                 type="number"
                 value={form.tuition_fees_international}
                 onChange={(e) => setField('tuition_fees_international', e.target.value)}
-                placeholder="e.g. 15000"
-                className="bg-white border-slate-200 text-slate-900"
+                placeholder={tbcFields.includes('tuition_fees_international') ? 'Leave blank — shown as TBC' : 'e.g. 15000'}
+                disabled={tbcFields.includes('tuition_fees_international')}
+                className={`bg-white border-slate-200 text-slate-900 ${tbcFields.includes('tuition_fees_international') ? 'opacity-50 cursor-not-allowed' : ''}`}
               />
             </div>
 
             <div className="space-y-2">
-              <Label className="text-sm text-slate-700">Intake Months</Label>
+              <div className="flex items-center justify-between">
+                <Label className="text-sm text-slate-700">Intake Months</Label>
+                <TbcToggle field="intake_months" tbcFields={tbcFields} onChange={setTbcFields} />
+              </div>
               <Input
                 value={form.intake_months}
                 onChange={(e) => setField('intake_months', e.target.value)}
-                placeholder="e.g. September, January, May"
-                className="bg-white border-slate-200 text-slate-900"
+                placeholder={tbcFields.includes('intake_months') ? 'Leave blank — shown as TBC' : 'e.g. September, January, May'}
+                disabled={tbcFields.includes('intake_months')}
+                className={`bg-white border-slate-200 text-slate-900 ${tbcFields.includes('intake_months') ? 'opacity-50 cursor-not-allowed' : ''}`}
               />
             </div>
 
             <div className="space-y-2">
-              <Label className="text-sm text-slate-700">
-                Campus
-                {!form.university_id && (
-                  <span className="text-slate-400 ml-1 font-normal">(select university first)</span>
-                )}
-              </Label>
+              <div className="flex items-center justify-between">
+                <Label className="text-sm text-slate-700">
+                  Campus
+                  {!form.university_id && (
+                    <span className="text-slate-400 ml-1 font-normal">(select university first)</span>
+                  )}
+                </Label>
+                <TbcToggle field="campus_id" tbcFields={tbcFields} onChange={setTbcFields} />
+              </div>
               <SearchableSelect
                 value={form.campus_id}
                 onValueChange={(val) => setField('campus_id', val)}
                 options={campusOptions}
-                placeholder={loadingCampuses ? 'Loading campuses...' : campuses.length === 0 && form.university_id ? 'No campuses available' : 'Search campus...'}
-                disabled={!form.university_id || loadingCampuses}
+                placeholder={tbcFields.includes('campus_id') ? 'Shown as TBC' : loadingCampuses ? 'Loading campuses...' : campuses.length === 0 && form.university_id ? 'No campuses available' : 'Search campus...'}
+                disabled={!form.university_id || loadingCampuses || tbcFields.includes('campus_id')}
               />
             </div>
 
             <div className="space-y-2">
-              <Label className="text-sm text-slate-700">Scholarship Amount</Label>
+              <div className="flex items-center justify-between">
+                <Label className="text-sm text-slate-700">Scholarship Amount</Label>
+                <TbcToggle field="scholarship_amount" tbcFields={tbcFields} onChange={setTbcFields} />
+              </div>
               <div className="flex gap-2">
                 <Input
                   type="number"
                   step="0.01"
                   value={form.scholarship_amount}
                   onChange={(e) => setField('scholarship_amount', e.target.value)}
-                  placeholder={form.scholarship_type === 'percentage' ? 'e.g. 10' : 'e.g. 5000'}
-                  className="bg-white border-slate-200 text-slate-900 flex-1"
+                  placeholder={tbcFields.includes('scholarship_amount') ? 'Leave blank — shown as TBC' : form.scholarship_type === 'percentage' ? 'e.g. 10' : 'e.g. 5000'}
+                  disabled={tbcFields.includes('scholarship_amount')}
+                  className={`bg-white border-slate-200 text-slate-900 flex-1 ${tbcFields.includes('scholarship_amount') ? 'opacity-50 cursor-not-allowed' : ''}`}
                 />
                 <SearchableSelect
                   value={form.scholarship_type}

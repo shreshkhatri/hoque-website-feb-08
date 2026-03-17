@@ -8,6 +8,7 @@ const ALLOWED_FIELDS = [
   'country_id', 'course_overview', 'academic_requirements', 'english_language_requirements',
   'other_requirements', 'document_requirements', 'scholarships', 'scholarship_amount',
   'scholarship_type', 'key_features', 'field_of_study', 'campus_id', 'category_id',
+  'tbc_fields',
 ]
 
 export async function GET(
