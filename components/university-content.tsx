@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { CoverImageWithCrop } from './cover-image-with-crop'
 import Link from 'next/link'
@@ -233,6 +234,7 @@ interface UniversityContentProps {
   campuses?: UniversityCampus[]
   currency?: string | null
   announcements?: Announcement[]
+  slug?: string
 }
 
 const tabs = [
@@ -260,8 +262,11 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
 }
 
-export function UniversityContent({ university, courses, campuses = [], currency, announcements = [] }: UniversityContentProps) {
-  const [activeTab, setActiveTab] = useState('overview')
+export function UniversityContent({ university, courses, campuses = [], currency, announcements = [], slug = '' }: UniversityContentProps) {
+  const searchParams = useSearchParams()
+  const tabFromUrl = searchParams.get('tab')
+  const validTabs = tabs.map(t => t.id)
+  const [activeTab, setActiveTab] = useState(tabFromUrl && validTabs.includes(tabFromUrl) ? tabFromUrl : 'overview')
   const [courseSearch, setCourseSearch] = useState('')
   const [levelCategoryFilter, setLevelCategoryFilter] = useState('all')
   const [levelFilter, setLevelFilter] = useState('all')
@@ -762,11 +767,11 @@ export function UniversityContent({ university, courses, campuses = [], currency
 
                         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                           {displayCourses.map((course) => (
-                            <Link
-                              key={course.id}
-                              href={`/course/${nameToSlug(course.name, course.code)}`}
-                              className="group"
-                            >
+                    <Link
+                      key={course.id}
+                      href={`/course/${nameToSlug(course.name, course.code)}?from=university&uniSlug=${encodeURIComponent(slug)}&uniName=${encodeURIComponent(university.name)}`}
+                      className="group"
+                    >
                               <Card className="h-full hover:border-primary/50 hover:shadow-md transition-all">
                                 <CardContent className="p-4">
                                   <Badge variant="outline" className="mb-2 text-xs">
@@ -886,7 +891,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
                               )}
                             </div>
                             <Link
-                              href={`/course/${nameToSlug(course.name, course.code)}`}
+                              href={`/course/${nameToSlug(course.name, course.code)}?from=university&uniSlug=${encodeURIComponent(slug)}&uniName=${encodeURIComponent(university.name)}`}
                               className="text-lg font-semibold text-foreground hover:text-primary transition-colors"
                             >
                               {course.name}
@@ -916,7 +921,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
                               </div>
                             )}
                             <Button asChild size="sm">
-                              <Link href={`/course/${nameToSlug(course.name, course.code)}`}>
+                              <Link href={`/course/${nameToSlug(course.name, course.code)}?from=university&uniSlug=${encodeURIComponent(slug)}&uniName=${encodeURIComponent(university.name)}`}>
                                 View Details
                               </Link>
                             </Button>
@@ -1046,7 +1051,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
                               <p className="text-sm font-medium text-foreground mb-2">Courses at this campus:</p>
                               <div className="flex flex-wrap gap-2">
                                 {campusCourses.slice(0, 5).map(c => (
-                                  <Link key={c.id} href={`/course/${nameToSlug(c.name, c.code)}`}>
+                                  <Link key={c.id} href={`/course/${nameToSlug(c.name, c.code)}?from=university&uniSlug=${encodeURIComponent(slug)}&uniName=${encodeURIComponent(university.name)}`}>
                                     <Badge variant="outline" className="hover:bg-muted cursor-pointer">{c.name}</Badge>
                                   </Link>
                                 ))}

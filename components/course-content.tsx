@@ -60,9 +60,15 @@ interface SimilarCourse {
   countries: { id: number; name: string; flag_emoji: string; flag_image_url: string | null; currency: string | null } | null
 }
 
+interface BackContext {
+  uniSlug: string
+  uniName: string
+}
+
 interface CourseContentProps {
   course: CourseWithUniversity
   similarCourses?: SimilarCourse[]
+  backContext?: BackContext
 }
 
 /**
@@ -106,7 +112,7 @@ function RichContent({ content, className = '' }: { content: string; className?:
   )
 }
 
-export function CourseContent({ course, similarCourses = [] }: CourseContentProps) {
+export function CourseContent({ course, similarCourses = [], backContext }: CourseContentProps) {
   const currency = course.countries?.currency || ''
   const getLevelColor = (level: string) => getLevelBadgeColor(level)
 
@@ -124,13 +130,17 @@ export function CourseContent({ course, similarCourses = [] }: CourseContentProp
 
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Back button */}
+      {/* Back button — context-aware */}
       <Link
-        href="/courses"
+        href={backContext ? `/university/${backContext.uniSlug}?tab=courses` : '/courses'}
         className="inline-flex items-center gap-2 text-primary hover:underline mb-8 text-sm font-medium"
       >
         <ArrowLeft size={16} />
-        <span>Back to Courses</span>
+        <span>
+          {backContext
+            ? `Back to ${backContext.uniName || 'University'}`
+            : 'Back to Courses'}
+        </span>
       </Link>
 
       {/* Course Hero Header */}
