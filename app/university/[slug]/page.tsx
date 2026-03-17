@@ -168,6 +168,7 @@ export default async function UniversityPage({
           campuses={campuses || []} 
           currency={currency}
           announcements={announcements || []}
+          slug={slug}
         />
         <Footer />
       </div>

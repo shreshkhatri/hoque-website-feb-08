@@ -109,10 +109,13 @@ export async function generateStaticParams() {
 
 export default async function CoursePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>
+  searchParams: Promise<{ from?: string; uniSlug?: string; uniName?: string }>
 }) {
   const { slug } = await params
+  const { from, uniSlug, uniName } = await searchParams
   const course = await getCourseBySlug(slug)
 
   if (!course) {
@@ -149,7 +152,11 @@ export default async function CoursePage({
       />
       <div className="min-h-screen bg-background">
         <Header />
-        <CourseContent course={course} similarCourses={similarCourses} />
+        <CourseContent
+          course={course}
+          similarCourses={similarCourses}
+          backContext={from === 'university' && uniSlug ? { uniSlug, uniName: uniName || '' } : undefined}
+        />
         <Footer />
       </div>
     </>
