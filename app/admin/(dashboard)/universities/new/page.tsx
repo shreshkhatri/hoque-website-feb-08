@@ -10,11 +10,11 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { 
-  Command, 
-  CommandEmpty, 
-  CommandGroup, 
-  CommandInput, 
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
   CommandItem,
   CommandList,
   CommandSeparator,
@@ -62,7 +62,7 @@ export default function NewUniversityPage() {
   const [newCountryName, setNewCountryName] = useState('')
   const [newCountryCode, setNewCountryCode] = useState('')
   const [creatingCountry, setCreatingCountry] = useState(false)
-  
+
   const [form, setForm] = useState({
     name: '',
     city: '',
@@ -85,22 +85,22 @@ export default function NewUniversityPage() {
     express_offer_available: false as boolean,
   })
 
-  const [highlights, setHighlights] = useState<{icon: string; title: string; description: string}[]>([])
+  const [highlights, setHighlights] = useState<{ icon: string; title: string; description: string }[]>([])
   const [newHighlight, setNewHighlight] = useState({ icon: 'Award', title: '', description: '' })
-  const [requiredDocuments, setRequiredDocuments] = useState<{name: string; description: string}[]>([])
+  const [requiredDocuments, setRequiredDocuments] = useState<{ name: string; description: string }[]>([])
   const [newDocument, setNewDocument] = useState({ name: '', description: '' })
-  const [faqs, setFaqs] = useState<{question: string; answer: string}[]>([])
+  const [faqs, setFaqs] = useState<{ question: string; answer: string }[]>([])
   const [newFaq, setNewFaq] = useState({ question: '', answer: '' })
   const [campusFacilities, setCampusFacilities] = useState<string[]>([])
   const [newFacility, setNewFacility] = useState('')
 
-  const highlightIconOptions = ['Award', 'Briefcase', 'Users', 'Globe', 'Star', 'GraduationCap', 'Building2', 'BookOpen']
+  const highlightIconOptions = ['Award', 'Briefcase', 'Users', 'Globe', 'Star', 'GraduationCap', 'Building2', 'BookOpen', 'MapPin', 'Handshake', 'HandCoins', 'Blocks', 'CircleDollarSign']
 
   const [logoFile, setLogoFile] = useState<File | null>(null)
   const [logoPreview, setLogoPreview] = useState<string>('')
   const [heroFile, setHeroFile] = useState<File | null>(null)
   const [heroPreview, setHeroPreview] = useState<string>('')
-  
+
   const [campuses, setCampuses] = useState<Campus[]>([])
   const [campusForm, setCampusForm] = useState<Campus>({
     name: '',
@@ -180,7 +180,7 @@ export default function NewUniversityPage() {
 
   const handleCreateCountry = async () => {
     if (!newCountryName.trim()) return
-    
+
     setCreatingCountry(true)
     try {
       const res = await fetch('/api/admin/countries', {
@@ -191,7 +191,7 @@ export default function NewUniversityPage() {
           code: newCountryCode.trim() || newCountryName.substring(0, 2).toUpperCase(),
         }),
       })
-      
+
       const data = await res.json()
       if (res.ok && data.country) {
         setCountries([...countries, data.country])
@@ -273,7 +273,7 @@ export default function NewUniversityPage() {
       })
 
       const data = await res.json()
-      
+
       if (!res.ok) throw new Error(data.error || 'Failed to create university')
 
       // Create campuses if any
@@ -301,7 +301,7 @@ export default function NewUniversityPage() {
         }
       }
 
-        showToast('success', 'University created', 'The university has been created successfully.')
+      showToast('success', 'University created', 'The university has been created successfully.')
       router.push('/admin/universities')
     } catch (error) {
       console.error('Save error:', error)
@@ -785,7 +785,7 @@ export default function NewUniversityPage() {
                 Add Highlight
               </Button>
             </div>
-            
+
             {highlights.length > 0 && (
               <div className="space-y-2">
                 {highlights.map((highlight, index) => (
@@ -855,7 +855,7 @@ export default function NewUniversityPage() {
                 Add Document
               </Button>
             </div>
-            
+
             {requiredDocuments.length > 0 && (
               <div className="space-y-2">
                 {requiredDocuments.map((doc, index) => (
@@ -924,7 +924,7 @@ export default function NewUniversityPage() {
                 Add FAQ
               </Button>
             </div>
-            
+
             {faqs.length > 0 && (
               <div className="space-y-2">
                 {faqs.map((faq, index) => (
