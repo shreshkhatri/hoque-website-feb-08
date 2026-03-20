@@ -30,7 +30,9 @@ import {
   Filter,
   Handshake,
   HandCoins,
-  Blocks, CircleDollarSign
+  Blocks,
+  CircleDollarSign,
+  Info
 
 } from 'lucide-react'
 
@@ -263,7 +265,8 @@ const iconMap: Record<string, any> = {
   Handshake,
   HandCoins,
   Blocks,
-  CircleDollarSign
+  CircleDollarSign,
+  Info
 }
 
 function stripHtml(html: string): string {

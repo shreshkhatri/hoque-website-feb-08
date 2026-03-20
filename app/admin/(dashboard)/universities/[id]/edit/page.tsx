@@ -18,7 +18,7 @@ type Country = { id: number; name: string; code: string }
 type ExistingCampus = { id: number; name: string; location: string; description: string; is_main_campus: boolean }
 type NewCampus = { name: string; location: string; description: string; is_main_campus: boolean; image_file?: File | null; image_preview?: string }
 
-const highlightIconOptions = ['Award', 'Briefcase', 'Users', 'Globe', 'Star', 'GraduationCap', 'Building2', 'BookOpen', 'MapPin', 'Handshake', 'HandCoins', 'Blocks', 'CircleDollarSign']
+const highlightIconOptions = ['Award', 'Briefcase', 'Users', 'Globe', 'Star', 'GraduationCap', 'Building2', 'BookOpen', 'MapPin', 'Handshake', 'HandCoins', 'Blocks', 'CircleDollarSign', 'Info']
 
 export default function EditUniversityPage() {
   const router = useRouter()

@@ -94,7 +94,7 @@ export default function NewUniversityPage() {
   const [campusFacilities, setCampusFacilities] = useState<string[]>([])
   const [newFacility, setNewFacility] = useState('')
 
-  const highlightIconOptions = ['Award', 'Briefcase', 'Users', 'Globe', 'Star', 'GraduationCap', 'Building2', 'BookOpen', 'MapPin', 'Handshake', 'HandCoins', 'Blocks', 'CircleDollarSign']
+  const highlightIconOptions = ['Award', 'Briefcase', 'Users', 'Globe', 'Star', 'GraduationCap', 'Building2', 'BookOpen', 'MapPin', 'Handshake', 'HandCoins', 'Blocks', 'CircleDollarSign', 'Info']
 
   const [logoFile, setLogoFile] = useState<File | null>(null)
   const [logoPreview, setLogoPreview] = useState<string>('')
