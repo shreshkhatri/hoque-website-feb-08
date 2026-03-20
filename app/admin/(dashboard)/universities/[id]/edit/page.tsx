@@ -18,14 +18,14 @@ type Country = { id: number; name: string; code: string }
 type ExistingCampus = { id: number; name: string; location: string; description: string; is_main_campus: boolean }
 type NewCampus = { name: string; location: string; description: string; is_main_campus: boolean; image_file?: File | null; image_preview?: string }
 
-const highlightIconOptions = ['Award', 'Briefcase', 'Users', 'Globe', 'Star', 'GraduationCap', 'Building2', 'BookOpen']
+const highlightIconOptions = ['Award', 'Briefcase', 'Users', 'Globe', 'Star', 'GraduationCap', 'Building2', 'BookOpen', 'MapPin', 'Handshake', 'HandCoins', 'Blocks', 'CircleDollarSign']
 
 export default function EditUniversityPage() {
   const router = useRouter()
   const params = useParams()
   const id = params.id as string
   const { showToast } = useToast()
-  
+
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [countries, setCountries] = useState<Country[]>([])
@@ -55,11 +55,11 @@ export default function EditUniversityPage() {
   const [newFacility, setNewFacility] = useState('')
 
   // Highlights, Documents, FAQs
-  const [highlights, setHighlights] = useState<{icon: string; title: string; description: string}[]>([])
+  const [highlights, setHighlights] = useState<{ icon: string; title: string; description: string }[]>([])
   const [newHighlight, setNewHighlight] = useState({ icon: 'Award', title: '', description: '' })
-  const [requiredDocuments, setRequiredDocuments] = useState<{name: string; description: string}[]>([])
+  const [requiredDocuments, setRequiredDocuments] = useState<{ name: string; description: string }[]>([])
   const [newDocument, setNewDocument] = useState({ name: '', description: '' })
-  const [faqs, setFaqs] = useState<{question: string; answer: string}[]>([])
+  const [faqs, setFaqs] = useState<{ question: string; answer: string }[]>([])
   const [newFaq, setNewFaq] = useState({ question: '', answer: '' })
 
   // Campuses
@@ -744,7 +744,7 @@ export default function EditUniversityPage() {
                 Add Highlight
               </Button>
             </div>
-            
+
             {highlights.length > 0 && (
               <div className="space-y-2">
                 {highlights.map((highlight, index) => (
@@ -814,7 +814,7 @@ export default function EditUniversityPage() {
                 Add Document
               </Button>
             </div>
-            
+
             {requiredDocuments.length > 0 && (
               <div className="space-y-2">
                 {requiredDocuments.map((doc, index) => (
@@ -883,7 +883,7 @@ export default function EditUniversityPage() {
                 Add FAQ
               </Button>
             </div>
-            
+
             {faqs.length > 0 && (
               <div className="space-y-2">
                 {faqs.map((faq, index) => (
@@ -960,14 +960,14 @@ export default function EditUniversityPage() {
                           <img src={campus.image_preview} alt={campus.name} className="w-12 h-12 object-cover rounded shrink-0" />
                         )}
                         <div className="flex-1 min-w-0">
-                        <p className="font-medium text-slate-900 truncate">
-                          {campus.name}
-                          {campus.is_main_campus && (
-                            <span className="ml-2 text-xs text-teal-600 font-normal">(Main)</span>
-                          )}
-                        </p>
-                        <p className="text-sm text-slate-600 truncate">{campus.location}</p>
-                      </div>
+                          <p className="font-medium text-slate-900 truncate">
+                            {campus.name}
+                            {campus.is_main_campus && (
+                              <span className="ml-2 text-xs text-teal-600 font-normal">(Main)</span>
+                            )}
+                          </p>
+                          <p className="text-sm text-slate-600 truncate">{campus.location}</p>
+                        </div>
                       </div>
                       <Button
                         type="button"
