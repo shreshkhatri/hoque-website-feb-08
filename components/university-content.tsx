@@ -28,6 +28,10 @@ import {
   ChevronDown,
   Search,
   Filter,
+  Handshake,
+  HandCoins,
+  Blocks, CircleDollarSign
+
 } from 'lucide-react'
 
 // Helper to convert name to slug
@@ -165,9 +169,9 @@ function LevelCategoryDropdown({ categories, value, onChange }: { categories: st
   const getCategoryColor = (cat: string) => {
     switch (cat) {
       case 'Undergraduate': return 'badge-blue'
-      case 'Postgraduate':  return 'badge-indigo'
-      case 'Research':      return 'badge-amber'
-      default:              return 'badge-slate'
+      case 'Postgraduate': return 'badge-indigo'
+      case 'Research': return 'badge-amber'
+      default: return 'badge-slate'
     }
   }
 
@@ -256,6 +260,10 @@ const iconMap: Record<string, any> = {
   GraduationCap,
   Building2,
   BookOpen,
+  Handshake,
+  HandCoins,
+  Blocks,
+  CircleDollarSign
 }
 
 function stripHtml(html: string): string {
@@ -271,7 +279,7 @@ function TabInitialiser({ onTab }: { onTab: (tab: string) => void }) {
     if (tabFromUrl && validTabs.includes(tabFromUrl)) {
       onTab(tabFromUrl)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabFromUrl])
   return null
 }
@@ -304,7 +312,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
   const filteredCourses = courses.filter(course => {
     const matchesSearch = course.name.toLowerCase().includes(courseSearch.toLowerCase()) ||
       course.code.toLowerCase().includes(courseSearch.toLowerCase())
-    
+
     // For level_category filter: if course has null level_category, use the level field to infer category
     let courseCategory = course.level_category
     if (!courseCategory) {
@@ -312,7 +320,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
       else if (['Master', 'PhD', 'MPHIL', 'MBA', 'PGDIP', 'PGCE'].includes(course.level)) courseCategory = 'Postgraduate'
     }
     const matchesLevelCategory = levelCategoryFilter === 'all' || courseCategory === levelCategoryFilter
-    
+
     const matchesLevel = levelFilter === 'all' || course.level === levelFilter
     const matchesCampus = campusFilter === 'all' || String(course.campus_id) === campusFilter
     return matchesSearch && matchesLevelCategory && matchesLevel && matchesCampus
@@ -327,7 +335,7 @@ export function UniversityContent({ university, courses, campuses = [], currency
       return null
     }).filter(Boolean)
   )] as string[]
-  
+
   const filteredByCategory = levelCategoryFilter === 'all' ? courses : courses.filter(c => {
     let courseCategory = c.level_category
     if (!courseCategory) {
@@ -482,8 +490,8 @@ export function UniversityContent({ university, courses, campuses = [], currency
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 px-4 py-4 border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id
-                      ? 'border-primary text-primary font-medium'
-                      : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                    ? 'border-primary text-primary font-medium'
+                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
                     }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -698,17 +706,17 @@ export function UniversityContent({ university, courses, campuses = [], currency
                     )}
                   </div>
 
-  <div className="mt-6 pt-6 border-t border-border space-y-3">
-  <Button asChild className="w-full" size="lg">
-    <Link href="/application-form">
-      Apply Now
-    </Link>
-  </Button>
-  <Button asChild variant="outline" className="w-full" size="lg">
-    <Link href="/contact">
-      Book a Consultation
-    </Link>
-  </Button>
+                  <div className="mt-6 pt-6 border-t border-border space-y-3">
+                    <Button asChild className="w-full" size="lg">
+                      <Link href="/application-form">
+                        Apply Now
+                      </Link>
+                    </Button>
+                    <Button asChild variant="outline" className="w-full" size="lg">
+                      <Link href="/contact">
+                        Book a Consultation
+                      </Link>
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -782,11 +790,11 @@ export function UniversityContent({ university, courses, campuses = [], currency
 
                         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                           {displayCourses.map((course) => (
-                    <Link
-                      key={course.id}
-                      href={`/course/${nameToSlug(course.name, course.code)}?from=university&uniSlug=${encodeURIComponent(slug)}&uniName=${encodeURIComponent(university.name)}`}
-                      className="group"
-                    >
+                            <Link
+                              key={course.id}
+                              href={`/course/${nameToSlug(course.name, course.code)}?from=university&uniSlug=${encodeURIComponent(slug)}&uniName=${encodeURIComponent(university.name)}`}
+                              className="group"
+                            >
                               <Card className="h-full hover:border-primary/50 hover:shadow-md transition-all">
                                 <CardContent className="p-4">
                                   <Badge variant="outline" className="mb-2 text-xs">
@@ -1029,17 +1037,17 @@ export function UniversityContent({ university, courses, campuses = [], currency
                   <Card key={campus.id}>
                     <CardContent className="p-6">
                       <div className="flex flex-col md:flex-row gap-6">
-                <CoverImageWithCrop
-                  src={campus.cover_image_url || '/hero-bg.jpg'}
-                  alt={`${campus.name} Campus`}
-                  fallbackSrc="/hero-bg.jpg"
-                  entityType="university_campuses"
-                  entityId={campus.id}
-                  crop={campus.cover_image_crop}
-                  containerClassName="w-full md:w-1/3 h-48 bg-muted rounded-lg overflow-hidden relative"
-                  imageClassName="object-cover"
-                  useNextImage={true}
-                />
+                        <CoverImageWithCrop
+                          src={campus.cover_image_url || '/hero-bg.jpg'}
+                          alt={`${campus.name} Campus`}
+                          fallbackSrc="/hero-bg.jpg"
+                          entityType="university_campuses"
+                          entityId={campus.id}
+                          crop={campus.cover_image_crop}
+                          containerClassName="w-full md:w-1/3 h-48 bg-muted rounded-lg overflow-hidden relative"
+                          imageClassName="object-cover"
+                          useNextImage={true}
+                        />
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
                             {campus.is_main_campus && <Badge>Main Campus</Badge>}
